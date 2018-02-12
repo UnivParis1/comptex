@@ -1,7 +1,8 @@
 <template>
  <div>
      <p><b>
-        {{homonyme.mail || homonyme.uid || homonyme.supannMailPerso || homonyme.barcode}}
+         <a v-if="homonyme.uid" :href="'https://userinfo.univ-paris1.fr/#' + (homonyme.mail || homonyme.uid)">{{homonyme.mail || homonyme.uid}}</a>
+         <span v-else>{{homonyme.supannMailPerso || homonyme.barcode}}</span>
      </b> <span v-html="homonyme.global_main_profile.description" v-if="homonyme.global_main_profile"></span></p>
 
      <table class="table table-bordered">

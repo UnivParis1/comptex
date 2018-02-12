@@ -2,7 +2,6 @@
 
 // @ts-ignore
 import * as fs from 'fs';
-import sendmailTransport from 'nodemailer-sendmail-transport';
 import * as ldap_convert from './ldap_convert.ts';
 import * as _ from 'lodash-es';
 import session from 'express-session';
@@ -11,9 +10,9 @@ import { sameKeyNameChoices } from './helpers.ts';
 import * as grouped_calls from './helper_grouped_calls.ts';
 import shared_conf from '../shared/conf.ts';
 
-const ldap_base = "dc=univ,dc=fr";
+const ldap_base = "dc=univ-paris1,dc=fr";
 const ldap_main = {
-        uri: ['ldap://ldap-test.univ.fr'],
+        uri: ['ldap://ldap-pmf2.univ-paris1.fr', 'ldap://ldap-pth2.univ-paris1.fr', 'ldap://ldap-pth1.univ-paris1.fr'],
 
         // empty for anonymous bind:
         dn: 'cn=comptex,ou=admin,' + ldap_base,
@@ -27,23 +26,24 @@ const ldap_main = {
         base_rolesGeneriques: "ou=supannRoleGenerique,ou=tables," + ldap_base,
         base_etablissements: "ou=supannEtablissement,ou=tables," + ldap_base,
 
-        uid_to_eppn: "@univ.fr",
+        uid_to_eppn: "@univ-paris1.fr",
 };
 
 const internal_organizations = [
     '{UAI}0751717J', // Univ Paris 1
     '{UAI}0752719Y', // SCD
+    '{UAI}0753364Z', // IAE
 ];
 
 const conf = {
     maxLiveModerators: 100,
 
-    mainUrl: 'https://comptex.univ.fr' + shared_conf.base_pathname.replace(/\/$/, ''),
+    mainUrl: 'https://comptex.univ-paris1.fr' + shared_conf.base_pathname.replace(/\/$/, ''),
     
     mail: {
-        from: 'Assistance <assistance@univ.fr>',
-        intercept: 'Admin <admin@univ.fr>',
-        transport: sendmailTransport({}),
+        from: 'DSIUN Université Paris 1 Panthéon-Sorbonne <no-reply@univ-paris1.fr>',
+        intercept: '', //'Admin <admin@univ.fr>',
+        transport: { host: "smtp.univ-paris1.fr", port: 25 },
     },
 
     sv_ttl_days: 1/*year*/ * 365, // auto-purge after xxx days unmodified
@@ -53,15 +53,15 @@ const conf = {
     },
 
     esup_activ_bo: {
-        url: "http://xxxx.univ.fr:8080/esup-activ-bo/",
+        url: "http://marmite.univ-paris1.fr:8080/esup-activ-bo/",
     },
 
     esupUserApps: {
-        url: '', //'https://ent.univ.fr/EsupUserApps',
+        url: 'https://ent.univ-paris1.fr/EsupUserApps',
     },
     
     ldap: {
-        shibIdentityProvider: 'https://idp.univ.fr',
+        shibIdentityProvider: 'urn:mace:cru.fr:federation:univ-paris1.fr',
 
         ...ldap_main,
 
@@ -152,10 +152,13 @@ const conf = {
                 supannCodeINE: '',
                 
                 termsOfUse: [''],
+                supannConsentement: [''],
                 supannListeRouge: '',
 
+                comment: '', demandeUrl: '',
                 up1Profile: [] as any[],
-                '{SMSU}CG': '', '{PHOTO}PUBLIC': '', '{PHOTO}INTRANET': '', '{PHOTO}STUDENT': '',
+                '{SMSU}CG': '', '{PAGER}DISPLAY.FACULTY': '', '{PHOTO}PUBLIC': '', '{PHOTO}INTRANET': '', '{PHOTO}STUDENT': '',
+                '{APPLI:OFFICE365}CGU': '',
             },
 
             attrs : { 
@@ -166,6 +169,8 @@ const conf = {
                 altGivenName: { ldapAttr: 'up1AltGivenName' },
                 floorNumber: { ldapAttr: 'up1FloorNumber' },
                 roomAccess: { ldapAttr: 'up1RoomAccess' },
+                comment: { ldapAttr: 'info;x-demande' },
+                demandeUrl: { ldapAttr: 'labeledURI', convert: ldap_convert.withSuffixEtiquette(' {DEMANDE}') },
                 up1Profile: { convert: ldap_convert.up1Profile },
                 global_profilename: { ldapAttr: 'up1Profile', convert: ldap_convert.up1Profile_field('up1Source') },
                 profilename: { ldapAttr: 'up1Source', ldapAttrJson: 'profilename' },
@@ -188,17 +193,25 @@ const conf = {
                 global_siham: { ldapAttr: 'supannRefId', convert: ldap_convert.withEtiquette("{SIHAM}")  },
                 jpegPhoto: { ldapAttr: 'jpegPhoto;base64' },
                 termsOfUse: { ldapAttr: 'up1TermsOfUse' },
-                ..._.fromPairs(['{SMSU}CG', '{PHOTO}PUBLIC', '{PHOTO}INTRANET', '{PHOTO}STUDENT'].map(value => 
+                ..._.fromPairs(['{SMSU}CG', '{PAGER}DISPLAY.FACULTY', '{PHOTO}PUBLIC', '{PHOTO}INTRANET', '{PHOTO}STUDENT'].map(value => 
                     [ value, { ldapAttr: 'up1TermsOfUse', convert: ldap_convert.has_value(value) } ]
+                )),
+                ..._.fromPairs(['{APPLI:OFFICE365}CGU'].map(value => 
+                    [ value, { ldapAttr: 'supannConsentement', convert: ldap_convert.has_value(value) } ]
                 )),
             },
             supannCiviliteChoices: sameKeyNameChoices([ 'M.', 'Mme' ]),
 
             mail_domains: [
+                'univ-paris1.fr',
+                'etu.univ-paris1.fr',
+                'malix.univ-paris1.fr',
+                'anciens.univ-paris1.fr',
+                'bis-sorbonne.fr',
             ] as string[],
     
-            homonymes_preferStudent: (profilename: string) => !!(profilename || '').match(/^\{COMPTEX\}learner\./),
-            homonymes_restriction: '(objectClass=inetOrgPerson)',
+            homonymes_preferStudent: (profilename: string) => !!(profilename || '').match(/^\{COMPTEX:FC\}learner\./),
+            homonymes_restriction: '(&(objectClass=inetOrgPerson)(!(shadowFlag=2))(!(shadowFlag=8)))' // ignore dupes/deceased
         },
 
         group_cn_to_memberOf: (cn: string) => (
@@ -232,6 +245,7 @@ const conf = {
             sn: 'sn', 
             givenName: 'givenName', 
             displayName: 'displayName',
+            supannEtablissement: 'supannEtablissement',
         },
     },
 
@@ -256,7 +270,7 @@ const conf = {
     } as session_file_store.Options,
 
     trust_proxy: ['loopback'],
-    listen_host: '', // if empty, it listens on all network interfaces. use 'localhost' for security if you use mod_shib
+    listen_host: 'localhost', // if empty, it listens on all network interfaces. use 'localhost' for security if you use mod_shib
 
     cas: {
         ssoBaseURL: '', //'https://cas.univ.fr/cas/',

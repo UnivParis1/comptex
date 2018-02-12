@@ -51,7 +51,8 @@ export interface InitialSteps {
 
 import conf from '../conf.ts';
 
-const api_url = conf.base_pathname + 'api';
+const non_test_base_pathname = conf.base_pathname.replace(/\/test\/$/, '/');
+const api_url = non_test_base_pathname + 'api';
 
 export function eachAttrs(attrs: StepAttrsOption, oneOfTraversal: 'always' | 'never', f: (opts: StepAttrOption, key: string, attrs: StepAttrsOption) => void) {
     function rec_mpp(mpp: Mpp) {
@@ -173,7 +174,11 @@ function _handleErr(err : http_err, $scope = null, redirect = false) {
         console.log("must relog", resp.headers.toString());
         restarting = true;
         const type = resp.data && resp.data.authenticate && resp.data.authenticate.type || $scope.$route.query.idp || 'local';
-        const location = conf.base_pathname + 'login/' + type + '?then=' + encodeURIComponent($scope.$route.fullPath);
+        const need_reload_to_test = type === 'cas_with_pgt' && conf.base_pathname !== non_test_base_pathname;
+        const location = 
+            (need_reload_to_test ? non_test_base_pathname : conf.base_pathname) +
+            'login/' + type + '?then=' + encodeURIComponent($scope.$route.fullPath) +
+            (need_reload_to_test ? "&reload_to_test" : '');
         document.location.href = resp.data?.authenticate?.need_relog_local ? `/Shibboleth.sso/Logout?return=${encodeURIComponent(location)}` : location
         return Promise.reject("logging...");
     } else if (resp.status === 401) {
