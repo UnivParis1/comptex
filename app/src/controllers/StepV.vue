@@ -19,7 +19,7 @@
   </div>
 
   <div v-if="v_ldap && v_ldap.global_main_profile && !(v.global_main_profile && v.global_main_profile.description === v_ldap.global_main_profile.description) && !merged_homonyms.some(h => h.uid === v_ldap.uid)" class="alert alert-info">
-        La demande concerne le compte existant « {{v_ldap.uid}} »
+        La demande concerne le compte existant « <a style="text-decoration: underline;" :href="'https://userinfo.univ-paris1.fr/#' + v_ldap.uid">{{v_ldap.uid}}</a> »
         ({{v_ldap.givenName}} {{v_ldap.sn}} <span v-html="v_ldap.global_main_profile.description"></span>)
   </div>
 

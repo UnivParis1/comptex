@@ -21,7 +21,7 @@ const normalize_noAccent_noUpperCase_trim = (s:string) => trim(deburr(s.toLowerC
 const wsgroupsURL = "https://wsgroups.univ-paris1.fr";
 
 export default {
-    base_pathname: '/',
+    base_pathname: '/foo/',
     wsgroupsURL,
     title: "Gestion de comptes",
     may_display_fieldIsRequired_hint: true,
@@ -88,7 +88,7 @@ export default {
            `Vous acceptez de vous conformer aux chartes informatiques 
             <a target="_blank" href="http://dsiun.univ-paris1.fr/fileadmin/DSI/Chartes/charte_utilisation_ressources_informatiques_et_internet.html">de l'université</a> 
             et
-            <a target="_blank" href="http://www.renater.fr/IMG/pdf/Charte_RENATER_Vjanv2014.pdf" >du réseau RENATER</a>.
+            <a target="_blank" href="https://ent.univ-paris1.fr/charte-renater">du réseau RENATER</a>.
             <br>
             Votre compte et le mot de passe associé sont strictement personnels :
             vous êtes seul responsable de l'usage qui en est fait.`,
