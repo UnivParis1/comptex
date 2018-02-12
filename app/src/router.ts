@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory, RouterOptions, RouteRecordRaw, Router } from 'vue-router'
+import { createRouter, createWebHistory, RouterOptions, RouteRecordRaw, Router, createWebHashHistory } from 'vue-router'
 import conf from './conf.ts';
 import * as Helpers from './services/helpers.ts'; 
 import Step from './controllers/Step.vue';
@@ -11,7 +11,13 @@ export let router: Router;
 
 const _routes: Dictionary<Component> = {
     '/playground': () => import('./controllers/Playground.vue'),
-    '/login/:kind?': { render(_h) { router.replace(this.$route.query.then) } }, // TODO, use vue-router redirect
+    '/login/:kind?': { render(_h) {
+        const then = this.$route.query.then;
+        if ("reload_to_test" in this.$route.query)
+            document.location.href = conf.base_pathname + "test/#" + then;
+        else
+            router.replace(then) // TODO, use vue-router redirect
+    } },
     '/steps/:kind?': ModerateList,
     '/:stepName/:wanted_id?': Step,
     '/': { template: template_welcome },
@@ -28,5 +34,9 @@ const opts: RouterOptions = {
     history: createWebHistory(conf.base_pathname),
     routes,
 };
+
+if (conf.base_pathname.match(/\/test\/$/)) {
+    opts.history = createWebHashHistory();
+}
 
 router = createRouter(opts);
