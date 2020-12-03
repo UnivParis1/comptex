@@ -98,8 +98,8 @@ export function respondJson(req: req, res: express.Response, p: Promise<response
         //console.log(logPrefix, r);
         res.json(r);
     }, err => {
-        console.error(logPrefix, err);
         const errMsg = err?.code || "" + err;
+	if (errMsg === 'OK') {} else if (errMsg === 'Unauthorized') { console.info(logPrefix, err) } else { console.error("ERROR", logPrefix, err) }
         res.status(http_statuses[errMsg] || 500);
         res.json(err?.code ? err : {error: errMsg, stack: err?.stack});
     });
