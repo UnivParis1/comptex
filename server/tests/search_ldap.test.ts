@@ -175,3 +175,15 @@ describe('homonymes', () => {
        
     });
 });
+
+describe('prepare_homonymes_v', () => {
+    it('should require sn & birthDay', () => {
+        assert.equal(search_ldap.prepare_homonymes_v({ sn: 'Rigaux' }), null)
+        assert.equal(search_ldap.prepare_homonymes_v({ birthDay: new Date('1975-10-02') }), null)
+    })
+    it('should work', () => {
+        assert.deepEqual(
+            search_ldap.prepare_homonymes_v({ sn: 'Rigaux', birthDay: new Date('1975-10-02') }), 
+            { givenNames: [], sns: [ 'Rigaux' ], preferStudent: false })
+    })
+})

@@ -201,13 +201,28 @@ const _flatten_at = (v: v, attrs: string[]) => (
     ).filter(s => s)
 )
 
+interface hv {
+    sns: string[]
+    givenNames: string[]
+    preferStudent: boolean
+}
+
+export const prepare_homonymes_v = (v: v): hv => {
+    let hv: hv = {
+        sns: _.compact(_flatten_at(v, shared_conf.sns)),
+        givenNames: _flatten_at(v, shared_conf.givenNames),
+        preferStudent: conf.ldap.people.homonymes_preferStudent(v.profilename),
+    }
+    if (hv.sns[0] === undefined || !v.birthDay) return null;
+    console.log("sns", hv.sns);
+    console.log("givenNames", hv.givenNames);    
+    return hv
+}
+
 export const homonymes = (v: v) : Promise<Homonyme[]> => {
-    let sns: string[] = _.compact(_flatten_at(v, shared_conf.sns));
-    let givenNames = _flatten_at(v, shared_conf.givenNames);    
-    if (sns[0] === undefined || !v.birthDay) return Promise.resolve([]);
-    console.log("sns", sns);
-    const preferStudent = conf.ldap.people.homonymes_preferStudent(v.profilename);
-    return homonymes_(sns, givenNames, v.birthDay, v.supannMailPerso, preferStudent);    
+    const hv = prepare_homonymes_v(v)
+    if (!hv) return Promise.resolve([]);
+    return homonymes_(hv.sns, hv.givenNames, v.birthDay, v.supannMailPerso, hv.preferStudent);    
 };
 
 export const subv_to_eq_filters = (subv: Partial<v>) => {
