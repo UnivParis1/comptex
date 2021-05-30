@@ -173,7 +173,7 @@ export default Vue.extend({
             return { ...allowed, any: allowed.remove || allowed.move_up || allowed.move_down }
         },
         uiType() {
-            if (this.uiOptions.readOnly__avoid_disabled_input && this.opts.readOnly) {
+            if (this.uiOptions.readOnly__avoid_disabled_input && this.opts.readOnly || this.opts.computeValue) {
                 return 'span';
             }
             if (this.opts.uiType === 'date' && !isDateInputSupported()) {
@@ -211,8 +211,11 @@ export default Vue.extend({
                 )) 
             ) : this.val;
         },
+        computedValue() {
+            return this.opts.computeValue?.()
+        },
         formattedValue() {
-            return formatValue(this.val)
+            return formatValue(this.opts.computeValue ? this.computedValue : this.val)
         },
         input_attrs() {
             return this.type === 'password' ? { autocomplete: 'current_password' } : {}

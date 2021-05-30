@@ -82,6 +82,7 @@ type SharedStepAttrOption = MinimalStepAttrOption & {
     onFocusOut?: (v: CommonV) => void;
     onVisible?: (v: {}, elt: HTMLElement) => void;
     validator?: (val: any, v_orig: {}) => string;
+    computeValue?: (v: CommonV, all_attrs: StepAttrsOptionM<SharedStepAttrOption>) => any;
 
     minDate?: Date | relativeDate;
     maxDate?: Date | relativeDate;

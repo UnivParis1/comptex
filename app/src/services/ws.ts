@@ -182,7 +182,7 @@ function get_all_attrs_flat(root_attrs: StepAttrsOption) {
     let all_attrs: StepAttrsOption = {};
     eachAttrs(root_attrs, 'always', (opts, attr) => {
         if (all_attrs[attr]) {
-            // argh, weird stuff can happen (eg: handleAttrsValidators_and_allowUnchangedValue will handle on one attr)
+            // argh, weird stuff can happen (eg: handleAttrsValidators_and_computeValue_and_allowUnchangedValue will handle on one attr)
             // try to warn...
             const opts_ = all_attrs[attr]
             if (opts.validator || opts.allowUnchangedValue || opts_.validator || opts_.allowUnchangedValue) {
@@ -196,12 +196,17 @@ function get_all_attrs_flat(root_attrs: StepAttrsOption) {
     return all_attrs;
 }
 
-function handleAttrsValidators_and_allowUnchangedValue(all_attrs: StepAttrsOption, v_orig: V) {
+function handleAttrsValidators_and_computeValue_and_allowUnchangedValue(all_attrs: StepAttrOptionM<any>, v: V, v_orig: V) {
     for (const attr in all_attrs) {
         const opts = all_attrs[attr];
         const validator = opts.validator;
         if (validator) {
+            // pass v_orig to attrs opts.validator:
             opts.validator = (val) => validator(val, v_orig);
+        }
+        {
+            const fn = opts.computeValue;
+            if (fn) opts.computeValue = () => fn(v, all_attrs);
         }
         if (opts.allowUnchangedValue) {
             // save the orig value here
@@ -231,8 +236,7 @@ export function getInScope($scope, id: string, params, hash_params, expectedStep
         let all_attrs = get_all_attrs_flat($scope.attrs);
         let v = fromWs(sv.v, all_attrs)
             $scope.v_ldap = sv.v_ldap ? fromWs(sv.v_ldap, all_attrs) : id === 'new' ? cloneDeep(v) : undefined;
-            // pass v_orig to attrs opts.validator:
-            handleAttrsValidators_and_allowUnchangedValue(all_attrs, Helpers.copy(v));
+            handleAttrsValidators_and_computeValue_and_allowUnchangedValue(all_attrs, v, Helpers.copy(v));
             Helpers.eachObject(all_attrs, (attr, opts) => {
                 let param = opts.uiType !== 'newPassword' && params[attr]
 

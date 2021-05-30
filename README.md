@@ -177,6 +177,7 @@ Some special functionalities are only available through `shared/conf.ts`:
 * ```onFocusOut```: when the input is blurred, can modify `v`
 * ```onVisible```: when it becomes visible, can modify `v`
 * ```validator```: custom validator. Use it when `pattern` is not enough, or to display an adapted error message
+* ```computeValue```: compute value using `v`
 * ```minDate```: the value must be >= this date
 * ```maxDate```: the value must be <= this date
 
