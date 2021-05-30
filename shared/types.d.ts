@@ -64,7 +64,7 @@ type SharedStepAttrOption = MinimalStepAttrOption & {
     normalize?: (s: string) => string;
     formatting?: (val: any) => string;
     formatting_html?: (val: any) => string;
-    onChange?: (v: {}, _: string, val: any) => void;
+    onChange?: (v: CommonV, _: string, val: any) => void;
     onVisible?: (v: {}, elt: HTMLElement) => void;
     validator?: (val: any, v_orig: {}) => string;
 
@@ -109,7 +109,7 @@ interface ClientSideOnlyStepAttrOption {
     oneOf_async?: string;
 }
 
-type CommonV = Dictionary<string|string[]>
+type CommonV = Dictionary<any>
 
 interface ClientSideStepLabels {
     // vue templates

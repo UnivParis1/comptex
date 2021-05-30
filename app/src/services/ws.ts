@@ -4,7 +4,7 @@ import { setTimeoutPromise } from '../../../shared/helpers'
 import * as Helpers from './helpers';
 
 
-interface VCommon {
+interface VCommon extends CommonV {
     structureParrain?: string;
     supannAliasLogin?: string;
     jpegPhoto?: string;

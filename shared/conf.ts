@@ -92,7 +92,7 @@ export default {
         mail: { title: "Courriel" },
         etablissementExterne: { 
             uiPlaceholder: "Entrez une raison sociale, un SIRET ou un UAI",
-            onChange(v: Dictionary<string>, _, etablissementS: Dictionary<string>) {
+            onChange(v: CommonV, _, etablissementS: Dictionary<string>) {
                 // set every "etablissement" fields in v, with prefix "etablissement_"
                 Object.keys(v).forEach(k => { if (k.match(/^etablissement_/)) v[k] = '' });
                 Object.keys(etablissementS).forEach(k => v[`etablissement_${k}`] = etablissementS[k]);
