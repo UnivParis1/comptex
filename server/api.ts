@@ -206,6 +206,7 @@ function advance_sv(req: req, sv: sva) : Promise<svr> {
     }
     return action_post(req, sv).then(async svr => {
         const nextStep = step(svr).next;
+        svr.v.prevStep = svr.step
         svr.step = typeof nextStep === "function" ? await nextStep(svr.v) : nextStep;
         if (svr.step) {
             return action_pre(req, svr);
