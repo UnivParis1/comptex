@@ -62,6 +62,7 @@ function action<SV extends sv>(req: req, sv: SV, action_name: 'action_post' | 'a
     // @ts-expect-error
     return f(req, sv).then(vr => {
         //console.log("action returned", vr);
+        if (!vr.v) throw action_name + ' must return v (step "'  + sv.step + '")'
         return _.defaults(vr, sv);
     });
 }
