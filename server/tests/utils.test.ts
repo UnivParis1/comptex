@@ -37,6 +37,7 @@ describe('deep_extend', () => {
                 bb2: { bb22: "2" },
             },
         })
+        check({ bb: { bb1: "1" } }, { bb: { bb2: "2" } }, { bb: { bb1: "1", bb2: "2" } })
     })
 });
 
