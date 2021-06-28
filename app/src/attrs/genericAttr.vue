@@ -100,6 +100,7 @@
 
     <div v-else-if="uiType === 'span'">
         <span class="instead_of_disabled_input">{{formattedValue}}</span>
+        <span v-html="opts.description"></span>
     </div>
 
    <div :class="{ 'input-group': allow_remove }" v-else>
