@@ -3,7 +3,6 @@ import Vue from "vue";
 import { pickBy, findKey, find, isEmpty, uniq } from 'lodash';
 import * as Helpers from '../services/helpers';
 import genericAttr from './genericAttr.vue';
-import BarcodeAttrs from './BarcodeAttrs.vue';
 
 import template from '!raw-loader!./attrsForm.html';
 
@@ -32,7 +31,7 @@ export default Vue.extend({
         };
     },
     template,
-    components: { genericAttr, BarcodeAttrs },
+    components: { genericAttr },
 
     computed: {
         selectedTab_() {
@@ -42,7 +41,7 @@ export default Vue.extend({
             return this.attrs ? pickBy(this.attrs, opts => opts.properties) : {};
         },
         attrs_outside_tabs() {
-            return pickBy(this.attrs, (opts, name) => name !== 'barcode' && name !== 'mifare' && opts.uiType !== 'homonym' && opts.uiType !== 'tab');
+            return pickBy(this.attrs, (opts, _) => opts.uiType !== 'homonym' && opts.uiType !== 'tab');
         },
     },
     methods: {

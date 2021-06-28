@@ -17,7 +17,7 @@
             <div class="tab-description" v-html="opts.description" v-if="opts.description"></div>
             <div v-for="(opts, name) in opts.properties" :key="name" v-if="opts">
                 <genericAttr :name="name" :opts="opts" v-model="v[name]" :v="v" :ldap_value="v_ldap && v_ldap[name]" :stepName="stepName"
-                    v-if="name != 'barcode' && name != 'mifare' && opts.uiType !== 'homonym'">
+                    v-if="opts.uiType !== 'homonym'">
                 </genericAttr>
             </div>
       </fieldset>
@@ -30,8 +30,6 @@
       </div>
     </div>
 
-  <BarcodeAttrs v-model="v" :attrs="attrs" v-if="attrs.barcode || attrs.mifare"></BarcodeAttrs>
- 
    <my-bootstrap-form-group v-if="step_labels.okButton || step_labels.cancelButton">
       <button class="btn btn-primary" type="submit" v-if="step_labels.okButton" :disabled="disableOkButton">
         <span class="glyphicon glyphicon-plus"></span>
