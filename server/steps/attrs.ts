@@ -29,3 +29,11 @@ export const attrsHelpingDiagnoseHomonymes = (
     }
 );
 
+export const description_only_entry = (description: string) => ({
+    description,
+    toUserOnly: true, uiOptions: { 
+        title_hidden: true, /* l'afficher plus près de "cujas_discipline" */
+        readOnly__avoid_disabled_input: true, /* forcer <span> */
+    },
+    uiHidden: false, /* forcer l'affichage */
+})
