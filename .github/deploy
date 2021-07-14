@@ -1,0 +1,19 @@
+#!/bin/sh -e
+
+# prepare files
+sed -i 's!publicPath: "/"!publicPath: "/comptex"!' app/vue.config.js
+sed -i 's!title: "Gestion de comptes"!title: "Comptex Playground"!' shared/conf.ts
+echo '<router-link to="/playground">Go to Playground</router-link>' > app/src/templates/welcome.html
+
+# build
+cd app
+npm run build -- --mode playground
+# ("production" mode uses "history" routing, we want "hash" for github pages)
+
+# deploy
+cd dist
+git init --initial-branch=gh-pages
+git remote add origin git@github.com:UnivParis1/comptex
+git add -A
+git commit -m x --quiet
+git push -f origin gh-pages
