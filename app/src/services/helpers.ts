@@ -126,7 +126,7 @@ export * from '../../../shared/helpers';
     }
     
     export function escapeRegexp(s : string) {
-        return ('' + s).replace(/[.?*+^$[\]\\(){}|-]/g, "\\$&");
+        return ('' + s).replace(/[.?*+^$[\]\\(){}|]/g, "\\$&");
     }
 
     export function filter(collection, predicate) {
