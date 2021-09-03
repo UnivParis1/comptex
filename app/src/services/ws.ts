@@ -205,6 +205,9 @@ function handleAttrsValidators_and_allowUnchangedValue(all_attrs: StepAttrsOptio
         if (opts.allowUnchangedValue) {
             // save the orig value here
             opts.allowUnchangedValue = v_orig[attr]
+            if (opts.pattern && v_orig[attr]) {
+                opts.pattern += "|" + Helpers.escapeRegexp(v_orig[attr])
+            }
         }
     }
 }
