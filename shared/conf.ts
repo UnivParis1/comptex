@@ -45,7 +45,7 @@ export default {
         postalAddress: { title: "Adresse professionnelle", uiType: 'postalAddress' },
         roomAccess: { title: "Précision du lieu" },
         floorNumber: { title: "Étage" },
-        roomNumber: { title: "Numéro de bureau", description: "(Exemples : 1805 ; A 406 ; 305 B ; A 406 bis ; 1506 ter)" },
+        roomNumber: { title: "Numéro de bureau" },
         buildingName: { title: "Site" },
         userPassword: { title: "Mot de passe", uiType: 'newPassword' },
         userPassword2: { title: "Confirmer le mot de passe" },
