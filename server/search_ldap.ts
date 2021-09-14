@@ -326,6 +326,11 @@ export const prefix_suffix_to_group_and_code = (prefix: string, suffix: string):
     }
 }
 
+export const group_and_code_to_choices_using_ou = async (g_a_c: group_and_code_fns, ou_to_title: (ou: string) => string) => {
+    const l = await ldap.search(conf.ldap.base_groups, `(cn=${g_a_c.code_to_group_cn('*')})`, { cn: '', ou: '' }, null, {})
+    return l.map(({ cn, ou }) => ({ const: g_a_c.group_cn_to_code(cn), title: ou_to_title(ou) }))
+}
+
 export const filter_user_memberOfs = async <T>(group_cn_to: (cn: string) => T, user: CurrentUser) => {
     const user_ = await ldap.searchOne(conf.ldap.base_people, currentUser_to_filter(user), { memberOf: [''] }, {});
     const r: T[] = [];
