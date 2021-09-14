@@ -322,3 +322,8 @@ table.v-diff tr th {
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
 }
+
+.ReadOnlyObjectItems .table > tbody > tr > td {
+    /* override bootstrap. needed for text mixed with .btn */
+    vertical-align: initial;
+}

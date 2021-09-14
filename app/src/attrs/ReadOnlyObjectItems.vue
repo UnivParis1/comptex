@@ -1,5 +1,5 @@
 <template>
-<div v-if="v_array.length">
+<div class="ReadOnlyObjectItems" v-if="v_array.length">
     <a class="btn btn-default export" @click="export_csv" href="#" download="comptes.csv" v-if="opts.uiOptions && opts.uiOptions.object_items_export_csv">
         <span class="glyphicon glyphicon-export"></span>
         Exporter
