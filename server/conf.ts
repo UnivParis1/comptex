@@ -236,6 +236,8 @@ const conf = {
         path: "/tmp"
     } as session_file_store.Options,
 
+    trust_proxy: ['loopback'],
+
     cas: {
         host: '', //'cas.univ.fr',
     },

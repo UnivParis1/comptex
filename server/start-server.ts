@@ -20,6 +20,7 @@ const json_limit = '10MB'; // must be kept lower than 16MB for cases when it is 
 const csv_limit = '1MB';
 
 app.set('query parser', 'simple')
+app.set('trust proxy', conf.trust_proxy)
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(__dirname + '/app/favicon.ico'));
