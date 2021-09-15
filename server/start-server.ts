@@ -24,7 +24,8 @@ app.set('trust proxy', conf.trust_proxy)
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(__dirname + '/app/favicon.ico'));
-app.use(logger(process.env.NODE_ENV === 'production' ? 'combined' : 'dev'));
+logger.token('remote-user', (req: any) => (req.user?.id))
+app.use(logger(':remote-addr :remote-user ":method :url" :status :res[content-length] ":referrer" ":user-agent" :response-time ms'));
 app.use("/", express.static(path.join(__dirname, '../app/dist'), staticFilesOptions));
 if (conf.cas.host) {
     cas.init(app);
