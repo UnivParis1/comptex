@@ -1,5 +1,6 @@
 # Exemples
 
+* [Live playground!](http://univparis1.github.io/comptex/#/playground)
 * [Cabine photographique](#cabine-photographique)
 * [Homonymes](#homonymes)
 * [Champs multi-valués](#champs-multi-valués)
