@@ -285,6 +285,15 @@ export const sendMail = (template: string, params = {}, opts : { cc_personParrai
     return { v: sv.v };
 };
 
+export const sendSupannMailPerso = (template: string, params = {}): action => async (req, sv) => {
+    if (sv.v.supannMailPerso) {
+        await sendMail(template, { ...params, to: sv.v.supannMailPerso })(req, sv)
+    } else {
+        console.warn("sendSupannMailPerso: not sending since no supannMailPerso", sv.v)
+    }
+    return sv
+}
+
 export const sendMailWithFileTemplate = (templateName: string, params = {}, opts = {}): action => async (req, sv) => {
     mail.sendWithTemplateFile(templateName, await prepareMailTemplateParams(req, sv, params, opts));
     return { v: sv.v };
