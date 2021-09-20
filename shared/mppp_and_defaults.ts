@@ -8,7 +8,7 @@ const matches_if = (if_: { optional: false }, val: string) => (
 const handle_then_if_matching = (opts: StepAttrOptionM<unknown>, val: string, rec: (attrs: StepAttrsOptionM<unknown>, mpo: MergePatchOptions) => void) => {
     const then_mppp = opts?.then?.merge_patch_parent_properties
     if (opts.if && then_mppp) {
-        console.log(opts.if, val)
+        //console.log(opts.if, val)
         if (matches_if(opts.if, val)) rec(then_mppp, opts.then.merge_patch_options);
     }
 }
