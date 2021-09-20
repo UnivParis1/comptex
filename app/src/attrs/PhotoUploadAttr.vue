@@ -1,5 +1,5 @@
 <template>
-  <my-bootstrap-form-group :name="name" :opts="opts" no_html_label="true" :validity="validity" v-if="!opts.readOnly || val" class="PhotoUploadAttr">
+  <my-bootstrap-form-group :name="name" :opts="opts" no_html_label="true" :validity="validity" v-if="!opts.readOnly || val" class="PhotoUploadAttr" :hideErrors="true">
 
     <span class="photoShow" v-if="val && !toValidate">
         <img :src="val" class="photoBorder" alt="" :style="non_edit_size">
@@ -9,7 +9,9 @@
     <span style="display: inline-block" v-if="!opts.readOnly">
 
       <!-- for validation: -->
-      <input-with-validity :name="name" :value="val" type="text" style="display: none" :required="!opts.optional" :validity.sync="validity[name]"></input-with-validity>
+      <input-with-validity :name="name" :value="toValidate ? 'EDITING': val" type="text" style="display: none" :required="!opts.optional"
+         :validator="val => val === 'EDITING' ? 'Cliquez sur le bouton vert pour valider la photo, ou le bouton à sa droite pour annuler.' : ''"
+         :validity.sync="validity[name]"></input-with-validity>
 
       <span v-if="toValidate" class="photoModify">
         <div class="photoBorder">
@@ -20,6 +22,7 @@
                 <li><button type="button" @click="$refs.croppie.rotate(90)" title="Rotation droite">↺</button></li>
                 <li><button type="button" @click="$refs.croppie.rotate(-90)" title="Rotation gauche">↻</button></li>
                 <li><button type="button" @click="croppieValidate()" title="Valider la photo" class="submit"><span class="glyphicon glyphicon-ok"></span></button></li>
+                <li><button type="button" @click="cancel()" title="Annuler"><span class="glyphicon glyphicon-remove"></span></button></li>
             </ul>
         </nav>            
       </span>
@@ -43,6 +46,8 @@
           <input-file style="display: none;" accept="image/*" @change="onPhotoUploaded"></input-file>
       </label>
 
+      <validation-errors :name="name" :validity="validity"/>
+
       <p><div v-html="opts.description"></div></p>
     </span>
   </my-bootstrap-form-group> 
@@ -64,7 +69,7 @@ export default Vue.extend({
         return {
             validity: { [this.name]: {} },
             val: this.value,
-            toValidate: null,
+            toValidate: null, prev_val_before_croppie: null,
             error: null,
             withCroppie: false,
         };
@@ -104,6 +109,9 @@ export default Vue.extend({
         onInvalidPhoto() {
             const m = this.toValidate.match(/^data:(.*?);/);
             this.error = { mimeType: m && m[1] };
+            this.cancel();
+        },
+        cancel() {
             this.toValidate = null;
             // give up on this uploaded value
             this.val_before_croppie = this.prev_val_before_croppie;
