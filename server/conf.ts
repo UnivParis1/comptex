@@ -187,7 +187,7 @@ const conf = {
             supannCiviliteChoices: sameKeyNameChoices([ 'M.', 'Mme' ]),
 
             mail_domains: [
-            ],
+            ] as string[],
     
             homonymes_preferStudent: (profilename: string) => !!(profilename || '').match(/^\{COMPTEX\}learner\./),
             homonymes_restriction: '(objectClass=inetOrgPerson)',
