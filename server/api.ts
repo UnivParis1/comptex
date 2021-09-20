@@ -104,7 +104,7 @@ function notifyModerators(req: req, sv: sv, templateName: string) {
 function checkAcls(req: req, sv: sv) {
     return acl_checker.checkAcl(req.user, sv.v, step(sv).acls).then(check => {
         if (check === true) {
-            console.log("authorizing", req.user, "for step", sv.step);
+            if (req.user) console.log("authorizing", req.user, "for step", sv.step);
         } else if (!req.user) {
             throw "Unauthorized";
         } else {
