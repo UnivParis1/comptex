@@ -84,7 +84,8 @@
         :disabled="opts.readOnly"
         :choices="oneOf" :required="!opts.optional" :validity.sync="validity[name]">
       </select-with-validity>
-      <span v-html="opts.description"></span>
+      <component :is="vue_component_description" :v="v" v-if="vue_component_description"></component>
+      <span v-html="opts.description" v-else></span>
     </div>
 
     <div class="checkbox" v-else-if="uiType === 'checkbox'">
@@ -208,7 +209,12 @@ export default Vue.extend({
         },
         input_attrs() {
             return this.type === 'password' ? { autocomplete: 'current_password' } : {}
-        }
+        },
+        vue_component_description() {
+            if (!this.uiOptions.texts_are_vue_template) return undefined;
+            const text = this.opts.description;
+            return text && Vue.extend({ props: ['v'], template: "<div>" + text + "</div>" });
+        },
     },
     asyncComputed: {
         async oneOf_() {
