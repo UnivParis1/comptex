@@ -229,6 +229,13 @@ describe('merge_v', () => {
         test({ attr1: { max: 2 } }, {}, { attr1: 2 }, { attr1: 2 });
         test_fail({ attr1: { max: 2 } }, {}, { attr1: 3 }, "constraint attr1.max <= 2 failed for 3");
     });
+    it ("should check minlength/maxlength", () => {
+        test({ attr1: { minlength: 2 } }, {}, { attr1: "ab" }, { attr1: "ab" });
+        test_fail({ attr1: { minlength: 2 } }, {}, { attr1: "a" }, "constraint attr1.minlength 2 failed for a");
+        test_fail({ attr1: { minlength: 2 } }, {}, { attr1: 12 }, "constraint attr1.minlength 2 failed for 12"); // no stringification (?)
+        test({ attr1: { maxlength: 2 } }, {}, { attr1: "ab" }, { attr1: "ab" });
+        test_fail({ attr1: { maxlength: 2 } }, {}, { attr1: "abc" }, "constraint attr1.maxlength 2 failed for abc");
+    });
     it ("should check minDate/maxDate", () => {
         const v = { attr1: helpers.addDays(new Date(), 100) }
         test({ attr1: { minDate: '+99D' } }, {}, v, v);

@@ -32,6 +32,8 @@ interface StepAttrItemsOption {
     pattern?: string;
     min?: number;
     max?: number;
+    minlength?: number;
+    maxlength?: number;
 
     acceptedMimeTypes?: string[];
 

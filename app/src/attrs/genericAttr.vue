@@ -109,7 +109,7 @@
         :disabled="opts.readOnly"
         :placeholder="opts.uiPlaceholder"
         :type="type" :realType="realType" :required="!opts.optional" :pattern="opts.pattern" :allowedChars="opts.allowedChars" :validator="opts.validator"
-        :min="opts.min" :max="opts.max" :step="uiType === 'number' && 'any'"
+        :min="opts.min" :max="opts.max" :minlength="opts.minlength" :maxlength="opts.maxlength" :step="uiType === 'number' && 'any'"
         :title="opts.labels && opts.labels.tooltip" :validity.sync="validity[name]">
     </input-with-validity>
     <span v-html="opts.description"></span>
