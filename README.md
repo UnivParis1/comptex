@@ -91,6 +91,8 @@ Labels which can use variable `resp` which is the response of "next" `action_pre
 
 ## ```attrs```
 
+See [Comptex Playground](http://univparis1.github.io/comptex/#/playground) for live examples.
+
 By default, the value is sent to the browser, and can be modified with potential restrictions:
 * ```oneOf```: restricted list of possibilities (const + title list)
 * ```oneOf_async```: similar to above but list is computed using user search (ie autocomplete, useful for long lists)
