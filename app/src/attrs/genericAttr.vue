@@ -115,7 +115,7 @@
     <span v-html="opts.description"></span>
 
     <span class="input-group-btn" v-if="allow_remove">
-        <button class="btn btn-danger" type="button" @click="$emit('remove', name)" aria-label="Supprimer la valeur">
+        <button class="btn btn-danger" type="button" @click="$emit('remove')" aria-label="Supprimer la valeur">
             <i class="glyphicon glyphicon-remove"></i>
         </button>
     </span>
