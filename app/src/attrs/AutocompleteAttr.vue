@@ -3,11 +3,12 @@
     <div v-if="opts.readOnly">
       <input disabled="disabled" class="form-control" :value="val ? val.title : ''">
     </div>
-    <div v-else>
+    <div :class="{ 'input-group': allow_remove }" v-else>
       <typeahead :id="name" :name="name" v-model="val" :options="search" :minChars="3" :formatting="formatting" :formatting_html="formatting_html"
             :required="!opts.optional"
             :placeholder="opts.uiPlaceholder"
             :editable="false" :validity.sync="validity[name]"></typeahead>
+      <input-group-btn-remove @remove="$emit('remove')" v-if="allow_remove" />
     </div>
   </my-bootstrap-form-group>
 </template>
@@ -17,7 +18,7 @@ import Vue from "vue";
 import * as Ws from '../services/ws';
 
 export default Vue.extend({
-    props: ['value', 'name', 'real_name', 'opts', 'v', 'stepName'],
+    props: ['value', 'name', 'real_name', 'opts', 'v', 'stepName', 'allow_remove'],
     data() {
         return {
           validity: !this.opts.readOnly && { [this.name]: {} },

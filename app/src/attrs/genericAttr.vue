@@ -43,6 +43,7 @@
 
   <AutocompleteAttr v-model="val" :name="name" :real_name="real_name" :v="v" v-else-if="uiType === 'autocomplete'"
      :stepName="stepName"
+     :allow_remove="allow_remove" @remove="$emit('remove', name)"
      :opts="opts">
   </AutocompleteAttr>
 
