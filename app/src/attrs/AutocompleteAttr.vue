@@ -5,7 +5,7 @@
     </div>
     <div :class="{ 'input-group': allow_remove }" v-else>
       <typeahead :id="name" :name="name" v-model="val" :options="search" :minChars="3" :formatting="formatting" :formatting_html="formatting_html"
-            :required="!opts.optional"
+            :required="!opts.optional || allow_remove"
             :placeholder="opts.uiPlaceholder"
             :editable="false" :validity.sync="validity[name]"></typeahead>
       <input-group-btn-remove @remove="$emit('remove')" v-if="allow_remove" />
