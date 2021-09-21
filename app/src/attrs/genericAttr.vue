@@ -113,12 +113,7 @@
         :title="opts.labels && opts.labels.tooltip" :validity.sync="validity[name]">
     </input-with-validity>
     <span v-html="opts.description"></span>
-
-    <span class="input-group-btn" v-if="allow_remove">
-        <button class="btn btn-danger" type="button" @click="$emit('remove')" aria-label="Supprimer la valeur">
-            <i class="glyphicon glyphicon-remove"></i>
-        </button>
-    </span>
+    <input-group-btn-remove @remove="$emit('remove')" v-if="allow_remove" />
    </div>
 
     <CurrentLdapValue v-model="initial_value" :ldap_value="ldap_value" @input="v => val = v"></CurrentLdapValue>

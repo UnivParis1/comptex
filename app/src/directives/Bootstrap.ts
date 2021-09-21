@@ -105,3 +105,11 @@ Vue.component("my-bootstrap-form-group", {
         }
     },
 });
+
+Vue.component('input-group-btn-remove', {
+    template: `<span class="input-group-btn">
+        <button class="btn btn-danger" type="button" @click="$emit('remove')" aria-label="Supprimer la valeur">
+            <i class="glyphicon glyphicon-remove"></i>
+        </button>
+    </span>`
+})
