@@ -16,6 +16,9 @@ interface StepAttrItemsOption {
     uiOptions?: { 
         rows?: number;
         autocomplete?: boolean
+        removable?: boolean
+        addable?: boolean
+        orderable?: boolean
         title_rowspan?: boolean
         title_hidden?: boolean
         object_items_export_csv?: boolean

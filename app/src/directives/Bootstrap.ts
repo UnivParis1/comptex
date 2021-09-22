@@ -106,9 +106,16 @@ Vue.component("my-bootstrap-form-group", {
     },
 });
 
-Vue.component('input-group-btn-remove', {
-    template: `<span class="input-group-btn">
-        <button class="btn btn-danger" type="button" @click="$emit('remove')" aria-label="Supprimer la valeur">
+Vue.component('array-actions', {
+    props: [ 'array_allowed_actions' ],
+    template: `<span class="input-group-btn" v-if="array_allowed_actions.any">
+        <button class="btn btn-danger" type="button" @click="$emit('action', 'move_up')" aria-label="Move up" v-if="array_allowed_actions.move_up || array_allowed_actions.move_down" :disabled="!array_allowed_actions.move_up">
+            <i class="glyphicon glyphicon-arrow-up"></i>
+        </button>
+        <button class="btn btn-danger" type="button" @click="$emit('action', 'move_down')" aria-label="Move down" v-if="array_allowed_actions.move_up || array_allowed_actions.move_down" :disabled="!array_allowed_actions.move_down">
+            <i class="glyphicon glyphicon-arrow-down"></i>
+        </button>
+        <button class="btn btn-danger" type="button" @click="$emit('action', 'remove_item')" aria-label="Supprimer la valeur" v-if="array_allowed_actions.remove">
             <i class="glyphicon glyphicon-remove"></i>
         </button>
     </span>`

@@ -2,13 +2,15 @@
 
 <div class="ArrayAttr">
     <template v-for="(item, i) in val">
-        <genericAttr :real_name="name" :name="name + (i ? '-' + i : '')" :opts="i ? item_opts : first_item_opts" :value="item" @input="v => set_item(i, v)" @remove="_ => remove_item(i)"
+        <genericAttr :real_name="name" :name="name + (i ? '-' + i : '')" :opts="i ? item_opts : first_item_opts" :value="item" @input="v => set_item(i, v)" @array_action="name => array_action(name, i)"
                 :stepName="stepName"
-                :allow_remove="!opts.readOnly && (opts.optional || i > 0)">
+                :array_allowed_actions_="{ remove: !opts.readOnly && uiOptions.removable !== false && (opts.optional || i > 0), 
+                        move_up: uiOptions.orderable && i > 0, 
+                        move_down: uiOptions.orderable && i+1 < val.length }">
         </genericAttr>
     </template>
     <my-bootstrap-form-group :opts="opts" v-if="val.length === 0 || !opts.readOnly">
-        <div class="row" v-if="!opts.readOnly">
+        <div class="row" v-if="!opts.readOnly && uiOptions.addable !== false">
           <div class="col-sm-offset-10 col-sm-2">
             <button class="btn btn-info ArrayAttr-add" style="width: 100%" type="button" @click="val.push('')" aria-label="Ajouter une valeur">
                 <i class="glyphicon glyphicon-plus"></i>
@@ -32,6 +34,10 @@ function init(val) {
     return val instanceof Array ? val : val ? [val] : [];
 }
 
+function array_move_elt(array, index: number, direction: -1 | 1) {
+    array.splice(index + direction, 0, array.splice(index, 1)[0]);
+}
+
 export default Vue.extend({
     props: ['name', 'value', 'ldap_value', 'opts', 'stepName'],
     components: { CurrentLdapValue },
@@ -53,6 +59,9 @@ export default Vue.extend({
         item_opts() {
             return { ...this.first_item_opts, optional: true };
         },
+        uiOptions() {
+            return this.opts.uiOptions || {}
+        },
     },
     watch: {
         value(val) {
@@ -67,8 +76,11 @@ export default Vue.extend({
             this.$set(this.val, i, v);
             this.tellParent();
         },
-        remove_item(i) {
-            this.val.splice(i, 1);
+        array_action(name, i) {
+                 if (name === "remove_item") this.val.splice(i, 1);
+            else if (name === "move_up") array_move_elt(this.val, i, -1);
+            else if (name === "move_down") array_move_elt(this.val, i, 1);
+            else console.error("internal error: unknown array_action", name)
             this.tellParent();
         }
     

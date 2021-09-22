@@ -43,7 +43,7 @@
 
   <AutocompleteAttr v-model="val" :name="name" :real_name="real_name" :v="v" v-else-if="uiType === 'autocomplete'"
      :stepName="stepName"
-     :allow_remove="allow_remove" @remove="$emit('remove', name)"
+     @array_action="name => $emit('array_action', name)" :array_allowed_actions="array_allowed_actions"
      :opts="opts">
   </AutocompleteAttr>
 
@@ -80,11 +80,14 @@
     </div>
 
     <div v-else-if="uiType === 'select'">
+     <div :class="{ 'input-group': array_allowed_actions.any }">
         <!-- wait until oneOf is computed. <select-with-validity> can NOT handle "value" is in computed "oneOf" -->
       <select-with-validity :name="name" v-model="val" v-if="oneOf"
         :disabled="opts.readOnly"
         :choices="oneOf" :required="!opts.optional" :validity.sync="validity[name]">
       </select-with-validity>
+      <array-actions @action="name => $emit('array_action', name)" :array_allowed_actions="array_allowed_actions" />
+     </div>
       <component :is="vue_component_description" :v="v" v-if="vue_component_description"></component>
       <span v-html="opts.description" v-else></span>
     </div>
@@ -104,7 +107,8 @@
         <span v-html="opts.description"></span>
     </div>
 
-   <div :class="{ 'input-group': allow_remove }" v-else>
+   <div v-else>
+    <div :class="{ 'input-group': array_allowed_actions.any }">
     <input-with-validity :name="name" v-model="val" 
         v-bind="input_attrs"
         :disabled="opts.readOnly"
@@ -113,8 +117,9 @@
         :min="opts.min" :max="opts.max" :minlength="opts.minlength" :maxlength="opts.maxlength" :step="uiType === 'number' && 'any'"
         :title="opts.labels && opts.labels.tooltip" :validity.sync="validity[name]">
     </input-with-validity>
+    <array-actions @action="name => $emit('array_action', name)" :array_allowed_actions="array_allowed_actions" />
+    </div>
     <span v-html="opts.description"></span>
-    <input-group-btn-remove @remove="$emit('remove')" v-if="allow_remove" />
    </div>
 
     <CurrentLdapValue v-model="initial_value" :ldap_value="ldap_value" @input="v => val = v"></CurrentLdapValue>
@@ -149,7 +154,7 @@ function add_to_oneOf_if_missing(choices: Ws.StepAttrOptionChoices[], to_have) {
 }
 
 export default Vue.extend({
-    props: ['value', 'real_name', 'name', 'opts', 'v', 'ldap_value', 'stepName', 'allow_remove'],
+    props: ['value', 'real_name', 'name', 'opts', 'v', 'ldap_value', 'stepName', 'array_allowed_actions_'],
     components: { 
         DateAttr, DateThreeInputsAttr, ArrayAttr, ReadOnlyObjectItems, AddressAttr, cameraSnapshotAttr, PasswordAttr, AutocompleteAttr, CurrentLdapValue, FileUploadAttr,
         PhotoUploadAttr: () => import('./PhotoUploadAttr.vue'),
@@ -162,6 +167,10 @@ export default Vue.extend({
         };
     },
     computed: {
+        array_allowed_actions() {
+            const allowed = this.array_allowed_actions_ || {}
+            return { ...allowed, any: allowed.remove || allowed.move_up || allowed.move_down }
+        },
         uiType() {
             if (this.uiOptions.readOnly__avoid_disabled_input && this.opts.readOnly) {
                 return 'span';
