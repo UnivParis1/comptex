@@ -29,8 +29,8 @@ function raw_soap(url: string, body: string, req_for_context: req) {
     let headers = {
         SOAPAction: "",
         "content-type": "text/xml",
-	    "Client-IP": req_for_context.ip,
-	    "Client-User-Agent": req_for_context.get('User-Agent'),
+        "Client-IP": req_for_context?.ip || 'unknown',
+        "Client-User-Agent": req_for_context?.get('User-Agent') || 'unknown',
     };
     return utils.post(url, body, { headers }).then(result => (
         parseString(result, { explicitArray: false, ignoreAttrs: true })
