@@ -6,6 +6,10 @@ import * as mongodb from 'mongodb';
 import * as conf from './conf';
 import { renameKey } from './helpers';
 
+export const error_codes = {
+    DuplicateKey: 11000,
+}
+
 function _id(id: string = undefined) {
     return new mongodb.ObjectID(id);
 }
