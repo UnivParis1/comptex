@@ -281,6 +281,29 @@ export default Vue.extend({
             // adding each "v" to each success/error response
             let vrs = resp.map((r, i) => ({ ...r, v: this.to_import.lines[i] }));
 
+            const to_ask_confirmation = vrs.filter(vr => vr.error?.ask_confirmation)
+            if (to_ask_confirmation.length) {
+                // what we need to do:
+                // - ask all confirmations at once
+                // - if ok, retry only the one that needed confirmation
+                // - merge in those responses in the array of all responses
+                let sub_resp
+                try {
+                    // first ask
+                    const msg = to_ask_confirmation.map(vr => vr.error.ask_confirmation.msg).join("<br>")
+                    await this.$refs.MyModalP.open({ msg })
+                    // ok, we can retry those
+                    for (const vr of to_ask_confirmation) {
+                        vr.v[vr.error.ask_confirmation.attr_to_save_confirmation] = true;
+                    }
+                    sub_resp = await Ws.new_many(this.stepName, to_ask_confirmation.map(vr => vr.v), this.all_attrs_flat)
+                } catch (e) {
+                    sub_resp = to_ask_confirmation.map(_ => ({ error: "Refusé" }))
+                }
+                // overwrite "vrs" with "sub_resp" (NB: indexes are different)
+                let subi = 0
+                vrs = vrs.map(vr => vr.error?.ask_confirmation ? { v: vr.v, ...sub_resp[subi++] } : vr)
+            }
             this.imported = vrs;
             console.log(this.imported);
       },        
