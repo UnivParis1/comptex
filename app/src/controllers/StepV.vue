@@ -274,18 +274,15 @@ export default Vue.extend({
               this.nextStep(resp);
           }
       },
-      send_new_many() {
+      async send_new_many() {
             this.to_import.lines.forEach(v => defaults(v, this.v));
+            const resp = await Ws.new_many(this.stepName, this.to_import.lines, this.all_attrs_flat)
 
-            return Ws.new_many(this.stepName, this.to_import.lines, this.all_attrs_flat).then(resp => {
-                this.imported = resp;
-                // adding each "v" to each success/error response
-                this.imported.forEach((resp, i) => {
-                    resp.v = this.to_import.lines[i];
-                });
-                //this.to_import = undefined;
-                console.log(this.imported);
-            });          
+            // adding each "v" to each success/error response
+            let vrs = resp.map((r, i) => ({ ...r, v: this.to_import.lines[i] }));
+
+            this.imported = vrs;
+            console.log(this.imported);
       },        
       merge(homonyme) {
           Helpers.eachObject(homonyme, (attr, val) => {
