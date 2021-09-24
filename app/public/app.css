@@ -327,3 +327,16 @@ table.v-diff tr th {
     /* override bootstrap. needed for text mixed with .btn */
     vertical-align: initial;
 }
+
+th.unknown-field {
+    color: darkred;
+    font-size: x-small;
+}
+td.unknown-field {
+    color: lightgray;
+    font-size: x-small;
+}
+tr.ignored-line {
+    color: lightgray;
+    text-decoration: line-through;
+}

@@ -99,7 +99,7 @@ type step = {
   search_filter?: string;
   initialStep?: boolean;
 
-  allow_many?: boolean; 
+  allow_many?: boolean | { forced_headers: string[] }; 
   if_no_modification?: 'disable-okButton',
   
   attrs: StepAttrsOption

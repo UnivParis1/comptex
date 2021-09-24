@@ -115,11 +115,12 @@ const toString = (buffer : Buffer) => {
     return r;
 }
 
-const parse_csv = (csv: string): Promise<{ fields: string[], lines: {}[] }> => (
+const parse_csv = (csv: string, options: csvtojson.ConverterOptions): Promise<{ fields: string[], lines: {}[] }> => (
     new Promise((resolve, reject) => {
         const convert = csvtojson({ 
             delimiter: "auto", // relies on the delimiter most present in headers. Since field names should not contain any known delimiters (,|\t;:), it is ok!
             checkColumn: true,
+            ...options,
         });      
         let fields: string[];
         convert.fromString(csv)
@@ -131,9 +132,10 @@ const parse_csv = (csv: string): Promise<{ fields: string[], lines: {}[] }> => (
         });
     })
 );
-export const csv2json = (req: req, res: res): void => (
-    respondJson(req, res, parse_csv(toString(req.body)))
-);
+export const csv2json = (req: req, res: res): void => {
+    const headers = req.query['forced_headers[]'] as any // trailing "[]" is added by axios (it is the default behaviour : 'arrayFormat' 'brackets')
+    respondJson(req, res, parse_csv(toString(req.body), { headers, noheader: !!headers }))
+}
 
 export const eventBus = (): EventEmitter => {
     let bus = new EventEmitter();

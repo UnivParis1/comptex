@@ -138,7 +138,7 @@ interface ClientSideSVA {
     v_ldap?: CommonV
     step: {
         labels: ClientSideStepLabels
-        allow_many?: boolean
+        allow_many?: boolean | { forced_headers: string[] }
         if_no_modification?: 'disable-okButton'
     }
 }

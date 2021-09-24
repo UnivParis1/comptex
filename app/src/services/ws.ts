@@ -34,7 +34,7 @@ export type StepAttrOptionChoices = StepAttrOptionChoicesT<StepAttrOption>
 
 export interface InitialSteps {
     attrs: StepAttrsOption;
-    allow_many: boolean;
+    allow_many: boolean | { forced_headers: string[] };
 }
 
 import conf from '../conf';
@@ -316,8 +316,8 @@ export function remove(id: string, step: string) {
         _handleErr);
 }
 
-export function csv2json(file: File, attrs: StepAttrsOption) : Promise<{ fields: string[], lines: {}[] }> {
-    return axios.post(api_url + '/csv2json', file).then(
+export function csv2json(file: File, attrs: StepAttrsOption, forced_headers?: string[]) : Promise<{ fields: string[], lines: {}[] }> {
+    return axios.post(api_url + '/csv2json', file, { params: { forced_headers } }).then(
         (resp) => {
             let o = resp.data;
             o.lines = o.lines.map(v => to_or_from_ws('fromCSV', v, attrs));

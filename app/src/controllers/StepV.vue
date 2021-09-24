@@ -35,7 +35,10 @@
     </div>
 
     <div v-if="step.allow_many">
-        <ImportFile :attrs="attrs" @change="val => to_import = val"></ImportFile>
+        <ImportFile :attrs="attrs" @change="val => to_import = val" :forced_headers="step.allow_many.forced_headers"></ImportFile>
+        <div v-if="to_import && Object.keys(other_attrs).length" style="margin: 2em 0 1em">
+            Les champs ci-dessous n'ont pas été fournis par le fichier importé. Vous pouvez choisir des valeurs qui s'appliqueront à tous.
+        </div>
     </div>
              
     <MyModalP ref="MyModalP"></MyModalP>
