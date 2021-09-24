@@ -261,6 +261,8 @@ export default Vue.extend({
               await this.send();
           } else {
               if (extern_ask_confirmation) {
+                  // This is a complex functionality, useful when hosting an iframe of another application:
+                  // the "submit" callback can submit the form of this extern application (if hosted on same vhost)
                   for (const p of Object.values(extern_ask_confirmation)) {
                     await p['submit']()
                   }
@@ -274,6 +276,7 @@ export default Vue.extend({
 
             return Ws.new_many(this.stepName, this.to_import.lines, this.all_attrs_flat).then(resp => {
                 this.imported = resp;
+                // adding each "v" to each success/error response
                 this.imported.forEach((resp, i) => {
                     resp.v = this.to_import.lines[i];
                 });
