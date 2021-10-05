@@ -1,5 +1,6 @@
 import * as _ from 'lodash';
 import * as basic_auth from 'basic-auth';
+import * as utils from '../utils';
 import * as ldap from '../ldap';
 import { oneExistingPerson } from '../search_ldap';
 import * as search_ldap from '../search_ldap';
@@ -119,5 +120,26 @@ export const validateAndFilterQueryParams = (attrs: StepAttrsOption) : simpleAct
 
 export const mutateQuery = (f: (v:v) => void) : simpleAction => async (req, sv) => {
     f(req.query as any)
+    return sv
+}
+
+const _esupUserApps_canAccess = async (app: string, uid: string) => {
+    if (!conf.esupUserApps?.url) throw "esupUserApps is not configured"
+    try {
+        await utils.http_request(conf.esupUserApps.url + '/canAccess' + utils.query_string({ app, uid }), {})
+        return true
+    } catch (e) {
+        if (e?.statusCode !== 403) throw e
+        return false
+    }
+}
+
+export const esupUserApps_check_canAccess = (app: string): action => async (_req, sv) => {
+    if (!await _esupUserApps_canAccess(app, sv.v.uid)) throw "Application non autorisée"
+    return sv
+}
+
+export const esupUserApps_add_canAccess = (app: string): action => async (_req, sv) => {
+    _.merge(sv.v, { various: { canAccess: { [app]: await _esupUserApps_canAccess(app, sv.v.uid) } } })
     return sv
 }

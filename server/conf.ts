@@ -54,6 +54,10 @@ const conf = {
         url: "http://xxxx.univ.fr:8080/esup-activ-bo/xfire",
         multiValue_separator: '__-',
     },
+
+    esupUserApps: {
+        url: '', //'https://ent.univ.fr/EsupUserApps',
+    },
     
     ldap: {
         shibIdentityProvider: 'https://idp.univ.fr',
