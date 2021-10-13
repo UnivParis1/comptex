@@ -98,6 +98,14 @@ export let v_from_prevStep = {};
 export default Vue.extend({
     mounted() {
         this.init();
+        window.onbeforeunload = (e) => {
+            if (!isEqual(this.v, this.v_orig) && !this.resp) {
+                e.preventDefault();
+                // Google Chrome requires returnValue to be set.
+                e.returnValue = '';
+                // All supported browsers will show a localized message
+            }
+        }
     },
     props: [
         'wanted_id', 'stepName', 
@@ -192,6 +200,7 @@ export default Vue.extend({
           Helpers.promise_defer_pipe(p, deferred)
       },
       nextStep(resp) {
+        this.resp = resp
         console.log("nextStep", resp);
         if (resp.forceBrowserExit) {
             Helpers.createCookie('forceBrowserExit', 'true', 0);
