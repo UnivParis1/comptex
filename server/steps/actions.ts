@@ -49,7 +49,8 @@ const remove_unmodified_fields = (userInfo: Dictionary<string | string[]>, userI
     _.pickBy(userInfo, (_, key) => !equalIgnoringSingleValueArray(userInfo_for_compare[key], orig && orig[key] || ''))
 )
 
-export const esup_activ_bo_updatePersonalInformations : simpleAction = (req, { v }) => {
+export const esup_activ_bo_updatePersonalInformations : simpleAction = (req, sv) => {
+    const v = sv.v
     let userInfo: Dictionary<string | string[]> = ldap.convertToLdap(conf.ldap.people.types, conf.ldap.people.attrs, v, { toEsupActivBo: true });
     delete userInfo.userPassword // password is handled specially ("setPassword" action)
     if (!v.supannAliasLogin) return Promise.reject("missing supannAliasLogin");
@@ -59,7 +60,7 @@ export const esup_activ_bo_updatePersonalInformations : simpleAction = (req, { v
     let userInfo_compare: Dictionary<string | string[]> = ldap.convertToLdap(conf.ldap.people.types, conf.ldap.people.attrs, v, { toEsupActivBoResponse: true });
 
     userInfo = remove_unmodified_fields(userInfo, userInfo_compare, v.various.esup_activ_bo_orig)
-    return esup_activ_bo.updatePersonalInformations(v.supannAliasLogin, v['code'], userInfo, req).then(_ => ({ v }))
+    return esup_activ_bo.updatePersonalInformations(v.supannAliasLogin, v['code'], userInfo, req).then(_ => ({ ...sv, v }))
 }
 
 export const esup_activ_bo_setPassword : simpleAction = async (req, { v }) => {
