@@ -15,6 +15,11 @@ function compute_diff(prev: Dictionary<any>, current: Dictionary<any>, key: stri
     };
 }
 
+export const selectUserProfileIfExists = (v: v, profilename: string) => {
+    const profile = v.up1Profile?.find(p => p.profilename === profilename) as v;
+    return profile ? selectUserProfile(v, profilename) : v
+}
+
 export const selectUserProfile = (v: v, profilename: string) => {
     const profile = v.up1Profile?.find(p => p.profilename === profilename) as v;
     if (!profile) {
