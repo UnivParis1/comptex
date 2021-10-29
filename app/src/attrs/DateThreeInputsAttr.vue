@@ -20,7 +20,7 @@
         </div>
     </div>
    </div>
-   <span v-html="opts.description"></span>
+   <span class="attr-description" v-html="opts.description"></span>
   </my-bootstrap-form-group>
 </template>
 

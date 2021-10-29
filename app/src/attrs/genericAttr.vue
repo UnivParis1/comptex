@@ -61,14 +61,14 @@
           :texts_are_html="uiOptions.texts_are_html"
           :disabled="opts.readOnly" :required="!opts.optional" :validity.sync="validity[name]">
       </radio-with-validity>
-      <span v-html="opts.description"></span>
+      <span class="attr-description" v-html="opts.description"></span>
     </div>
 
     <div v-else-if="uiType === 'textarea' && uiOptions.autocomplete && !opts.readOnly">
       <history-textarea-with-validity :name="name" v-model="val"
         :rows="uiOptions.rows" :required="!opts.optional" :validity.sync="validity[name]">
       </history-textarea-with-validity>
-      <span v-html="opts.description"></span>
+      <span class="attr-description" v-html="opts.description"></span>
     </div>
 
     <div v-else-if="uiType === 'textarea'">
@@ -76,7 +76,7 @@
         class="form-control"
         :disabled="opts.readOnly" :required="!opts.optional" :validity.sync="validity[name]">
       </textarea-with-validity>
-      <span v-html="opts.description"></span>
+      <span class="attr-description" v-html="opts.description"></span>
     </div>
 
     <div v-else-if="uiType === 'select'">
@@ -89,7 +89,7 @@
       <array-actions @action="name => $emit('array_action', name)" :array_allowed_actions="array_allowed_actions" />
      </div>
       <component :is="vue_component_description" :v="v" v-if="vue_component_description"></component>
-      <span v-html="opts.description" v-else></span>
+      <span class="attr-description" v-html="opts.description" v-else></span>
     </div>
 
     <div class="checkbox" v-else-if="uiType === 'checkbox'">
@@ -98,13 +98,13 @@
             :disabled="opts.readOnly"
             :required="!opts.optional" :validity.sync="validity[name]">
         </checkbox-with-validity>
-        <span v-html="opts.description"></span>
+        <span class="attr-description" v-html="opts.description"></span>
       </label>
     </div>
 
     <div v-else-if="uiType === 'span'">
         <span class="instead_of_disabled_input">{{formattedValue}}</span>
-        <span v-html="opts.description"></span>
+        <span class="attr-description" v-html="opts.description"></span>
     </div>
 
    <div v-else>
@@ -119,7 +119,7 @@
     </input-with-validity>
     <array-actions @action="name => $emit('array_action', name)" :array_allowed_actions="array_allowed_actions" />
     </div>
-    <span v-html="opts.description"></span>
+    <span class="attr-description" v-html="opts.description"></span>
    </div>
 
     <CurrentLdapValue v-model="initial_value" :ldap_value="ldap_value" @input="v => val = v"></CurrentLdapValue>
