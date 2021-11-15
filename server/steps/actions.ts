@@ -146,13 +146,13 @@ const compare_v = (v: v, current_v: v) => {
     return diffs;
 }
 
-const canAutoMerge = async (v: v) => {
+const suggest_action_in_case_of_ldap_homonymes = async (v: v) => {
     let homonymes;
     if (!v.uid) {
         homonymes = await search_ldap.homonymes(v);
         if (homonymes.length) console.log(`createCompteSafe: homonymes found for ${v.givenName} ${v.sn}: ${homonymes.map(v => v.uid + " (score:" + v.score + ", accountStatus:" + v.accountStatus  + ")")}`)
         if (homonymes.length === 1 ||
-            /* if 2 homonymes, it may be student account + teacher account. If student score is the highest (requires preferStudent), ignore the second account to decide canAutoMerge */
+            /* if 2 homonymes, it may be student account + teacher account. If student score is the highest (requires preferStudent), ignore the second account to decide suggest_action_in_case_of_ldap_homonymes */
             homonymes.length === 2 && homonymes[0].score === 1131101) {
             const existingAccount = homonymes[0]
             const diffs = compare_v(v, existingAccount);
@@ -177,7 +177,7 @@ const canAutoMerge = async (v: v) => {
 export const createCompteSafe = (l_actions: action[], afterCreateCompte: action[] = []): action => async (req, sv) => {
     const orig_v = sv.v;
     sv.v = (await chain(l_actions)(req, sv)).v;
-    const suggestion = await canAutoMerge(sv.v);
+    const suggestion = await suggest_action_in_case_of_ldap_homonymes(sv.v);
 
     // return { v: { uid: 'dry_run' } as v, response: suggestion };
 
