@@ -257,6 +257,12 @@ const conf = {
             group_size: 50,
         } as grouped_calls.options,
     },
+
+    body_size_limit: {
+        // NB: syntax is https://www.npmjs.com/package/bytes
+        csv: '1MB',
+        json: '10MB', // must be kept lower than 16MB for cases when it is stored in mongodb.
+    }
 };
 
 export = conf;

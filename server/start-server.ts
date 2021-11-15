@@ -16,8 +16,6 @@ const app = express();
 _.attempt(() => require('source-map-support').install());
 
 const staticFilesOptions = { maxAge: process.env.NODE_ENV === 'production' ? 60 * 60 * 1000 : 0 };
-const json_limit = '10MB'; // must be kept lower than 16MB for cases when it is stored in mongodb. NB: syntax is https://www.npmjs.com/package/bytes
-const csv_limit = '1MB';
 
 app.set('query parser', 'simple') // use nodejs "querystring" parser instead of "qs". Why exactly??
 app.set('trust proxy', conf.trust_proxy)
@@ -42,8 +40,8 @@ const express_if_then_else = (cond: (req: express.Request) => boolean, if_true: 
 // NB: we could rely on Content-Type, but it is easy enough to rely on request path (since we mostly do JSON, except some very special cases)
 const myBodyParser = express_if_then_else(
     (req) => req.path === '/csv2json', 
-    bodyParser.raw({type: '*/*', limit: csv_limit }),
-    bodyParser.json({type: '*/*', limit: json_limit }),
+    bodyParser.raw({type: '*/*', limit: conf.body_size_limit.csv }),
+    bodyParser.json({type: '*/*', limit: conf.body_size_limit.json }),
 );
 
 // needed for XHRs on MSIE
