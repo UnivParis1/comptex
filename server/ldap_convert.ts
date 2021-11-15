@@ -70,6 +70,17 @@ export function has_value(value: string): ldap_conversion {
     };
 }
 
+export function has_not_value(value: string): ldap_conversion {
+    return {
+        fromLdapMulti: (l: string[]): string => (
+            l.includes(value) ? '' : 'true'
+        ),
+        toLdap: (s: string): ldap_modify => (
+            { action: s ? 'delete' : 'add', value }
+        ),
+    };
+}
+
 export function match(predicate: (s: string) => boolean): ldap_conversion {
     return {
         fromLdapMulti: (l: string[]): string => (
