@@ -33,6 +33,7 @@
   "dependencies": {
     "@types/accept-language-parser": "^1.5.1",
     "@types/body-parser": "^1.16.4",
+    "@types/bytes": "^3.1.1",
     "@types/concat-stream": "^1.6.0",
     "@types/cookie-parser": "^1.4.1",
     "@types/cookie-session": "^2.0.36",
