@@ -69,13 +69,11 @@ export default Vue.extend({
     },
     methods: {
         async onFileUploaded(file) {
-            const val = await Helpers.fileReader('readAsDataURL', file) as string
-            const mimeType = dataURL_to_mimeType(val)
-            if (!this.acceptedMimeTypes.includes(mimeType)) {
+            if (!this.acceptedMimeTypes.includes(file.type)) {
                 this.val = ''
-                this.error = { mimeType }
+                this.error = { mimeType: file.type }
             } else {
-                this.val = val
+                this.val = await Helpers.fileReader('readAsDataURL', file)
                 this.error = undefined
             }
         },
