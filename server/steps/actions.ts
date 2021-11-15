@@ -183,9 +183,9 @@ const suggest_action_in_case_of_ldap_homonymes = async (v: v) => {
     return { action, homonymes };
 }
 
-export const createCompteSafe = (l_actions: action[], afterCreateCompte: action[] = []): action => async (req, sv) => {
+export const actions_if_safe_merge_ldap_homonymes = (pre_actions: action[], actions_if_safe: action[]): action => async (req, sv) => {
     const orig_v = sv.v;
-    sv.v = (await chain(l_actions)(req, sv)).v;
+    sv.v = (await chain(pre_actions)(req, sv)).v;
     const suggestion = await suggest_action_in_case_of_ldap_homonymes(sv.v);
 
     // return { v: { uid: 'dry_run' } as v, response: suggestion };
@@ -195,9 +195,13 @@ export const createCompteSafe = (l_actions: action[], afterCreateCompte: action[
         case 'need_moderation': return { v: orig_v, response: { id: sv.id, in_moderation: true } };
         case 'modify_account': sv.v.uid = suggestion.existingAccount.uid;
     }
-    // ok, let's create it
-    return chain([ createCompteSafe_, ...afterCreateCompte ])(req, sv);
+    // ok, let's create/modify account
+    return chain(actions_if_safe)(req, sv);
 }
+
+export const createCompteSafe = (l_actions: action[], afterCreateCompte: action[] = []) => (
+    actions_if_safe_merge_ldap_homonymes(l_actions, [ createCompteSafe_, ...afterCreateCompte ])
+)
 
 const createCompteSafe_: action = (req, sv) => (
     createCompte_(req, sv, { dupcreate: "warn", dupmod: "warn", create: true })
