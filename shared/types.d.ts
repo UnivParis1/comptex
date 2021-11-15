@@ -54,6 +54,7 @@ type MinimalStepAttrOption = StepAttrItemsOption & {
         advice_after_submit?: string; // HTML displayed after first submit
         tooltip?: string;
         warning?: string; // similar to tooltip, but with a "warning" sign
+        tab_post_scriptum?: string;
     }
     items?: MinimalStepAttrOption & { properties?: StepAttrsOptionM<unknown> },
 

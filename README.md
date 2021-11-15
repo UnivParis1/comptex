@@ -143,6 +143,7 @@ You can customize the way it is displayed:
 * ```labels.advice_after_submit```: displayed after first submit
 * ```labels.tooltip```: a "?" is displayed next to the `<label>`, click or hover it to display the tooltip message
 * ```labels.warning```: similar to tooltip, but with a "warning" sign
+* ```labels.tab_post_scriptum```: *(html)* displayed inside the tab (for `uiType` `tab`)
 
 Some special functionalities are only available through `shared/conf.ts`:
 * ```normalize```: function called on the value. Example: use it to remove whitespace from the value
