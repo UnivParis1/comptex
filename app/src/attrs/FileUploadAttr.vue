@@ -11,7 +11,10 @@
 
     <span style="display: inline-block" v-if="!opts.readOnly">
 
-       <div v-if="error" class="alert alert-danger" role="alert">Le type de fichier {{error.mimeType}} est interdit.</div>
+       <div v-if="error" class="alert alert-danger" role="alert">
+           <span v-if="error.mimeType">Le type de fichier {{error.mimeType}} est interdit.</span>
+           <span v-if="error.size">Le fichier est trop gros : taille maximale autorisée {{maxSizeFormatted}}.</span>
+        </div>
        <div v-if="is_image">Ci-contre, votre document en prévisualisation.<p></p></div>
        <div v-else-if="val">Votre fichier de type {{mimeType}} est accepté.<p></p></div>
        
@@ -30,6 +33,7 @@
 </template>
 
 <script lang="ts">
+import { round } from "lodash";
 import Vue from "vue";
 import * as Helpers from '../services/helpers';
 
@@ -38,6 +42,12 @@ const default_acceptedMimeTypes = [ 'image/png', 'image/jpeg', 'application/pdf'
 const dataURL_to_mimeType = (val: string) => (
     val?.match(/^data:(\w{1,30}\/\w{1,30})/)?.[1]
 )
+
+const formatMB = (n: number) => {
+    const n_ = n / 1024 / 1024;
+    return "" + round(n_, n_ >= 10 ? 0 : 1) + "MB";
+}
+
 
 export default Vue.extend({
     props: ['value', 'name', 'opts'],
@@ -51,6 +61,12 @@ export default Vue.extend({
     computed: {
        acceptedMimeTypes() {
            return this.opts.acceptedMimeTypes || default_acceptedMimeTypes
+       },
+       maxSize() {
+           return this.opts.maxlength && this.opts.maxlength / 1.33 /* for Base64 overhead */
+       },
+       maxSizeFormatted() {
+            return this.maxSize && formatMB(this.maxSize)
        },
        mimeType() {
             return dataURL_to_mimeType(this.val)
@@ -72,6 +88,9 @@ export default Vue.extend({
             if (!this.acceptedMimeTypes.includes(file.type)) {
                 this.val = ''
                 this.error = { mimeType: file.type }
+            } else if (this.maxSize && file.size > this.maxSize) {
+                this.val = ''
+                this.error = { size: file.size }
             } else {
                 this.val = await Helpers.fileReader('readAsDataURL', file)
                 this.error = undefined
