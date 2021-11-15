@@ -148,6 +148,23 @@ describe('ldap', () => {
 
     });
 
+    describe("to_boolean_allowing_removing_the_value conversion", () => {
+        const conv = ldap_convert.to_boolean_allowing_removing_the_value
+
+        it("should handle simple fromLdap", () => {
+            assert.equal(conv.fromLdap("foo"), true);
+            assert.equal(conv.fromLdap("bar"), true);
+            assert.equal(conv.fromLdap(undefined), false);
+        });
+        
+        it("should convert toLdap", () => {
+            let attrTypes = { supannFCSub: '', supannFCSub_bool: '' as any }
+            let attrsConvert = { supannFCSub_bool: { ldapAttr: 'supannFCSub', convert: conv } }
+            assert.deepEqual(ldap.convertToLdap(attrTypes, attrsConvert, { supannFCSub: "foo", supannFCSub_bool: true }, {}), { supannFCSub: ['foo'] });
+            assert.deepEqual(ldap.convertToLdap(attrTypes, attrsConvert, { supannFCSub: "foo", supannFCSub_bool: '' }, {}), { supannFCSub: [] });
+        });
+    })
+    
     describe("up1Profile conversion", () => {
         let attrsConvert = { 
             global_profilename: { ldapAttr: 'up1Profile', convert: ldap_convert.up1Profile_field('up1Source') },

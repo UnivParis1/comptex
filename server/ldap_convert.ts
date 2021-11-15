@@ -44,6 +44,15 @@ export const postalAddress: ldap_conversion = {
         ),
     };
 
+export const to_boolean_allowing_removing_the_value: ldap_conversion = {
+    fromLdap: (s: string): true|"" => (
+        s ? true : ""
+    ),
+    toLdap: (s: string) => ({ action: (vals: string[]) => (
+        s ? vals : []
+    ) }),
+}
+
 export function withEtiquette(etiquette: string): ldap_conversion {
     return {
         fromLdapMulti: (l: string[]): string => {
