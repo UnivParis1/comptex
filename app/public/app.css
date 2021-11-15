@@ -212,6 +212,10 @@ fieldset {
     margin-right: 1rem;
 }
 
+.uiType-span {
+    padding-top: 7px;
+}
+
 label {
     font-weight: initial; /* until we remove bootstrap */
 }

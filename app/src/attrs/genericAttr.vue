@@ -102,7 +102,7 @@
       </label>
     </div>
 
-    <div v-else-if="uiType === 'span'">
+    <div class="uiType-span" v-else-if="uiType === 'span'">
         <span class="instead_of_disabled_input">{{formattedValue}}</span>
         <span class="attr-description" v-html="opts.description"></span>
     </div>
