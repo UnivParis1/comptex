@@ -340,3 +340,7 @@ tr.ignored-line {
     color: lightgray;
     text-decoration: line-through;
 }
+
+.InitialStep {
+    margin-bottom: 2.5rem;
+}

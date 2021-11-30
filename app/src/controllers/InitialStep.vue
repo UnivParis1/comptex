@@ -1,5 +1,5 @@
 <template>
-<div v-if="title_in_list">
+<div class="InitialStep" v-if="title_in_list">
     <div v-if="allow_reuse">
         <h2 v-html="title_in_list"></h2>
 
@@ -35,7 +35,6 @@
         </h2>
         <div v-html="labels.description_in_list"></div>
     </div>
-    <p style="margin-bottom: 2em"></p>
 </div>
 </template>
 
