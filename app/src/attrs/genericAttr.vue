@@ -112,7 +112,7 @@
     <input-with-validity :name="name" v-model="val" 
         v-bind="input_attrs"
         :disabled="opts.readOnly"
-        :placeholder="opts.uiPlaceholder"
+        :placeholder="opts.uiPlaceholder" :inputmode="uiOptions.inputmode"
         :type="type" :realType="realType" :required="!opts.optional" :pattern="opts.pattern" :allowedChars="opts.allowedChars" :validator="opts.validator"
         :min="opts.min" :max="opts.max" :minlength="opts.minlength" :maxlength="opts.maxlength" :step="uiType === 'number' && 'any'"
         :title="opts.labels && opts.labels.tooltip" :validity.sync="validity[name]">

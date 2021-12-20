@@ -16,6 +16,7 @@ interface StepAttrItemsOption {
     uiOptions?: { 
         rows?: number;
         autocomplete?: boolean
+        inputmode?: 'numeric'
         removable?: boolean
         addable?: boolean
         orderable?: boolean
