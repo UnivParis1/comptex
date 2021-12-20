@@ -215,6 +215,10 @@ describe('merge_v', () => {
         test({ sn: {} }, prev, v, v);
         test({ startdate: {} }, {}, { startdate: new Date('2017-01-31') }, { startdate: new Date('2017-01-31') });
     });
+    it ("should check allowedChars", () => {
+        test({ sn: { allowedChars: "[xy]" } }, {}, { sn: 'x' }, { sn: 'x' });
+        test_fail({ sn: { allowedChars: "[xy]" } }, {}, { sn: 'X' }, "constraint sn.allowedChars [xy] failed for X");
+    });
     it ("should check pattern", () => {
         test({ sn: { pattern: "x" } }, {}, { sn: 'x' }, { sn: 'x' });
         test_fail({ sn: { pattern: "x" } }, {}, { sn: 'X' }, "constraint sn.pattern x failed for X");

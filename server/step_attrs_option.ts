@@ -116,6 +116,11 @@ function validate(key: string, opt: StepAttrOption, more_opt: SharedStepAttrOpti
             if (!(_.isString(val_) && val_.match("^(" + opt.pattern + ")$")))
                 throw `constraint ${key}.pattern ${opt.pattern} failed for ${val}`;
         }
+        if (opt.allowedChars) {
+            let val_ = val !== undefined ? val : '';
+            if (!(_.isString(val_) && val_.match("^(" + opt.allowedChars + "*)$")))
+                throw `constraint ${key}.allowedChars ${opt.allowedChars} failed for ${val}`;
+        }
         if (opt.oneOf) {
             if (val !== undefined && !find_choice(opt.oneOf, val)) {
                 const keys = opt.oneOf.map(e => e.const);
