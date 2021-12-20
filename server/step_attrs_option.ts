@@ -266,6 +266,7 @@ export const merge_attrs_overrides = (attrs: StepAttrsOption, attrs_override: St
     return r;
 }
 
+/* in case an attribute is defined at many places (using "tabs" or "merge_patch_parent_properties"), ensure the options are not conflicting */
 export const checkAttrs = (attrs: StepAttrsOption, stepName: string) => {
     let all: Dictionary<{ cond: StepAttrOption[], no_cond: StepAttrOption[] }> = {}
     eachAttrs(attrs, (opts, key, _attrs, cond) => {        
