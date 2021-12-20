@@ -6,7 +6,8 @@ type uiTypes =
     'dateThreeInputs'|'postalAddress'|'cameraSnapshot'|'photoUpload'|'fileUpload' |
     'autocomplete'|'newPassword'|'siret' | 'array' |
     'homonym' | 'queryParamForActionPre' |
-    'tab' | 'iframe';
+    'tab' | 'iframe' |
+    'digits';
 
 type relativeDate = `${number}${"D"|"Y"|"EY"|"SY"}`
 

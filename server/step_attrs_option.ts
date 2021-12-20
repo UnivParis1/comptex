@@ -291,6 +291,16 @@ export const checkAttrs = (attrs: StepAttrsOption, stepName: string) => {
     })
 }
 
+export const initAttrs = (attrs: StepAttrsOption) => {
+    eachAttrs(attrs, (opts, _key, _attrs, _cond) => {
+        if (opts.uiType === 'digits') {
+            opts.uiType = 'text'
+            opts.allowedChars ||= '[0-9]';
+            (opts.uiOptions ||= {}).inputmode = 'numeric'
+        }
+    })
+}
+
 const transform_object_items_oneOf_async_to_oneOf_ = async (attrs: StepAttrsOption, items: v[]) => {
     for (const key in attrs) {
         const opts = attrs[key]

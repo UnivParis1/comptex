@@ -60,10 +60,14 @@ const tests: (Omit<ClientSideSVA, 'stepName'> & { test_name: string })[] = [
     },
     {
         test_name: 'Numbers',
-        step: { labels: { title: "Number fields & widgets", okButton: "Submit" } },
+        step: { labels: {
+            title: "Number fields & widgets", okButton: "Submit",
+            post_scriptum: `Prefer "digits" over "integer" (<a href="https://technology.blog.gov.uk/2020/02/24/why-the-gov-uk-design-system-team-changed-the-input-type-for-numbers/">rationale</a>)`,
+        } },
         attrs: {
             "number": { "title": "Number", "uiType": "number" },
             "integer": { "title": "Integer", "uiType": "integer" },
+            "digits": { "title": "Digits", allowedChars: '[0-9]', uiOptions: { inputmode: 'numeric' }, description: `NB : uiType: "digits" is equivalent to inputmode + allowedChars` },
             "numberEnum": { "title": "Number enum", "oneOf": [ 1, 2, 3 ].map(c => ({ const: ""+c, title: ""+c })) },
             "numberEnumRadio": { uiType: "radio", "title": "Number enum", "oneOf": [ 1, 2, 3 ].map(c => ({ const: ""+c, title: ""+c })) },
         },

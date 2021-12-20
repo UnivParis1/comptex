@@ -1,7 +1,7 @@
 import * as _ from 'lodash'
 import { assert } from './test_utils';
 import * as helpers from '../helpers'
-import { merge_v, exportAttrs, export_v, flatten_attrs, selectUserProfile, merge_attrs_overrides, checkAttrs, one_diff, transform_object_items_oneOf_async_to_oneOf } from '../step_attrs_option';
+import { merge_v, exportAttrs, export_v, flatten_attrs, selectUserProfile, merge_attrs_overrides, initAttrs, checkAttrs, one_diff, transform_object_items_oneOf_async_to_oneOf } from '../step_attrs_option';
 import checkDisplayName from '../../shared/validators/displayName';
 
 const a_or_b : StepAttrOption = { oneOf: [
@@ -480,6 +480,15 @@ describe('merge_attrs_overrides', () => {
     })
     
 })
+
+describe('initAttrs', () => {
+    it('should handle uiType "digits"', () => {
+        const attrs: StepAttrsOption = { _foo: { uiType: 'digits' } };
+        initAttrs(attrs)
+        assert.deepEqual(attrs, { _foo: { uiType: 'text', allowedChars: '[0-9]', uiOptions: { inputmode: 'numeric' } } })
+    })
+})
+
 
 describe('checkAttrs', () => {
     describe('mixed mixed readOnly/hidden/normal', () => {
