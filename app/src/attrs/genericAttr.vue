@@ -187,8 +187,8 @@ export default Vue.extend({
             return this.opts.uiOptions || {};
         },
         type() {
-            return this.realType || !this.opts.uiType ?
-               'text' : 
+            return includes(['phone', 'frenchMobilePhone'], this.opts.uiType) ? 'tel' : // "tel" implies inputmode "tel" which is great on mobiles
+               this.realType || !this.opts.uiType ? 'text' : 
                this.opts.uiType === 'integer' ? 'number' :
                this.opts.uiType;
         },
