@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="/comptex/bootstrap/css/bootstrap.css">
+  <link rel="stylesheet" href="/comptex/app.css">
+  <script src="/comptex/promise-polyfill.js"></script>
+<link href="/comptex/js/0.js" rel="prefetch"><link href="/comptex/js/1.js" rel="prefetch"><link href="/comptex/js/2.js" rel="prefetch"><link href="/comptex/js/app.js" rel="preload" as="script"><link href="/comptex/js/chunk-vendors.js" rel="preload" as="script"></head>
+<body>
+  <!--[if lt IE 11]>
+      <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+  <![endif]-->
+
+  <div class="container-fluid">
+    <div class="page">
+      <div class="comptex-bandeau">
+        <p class="text-center">
+            <img src="/comptex/header.png" alt="">
+        </p>
+        <h1 class="text-center" style="margin-bottom: 1em">{{conf.title}}</h1>
+      </div>
+      <div class="content">
+          <router-view></router-view>
+      </div>
+    </div>
+  </div>
+<script type="text/javascript" src="/comptex/js/chunk-vendors.js"></script><script type="text/javascript" src="/comptex/js/app.js"></script></body>
+</html>
