@@ -3,7 +3,7 @@
 <div class="ArrayAttr">
     <template v-for="(item, i) in val">
         <genericAttr :real_name="name" :name="name + (i ? '-' + i : '')" :opts="i ? item_opts : first_item_opts" :value="item" @input="v => set_item(i, v)" @array_action="name => array_action(name, i)"
-                :stepName="stepName"
+                :stepName="stepName" :v="v"
                 :array_allowed_actions_="{ remove: !opts.readOnly && uiOptions.removable !== false && (opts.optional || i > 0), 
                         move_up: uiOptions.orderable && i > 0, 
                         move_down: uiOptions.orderable && i+1 < val.length }">
@@ -39,7 +39,7 @@ function array_move_elt(array, index: number, direction: -1 | 1) {
 }
 
 export default Vue.extend({
-    props: ['name', 'value', 'ldap_value', 'opts', 'stepName'],
+    props: ['name', 'value', 'ldap_value', 'opts', 'stepName', 'v'],
     components: { CurrentLdapValue },
     data() {
         let val = init(this.value);

@@ -16,7 +16,7 @@
 
   <ArrayAttr v-model="val" :name="name" v-else-if="uiType === 'array'"
     :ldap_value="ldap_value"
-    :stepName="stepName"
+    :stepName="stepName" :v="v"
     :opts="opts">
   </ArrayAttr>
 
