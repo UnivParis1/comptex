@@ -47,6 +47,20 @@ export const user_id = (user_id: string): acl_search => {
     return peopleFilter(search_ldap.currentUser_to_filter({ id: user_id }));
 };
 
+export const structureAnyRole = (code_attr: string): acl_search => _convert_simple_acl_search({
+    v_to_ldap_filter: async (v) => {
+        let code = v[code_attr];
+        return `(supannRoleEntite=*[code=${code}]*)`
+    },
+    user_to_subv: (user) => (
+      ldap.searchOne(conf.ldap.base_people, search_ldap.currentUser_to_filter(user), { supannRoleEntite: [''] }, {}).then(user => {
+        const user_roles = user.supannRoleEntite ? parse_composites(user.supannRoleEntite) as { role: string, code: string }[] : [];
+        return user_roles.map(e => ({ [code_attr]: e.code }));
+      })
+    ),
+});
+
+
 export const _rolesGeneriques = (rolesFilter: string) => {
     return ldap.searchThisAttr(conf.ldap.base_rolesGeneriques, rolesFilter, 'up1TableKey', '' as string)
 };
