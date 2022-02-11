@@ -53,7 +53,9 @@ export function merge_v(attrs_ : StepAttrsOption, more_attrs: SharedStepAttrsOpt
         } else {
             validate(key, opt, more_attrs[key], v[key], prev, v);
             if (key in v) {
-                Object.assign(diff, compute_diff(prev, v, key));
+                if (!opt.uiHidden) { // no diff on special attr
+                    Object.assign(diff, compute_diff(prev, v, key));
+                }
                 r[key] = v[key];
             }
         }

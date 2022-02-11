@@ -402,6 +402,11 @@ describe('compute_diff', () => {
         test({}, { sn: "Rigaux" }, {}, {});
         test({}, {}, { sn: "Rigaux" }, {});
     });
+    it("should ignore special attrs", () => {
+        test({ warned_about_externalModeration: { uiHidden: true, optional: true } }, {}, { warned_about_externalModeration: true }, {});
+    });
+
+    
     
 });
 
