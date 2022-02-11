@@ -6,6 +6,13 @@ export const forceAttrs = (attrs: StepAttrsOption, optsToForce: StepAttrOption) 
     mapAttrs(attrs, (opts) => ({ ...opts, ...optsToForce }))
 )
 
+// avec des libellés vides pour les valeurs non renseignées plutôt que d'afficher "ne pas préciser", "Sélectionnez un étage"...
+export const remove_oneOf_empty_val = (attrs: StepAttrsOption) => (
+    mapAttrs(attrs, (opts) => (
+        opts.oneOf ? { ...opts, oneOf: opts.oneOf.filter(one => one.const) } : opts
+    ))
+)
+
 // @ts-expect-error
 export const merge_mpp : <T extends Mpp<StepAttrOption>>(mpp: Mpp<StepAttrOption>, choice: T) => T = utils.deep_extend_concat
 
