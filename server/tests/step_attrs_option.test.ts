@@ -1,7 +1,7 @@
 import * as _ from 'lodash'
 import { assert } from './test_utils';
 import * as helpers from '../helpers'
-import { merge_v, exportAttrs, export_v, flatten_attrs, selectUserProfile, merge_attrs_overrides, initAttrs, checkAttrs, one_diff, transform_object_items_oneOf_async_to_oneOf } from '../step_attrs_option';
+import { merge_v, exportAttrs, export_v, flatten_attrs, selectUserProfile, merge_attrs_overrides, initAttrs, checkAttrs, one_diff, transform_object_items_oneOf_async_to_oneOf, mapAttrs } from '../step_attrs_option';
 import checkDisplayName from '../../shared/validators/displayName';
 
 const a_or_b : StepAttrOption = { oneOf: [
@@ -17,6 +17,22 @@ const a_then_bc : StepAttrsOption = { a: {
         c: { readOnly: true }
     } }
 } }
+
+describe('mapAttrs', () => {
+    it("should work", () => {
+        assert.deepEqual(mapAttrs({ sn: { readOnly: true, max: 11 } }, (opt) => ({ ...opt, max: opt.max+1 })), { sn: { readOnly: true, max: 12 } });
+    });
+
+    it("should handle items properties", () => {
+        assert.deepEqual(mapAttrs({ users: { items: { properties: { sn: { description: 'sn!' } } } } }, 
+                                  (opt, key) => (key === 'sn' ? { ...opt, description: '' } : opt)), 
+                         { users: { items: { properties: { sn: { description: '' } } } } });
+
+        assert.deepEqual(mapAttrs({ users: { items: { properties: { sn: { oneOf: [ { const: undefined, title: "default" }, { const: "a" } ] } } } } }, 
+                                  (opts, _key) => opts.oneOf ? { ...opts, oneOf: opts.oneOf.filter(one => one.const) } : opts), 
+                                  { users: { items: { properties: { sn: { oneOf: [ { const: "a" } ] } } } } });
+    });
+})
 
 describe('exportAttrs', () => {
     it("should work", () => {

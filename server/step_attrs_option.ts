@@ -329,6 +329,7 @@ export const mapAttrs = <T>(attrs: StepAttrsOptionT<T>, f: (opts: StepAttrOption
     _.mapValues(attrs, (opts, key) => {
         opts = f(opts, key);
         if (opts.properties) opts.properties = mapAttrs(opts.properties, f);
+        if (opts.items?.properties) opts.items.properties = mapAttrs(opts.items.properties as any, f);
         const rec_mpp = <M extends Mpp<T>>(mpp: M) => (
             mpp.merge_patch_parent_properties ? { ...mpp, merge_patch_parent_properties: mapAttrs(mpp.merge_patch_parent_properties, f) } : mpp
         )
