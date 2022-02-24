@@ -121,7 +121,7 @@ function suggested_mail(sn: string, givenName: string) {
     return s;
 }
 
-function homonymes_filter(sns: string[], givenNames: string[], birthDay: Date, supannMailPerso?: string): ldap.filter {
+function homonymes_filter(sns: string[], givenNames: string[], birthDay: Date, supannMailPerso?: string, mail?: string): ldap.filter {
 
     function cn_filter() {
         return filters.alike_no_accents('cn', sns[0] + '*' + (givenNames[0] || ""));
@@ -151,6 +151,11 @@ function homonymes_filter(sns: string[], givenNames: string[], birthDay: Date, s
     if (supannMailPerso) {
         l.push(filters.eq('supannMailPerso', supannMailPerso));
         l.push(filters.eq('mail', supannMailPerso));
+        l.push(filters.eq('eduPersonPrincipalName', supannMailPerso));
+    }
+    if (mail) {
+        l.push(filters.eq('mail', mail));
+        l.push(filters.eq('eduPersonPrincipalName', mail));
     }
     //console.log("homonymes_filter", l);
     return filters.or(l);
@@ -184,8 +189,8 @@ function homonymes_scoring(l: typeof conf.ldap.people.types[], preferStudent: bo
     return _.sortBy(l_, 'score').reverse();
 }
 
-const homonymes_ = (sns: string[], givenNames: string[], birthDay: Date, supannMailPerso: string, preferStudent: boolean) : Promise<Homonyme[]> => {
-    let filter = homonymes_filter(sns, givenNames, birthDay, supannMailPerso);
+const homonymes_ = (sns: string[], givenNames: string[], birthDay: Date, supannMailPerso: string, mail: string, preferStudent: boolean) : Promise<Homonyme[]> => {
+    let filter = homonymes_filter(sns, givenNames, birthDay, supannMailPerso, mail);
     if (conf.ldap.people.homonymes_restriction) {
         filter = filters.and([filter, conf.ldap.people.homonymes_restriction]);
         //console.log("homonymes filter", filter);
@@ -222,7 +227,7 @@ export const prepare_homonymes_v = (v: v): hv => {
 export const homonymes = (v: v) : Promise<Homonyme[]> => {
     const hv = prepare_homonymes_v(v)
     if (!hv) return Promise.resolve([]);
-    return homonymes_(hv.sns, hv.givenNames, v.birthDay, v.supannMailPerso, hv.preferStudent);    
+    return homonymes_(hv.sns, hv.givenNames, v.birthDay, v.supannMailPerso, v.mail, hv.preferStudent);    
 };
 
 export const subv_to_eq_filters = (subv: Partial<v>) => {
