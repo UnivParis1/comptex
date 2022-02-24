@@ -1,7 +1,9 @@
 <template>
   <my-bootstrap-form-group :name="name" :opts="opts" :validity="validity">
     <div v-if="opts.readOnly">
-      <input disabled="disabled" class="form-control" :value="val ? val.title : ''">
+      <component v-if="opts.uiOptions && opts.uiOptions.texts_are_vue_template"
+            :is="formatting_vue(val)" :v="v"></component>
+      <input v-else disabled="disabled" class="form-control" :value="val ? val.title : ''">
     </div>
     <div :class="{ 'input-group': array_allowed_actions.any }" v-else>
       <typeahead :id="name" :name="name" v-model="val" :options="search" :minChars="3" :formatting="formatting" :formatting_html="formatting_html"
@@ -51,6 +53,9 @@ export default Vue.extend({
         },
         formatting_html(e) {
             return this.opts.formatting_html ? this.opts.formatting_html(e) : this.formatting(e);
+        },
+        formatting_vue(e) {
+            return e?.title && Vue.extend({ props: ['v'], template: "<div>" + e.title + "</div>" });
         },
     },
 });
