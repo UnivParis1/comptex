@@ -2,11 +2,19 @@
 
 import checkDisplayName from './validators/displayName';
 import { is } from './helpers'
+import { capitalize } from 'lodash';
 
 const accentsRange = '\u00C0-\u00FC';
 const allowedCharsInNames = "[A-Za-z" + accentsRange + "'. -]";
 const trim = (s : string) => s.replace(/^\s*/, '').replace(/\s*$/, '');
 const normalizeApostropheAndTrim = (s : string) => trim(s.replace(/[’′´‘]/g, "'"));
+
+// ne pas autoriser les mots en majuscule : les remplacer par le mot capilalisé (ex: RIGAUX -> Rigaux) (GLPI UP1#121351)
+const capitalizeUpperCaseWords = (s: string) => s.replace(/([A-Z\u00C0-\u00DC][a-z\u00E0-\u00FC]*){3,}/g, capitalize).replace(/[A-Z\u00C0-\u00DC]{2}$/, capitalize)
+// would require https://caniuse.com/mdn-javascript_builtins_regexp_property_escapes
+//const capitalizeUpperCaseWords = (s: string) => s.replace(/(\p{Uppercase_Letter}\p{Lowercase_Letter}*){3,}/gu, capitalize).replace(/\p{Uppercase_Letter}{2}$/u, capitalize)
+
+const normalizeNomPopre = (s: string) => capitalizeUpperCaseWords(normalizeApostropheAndTrim(s))
 
 const wsgroupsURL = "https://wsgroups.univ-paris1.fr";
 
@@ -19,14 +27,14 @@ export default {
     // order of keys is used in CompareUsers
     default_attrs_opts: is<SharedStepAttrsOption>({
         supannCivilite: { title: "Civilité" },
-        givenName: { title: "Prénom", allowedChars: allowedCharsInNames, normalize: normalizeApostropheAndTrim },
-        altGivenName: { title: 'Autres prénoms', allowedChars: allowedCharsInNames, normalize: normalizeApostropheAndTrim },
+        givenName: { title: "Prénom", allowedChars: allowedCharsInNames, normalize: normalizeNomPopre },
+        altGivenName: { title: 'Autres prénoms', allowedChars: allowedCharsInNames, normalize: normalizeNomPopre },
         sn: {
-            title: "Nom d'usage", allowedChars: allowedCharsInNames, normalize: normalizeApostropheAndTrim, 
+            title: "Nom d'usage", allowedChars: allowedCharsInNames, normalize: normalizeNomPopre, 
             labels: { tooltip: "Nom marital, nom d'épouse ou nom de naissance" },
         },
         birthName: { 
-            title: "Nom de naissance", allowedChars: allowedCharsInNames, normalize: normalizeApostropheAndTrim, 
+            title: "Nom de naissance", allowedChars: allowedCharsInNames, normalize: normalizeNomPopre, 
             labels: { tooltip: "si différent du nom d'usage" },
         },
         displayName: { 
