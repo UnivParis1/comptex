@@ -318,7 +318,7 @@ async function homonymes(req: req, id: id, wanted_step: string, v: v): Promise<s
     }
     const l = _.flatten(await Promise.all(fns.map(fn => fn(sv.v))))
     if (l.length) {
-        console.log(`homonymes found for ${sv.v.givenName} ${sv.v.sn}: ${l.map(v => JSON.stringify(_.pick(v, Array.from(homonym_attrs))) + " (score:" + v.score + ")")}`);
+        console.log(`homonymes found for ${sv.v.givenName} ${sv.v.sn}: ${l.map(v => JSON.stringify(_.pick(v, Array.from(homonym_attrs))) + " (score:" + v.score + ", accountStatus:" + v.accountStatus + ")")}`);
     }
     const attrs = { score: {}, mergeAll: {}, ...sv_attrs(sv) };
     return l.map(v => export_v(attrs, v) as search_ldap.Homonyme)
