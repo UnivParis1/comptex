@@ -5,7 +5,8 @@ import { is } from './helpers'
 
 const accentsRange = '\u00C0-\u00FC';
 const allowedCharsInNames = "[A-Za-z" + accentsRange + "'. -]";
-const normalizeApostropheAndTrim = (s : string) => s.replace(/[’′´‘]/g, "'").replace(/^\s*/, '').replace(/\s*$/, '');
+const trim = (s : string) => s.replace(/^\s*/, '').replace(/\s*$/, '');
+const normalizeApostropheAndTrim = (s : string) => trim(s.replace(/[’′´‘]/g, "'"));
 
 const wsgroupsURL = "https://wsgroups.univ-paris1.fr";
 
@@ -36,7 +37,7 @@ export default {
         homePostalAddress: { title: "Adresse personnelle", uiType: 'postalAddress' },
         homePhone: { title: "Téléphone personnel", uiType: "phone", format: 'phone' },
         pager: { title: "Mobile personnel", uiType: "frenchMobilePhone", format: 'phone' },
-        supannMailPerso: { title: "Email personnel", uiType: "email" },
+        supannMailPerso: { title: "Email personnel", uiType: "email", normalize: trim },
         jpegPhoto: { title: "Photo", format: 'image/jpeg', uiType: 'cameraSnapshot' },
         telephoneNumber: { title: 'Téléphone fixe', uiType: "phone", format: "phone" },
         mobile: { title: "Mobile professionnel", uiType: "phone", format: "phone" },
