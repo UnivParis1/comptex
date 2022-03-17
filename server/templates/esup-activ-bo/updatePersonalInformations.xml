@@ -5,12 +5,12 @@
       <in0>{{id}}</in0>
       <in1>{{code}}</in1>
       <in2>
-        {{#hashBeanPersoInfo}}
+        {{#each hashBeanPersoInfo}}
         <entry xmlns="http://remote.services.activbo.esupportail.org">
           <key xsi:type="xsd:string">{{key}}</key>
           <value xsi:type="xsd:string">{{value}}</value>
         </entry>
-        {{/hashBeanPersoInfo}}
+        {{/}}
       </in2>
     </updatePersonalInformations>
   </soap:Body>

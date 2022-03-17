@@ -6,9 +6,9 @@
       <in1>{{proxyticket}}</in1>
       <in2>{{targetUrl}}</in2>
       <in3>
-        {{#attrPersoInfo}}
+        {{#each attrPersoInfo}}
         <string>{{.}}</string>
-        {{/attrPersoInfo}}
+        {{/}}
       </in3>
     </authentificateUserWithCas>
   </soap:Body>

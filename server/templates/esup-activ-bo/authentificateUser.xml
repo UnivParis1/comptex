@@ -5,9 +5,9 @@
       <in0>{{id}}</in0>
       <in1>{{password}}</in1>
       <in2>
-        {{#attrPersoInfo}}
+        {{#each attrPersoInfo}}
         <string>{{.}}</string>
-        {{/attrPersoInfo}}
+        {{/}}
       </in2>
     </authentificateUser>
   </soap:Body>
