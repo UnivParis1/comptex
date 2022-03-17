@@ -421,6 +421,13 @@ describe('compute_diff', () => {
     it("should ignore special attrs", () => {
         test({ warned_about_externalModeration: { uiHidden: true, optional: true } }, {}, { warned_about_externalModeration: true }, {});
     });
+    it("should handle boolean", () => {
+        const attrs: StepAttrsOption = { foo: { optional: true, uiType: 'checkbox' } }
+        test(attrs, {             }, { foo: true }, { foo: { prev: undefined, current: true } });
+        test(attrs, { foo: ''     }, { foo: true }, { foo: { prev: ''       , current: true } });
+        test(attrs, { foo: 'true' }, { foo: true }, {                                         });
+        test(attrs, { foo: 'true' }, { foo: ''   }, { foo: { prev: 'true'    , current: ''  } });
+    });
 
     
     

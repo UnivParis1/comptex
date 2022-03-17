@@ -8,7 +8,10 @@ export type one_diff = { prev: any, current: any }
 
 function compute_diff(prev: Dictionary<any>, current: Dictionary<any>, key: string): Dictionary<one_diff> {
     const toString = (val: any) => (
-        val instanceof Array ? val.join(', ') : val instanceof Date ? val.toISOString() : val || ''
+        val instanceof Array ? val.join(', ') : 
+            val instanceof Date ? val.toISOString() : 
+            typeof(val) === 'boolean' ? "" + val :
+            val || ''
     )
     return toString(prev[key]) === toString(current[key]) ? {} : { 
         [key]: { prev: prev[key], current: current[key] }
