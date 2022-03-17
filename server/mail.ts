@@ -4,7 +4,7 @@ import * as _ from 'lodash';
 import * as fs from 'fs';
 import * as nodemailer from 'nodemailer';
 import * as conf from './conf';
-import * as Mustache from 'mustache';
+import * as Mustache from './mustache_like_templating';
 
 const mailTransporter = nodemailer.createTransport(conf.mail.transport);
 
@@ -28,37 +28,6 @@ export const send = (params: nodemailer.SendMailOptions) => {
     });
 };
 
-export const resolve_mustache_async_params = async (template: string, params: {}) => {
-    function tmpl2paths(template: string) {
-        let todo = [...Mustache.parse(template)];
-        let r: Dictionary<boolean> = {};
-        while (todo.length) {
-            const [kind, path, , , merge_patch_parent_properties] = todo.shift();
-            if (kind !== 'text') r[path] = true;
-            todo.push(...(merge_patch_parent_properties || []));
-        }
-        return Object.keys(r);
-    }
-    let params_ = {};
-    await Promise.all(tmpl2paths(template).map(async path => {
-        const val = await _.get(params, path);
-        if (val) {
-            if (typeof val === "object") {
-                const val_ = await val.toString();
-                _.set(params_, path + ".toString", () => val_);
-            } else {
-                _.set(params_, path, val);
-            }
-        }
-    }));
-    return params_;
-}
-
-export const mustache_async_render = async (template: string, params: {}) => {
-    const params_ = await resolve_mustache_async_params(template, params);
-    return Mustache.render(template, params_);
-}
-
 export const sendWithTemplateFile = (templateName: string, params: {}) => {
     fs.readFile(__dirname + "/templates/mail/" + templateName, (err, data) => {
         if (err) {
@@ -70,7 +39,7 @@ export const sendWithTemplateFile = (templateName: string, params: {}) => {
 }
 type params = Dictionary<any> & Pick<nodemailer.SendMailOptions, "to"|"from"|"cc">
 export const sendWithTemplate = (template: string, params: params, templateName = "") => {
-    mustache_async_render(template, params).then(rawMsg => {
+    Mustache.async_render(template, params).then(rawMsg => {
             if (!rawMsg) return;
             console.log("===========================");
             console.log("mustache result for", templateName);

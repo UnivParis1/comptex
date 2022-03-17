@@ -3,7 +3,7 @@
 import * as _ from 'lodash';
 import * as fs from 'fs';
 import * as xml2js from 'xml2js';
-import * as Mustache from 'mustache';
+import * as Mustache from './mustache_like_templating';
 import * as helpers from './helpers';
 import * as utils from './utils';
 import * as conf from './conf';
@@ -41,7 +41,7 @@ function soap(templateName: string, params: Dictionary<any>, opts : { req_for_co
     if (!conf.esup_activ_bo.url) throw "configuration issue: conf.esup_activ_bo.url is missing";
     let templateFile = __dirname + "/templates/esup-activ-bo/" + templateName;
     return readFile(templateFile).then(data => (
-        Mustache.render(data.toString(), helpers.mapLeaves(params, helpers.escapeXml))
+        Mustache.async_render(data.toString(), params, helpers.escapeXml)
     )).then(body => {
         //console.log(body);
         const operation = conf.esup_activ_bo.url.replace(/\/AccountManagement$/, '') + '/' + (templateName.match(/Cas/) ? 'CasAccountManagement' : 'AccountManagement');

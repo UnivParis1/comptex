@@ -69,7 +69,7 @@ describe('v_display', () => {
             birthName: "Rigaux",
             sn: "Rigaux",
         } as v, { sn: { title: "SN" }});
-        assert.equal(await v_.toString(), 
+        assert.equal(await v_, 
 `<table>
   <tr><td>Email personnel</td><td>foo@bar.com</td></tr>
   <tr><td>Nom de naissance</td><td>Rigaux</td></tr>

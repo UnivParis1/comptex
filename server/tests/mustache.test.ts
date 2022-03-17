@@ -1,33 +1,110 @@
 import { assert } from './test_utils';
-import * as mustache from 'mustache';
+import * as mustache from '../mustache_like_templating';
 import v_display from '../v_display';
-import { resolve_mustache_async_params } from '../mail';
 import { setTimeoutPromise } from '../helpers';
 
 describe('Mustache', () => {
-    it("should handle fields", () => {
-        const v = { bar: "Bar" };
-        const r = mustache.render("Foo {{v.bar}}", { v });
-        assert.equal(r, "Foo Bar");
+    it("should handle various", async () => {
+        const tests = {
+            "AAA{{bbb}}CCC": "AAABBBCCC",
+            "AAA{{bbb}}CCC{{ddd}}EEE": "AAABBBCCCDDDEEE",
+            "{{bbb}}{{ddd}}": "BBBDDD",
+            "AAA\n{{bbb}}\nCCC": "AAA\nBBB\nCCC",
+            "AAA\n {{bbb}}\nCCC": "AAA\n BBB\nCCC",
+            "AAA\n{{bbb}} \nCCC": "AAA\nBBB \nCCC",
+        
+            "{{html}}": "&lt;img&gt;",
+            "{{{html}}}": "<img>",
+        
+            "{{aaa}}": "",
+            "{{{aaa}}}": "",
+            "{{#aaa}}AAA{{/aaa}}": "",
+            "{{#aaa}}{{bbb}}{{/aaa}}": "",
+            "{{#bbb}}BBB{{/bbb}}": "BBB",
+            "AAA\n {{#bbb}} CCC{{/bbb}}": "AAA\n CCC",
+            "AAA {{#bbb}}\nCCC{{/bbb}}": "AAA \nCCC",
+        
+            "{{#array}}{{.}}{{/array}}": "123",
+            "{{#array}}<{{.}}>{{/array}}": "<1><2><3>",
+            " {{#array}}\n {{.}}\n {{/array}}": " 1\n 2\n 3\n",
+
+            "{{#array_objs}}\n {{{a}}}\n {{{b}}}\n{{/array_objs}}\n": " A\n B\n",
+
+            // beware, each "#xxx" creates in a new context
+            // {{xxx}} does recursive lookup in those contexts
+            "{{#o}}{{foo}}{{/o}}": "FOO",
+            "{{#o}}{{o.foo}}{{/o}}": "FOO",
+            "{{#o.foo}}{{.}}{{/o.foo}}": "FOO",
+            "{{#o.foo}}{{o.foo}}{{/o.foo}}": "FOO",
+            "{{#o}}{{o}}{{/o}}": "OO",
+            "{{#o}}{{o.o}}{{/o}}": "OO",
+
+            "{{o}}": "[object Object]",
+            "{{array}}": "1,2,3",
+        
+            "{{#bbb}}BBB": "Error: missing {{/}} for {{#bbb}}",
+                   
+            // below are extensions, not handled by std mustache ///////////
+        
+            // handlebar.js #if / #with / #each
+            // #if does not introduce a new context, making it immune to name collisions
+            "{{#if o}}{{o.foo}}{{/if}}": "FOO",
+            "{{#if o}}{{foo}}{{/if}}": "",
+            "{{#if z}}zz{{/if}}": "",
+            "{{#with o}}{{foo}}{{/with}}": "FOO",
+            "{{#with aaa}}{{foo}}{{/with}}": "",
+            "{{#each array}}{{.}}{{/each}}": "123",
+        
+            // short closing
+            "{{#bbb}}BBB{{/}}": "BBB",
+        
+            // if-then-else
+            "{{#aaa}}AAA{{^}}notA{{/}}": "notA",
+            "{{#bbb}}BBB{{^}}notB{{/}}": "BBB",
+            "{{#if aaa}}AAA{{^}}notA{{/}}": "notA",
+            "{{#if bbb}}BBB{{^}}notB{{/}}": "BBB",
+        
+            // complex path (it relies on lodash.get)
+            "{{ ['{x:y}z'] }}": "XYZ",
+        
+            // promises
+            "{{ppp}}": "PPP",
+            "{{ppp}}-{{ppp}}": "PPP-PPP",
+        }
+        const params = { 
+            bbb: "BBB", ddd: "DDD", 
+            html: '<img>', 
+            o: { o: "OO", foo: "FOO"},
+            array: [1, 2, 3],
+            array_objs: [ { a: "A", b: "B" } ], 
+            '{x:y}z': 'XYZ',
+            ppp: new Promise((resolve) => resolve("PPP")),
+        }
+        for (const template in tests) {
+            // @ts-expect-error
+            const wanted = tests[template]
+            let got;
+            try { 
+                got = await mustache.async_render(template, params)
+            } catch (e) { got = e.toString() }
+            assert.equal(JSON.stringify(got), JSON.stringify(wanted), JSON.stringify(template))
+        }
     });
 
-    it("should work with Proxy", () => {
+    it("should work with Proxy", async () => {
         const v = { foo: "bar" };
         
         const v_ = new Proxy(v, {
             // @ts-expect-error
             get(that, expr) { return that[expr].toUpperCase(); }
         });      
-        const r = mustache.render("Foo {{v_.foo}}", { v_ });
-        assert.equal(r, "Foo BAR");
+        assert.equal(await mustache.async_render("Foo {{v_.foo}}", { v_ }), "Foo BAR");
     });
     
 });
 
 describe('resolve_mustache_async_params + mustache', () => {
-    const render = async (template: string, params: Dictionary<any>) => (
-         mustache.render(template, await resolve_mustache_async_params(template, params))
-    );
+    const render = mustache.async_render
 
     it("should handle simple async", async () => {
         const v = { foo: "Foo", bar: setTimeoutPromise(1).then(_ => "Bar") }

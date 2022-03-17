@@ -89,8 +89,8 @@ const various_proxy = {
 
 const v_proxy = {
     get({ v, attrs }: { v: v, attrs: StepAttrsOption }, attr: string) {        
-        // "toString" is called for most implicit conversions to string (which is what Mustache is doing)
-        if (attr === 'toString') return () => format_v(v, attrs);
+        // "then" is called for most conversion to string (which is what "mustache_like_templating" is doing)
+        if (attr === 'then') return (f: any) => f(format_v(v, attrs))
 
         return attr === 'various' ? 
             new Proxy({ various: v[attr] || {}, attrs }, various_proxy) :
@@ -98,4 +98,5 @@ const v_proxy = {
     }
 }
 
-export default (v: v, attrs: StepAttrsOption = {}) => new Proxy({ v, attrs }, v_proxy) as Dictionary<any>;
+// @ts-expect-error
+export default (v: v, attrs: StepAttrsOption = {}) => new Proxy({ v, attrs }, v_proxy) as Dictionary<any> & Promise<string>;

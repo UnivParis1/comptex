@@ -12,6 +12,7 @@ import { flatten_attrs } from '../step_attrs_option';
 import v_display from '../v_display';
 import * as conf from '../conf';
 import client_conf from '../../shared/conf'; // ES6 syntax needed for default export
+import Mustache = require('../mustache_like_templating');
 const filters = ldap.filters;
 
 const remove_accents = _.deburr;
@@ -306,7 +307,7 @@ export const ask_confirmation = (attr_to_save_confirmation: string, msg_template
         return sv;
     } else {
         // tell frontend to popup the msg
-        const msg = await mail.mustache_async_render(msg_template, await prepareMailTemplateParams(req, sv, {}, {}))
+        const msg = await Mustache.async_render(msg_template, await prepareMailTemplateParams(req, sv, {}, {}))
         throw { code: "OK", ask_confirmation: { attr_to_save_confirmation, msg, title } };
     }
 }
