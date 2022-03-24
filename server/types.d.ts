@@ -60,6 +60,7 @@ declare module 'connect-cas' {
 
     export function configure(opts: {}): {}
     export function serviceValidate(overrides?: {}): RequestHandler
+    export function ssout(serviceUrl_or_predicate: string | ((req: Request) => boolean)): RequestHandler
     export function authenticate(): RequestHandler
     export function proxyTicket(options?: {}): RequestHandler
 }
