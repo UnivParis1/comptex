@@ -1,7 +1,6 @@
 'use strict';
 
 import * as _ from 'lodash';
-import * as util from 'util';
 import * as mongodb from 'mongodb';
 import * as conf from './conf';
 import { renameKey } from './helpers';
@@ -50,7 +49,6 @@ export const listByModerator = (query: Object) : Promise<sv[]> => {
     };
 
 export const save = <T extends { id?: string }>(sv: T, options = { upsert: true }) => {
-            console.log("saving in DB:", util.inspect(sv).replace(/userPassword: '(.*)'/, "userPassword: 'xxx'"));
             let sv_ = { ...toDB(sv), modifyTimestamp: new Date() };
             return svs().replaceOne({ _id: sv_['_id'] }, sv_, options).then(_ => sv);
 };

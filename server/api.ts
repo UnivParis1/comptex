@@ -1,6 +1,7 @@
 /// <reference path='types.d.ts' />
 
 import * as _ from 'lodash';
+import * as util from 'util';
 import * as express from 'express';
 import * as acl_checker from './acl_checker';
 import * as db from './db';
@@ -245,6 +246,7 @@ function setRaw(req: req, sv: sva, v: v) : Promise<svr> {
 }
 
 function saveRaw(req: req, sv: sv) {
+    console.log("saving in DB:", util.inspect(sv).replace(/userPassword: '(.*)'/, "userPassword: 'xxx'"));
     return db.save(sv).then(sv => {
         bus.emit('changed');
         mayNotifyModerators(req, sv, 'added');
