@@ -96,9 +96,9 @@ export function respondJson(req: req, res: express.Response, p: Promise<response
         res.json(r);
     }, err => {
         console.error(logPrefix, err);
-        const errMsg = err.code || "" + err;
+        const errMsg = err?.code || "" + err;
         res.status(http_statuses[errMsg] || 500);
-        res.json(err.code ? err : {error: errMsg, stack: err.stack});
+        res.json(err?.code ? err : {error: errMsg, stack: err?.stack});
     });
 }
 
