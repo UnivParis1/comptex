@@ -1,6 +1,7 @@
 <template>
 <div class="alert alert-danger" role="alert" v-if="fatal_error">
-    <p style="white-space: pre">{{fatal_error}}</p>
+    <p v-if="fatal_error_html" v-html="fatal_error_html"></p>
+    <p v-else style="white-space: pre">{{fatal_error}}</p>
 </div>
 <div :class="'step-' + stepName" v-else>
 
@@ -34,6 +35,7 @@ function AttrsForm_data() {
       v_orig: <V> undefined,
       v_ldap: <V> undefined,
       fatal_error: undefined,
+      fatal_error_html: undefined,
     };    
 }
 

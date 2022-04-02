@@ -153,6 +153,7 @@ function _handleErr(err : AxiosError, $scope = null, redirect = false) {
         console.error(resp || err)
         if (redirect && !window.history.state) {
             $scope.fatal_error = msg;
+            $scope.fatal_error_html = json_error.error_html;
         } else {
             alert(msg);
             if (redirect) {
