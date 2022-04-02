@@ -131,10 +131,10 @@ async function getRaw(req: req, id: id, wanted_step: string): Promise<sva> {
     } else {
         sv = await db.get(id);
         if (!sv) throw "invalid id " + id;
-        if (!sv.step) throw format_history_event(sv)
+        if (!sv.step) throw sv_to_error(sv)
         if (wanted_step && sv.step !== wanted_step) {
             console.error("user asked for step " + wanted_step + ", but sv is in state " + sv.step);
-            throw format_history_event(sv)
+            throw sv_to_error(sv)
         }
     }
     await checkAcls(req, sv);
@@ -183,6 +183,11 @@ async function set(req: req, id: id, wanted_step: string, v: v) {
     return r;
 }
 
+function sv_to_error(sv: sv) {
+    const error = format_history_event(sv)
+    const error_html = error + (sv.additional_public_info ? "<br><br>" + sv.additional_public_info.description : '')
+    return { code: 500, error, error_html } 
+}
 function format_history_event(sv: sv) {
     const date = helpers.to_DD_MM_YYYY(sv.modifyTimestamp)
     if (sv.step) {

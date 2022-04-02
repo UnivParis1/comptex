@@ -149,4 +149,8 @@ interface ClientSideSVA {
         allow_many?: boolean | { forced_headers: string[] }
         if_no_modification?: 'disable-okButton'
     }
+    additional_public_info?: {
+        title_in_list: string // HTML
+        description: string // HTML
+    }
 }

@@ -6,6 +6,11 @@
  <div v-else-if="v">
   <h2 style="margin-top: 2em" v-html="step.labels.title" v-if="step.labels.title"></h2>
 
+  <div v-if="additional_public_info">
+      <div v-html="additional_public_info.description"></div>
+      <br>
+  </div>
+
   <div v-if="step_description">
     <component :is="step_description" :v_pre="v_pre" :v="v"></component>
   </div>
@@ -111,6 +116,7 @@ export default Vue.extend({
         'wanted_id', 'stepName', 
         'id', 'v_pre',
         'step', 'attrs', 'all_attrs_flat', 'v', 'v_orig', 'v_ldap',
+        'additional_public_info',
     ],
     data: AttrsForm_data,
     components: { ImportFile, ImportResult, Homonyms, attrsForm, MyModalP },

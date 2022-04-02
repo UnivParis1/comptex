@@ -38,6 +38,10 @@ export const setLock = (id: id, lock: boolean) => (
     svs().updateOne({ _id: _id(id) }, { $set: { lock } })
 );
 
+export const set_additional_public_info = (id: id, additional_public_info: sv['additional_public_info']) => (
+    svs().updateOne({ _id: _id(id) }, { $set: { additional_public_info } })
+);
+
     // lists svs, sorted by steps + recent one at the beginning
 export const listByModerator = (query: Object) : Promise<sv[]> => {
         if (_.isEqual(query, { "$or": [] })) return Promise.resolve(null);

@@ -8,6 +8,7 @@
         :wanted_id="wanted_id" :stepName="stepName"
         :id="id" :v_pre="v_pre"
         :step="step" :attrs="attrs" :all_attrs_flat="all_attrs_flat" :v="v" :v_orig="v_orig" :v_ldap="v_ldap"
+        :additional_public_info="additional_public_info"
     ></StepV>
 </div>
 </template>

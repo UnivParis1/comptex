@@ -36,6 +36,11 @@ type sv = {
   v: v,
   v_ldap?: v,
   lock?: boolean,
+
+  additional_public_info?: {
+    title_in_list: string // HTML
+    description: string // HTML
+  }
 }
 type sva = sv & { attrs: StepAttrsOption };
 

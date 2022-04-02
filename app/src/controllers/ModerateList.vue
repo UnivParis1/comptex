@@ -14,6 +14,7 @@
      {{sv.v.sn || 'inconnu'}}
      {{sv.v.givenName || 'inconnu'}}
    </router-link>
+   <span v-if="sv.additional_public_info" v-html="sv.additional_public_info.title_in_list"></span>
 </li>
 </ul>
 </div>

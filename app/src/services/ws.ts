@@ -258,6 +258,7 @@ export function getInScope($scope, id: string, params, hash_params, expectedStep
         $scope.v = v // assign it when it is fully computed. Needed for Vue.js
         $scope.all_attrs_flat = all_attrs;
         $scope.step = sv.step;
+        $scope.additional_public_info = sv.additional_public_info;
     }, err => _handleErr(err, $scope, true));
 }
 
