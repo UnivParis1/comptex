@@ -281,7 +281,9 @@ export default Vue.extend({
           const resp = await Ws.set(this.id, this.stepName, this.v, this.v_pre, this.all_attrs_flat)
           let extern_ask_confirmation = this.v.various?.extern_ask_confirmation
           if (resp.ask_confirmation) {
+              // "action_post" returned object "ask_confirmation" => prompting user
               if (extern_ask_confirmation) {
+                  // unused?
                   for (const p of Object.values(extern_ask_confirmation)) {
                       resp.ask_confirmation.msg += " " + p['msg']
                   }
