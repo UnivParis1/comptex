@@ -13,8 +13,8 @@
         </tr>
         <tr v-for="v of v_array">
             <td v-for="(opts, attrName) in attrs" :class="'oneAttr-' + attrName">
-                <span>{{formatValue(v[attrName], opts)}}</span>
-                <component :is="attr_templates[attrName]" :v="v" v-if="attr_templates[attrName]"></component>
+                <span v-if="!opts.uiOptions || !opts.uiOptions.readOnly__vue_template">{{formatValue(v[attrName], opts)}}</span>
+                <component :is="attr_templates[attrName]" :v="v" :value="v[attrName]" v-if="attr_templates[attrName]"></component>
             </td>
         </tr>
     </tbody>
@@ -35,9 +35,10 @@ export default Vue.extend({
         const attrs = omitBy(this.opts.items.properties, (opts) => opts.uiHidden === true)
         return {
             attrs,
-            attr_templates: mapValues(attrs, (opts, _) => (
-                opts.description && Vue.extend({ props: ['v'], template: "<div>" + opts.description + "</div>" })
-            ))
+            attr_templates: mapValues(attrs, (opts, _) => {
+                const template = opts.uiOptions?.readOnly__vue_template || opts.description
+                return template && Vue.extend({ props: ['v', 'value'], template: "<div>" + template + "</div>" })
+            })
         }
     },
     methods: {

@@ -30,6 +30,7 @@ interface StepAttrItemsOption {
         title_hidden?: boolean
         object_items_export_csv?: boolean
         readOnly__avoid_disabled_input?: boolean
+        readOnly__vue_template?: string
         texts_are_html?: boolean
         texts_are_vue_template?: boolean
         date_todayButton?: string
