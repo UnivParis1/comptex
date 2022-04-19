@@ -39,7 +39,7 @@ type sv = {
 }
 type sva = sv & { attrs: StepAttrsOption };
 
-type r = response & { success: boolean, step?: string, labels?: StepLabels, nextBrowserStep: string }
+type r = response & { success: boolean, step?: string, labels?: StepLabels, nextBrowserStep: NextBrowserStep }
 type vr = {v: v; response?: response }
 type svr = sv & { response?: response }
 type svra = sva & { response?: response }

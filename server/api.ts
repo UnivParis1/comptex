@@ -177,7 +177,8 @@ async function set(req: req, id: id, wanted_step: string, v: v) {
 
     const nextBrowserStep = name2step(wanted_step).nextBrowserStep;
     if (nextBrowserStep) {
-        r.nextBrowserStep = typeof nextBrowserStep === "function" ? await nextBrowserStep(svr.v) : nextBrowserStep;
+        const url = typeof nextBrowserStep === "function" ? await nextBrowserStep(svr.v) : nextBrowserStep
+        r.nextBrowserStep = { url };
     }
     return r;
 }
@@ -209,7 +210,7 @@ function advance_sv(req: req, sv: sva) : Promise<svr> {
     return action_post(req, sv).then(async svr => {
         const nextStep = step(svr).next;
         svr.v.prevStep = svr.step
-        svr.step = typeof nextStep === "function" ? await nextStep(svr.v) : nextStep;
+        svr.step = nextStep ? (typeof nextStep === "function" ? await nextStep(svr.v) : nextStep) : svr.response?.step;
         if (svr.step) {
             return action_pre(req, svr);
         } else {

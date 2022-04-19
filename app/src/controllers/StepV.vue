@@ -239,10 +239,21 @@ export default Vue.extend({
         if (!isEmpty(v_from_prevStep)) {
             query.prev = this.$route.path.replace(/^\//, '');
         }
-        if (resp.nextBrowserStep.match(/^https?:\/\//)) {
-            document.location.href = resp.nextBrowserStep
+        const url = resp.nextBrowserStep.url
+        if (url.match(/^https?:\/\//)) {
+            document.location.href = url
         } else {
-            router.push({ path: resp.nextBrowserStep, query });
+            const params = resp.nextBrowserStep.params || { mode: 'query', prefix: '' }
+            if (params.prefix) {
+                query = _.mapKeys(query, (_, k) => resp.nextBrowserStep.params.prefix + k)
+            }
+            if (params.none) {
+                router.push({ path: url });
+            } else if (params.mode === 'hash') {
+                router.push({ path: url, hash: "" + new URLSearchParams(_.pickBy(query, (val) => val)) });
+            } else {
+                router.push({ path: url, query });
+            }
         }
       },
       templated_response(resp, template: string) {

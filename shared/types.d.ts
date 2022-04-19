@@ -11,6 +11,11 @@ type uiTypes =
 
 type relativeDate = `${number}${"D"|"Y"|"EY"|"SY"}`
 
+interface NextBrowserStep { 
+    url: string
+    params?: { none: true } | { mode: 'hash'|'query', prefix: ''|'set_' }
+}
+
 interface StepAttrItemsOption {
     uiPlaceholder?: string;
 
