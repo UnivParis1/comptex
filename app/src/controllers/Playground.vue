@@ -111,6 +111,7 @@ const tests: (Omit<ClientSideSVA, 'stepName'> & { test_name: string })[] = [
         step: { labels: { title: "A list of strings", okButton: "Submit" } },
         attrs: { 
             listOfStrings: { "title": "A list of strings", "items": { /*"default": "bazinga" TODO */ }, optional: true },
+            multipleChoicesArray: { "title": "A list of choices", "items": {}, oneOf: [ { const: "c1", title: "Choice One" }, { const: "c2", title: "Choice Two" } ], optional: true },
         },
         v: { listOfStrings: [ "foo", "bar" ] },
     },

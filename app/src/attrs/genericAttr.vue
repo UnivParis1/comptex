@@ -179,8 +179,8 @@ export default Vue.extend({
                 return 'dateThreeInputs';
             }
             return this.opts.uiType || 
-                this.opts.oneOf && (this.opts.oneOf.length <= 2 ? 'radio' : 'select') ||
                 this.opts.items && 'array' ||
+                this.opts.oneOf && (this.opts.oneOf.length <= 2 ? 'radio' : 'select') ||
                 this.opts.oneOf_async && 'autocomplete';
         },
         uiOptions() {

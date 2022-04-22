@@ -126,16 +126,15 @@ function validate(key: string, opt: StepAttrOption, more_opt: SharedStepAttrOpti
             if (!(_.isString(val_) && val_.match("^(" + opt.allowedChars + "*)$")))
                 throw `constraint ${key}.allowedChars ${opt.allowedChars} failed for ${val}`;
         }
-        if (opt.oneOf) {
-            if (val !== undefined && !find_choice(opt.oneOf, val)) {
-                const keys = opt.oneOf.map(e => e.const);
-                throw `constraint ${key}.oneOf ${keys} failed for ${val}`;
-            }
-        }
         if (opt.items || opt.uiType === 'array') {
             if (val !== undefined) {
                 if (!_.isArray(val)) throw `constraint ${key} is array failed for ${val}`;
-                val.forEach((val_, i) => validate(`${key}-${i}`, { optional: opt.optional, ...opt.items }, more_opt && more_opt.items, val_, prev, v));
+                val.forEach((val_, i) => validate(`${key}-${i}`, { ..._.pick(opt, 'optional', 'oneOf'), ...opt.items }, more_opt && more_opt.items, val_, prev, v));
+            }
+        } else if (opt.oneOf) {
+            if (val !== undefined && !find_choice(opt.oneOf, val)) {
+                const keys = opt.oneOf.map(e => e.const);
+                throw `constraint ${key}.oneOf ${keys} failed for ${val}`;
             }
         }
         if (more_opt && more_opt.validator) {

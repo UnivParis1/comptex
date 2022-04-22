@@ -281,6 +281,24 @@ describe('merge_v', () => {
         test_fail(attrs, {}, { attr1: undefined }, 'constraint !attr1.optional failed for undefined');
         test_fail(attrs, {}, { attr1: "" }, 'constraint !attr1.optional failed for ');
     });
+    it ("should check oneOf array", () => {
+        const attrs = { attr1: { items: {}, oneOf: [ { const: "1" }, { const: "2" } ] } };
+        test(attrs, {}, { attr1: [1] }, { attr1: [1] });
+        test(attrs, {}, { attr1: [1, 2] }, { attr1: [1, 2] });
+        test_fail(attrs, {}, { attr1: 2 }, "constraint attr1 is array failed for 2");
+        test_fail(attrs, {}, { attr1: [3] }, "constraint attr1-0.oneOf 1,2 failed for 3");
+        test_fail(attrs, {}, { attr1: undefined }, 'constraint !attr1.optional failed for undefined');
+        test_fail(attrs, {}, { attr1: "" }, 'constraint !attr1.optional failed for ');
+        test_fail(attrs, {}, { attr1: [] }, 'constraint !attr1.optional failed for ');
+    });
+    it ("should check oneOf non-optional array", () => {
+        const attrs = { attr1: { optional: true, items: {}, oneOf: [ { const: "1" }, { const: "2" } ] } };
+        test(attrs, {}, { attr1: [] }, { attr1: [] });
+        test(attrs, {}, { attr1: [1] }, { attr1: [1] });
+        test(attrs, {}, { attr1: [1, 2] }, { attr1: [1, 2] });
+        test_fail(attrs, {}, { attr1: 2 }, "constraint attr1 is array failed for 2");
+        test_fail(attrs, {}, { attr1: [3] }, "constraint attr1-0.oneOf 1,2 failed for 3");
+    });
     it ("should check simple properties", () => {
         const attrs = { _foo: { toUserOnly: true, properties: { sn: {} } } };
         test(attrs, {}, { sn: "foo" }, { sn: "foo" });
