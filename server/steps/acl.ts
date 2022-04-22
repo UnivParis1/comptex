@@ -17,7 +17,7 @@ const _normalize__or_subv = (l : boolean | Partial<v>[]) => (
     _.isBoolean(l) ? l : l.length === 0 ? false : l
 );
 
-const _convert_simple_acl_search = ({ user_to_subv, ...other } : simple_acl_search): acl_search => ({
+export const convert_simple_acl_search = ({ user_to_subv, ...other } : simple_acl_search): acl_search => ({
     ...other,
     async user_to_ldap_filter(user) {
         const or_subv = _normalize__or_subv(await user_to_subv(user));
@@ -29,7 +29,7 @@ const _convert_simple_acl_search = ({ user_to_subv, ...other } : simple_acl_sear
     },
 })
 
-const peopleFilter = (filter: string): acl_search => _convert_simple_acl_search({
+const peopleFilter = (filter: string): acl_search => convert_simple_acl_search({
     // search users that can moderate "v":
     v_to_ldap_filter: async (_v) => filter,
     // can the user moderate any "v":
@@ -47,7 +47,7 @@ export const user_id = (user_id: string): acl_search => {
     return peopleFilter(search_ldap.currentUser_to_filter({ id: user_id }));
 };
 
-export const structureAnyRole = (code_attr: string): acl_search => _convert_simple_acl_search({
+export const structureAnyRole = (code_attr: string): acl_search => convert_simple_acl_search({
     v_to_ldap_filter: async (v) => {
         let code = v[code_attr];
         return `(supannRoleEntite=*[code=${code}]*)`
@@ -64,7 +64,7 @@ export const structureAnyRole = (code_attr: string): acl_search => _convert_simp
 export const _rolesGeneriques = (rolesFilter: string) => {
     return ldap.searchThisAttr(conf.ldap.base_rolesGeneriques, rolesFilter, 'up1TableKey', '' as string)
 };
-export const structureRoles = (code_attr: string, rolesFilter: string): acl_search => _convert_simple_acl_search({
+export const structureRoles = (code_attr: string, rolesFilter: string): acl_search => convert_simple_acl_search({
     v_to_ldap_filter: (v) => (    
         _rolesGeneriques(rolesFilter).then(roles => {
             let code = v[code_attr];
@@ -87,7 +87,7 @@ export const structureRoles = (code_attr: string, rolesFilter: string): acl_sear
 //      'structureParrain', 
 //       search_ldap.prefix_suffix_to_group_and_code('applications.comptex.invite.', '-managers')
 //   )
-export const group_for_each_attr_codes = (codeAttr: string, { code_to_group_cn, group_cn_to_code }: search_ldap.group_and_code_fns): acl_search => _convert_simple_acl_search({
+export const group_for_each_attr_codes = (codeAttr: string, { code_to_group_cn, group_cn_to_code }: search_ldap.group_and_code_fns): acl_search => convert_simple_acl_search({
     v_to_ldap_filter: async (v) => (
         filters.memberOf(code_to_group_cn(v[codeAttr]))
     ),
@@ -102,7 +102,7 @@ export const group_for_each_attr_codes = (codeAttr: string, { code_to_group_cn, 
 //   acl.ldapGroupsMatching(
 //       search_ldap.prefix_suffix_to_group_and_code('applications.comptex.invite.', '-managers')
 //   )
-export const ldapGroupsMatching = ({ code_to_group_cn, group_cn_to_code } : search_ldap.group_and_code_fns): acl_search => _convert_simple_acl_search({
+export const ldapGroupsMatching = ({ code_to_group_cn, group_cn_to_code } : search_ldap.group_and_code_fns): acl_search => convert_simple_acl_search({
     // search users that are memberOf of groups matching "ldap_group_filter"
     v_to_ldap_filter: async (_v) => {
         // find all groups matching "ldap_group_filter"
