@@ -92,9 +92,16 @@ export async function async_render_(parsed: parsed_template, params: any, escape
                 if (!current) throw Error("{{/}} but no previous {{#}}")
             }
         } else if (one.op === '^') {
-            current.val = current.val ? false : contexts[1].val
+            if (one.expr) {
+                // mustache "inverted section"
+                current = { pos, val: !val }
+                contexts.unshift(current)
+            } else {
+                // the "else" part of if-then-else expression
+                current.val = current.val ? false : contexts[1].val
+            }
         } else if (one.op === '#if') {
-            // keeping current val, which is much more understable 
+            // NB: "#if" does not introduce a new context, which is simpler than mustache "section" which has a complex recursive get on scopes (and potential name collisions)
             current = { pos, val: val ? current.val : false }
             contexts.unshift(current)
         } else if (one.op === '#' || one.op === '#each' || one.op === '#with') {

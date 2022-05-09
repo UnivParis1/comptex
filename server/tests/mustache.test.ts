@@ -21,6 +21,10 @@ describe('Mustache', () => {
             "{{#aaa}}AAA{{/aaa}}": "",
             "{{#aaa}}{{bbb}}{{/aaa}}": "",
             "{{#bbb}}BBB{{/bbb}}": "BBB",
+            "{{^aaa}}notAAA{{/aaa}}": "notAAA",
+            "{{^aaa}}{{bbb}}{{/aaa}}": "BBB",
+            "{{^bbb}}BBB{{/bbb}}": "",
+            "{{^bbb}}{{bbb}}{{/bbb}}": "",
             "AAA\n {{#bbb}} CCC{{/bbb}}": "AAA\n CCC",
             "AAA {{#bbb}}\nCCC{{/bbb}}": "AAA \nCCC",
         
@@ -57,6 +61,9 @@ describe('Mustache', () => {
         
             // short closing
             "{{#bbb}}BBB{{/}}": "BBB",
+            "{{^aaa}}notAAA{{/}}": "notAAA",
+            "{{^aaa}}{{bbb}}{{/}}": "BBB",
+            "{{^bbb}}BBB{{/}}": "",
         
             // if-then-else
             "{{#aaa}}AAA{{^}}notA{{/}}": "notA",
