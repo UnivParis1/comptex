@@ -215,8 +215,6 @@ function advance_sv(req: req, sv: sva) : Promise<svr> {
         } else {
             return svr;
         }
-    }).then(svr => {
-        return svr.step ? add_step_attrs(req, svr) : svr as svra;
     });
 }
 
