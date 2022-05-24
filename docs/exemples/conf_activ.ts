@@ -129,7 +129,7 @@ const handle_accountIdentification_error = async (err: string, req: req, sv: sv)
     }
 }
 
-const accountIdentification = (isActivation: boolean) => actions.chain([
+const accountIdentification = (isActivation: boolean) => actions_pre.chain([
     actions_pre.validateAndFilterQueryParams(account_identification), // otherwise can enter a uid or a birthdate, without other mandatory params!
     actions_pre.mutateQuery(transform_supannEtuId_or_supannCodeINE),
     actions.handle_exception(
@@ -235,7 +235,7 @@ export const initialSteps: steps = {
     },
 
     activation_: {
-        action_pre: actions.chain([
+        action_pre: actions_pre.chain([
             accountIdentification(true),
             actions_pre.esupUserApps_add_canAccess("ms-office"),
         ]),
@@ -296,7 +296,7 @@ export const initialSteps: steps = {
         nextBrowserStep: 'reinit_mdp_',
     },
     reinit_mdp_: {
-        action_pre: actions.chain([
+        action_pre: actions_pre.chain([
             actions_pre.esup_activ_bo_validateCode,
             actions_pre.esup_activ_bo_validateAccount(false), // get ldap attrs (using req.query.supannAliasLogin)
             actions_pre.esupUserApps_add_canAccess("ms-office"),
@@ -318,7 +318,7 @@ export const initialSteps: steps = {
     },
 
     change_mdp_: {
-        action_pre: actions.chain([
+        action_pre: actions_pre.chain([
             actions_pre.esup_activ_bo_authentificateUser('useSessionUser'),
             actions_pre.esupUserApps_add_canAccess("ms-office"),
         ]),

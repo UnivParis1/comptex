@@ -41,12 +41,12 @@ NB: any exception (thrown in ```action_pre``` for example) will stop current req
 
 If ```GET /comptes/new/:step```
 * create empty sv with sv.step = :step
-* ```.action_pre``` is called with params (req, empty sv)
 
 If ```GET /comptes/:id/:step```
 * read sv from database
 
 With current sv.step:
+* ```.action_pre``` is called with params (req, sv)
 * ```.acls``` is used to check authenticated user is allowed
 * ```sv.attrs``` is assigned from ```.attrs``` merged with optional ```.attrs_override``` (computed using req and current sv)
 * ```sv.v``` is filtered using ```.attrs```
@@ -57,12 +57,12 @@ It returns sv
 
 If ```PUT /comptes/new/:step```
 * create empty sv with sv.step = :step
-* ```.action_pre``` is called with params (req, empty sv)
 
 If ```PUT /comptes/:id/:step```
 * read sv from database
 
 With current sv.step:
+* ```.action_pre``` is called with params (req, sv)
 * ```.acls``` is used to check authenticated user is allowed
 * ```sv.attrs``` is assigned from ```.attrs``` merged with optional ```.attrs_override``` (computed using req and current sv)
 * ```sv.attrs``` is used to update sv.v using PUT body
@@ -72,13 +72,13 @@ With current sv.step:
 * ```.next``` step is the new sv.step
 
 If sv.step is not null, with new sv.step:
-* ```.action_pre``` is called with params (req, sv)
+* ```.action_pre_before_save``` is called with params (req, sv)
 * sv is saved in database
 * ```.notify.added``` template is mailed to moderators (moderators computed from ```.acls```)
 
 If sv.step is null, sv is removed from database
 
-It returns { success: true, step: xxx, ... action_pre || action_post response }
+It returns { success: true, step: xxx, ... action_pre_before_save || action_post response }
 
 ## ```DELETE /comptes/```
 
@@ -103,7 +103,7 @@ The labels:
 * okButton: *(html)* for the button which submits the step page. If empty, no button is displayed (useful for information pages, with no `attrs`)
 * cancelButton: *(html)* for the button which rejects a "next" step.
 
-Labels which can use variable `resp` which is the response of "next" `action_pre` and/or step `action_post`:
+Labels which can use variable `resp` which is the response of `action_pre_before_save` and/or step `action_post`:
 * accepted: *(vue template)* displayed when the `action_post` succeeded (but see `added` below if there is a "next" step)
 * added: *(vue template)* displayed when reaching this step (through `next`). It will be prefered over `accepted` above.
 

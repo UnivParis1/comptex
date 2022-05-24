@@ -49,6 +49,8 @@ type vr = {v: v; response?: response }
 type svr = sv & { response?: response }
 type svra = sva & { response?: response }
 type simpleAction = (req: req, sv: {v: v}) => Promise<vr>
+type simpleAction_pre = (req: req, sv: {v: v}) => Promise<v>
+type action_pre = (req: any, sv: sv) => Promise<v>
 type action = (req: any, sv: sva) => Promise<vr>
 type acl_ldap_filter = string | boolean
 type acl_mongo_filter = Dictionary<any> | boolean
@@ -115,7 +117,8 @@ type step = {
   next?: string | ((v: v) => Promise<string>);
   nextBrowserStep?: string | ((v: v) => Promise<string>); // either /<step> or a full url
   notify?: StepNotify;
-  action_pre?: action;
+  action_pre?: action_pre;
+  action_pre_before_save?: action;
   action_post?: action;
 }
 type steps = Dictionary<step>

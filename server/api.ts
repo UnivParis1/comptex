@@ -45,8 +45,20 @@ async function add_step_attrs<SV extends sv>(req: req, sv: SV) {
 
 const sv_attrs = (sv: sva) => sv.attrs; 
 
-function action_pre(req: req, sv: sv): Promise<svr> {
-    return action(req, sv, 'action_pre');
+async function action_pre(req: req, sv: sv): Promise<sv> {
+    let f = step(sv).action_pre
+    if (f) {
+        //console.log("calling " + action_name + " for step " + sv.step)
+        const v = await f(req, sv)
+        //console.log("action returned", vr)
+        if (!v) throw 'action_pre must return v (step "'  + sv.step + '")'
+        return { ...sv, v }
+    } else {
+        return sv // nothing to do
+    }
+}
+function action_pre_before_save(req: req, sv: sv): Promise<svr> {
+    return action(req, sv, 'action_pre_before_save');
 }
 function action_post(req: req, sv: sva): Promise<svra> {
     return action(req, sv, 'action_post').tap(sv => {
@@ -57,7 +69,8 @@ function action_post(req: req, sv: sva): Promise<svra> {
         mayNotifyModerators(req, sv, 'accepted');
     });
 }
-function action<SV extends sv>(req: req, sv: SV, action_name: 'action_post' | 'action_pre'): Promise<SV & { response?: response }> {
+
+function action<SV extends sv>(req: req, sv: SV, action_name: 'action_post' | 'action_pre_before_save'): Promise<SV & { response?: response }> {
     let f = step(sv)[action_name];
     if (!f) return Promise.resolve(sv); // nothing to do
     //console.log("calling " + action_name + " for step " + sv.step);
@@ -118,17 +131,17 @@ function checkAcls(req: req, sv: sv) {
     })
 }
 
-function first_sv(req: req, wanted_step: string): Promise<sv> {
+function first_sv(wanted_step: string) {
     let empty_sv: sv = { step: wanted_step, v: {}, history: [] };
     if (!step(empty_sv).initialStep) throw `${wanted_step} is not a valid initial step`;
-    return action_pre(req, empty_sv);
+    return empty_sv;
 }
 
 async function getRaw(req: req, id: id, wanted_step: string): Promise<sva> {
     let sv: sv;
 
     if (id === 'new') {
-        sv = await first_sv(req, wanted_step);
+        sv = await first_sv(wanted_step);
     } else {
         sv = await db.get(id);
         if (!sv) throw "invalid id " + id;
@@ -138,6 +151,7 @@ async function getRaw(req: req, id: id, wanted_step: string): Promise<sva> {
             throw sv_to_error(sv)
         }
     }
+    sv = await action_pre(req, sv)
     await checkAcls(req, sv);
     return await add_step_attrs(req, sv);
 }
@@ -210,7 +224,7 @@ function add_history_event(req: req, sv: sv, action?: 'rejected') {
 
 function advance_sv(req: req, sv: sva) : Promise<svr> {
     if (!sv.id) {
-        // do not rely on id auto-created by mongodb on insertion in DB since we need the ID in action_pre for sendValidationEmail
+        // do not rely on id auto-created by mongodb on insertion in DB since we need the ID in action_pre_before_save for sendValidationEmail
         sv.id = db.new_id();
     }
     return action_post(req, sv).then(async svr => {
@@ -218,7 +232,7 @@ function advance_sv(req: req, sv: sva) : Promise<svr> {
         svr.v.prevStep = svr.step
         svr.step = nextStep ? (typeof nextStep === "function" ? await nextStep(svr.v) : nextStep) : svr.response?.step;
         if (svr.step) {
-            return action_pre(req, svr);
+            return action_pre_before_save(req, svr);
         } else {
             return svr;
         }
@@ -233,7 +247,7 @@ const checkSetLock = async (sv: sv) => {
 // 1. merge allow new v attrs into sv
 // 2. call action_post
 // 3. advance to new step
-// 4. call action_pre
+// 4. call action_pre_before_save
 // 5. save to DB or remove from DB if one action returned null
 function setRaw(req: req, id: id, sv: sva, v: v) : Promise<svr> {
     sv.v = merge_v(sv_attrs(sv), shared_conf.default_attrs_opts, sv.v, v);

@@ -11,51 +11,65 @@ import * as conf from '../conf';
 const filters = ldap.filters;
 
 
+export const chain = (l_actions: action_pre[]): action_pre => (
+    async (req, sv: sv) => {
+        let v = sv.v
+        for (const action_pre of l_actions) {
+            v = await action_pre(req, { ...sv, v })
+        }
+        return v
+    }
+)
+
+export const handle_exception = (action: action_pre, handler: (err: any, req: req, sv: sv) => Promise<v>) : action_pre => (req: req, sv: sv) => (
+    action(req, sv).catch(err => handler(err, req, sv))
+);
+
 const isShibUserInLdap = (req: req) => {
     let idp = req.header('Shib-Identity-Provider');
     return idp && idp === conf.ldap.shibIdentityProvider;
 }
 
-export const getShibAttrs: simpleAction = async (req, _sv) => {
+export const getShibAttrs: simpleAction_pre = async (req, _sv) => {
     if (!req.user) throw `Unauthorized`;
     let v = _.mapValues(conf.shibboleth.header_map, headerName => (
         req.header(headerName)
     )) as any as v;
     console.log("action getShibAttrs:", v);
-    return { v };
+    return v;
 };
 
-export const getShibUserLdapAttrs: simpleAction = async (req, _sv) => {
+export const getShibUserLdapAttrs: simpleAction_pre = async (req, _sv) => {
     if (!isShibUserInLdap(req)) throw `Unauthorized`;
     let filter = search_ldap.currentUser_to_filter(req.user);
     let v: v = await oneExistingPerson(filter);
     v.noInteraction = true;
-    return { v };
+    return v;
 }
 
-export const getShibOrCasAttrs: simpleAction = (req, _sv) => (
+export const getShibOrCasAttrs: simpleAction_pre = (req, _sv) => (
     (isShibUserInLdap(req) ? getShibUserLdapAttrs : getShibAttrs)(req, _sv)
 )
 
-export const getExistingUser: simpleAction = async (req, _sv)  => {
+export const getExistingUser: simpleAction_pre = async (req, _sv)  => {
     if (!req.query.uid) throw "getExistingUser: no req.query.uid"
     const v = await oneExistingPerson(filters.eq("uid", req.query.uid))
-    return { v }
+    return v
 }
 
 const handle_profilename_to_modify = (req: req, v: v) => {
     const profilename = req.query.profilename_to_modify;
     const v_ = profilename && selectUserProfile(v, profilename);
     if (v_) v = { ...v_, profilename_to_modify: profilename };
-    return { v };
+    return v;
 }
 
-export const getExistingUserWithProfile: simpleAction = (req, _sv)  => (
+export const getExistingUserWithProfile: simpleAction_pre = (req, _sv)  => (
     oneExistingPerson(filters.eq("uid", req.query.uid)).then(v => handle_profilename_to_modify(req, v))
 );
 
-export const getShibUserLdapAttrsWithProfile: simpleAction = (req, _sv)  => (
-    getShibUserLdapAttrs(req, null).then(sv => handle_profilename_to_modify(req, sv.v))
+export const getShibUserLdapAttrsWithProfile: simpleAction_pre = (req, _sv)  => (
+    getShibUserLdapAttrs(req, null).then(v => handle_profilename_to_modify(req, v))
 );
 
 function handleAttrsRemapAndType(o : Dictionary<string>, attrRemapRev: Dictionary<string[]>, wantedConvert: ldap.AttrsConvert) {
@@ -64,21 +78,21 @@ function handleAttrsRemapAndType(o : Dictionary<string>, attrRemapRev: Dictionar
     return v
 }
 
-export const esup_activ_bo_validateAccount = (isActivation: boolean) : simpleAction => async (req, _sv) => {
+export const esup_activ_bo_validateAccount = (isActivation: boolean) : simpleAction_pre => async (req, _sv) => {
     const userInfo = ldap.convertToLdap(conf.ldap.people.types, conf.ldap.people.attrs, search_ldap.v_from_WS(req.query), {});
     const { wantedConvert, attrRemapRev } = ldap.convert_and_remap(conf.ldap.people.types, conf.ldap.people.attrs);
     const o = await esup_activ_bo.validateAccount(userInfo as any, _.without(Object.keys(attrRemapRev), 'userPassword'), req)
     if (isActivation && !o.code) throw "Compte déjà activé";
     if (!isActivation && o.code) throw "Compte non activé";
     const v = handleAttrsRemapAndType(o, attrRemapRev, wantedConvert)
-    return { v }
+    return v
 }
 
-export const esup_activ_bo_validateCode : simpleAction = (req, sv) => (
-    esup_activ_bo.validateCode(req.query.supannAliasLogin, req.query.code, req).then(_ => sv)
+export const esup_activ_bo_validateCode : simpleAction_pre = (req, sv) => (
+    esup_activ_bo.validateCode(req.query.supannAliasLogin, req.query.code, req).then(_ => sv.v)
 )
 
-export const esup_activ_bo_authentificateUser = (userAuth: 'useSessionUser' | 'useBasicAuthUser') : simpleAction => async (req, _sv) => {
+export const esup_activ_bo_authentificateUser = (userAuth: 'useSessionUser' | 'useBasicAuthUser') : simpleAction_pre => async (req, _sv) => {
     const { wantedConvert, attrRemapRev } = ldap.convert_and_remap(conf.ldap.people.types, conf.ldap.people.attrs);
     const auth = basic_auth(req);
     if (!auth) throw "Bad Request";
@@ -91,10 +105,10 @@ export const esup_activ_bo_authentificateUser = (userAuth: 'useSessionUser' | 'u
     }
     const o = await esup_activ_bo.authentificateUser(auth.name, auth.pass, _.without(Object.keys(attrRemapRev), 'userPassword'), req);
     const v = handleAttrsRemapAndType(o, attrRemapRev, wantedConvert)
-    return { v }
+    return v
 }
 
-export const esup_activ_bo_authentificateUserWithCas : simpleAction = async (req, _sv) => {
+export const esup_activ_bo_authentificateUserWithCas : simpleAction_pre = async (req, _sv) => {
     const { wantedConvert, attrRemapRev } = ldap.convert_and_remap(conf.ldap.people.types, conf.ldap.people.attrs);
     const targetUrl = conf.mainUrl; // anything would do... weird esup_activ_bo... 
     const proxyticket = await cas.get_proxy_ticket(req, targetUrl);
@@ -105,19 +119,19 @@ export const esup_activ_bo_authentificateUserWithCas : simpleAction = async (req
 
     req.session.supannAliasLogin = v.supannAliasLogin // needed for actions_pre.esup_activ_bo_authentificateUser('useSessionUser')
     
-    return { v };
+    return v;
 }
 
 // useful with nextBrowserStep, otherwise the query params obtained from previous step are NOT validated.
-export const validateAndFilterQueryParams = (attrs: StepAttrsOption) : simpleAction => async (req, sv) => {
+export const validateAndFilterQueryParams = (attrs: StepAttrsOption) : simpleAction_pre => async (req, sv) => {
     let v = merge_v(attrs, {}, {}, req.query as any, { no_diff: true }) as any
     req.query = v;
-    return sv
+    return sv.v
 }
 
-export const mutateQuery = (f: (v:v) => void) : simpleAction => async (req, sv) => {
+export const mutateQuery = (f: (v:v) => void) : simpleAction_pre => async (req, sv) => {
     f(req.query as any)
-    return sv
+    return sv.v
 }
 
 const _esupUserApps_canAccess = async (app: string, uid: string) => {
@@ -131,12 +145,12 @@ const _esupUserApps_canAccess = async (app: string, uid: string) => {
     }
 }
 
-export const esupUserApps_check_canAccess = (app: string): action => async (_req, sv) => {
+export const esupUserApps_check_canAccess = (app: string): simpleAction_pre => async (_req, sv) => {
     if (!await _esupUserApps_canAccess(app, sv.v.uid)) throw "Application non autorisée"
-    return sv
+    return sv.v
 }
 
-export const esupUserApps_add_canAccess = (app: string): action => async (_req, sv) => {
+export const esupUserApps_add_canAccess = (app: string): simpleAction_pre => async (_req, sv) => {
     _.merge(sv.v, { various: { canAccess: { [app]: await _esupUserApps_canAccess(app, sv.v.uid) } } })
-    return sv
+    return sv.v
 }
