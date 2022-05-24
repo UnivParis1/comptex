@@ -13,12 +13,9 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { to_absolute_date } from "../services/helpers";
+import { toYYYY_MM_DD, to_absolute_date } from "../services/helpers";
 import CurrentLdapValue from './CurrentLdapValue.vue';
 
-function toYYYY_MM_DD(date) {
-    return date && date.toISOString().replace(/T.*/, '');
-}
 const init = toYYYY_MM_DD;
 
 export default Vue.extend({

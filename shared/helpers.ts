@@ -22,6 +22,10 @@ export const nextDate = (pattern : string, date: Date) => {
     return r;
 }
 
+export const toYYYY_MM_DD = (date: Date) => (
+    date?.toISOString()?.replace(/T.*/, '')
+)
+
 export const setTimeoutPromise = (time: number) => (
     new Promise((resolve, _) => setTimeout(resolve, time))
 );
