@@ -392,3 +392,13 @@ export const validateMailNoLoop = (idAttr: string): simpleAction => async (_req,
     }    
     return Promise.resolve({ v });
 }
+
+export const supannMailPerso_to_mail_if_needed: simpleAction = async (_req, { v }) => {
+    if (v.supannMailPerso) {
+        const domain = v.supannMailPerso.match(/@(.+)/)?.[1]
+        if (conf.ldap.people.mail_domains.includes(domain)) {
+            v = helpers.renameKey(v, 'supannMailPerso', 'mail')
+        }
+    }
+    return { v }
+}
