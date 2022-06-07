@@ -114,7 +114,9 @@ const compare_v = (v: v, current_v: v) => {
     }
     const attrs_options: attr_option[] = [
       { kind: 'major_change', 
-        attrs: [ 'supannMailPerso', 'pager', 'birthDay' ] },
+        attrs: [ 'pager', 'birthDay' ] },
+      { kind: 'major_change', simplify: (s) => s?.toLowerCase(),
+        attrs: [ 'supannMailPerso' ] },
       { kind: 'major_change', simplify: ignore_accents_and_case,
         attrs: [ 'sn', 'givenName' ] },
       { kind: 'to_ignore', attrs: [
