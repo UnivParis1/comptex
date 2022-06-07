@@ -167,7 +167,7 @@ const suggest_action_in_case_of_ldap_homonymes = async (v: v) => {
             const diffs = compare_v(v, existingAccount, v.various?.canAutoMerge_options);
             const force_merge = diffs.major_change && v.various && v.various.allow_homonyme_merge && v.various.allow_homonyme_merge(existingAccount, v);
             if (!force_merge && diffs.major_change) {
-                console.log("no automatic merge because of", diffs['major_change']);
+                console.log("no automatic merge because of " + JSON.stringify(diffs['major_change']), existingAccount.accountStatus, existingAccount.uid);
                 return { action: 'need_moderation', homonymes, diffs };
             } else if (diffs.minor_change) {
                 console.log("automatic merge with", existingAccount.uid);
