@@ -18,7 +18,7 @@ type Mails = string[]
 
 type id = string
 type allow_homonyme_merge = (existingUser : search_ldap.Homonyme, v: v) => boolean
-type v = Partial<typeof conf.ldap.people.types> & { noInteraction?: boolean, profilename_to_modify?: string, various?: Dictionary<any> & { allow_homonyme_merge?: allow_homonyme_merge } } & Dictionary<any>
+type v = Partial<typeof conf.ldap.people.types> & { noInteraction?: boolean, profilename_to_modify?: string, various?: Dictionary<any> & { allow_homonyme_merge?: allow_homonyme_merge, canAutoMerge_options?: { adding_attr_is_minor_change: boolean } } } & Dictionary<any>
 type response = { [index: string]: any };
 interface history_event {
     when: Date

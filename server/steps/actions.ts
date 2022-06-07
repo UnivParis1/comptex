@@ -106,7 +106,7 @@ export function chain(l_actions: action[]): action {
 
 const ignore_accents_and_case = (val: string) => remove_accents(val).toLowerCase()
 
-const compare_v = (v: v, current_v: v) => {
+const compare_v = (v: v, current_v: v, opts: { adding_attr_is_minor_change: boolean }) => {
     type attr_option = {
         kind: 'major_change'|'to_ignore'|'minor_change'
         attrs: string[]
@@ -137,6 +137,9 @@ const compare_v = (v: v, current_v: v) => {
         const val = v[attr];
         const current_val = current_v[attr];
 
+        if (!current_val && opts?.adding_attr_is_minor_change) {
+            kind = 'minor_change'
+        }
         if (!_.isEqual(val, current_val)) {
             if (simplify) {
                 const [ val_, current_val_ ] = [ val, current_val ].map(simplify);
@@ -157,7 +160,7 @@ const suggest_action_in_case_of_ldap_homonymes = async (v: v) => {
             /* if 2 homonymes, it may be student account + teacher account. If student score is the highest (requires preferStudent), ignore the second account to decide suggest_action_in_case_of_ldap_homonymes */
             homonymes.length === 2 && homonymes[0].score === 1131101) {
             const existingAccount = homonymes[0]
-            const diffs = compare_v(v, existingAccount);
+            const diffs = compare_v(v, existingAccount, v.various?.canAutoMerge_options);
             const force_merge = diffs.major_change && v.various && v.various.allow_homonyme_merge && v.various.allow_homonyme_merge(existingAccount, v);
             if (!force_merge && diffs.major_change) {
                 console.log("no automatic merge because of", diffs['major_change']);
