@@ -19,7 +19,7 @@ import Vue from "vue";
 import * as Helpers from '../services/helpers';
 import * as Ws from '../services/ws';
 import { router } from '../router';
-import { isEmpty, fromPairs } from 'lodash';
+import { isEmpty } from 'lodash';
 import { V, StepAttrsOption } from '../services/ws';
 
 import { v_from_prevStep } from './StepV.vue';
@@ -70,7 +70,7 @@ export default Vue.extend({
         },
         hash_params() {
             if (!this.$route.hash) return {};
-            return fromPairs(this.$route.hash.replace(/^#/, '').split('&').map((s: string) => s.split('=')));
+            return Object.fromEntries(new URLSearchParams(this.$route.hash.replace(/^#/, '')));
         },
     },
 
