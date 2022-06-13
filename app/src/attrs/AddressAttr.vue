@@ -49,7 +49,7 @@
 <script lang="ts">
 import Vue from "vue";
 import * as Helpers from '../services/helpers';
-import * as Address from '../services/address';
+import * as Address from '../../../shared/address';
 import CurrentLdapValue from './CurrentLdapValue.vue';
 
 export default Vue.extend({

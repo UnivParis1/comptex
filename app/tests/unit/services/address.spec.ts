@@ -1,5 +1,5 @@
 import { assert } from 'chai';
-import * as Address from '@/services/address';
+import * as Address from '@/../../shared/address';
 import * as Helpers from '@/services/helpers';
 
 let raw = (o) => Helpers.assign({}, o);
