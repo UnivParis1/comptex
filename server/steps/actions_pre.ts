@@ -57,8 +57,10 @@ export const getExistingUser: simpleAction_pre = async (req, _sv)  => {
     return v
 }
 
-const handle_profilename_to_modify = (req: req, v: v) => {
-    const profilename = req.query.profilename_to_modify;
+const handle_profilename_to_modify = (req: req, v: v) => (
+    handle_profilename_to_modify_(v, req.query.profilename_to_modify)
+)
+export const handle_profilename_to_modify_ = (v: v, profilename: string) => {
     const v_ = profilename && selectUserProfile(v, profilename);
     if (v_) v = { ...v_, profilename_to_modify: profilename };
     return v;
