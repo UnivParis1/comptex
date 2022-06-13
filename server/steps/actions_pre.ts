@@ -156,3 +156,13 @@ export const esupUserApps_add_canAccess = (app: string): simpleAction_pre => asy
     _.merge(sv.v, { various: { canAccess: { [app]: await _esupUserApps_canAccess(app, sv.v.uid) } } })
     return sv.v
 }
+
+export const check_v_otp: simpleAction_pre = async (req, {v}) => {
+    console.log('check_v_otp', v)
+    if (!v.otp) throw "internal error: missing otp in saved v"
+    if (req.query.otp !== v.otp) {
+        console.error("missing/bad otp: wanted", v.otp, "got", req.query.otp)
+        throw "Forbidden"
+    }
+    return v
+}
