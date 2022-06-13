@@ -50,6 +50,7 @@ export const http_request = (url: string, options: http_client_Options & { body?
 
             res.pipe(concat(data => {
                 //console.log('got the response: ' + data)
+                //if (res.statusCode !== 200) console.error("request to " + url + " failed with " + res.statusCode + " " + res.statusMessage);
                 if (res.statusCode !== 200) 
                     reject({ error: data.toString(), statusCode: res.statusCode });
                 else
