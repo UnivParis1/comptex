@@ -85,3 +85,5 @@ export const compute_absolute_date = (relativeDate: relativeDate, date: Date = n
 export const to_absolute_date = (date: Date | relativeDate) => (
     date instanceof Date ? date : date && compute_absolute_date(date, new Date())
 )
+
+export const throw_ = (e: any) => { throw e }
