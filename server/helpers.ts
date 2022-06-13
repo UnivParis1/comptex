@@ -164,3 +164,15 @@ export function setHours(d: Date, hours: number) {
     d.setHours(hours)
     return d
 }
+
+export const removePrefixOrNull = (s: string, prefix: string) => (
+    s.startsWith(prefix) ? s.substring(prefix.length) : null
+)
+export const removePrefix = (s: string, prefix: string) => (
+    s.startsWith(prefix) ? s.substring(prefix.length) : s
+)
+
+export function array_setAll<T>(a: T[], values: T[]) {
+    a.splice(0, 9999, ...values)
+}
+

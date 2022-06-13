@@ -87,3 +87,38 @@ describe('to_DD_MM_YYYY', () => {
         assert.equal(helpers.to_DD_MM_YYYY(new Date("1975-10-02")), "02/10/1975")
     })
 })
+
+describe('removePrefix', () => {
+    it("should work", () => {
+        assert.equal(helpers.removePrefix("aa", "a"), "a")
+        assert.equal(helpers.removePrefix("aa", "aa"), "")
+        assert.equal(helpers.removePrefix("ba", "a"), "ba")
+        assert.equal(helpers.removePrefix("aa", null), "aa")
+        assert.throws(() => helpers.removePrefix(null, "a"))
+    })
+})
+
+describe('removePrefixOrNull', () => {
+    it("should work", () => {
+        assert.equal(helpers.removePrefixOrNull("aa", "a"), "a")
+        assert.equal(helpers.removePrefixOrNull("aa", "aa"), "")
+        assert.equal(helpers.removePrefixOrNull("ba", "a"), null)
+        assert.equal(helpers.removePrefixOrNull("aa", null), null)
+        assert.throws(() => helpers.removePrefixOrNull(null, "a"))
+    })
+})
+
+describe('array_setAll', () => {
+    const test = (init_values: string[], values: string[]) => {
+        let a = init_values
+        helpers.array_setAll(a, values)
+        assert.deepEqual(a, values)
+    }
+    it("should work", () => {
+        test(["foo"], [])
+        test(["foo"], ["bar"])
+        test(["foo", "bar"], ["boo"])
+        assert.throws(() => test(null, []))
+        assert.throws(() => test([], null))
+    })
+})
