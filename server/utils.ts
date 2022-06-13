@@ -5,6 +5,7 @@ import * as _ from 'lodash';
 import * as iconv from 'iconv-lite';
 import * as express from 'express';
 import * as csvtojson from 'csvtojson';
+import * as crypto from 'crypto'
 import * as session from 'express-session';
 import * as session_file_store from 'session-file-store';
 import concat = require('concat-stream');
@@ -175,6 +176,10 @@ export function popen(inText: string, cmd: string, params: string[]): Promise<st
         });
     });
 }
+
+export const random_string = (size: number = 8) => (
+    crypto.randomBytes(size).toString('base64url')
+)
 
 export function mergeSteps(initialSteps: steps, nextSteps: steps): steps {
     _.forEach(initialSteps, (step, _name) => step.initialStep = true);
