@@ -309,7 +309,7 @@ async function homonymes(req: req, id: id, wanted_step: string, v: v): Promise<s
     // (useful when we want to merge multiple attributes from the same source. for example "uid" + "supannAliasLogin")
     const fns = _.uniq(flatMapAttrs(sv_attrs(sv), (opts, attr) => {
         const fn = opts.homonyms || opts.uiType === 'homonym' && search_ldap.homonymes
-        if (fn) {
+        if (fn && !sv.v[attr]) {
             homonym_attrs.add(attr)
             return [fn]
         } else {
