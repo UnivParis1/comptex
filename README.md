@@ -11,9 +11,27 @@ Quand une demande nécessite de passer entre plusieurs personnes, un workflow d�
 
 # Installation
 
+Cloner le dépôt git.
+
+Configurer :
+* server/conf.ts : paramètres divers globaux (votre url, expéditeurs des méls)
+* shared/conf.ts : notamment le titre
+* server/steps/conf.ts : les workflows
+
+Installer les librairies :
 ```sh
 npm install
 ```
+
+Compiler :
+
+```sh
+# pendant le développement
+npm run build:w &
+# en production
+npm run build
+```
+
 
 # Steps Workflow
 
