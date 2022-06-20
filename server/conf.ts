@@ -51,8 +51,7 @@ const conf = {
     },
 
     esup_activ_bo: {
-        url: "http://xxxx.univ.fr:8080/esup-activ-bo/xfire",
-        multiValue_separator: '__-',
+        url: "http://xxxx.univ.fr:8080/esup-activ-bo/",
     },
 
     esupUserApps: {
@@ -182,7 +181,7 @@ const conf = {
                 global_barcode: { ldapAttr: 'employeeNumber' },
                 mifare: { ldapAttr: 'supannRefId', convert: ldap_convert.withEtiquette("{MIFARE}")  },
                 global_mifare: { ldapAttr: 'supannRefId', convert: ldap_convert.withEtiquette("{MIFARE}")  },
-                jpegPhoto: { convert: ldap_convert.base64 },
+                jpegPhoto: { ldapAttr: 'jpegPhoto;base64' },
                 termsOfUse: { ldapAttr: 'up1TermsOfUse' },
                 ..._.fromPairs(['{SMSU}CG', '{PHOTO}PUBLIC', '{PHOTO}INTRANET', '{PHOTO}STUDENT'].map(value => 
                     [ value, { ldapAttr: 'up1TermsOfUse', convert: ldap_convert.has_value(value) } ]

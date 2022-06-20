@@ -46,21 +46,18 @@ const equalIgnoringSingleValueArray = (a: string|string[], b: string|string[]) =
                                     _.isEqual(a,  b )
 )
 
-const remove_unmodified_fields = (userInfo: Dictionary<string | string[]>, userInfo_for_compare: Dictionary<string | string[]>, orig : Dictionary<string|string[]>) => (
-    _.pickBy(userInfo, (_, key) => !equalIgnoringSingleValueArray(userInfo_for_compare[key], orig && orig[key] || ''))
+const remove_unmodified_fields = (userInfo: Dictionary<string | string[]>, orig : Dictionary<string|string[]>) => (
+    _.pickBy(userInfo, (_, key) => !equalIgnoringSingleValueArray(userInfo[key], orig && orig[key] || ''))
 )
 
 export const esup_activ_bo_updatePersonalInformations : simpleAction = (req, sv) => {
     const v = sv.v
-    let userInfo: Dictionary<string | string[]> = ldap.convertToLdap(conf.ldap.people.types, conf.ldap.people.attrs, v, { toEsupActivBo: true });
+    let userInfo: Dictionary<string | string[]> = ldap.convertToLdap(conf.ldap.people.types, conf.ldap.people.attrs, v, {});
     delete userInfo.userPassword // password is handled specially ("setPassword" action)
     if (!v.supannAliasLogin) return Promise.reject("missing supannAliasLogin");
     if (!v['code']) return Promise.reject("missing code");
 
-    // really ugly: we can not compare the result of toEsupActivBo with esup_activ_bo_orig since some values may be DIFFERENT (for base64)
-    let userInfo_compare: Dictionary<string | string[]> = ldap.convertToLdap(conf.ldap.people.types, conf.ldap.people.attrs, v, { toEsupActivBoResponse: true });
-
-    userInfo = remove_unmodified_fields(userInfo, userInfo_compare, v.various.esup_activ_bo_orig)
+    userInfo = remove_unmodified_fields(userInfo, v.various.esup_activ_bo_orig)
     return esup_activ_bo.updatePersonalInformations(v.supannAliasLogin, v['code'], userInfo, req).then(_ => ({ ...sv, v }))
 }
 
@@ -70,7 +67,7 @@ export const esup_activ_bo_setPassword : simpleAction = async (req, { v }) => {
 }
 
 export const esup_activ_bo_minimal_validateAccount : simpleAction = async (req, sv) => {
-    const userInfo = ldap.convertToLdap(conf.ldap.people.types, conf.ldap.people.attrs, search_ldap.v_from_WS(sv.v), { toEsupActivBo: true });
+    const userInfo = ldap.convertToLdap(conf.ldap.people.types, conf.ldap.people.attrs, search_ldap.v_from_WS(sv.v), {});
     await esup_activ_bo.validateAccount(userInfo as any, [], req)
     return sv
 }

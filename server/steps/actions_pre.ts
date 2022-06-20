@@ -65,7 +65,7 @@ function handleAttrsRemapAndType(o : Dictionary<string>, attrRemapRev: Dictionar
 }
 
 export const esup_activ_bo_validateAccount = (isActivation: boolean) : simpleAction => async (req, _sv) => {
-    const userInfo = ldap.convertToLdap(conf.ldap.people.types, conf.ldap.people.attrs, search_ldap.v_from_WS(req.query), { toEsupActivBo: true });
+    const userInfo = ldap.convertToLdap(conf.ldap.people.types, conf.ldap.people.attrs, search_ldap.v_from_WS(req.query), {});
     const { wantedConvert, attrRemapRev } = ldap.convert_and_remap(conf.ldap.people.types, conf.ldap.people.attrs);
     const o = await esup_activ_bo.validateAccount(userInfo as any, _.without(Object.keys(attrRemapRev), 'userPassword'), req)
     if (isActivation && !o.code) throw "Compte déjà activé";
@@ -75,10 +75,7 @@ export const esup_activ_bo_validateAccount = (isActivation: boolean) : simpleAct
 }
 
 export const esup_activ_bo_validateCode : simpleAction = (req, sv) => (
-    esup_activ_bo.validateCode(req.query.supannAliasLogin, req.query.code, req).then(ok => {
-        if (!ok) throw "Code invalide";
-        return sv;
-    })
+    esup_activ_bo.validateCode(req.query.supannAliasLogin, req.query.code, req).then(_ => sv)
 )
 
 export const esup_activ_bo_authentificateUser = (userAuth: 'useSessionUser' | 'useBasicAuthUser') : simpleAction => async (req, _sv) => {
