@@ -14,7 +14,7 @@ Quand une demande nécessite de passer entre plusieurs personnes, un workflow d�
 Cloner le dépôt git.
 
 Configurer :
-* server/conf.ts : paramètres divers globaux (votre url, expéditeurs des méls)
+* server/conf.ts : paramètres divers globaux (votre url, expéditeurs des courriels)
 * shared/conf.ts : notamment le titre
 * server/steps/conf.ts : les workflows
 
