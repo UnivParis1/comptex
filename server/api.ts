@@ -167,7 +167,7 @@ function set_new_many(req: req, wanted_step: string, vs: v[]) {
 
 async function set(req: req, id: id, wanted_step: string, v: v) {
     const sv = await getRaw(req, id, wanted_step);
-    const svr = await setRaw(req, sv, v);
+    const svr = await setRaw(req, id, sv, v);
 
     let r = <r> { success: true, ...svr.response };
     if (svr.step) {
@@ -230,7 +230,7 @@ const checkSetLock = async (sv: sv) => {
 // 3. advance to new step
 // 4. call action_pre
 // 5. save to DB or remove from DB if one action returned null
-function setRaw(req: req, sv: sva, v: v) : Promise<svr> {
+function setRaw(req: req, id: id, sv: sva, v: v) : Promise<svr> {
     sv.v = merge_v(sv_attrs(sv), shared_conf.default_attrs_opts, sv.v, v);
     add_history_event(req, sv)
     return checkSetLock(sv).then(_ => (
@@ -240,10 +240,12 @@ function setRaw(req: req, sv: sva, v: v) : Promise<svr> {
         if (sv.v.various) delete sv.v.various.diff;
         if (sv.step) {
             await saveRaw(req, sv);
-        } else {
+        } else if (id !== 'new') { // remove if in already DB
             await removeRaw(sv);
         }
-    }).finally(() => db.setLock(sv.id, false))
+    }).finally(() => (
+        id !== 'new' && db.setLock(sv.id, false)
+    ))
 }
 
 function saveRaw(req: req, sv: sv) {
