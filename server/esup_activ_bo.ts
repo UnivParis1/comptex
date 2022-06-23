@@ -12,7 +12,7 @@ async function callAPI(action: string, params: Dictionary<any>, req_for_context:
     const query_params = _.pick(params, 'id')
     const body_params = _.omit(params, Object.keys(query_params))
     const url = conf.esup_activ_bo.url + utils.query_string({ action, ...query_params })
-    const body = querystring.stringify(body_params) // rely on querystring.stringify({a: [1,2]}) => 'a=1&a=2'
+    const body = querystring.stringify(_.mapValues(body_params, emptyStringIfEmptyList)) // rely on querystring.stringify({a: [1,2]}) => 'a=1&a=2'
 
     const headers = {
         "Client-IP": req_for_context?.ip || 'unknown',
@@ -29,12 +29,20 @@ async function callAPI(action: string, params: Dictionary<any>, req_for_context:
     }
 }
 
+const emptyStringIfEmptyList = (value: any) => (
+    _.isEmpty(value) ? '' : value
+)
+
+const emptyStringToEmptyList = (values : string[]) => (
+    values.length == 1 && values[0] === "" ? [] : values
+)
+
 function _get_entries(encoded: string) {
     let r: Dictionary<any> = {}
     const qs = new URLSearchParams(encoded);
     for (const key of qs.keys()) {
         const key_ = key.replace(/^attr[.]/, '') // ignore "attr."
-        r[key_] = qs.getAll(key)
+        r[key_] = emptyStringToEmptyList(qs.getAll(key))
     }
     //console.log('_get_entries', r)
     return r
@@ -86,8 +94,8 @@ export const validateCode = (id: string, code: string, req_for_context: req) => 
 
 export function validatePassword(id: string, password: string, req_for_context: req) {
     return callAPI("validatePassword", { id, password }, req_for_context).then(response => {
-        let err = response?.resp?.[0]
-        if (err === '') return; // OK!
+        if (response?.resp?.length === 0) return; // OK!
+        let err = response?.resp?.[0] || "internal error"
         err = err.replace(/^kadmin: kadm5_check_password_quality: /, '');
         // below non translated messages should be caught by app/src/attrs/PasswordAttr.vue "passwordPattern":
         // "Password doesn't meet complexity requirement." 
