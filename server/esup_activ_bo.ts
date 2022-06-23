@@ -12,7 +12,7 @@ async function callAPI(action: string, params: Dictionary<any>, req_for_context:
     const query_params = _.pick(params, 'id')
     const body_params = _.omit(params, Object.keys(query_params))
     const url = conf.esup_activ_bo.url + utils.query_string({ action, ...query_params })
-    const body = "" + new URLSearchParams(body_params)
+    const body = querystring.stringify(body_params) // rely on querystring.stringify({a: [1,2]}) => 'a=1&a=2'
 
     const headers = {
         "Client-IP": req_for_context?.ip || 'unknown',
