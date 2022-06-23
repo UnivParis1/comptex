@@ -1,5 +1,6 @@
 'use strict';
 
+// @ts-ignore
 import * as fs from 'fs';
 import sendmailTransport = require('nodemailer-sendmail-transport');
 import * as ldap_convert from './ldap_convert';
@@ -245,7 +246,8 @@ const conf = {
         ssoBaseURL: '', //'https://cas.univ.fr/cas/',
     },
 
-    http_client_CAs: fs.readFileSync('/etc/ssl/certs/ca-certificates.crt').toString().split(/(?=-----BEGIN CERTIFICATE-----)/),
+    // Default is to trust the well-known CAs curated by Mozilla, cf https://nodejs.org/api/tls.html#tlscreatesecurecontextoptions
+    http_client_CAs: '', //fs.readFileSync('/etc/ssl/certs/ca-certificates.crt').toString().split(/(?=-----BEGIN CERTIFICATE-----)/),
 
     poll_maxTime: 4 * 60 * 1000, // 4 minutes
 
