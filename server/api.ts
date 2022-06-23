@@ -235,13 +235,13 @@ function setRaw(req: req, sv: sva, v: v) : Promise<svr> {
     add_history_event(req, sv)
     return checkSetLock(sv).then(_ => (
         advance_sv(req, sv)
-    )).tap(svr => {
+    )).tap(async svr => {
         let sv = <sv> _.omit(svr, 'response', 'attrs');
         if (sv.v.various) delete sv.v.various.diff;
         if (sv.step) {
-            return saveRaw(req, sv);
+            await saveRaw(req, sv);
         } else {
-            return removeRaw(sv);
+            await removeRaw(sv);
         }
     }).finally(() => db.setLock(sv.id, false))
 }
