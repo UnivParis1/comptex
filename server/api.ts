@@ -220,9 +220,10 @@ function advance_sv(req: req, sv: sva) : Promise<svr> {
     });
 }
 
-const checkSetLock = (sv: sv) : Promise<any> => (
-    sv.lock ? Promise.reject("locked") : sv.id ? db.setLock(sv.id, true) : Promise.resolve()
-);
+const checkSetLock = async (sv: sv) => {
+    if (sv.lock) throw "locked"
+    if (sv.id) await db.setLock(sv.id, true)
+}
 
 // 1. merge allow new v attrs into sv
 // 2. call action_post
