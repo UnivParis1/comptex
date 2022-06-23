@@ -68,8 +68,8 @@ export const init = (app: express.Express) => {
 
 export const get_proxy_ticket = (req: req, targetService: string): Promise<string> => (
     new Promise((resolve, reject) => {
-        if (!conf.cas.host) {
-            reject("Internal error: you must configure cas.host in server/conf.ts (for get_proxy_ticket)");
+        if (!conf.cas.ssoBaseURL) {
+            reject("Internal error: you must configure cas.ssoBaseURL in server/conf.ts (for get_proxy_ticket)");
         }
         const force_login = () => reject({ code: "Unauthorized", authenticate: { type: "cas_with_pgt" } });
         if (!req.session || !req.session.pgt) {

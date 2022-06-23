@@ -242,7 +242,7 @@ const conf = {
     trust_proxy: ['loopback'],
 
     cas: {
-        host: '', //'cas.univ.fr',
+        ssoBaseURL: '', //'https://cas.univ.fr/cas/',
     },
 
     http_client_CAs: fs.readFileSync('/etc/ssl/certs/ca-certificates.crt').toString().split(/(?=-----BEGIN CERTIFICATE-----)/),

@@ -27,7 +27,7 @@ app.set('trust proxy', conf.trust_proxy)
 app.use("/", express.static(path.join(__dirname, '../app/dist'), staticFilesOptions));
 logger.token('remote-user', (req: any) => (req.user?.id))
 app.use(logger(':remote-addr :remote-user ":method :url" :status :res[content-length] ":referrer" ":user-agent" :response-time ms'));
-if (conf.cas.host) {
+if (conf.cas.ssoBaseURL) {
     cas.init(app);
 } else {
     app.use(utils.shibboleth_express_auth);
