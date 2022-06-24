@@ -127,6 +127,7 @@ export default {
         ].join('|'),
         frenchPostalCode: "\\s*[0-9]{5}\\s*",
         country: "^(?!\\d)", // do not start with a digit (to warn someone mistakenly entering a postalcode or road number)
+        password: "(?=.*[0-9])(?=.*[A-Z])(?=.*[a-z])[ -~]{8,}", // must contain digit / uppercase / lowercase. must be printable ASCII chars
     },
     error_msg: {
         radio_required: 'Veuillez sélectionner une de ces options.',
