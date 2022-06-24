@@ -13,6 +13,9 @@
   },
   "dependencies": {
     "@vue/composition-api": "^0.3.2",
+    "@zxcvbn-ts/core": "^2.0.1",
+    "@zxcvbn-ts/language-common": "^2.0.1",
+    "@zxcvbn-ts/language-fr": "^2.1.0",
     "array-includes": "^3.0.3",
     "axios": "^0.17.1",
     "bootstrap": "^3.3.7",
