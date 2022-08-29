@@ -12,7 +12,7 @@
   </div>
 
   <div v-if="step_description">
-    <component :is="step_description" :v_pre="v_pre" :v="v"></component>
+    <component :is="step_description" :v_pre="v_pre" :v="v" :v_display="v_display" :potential_homonyms="potential_homonyms"></component>
   </div>
 
   <div v-if="imported">
@@ -86,7 +86,7 @@ import ImportResult from '../import/ImportResult.vue';
 import Homonyms from '../controllers/Homonyms.vue';
 import attrsForm from '../attrs/attrsForm';
 import MyModalP from './MyModalP.vue';
-import { filterAttrs } from "../../../shared/v_utils";
+import { filterAttrs, formatValue } from "../../../shared/v_utils";
 
 
 function AttrsForm_data() {
@@ -158,7 +158,7 @@ export default Vue.extend({
         },
         step_description() {
             const text = this.step?.labels?.description;
-            return text && Vue.extend({ props: ['v_pre', 'v'], template: "<div>" + text + "</div>" });
+            return text && Vue.extend({ props: ['v_pre', 'v', 'v_display', 'potential_homonyms'], template: "<div>" + text + "</div>" });
         },
         step_post_scriptum() {
             const text = this.step?.labels?.post_scriptum;
@@ -267,6 +267,9 @@ export default Vue.extend({
             ...resp,
             component: Vue.extend({ props: ['resp', 'v_pre', 'v'], template }),
         };
+      },
+      v_display(attr: string) {
+        return formatValue(this.v[attr], this.all_attrs_flat[attr])
       },
       go_back() {
         if (this.initialStep) {
