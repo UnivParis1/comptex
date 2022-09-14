@@ -91,6 +91,7 @@ type profileValues = profileValuesT<StepAttrOption>;
 
 interface StepLabels extends Omit<ClientSideStepLabels, 'description_in_list'> {
     description_in_list?: string | ((req : req) => Promise<string>); // description displayed in list of steps (InitialStep / ModerateList)
+    acls?: string
 }
 
 interface StepNotify {
