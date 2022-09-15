@@ -56,7 +56,7 @@ export default {
         floorNumber: { title: "Étage" },
         roomNumber: { title: "Numéro de bureau" },
         buildingName: { title: "Site" },
-        userPassword: { title: "Mot de passe", uiType: 'newPassword' },
+        userPassword: { title: "Mot de passe" },
         userPassword2: { title: "Confirmer le mot de passe" },
         cardChoice: { title: "Carte" },
         barcode: { title: "Code barre" },

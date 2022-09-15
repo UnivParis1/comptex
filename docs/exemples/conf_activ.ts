@@ -98,6 +98,7 @@ const userPasswordAttrs = (activation: boolean) : StepAttrsOption_ => ({
         description: activation ? 'Veuillez saisir votre mot de passe' : 'Veuillez saisir votre nouveau mot de passe',
         toUserOnly: true, uiType: 'tab',
         properties: { userPassword: {
+            uiType: 'newPassword',
             description: ce_n_est_pas_le_mdp_FranceConnect_warning,
         } },
     },    
