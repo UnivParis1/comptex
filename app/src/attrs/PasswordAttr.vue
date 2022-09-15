@@ -30,7 +30,7 @@ export default Vue.extend({
     },
     computed: {
       passwordPattern() {
-          return conf.pattern.password || ''
+          return this.opts?.pattern || '' // if empty, it will use https://zxcvbn-ts.github.io/zxcvbn/ to display warnings/suggestions about password strength
       },
       error_msg() {
           return conf.error_msg;
