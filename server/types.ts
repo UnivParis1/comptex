@@ -71,6 +71,7 @@ interface ServiceSideOnlyStepAttrOptions {
   toUser?: (val: string, v: v) => any;
 
   oneOf_async?: (token: string, sizeLimit: number) => Promise<StepAttrOptionChoices[]>; // if sizeLimit===1, it is used as an exact search
+  oneOf_is_dynamic?: true, // useful if the list is modified dynamically. Do not use it if oneOf contains "merge_patch_parent_properties"
   serverValidator?: (val: string, prev: v, v: v) => string;
   homonyms?: (v: v) => Promise<search_ldap.Homonyme[]>;
 }

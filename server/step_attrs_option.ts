@@ -336,7 +336,7 @@ export const mapAttrs = <T>(attrs: StepAttrsOptionT<T>, f: (opts: StepAttrOption
             mpp.merge_patch_parent_properties ? { ...mpp, merge_patch_parent_properties: mapAttrs(mpp.merge_patch_parent_properties, f) } : mpp
         )
         if (opts.then) opts.then = rec_mpp(opts.then)
-        if (opts.oneOf) opts.oneOf = opts.oneOf.map(rec_mpp)
+        if (opts.oneOf && !opts.oneOf_is_dynamic) opts.oneOf = opts.oneOf.map(rec_mpp)
         return opts;        
     })
 )
