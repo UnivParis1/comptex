@@ -204,6 +204,7 @@ const createCompte_ = async (req: req, sv: sva, opts : crejsonldap.options) => {
         // so adding a full 23h59m to help 
         v.enddate = helpers.addDays(v.startdate, v.duration + 0.9999);
     }
+    if (v.enddate < new Date()) throw "date de fin dans le passé"
     
     const resp_subv = await crejsonldap.createMayRetryWithoutSupannAliasLogin(v, opts);
     const created = resp_subv.uid && !v.uid;
