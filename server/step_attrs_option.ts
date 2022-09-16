@@ -98,8 +98,11 @@ function validate(key: string, opt: StepAttrOption, more_opt: SharedStepAttrOpti
         }
         if (opt.minDate) {
             let val_ = val && new Date(val)
-            if (!(val_ && +helpers.compute_absolute_date(opt.minDate) <= +val_))
-                throw `constraint ${key}.minDate >= ${opt.minDate} failed when checking ${helpers.compute_absolute_date(opt.minDate)} <= ${val}`;
+            if (val_) {
+                const min = helpers.setHours(helpers.compute_absolute_date(opt.minDate), 0)
+                if (+val_ < +min)
+                    throw `constraint ${key}.minDate >= ${opt.minDate} failed when checking ${min} <= ${val_}`;
+            }
         }
         if (opt.maxDate) {
             let val_ = val && new Date(val)

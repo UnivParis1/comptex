@@ -159,3 +159,8 @@ export const to_DD_MM_YYYY = (date: Date) => (
     // do it by hand until we force nodejs >= 13 which has full-icu by default 
     [ date.getDate(), date.getMonth() + 1, date.getFullYear() ].map(two_digit).join('/')
 )
+
+export function setHours(d: Date, hours: number) {
+    d.setHours(hours)
+    return d
+}

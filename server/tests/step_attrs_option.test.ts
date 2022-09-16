@@ -262,6 +262,13 @@ describe('merge_v', () => {
         test_fail({ attr1: { minDate: '+101D' } }, {}, v, /^constraint attr1[.]minDate >= [+]101D failed/);
         test({ attr1: { maxDate: '+101D' } }, {}, v, v);
         test_fail({ attr1: { maxDate: '+99D' } }, {}, v, /^constraint attr1[.]maxDate <= [+]99D failed/);
+
+        const v_today_late = { attr1: helpers.setHours(new Date(), 23) }
+        test({ attr1: { minDate: '+0D' } }, {}, v_today_late, v_today_late);
+        const v_today_early = { attr1: helpers.setHours(new Date(), 3) }
+        test({ attr1: { minDate: '+0D' } }, {}, v_today_early, v_today_early);
+        const v_yesterday = { attr1: helpers.setHours(new Date(), -25) }
+        test_fail({ attr1: { minDate: '+0D' } }, {}, v_yesterday, /^constraint attr1[.]minDate >= [+]0D failed/);
     });
     it ("should check array", () => {
         test_fail({ altGivenName: { items: {} } }, {}, {}, 'constraint !altGivenName.optional failed for undefined');
