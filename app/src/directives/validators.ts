@@ -36,13 +36,17 @@ const checkValidity = {
 
 Vue.component('input-with-validity', {
   template: "<input :name='name' :value='value' :type='type' :disabled='disabled'>",
-  props: ['value', 'name', 'type', 'sameAs', 'allowedChars', 'realType', 'pattern', 'min', 'max', 'minlength', 'maxlength', 'step', 'validator', 'disabled'],
+  props: ['value', 'name', 'type', 'sameAs', 'allowedChars', 'realType', 'pattern', 'min', 'max', 'minlength', 'maxlength', 'step', 'validator', 'disabled', 'onFocusOut'],
   mixins: [checkValidity],
   mounted() {
     let element = this.$el;
 
     element.classList.add("form-control");
     this._setPattern();
+
+    if (this.onFocusOut) {
+        element.addEventListener('focusout', this.onFocusOut.bind(this))
+    }
 
     element.addEventListener('input', checkValidity.methods.onchange.bind(this))
     this.checkValidity();

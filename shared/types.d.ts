@@ -78,6 +78,7 @@ type SharedStepAttrOption = MinimalStepAttrOption & {
     formatting?: (val: any) => string;
     formatting_html?: (val: any) => string;
     onChange?: (v: CommonV, _: string, val: any) => void;
+    onFocusOut?: (v: CommonV) => void;
     onVisible?: (v: {}, elt: HTMLElement) => void;
     validator?: (val: any, v_orig: {}) => string;
 

@@ -115,6 +115,7 @@
         :placeholder="opts.uiPlaceholder" :inputmode="uiOptions.inputmode"
         :type="type" :realType="realType" :required="!opts.optional" :pattern="opts.pattern" :allowedChars="opts.allowedChars" :validator="opts.validator"
         :min="opts.min" :max="opts.max" :minlength="opts.minlength" :maxlength="opts.maxlength" :step="uiType === 'number' && 'any'"
+        :onFocusOut="opts.onFocusOut && (() => opts.onFocusOut(v))"
         :title="opts.labels && opts.labels.tooltip" :validity.sync="validity[name]">
     </input-with-validity>
     <array-actions @action="name => $emit('array_action', name)" :array_allowed_actions="array_allowed_actions" />
