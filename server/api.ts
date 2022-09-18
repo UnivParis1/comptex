@@ -86,7 +86,7 @@ async function export_sv(req: req, sv: sva): Promise<ClientSideSVA> {
     sv = _.clone(sv);
     sv.v = export_v(sv_attrs(sv), sv.v) as v;
     await transform_object_items_oneOf_async_to_oneOf(sv.attrs, sv.v) // modifies sv.attrs
-    const attrs = exportAttrs(sv.attrs, req.translate);
+    const attrs = exportAttrs(sv.attrs, sv.v, req.translate);
     return { ...sv as any, stepName: sv.step, ...await exportStep(req, step(sv)), attrs };
 }
 
@@ -349,7 +349,7 @@ const exportLabels = async (req: req, { description_in_list, ...labels }: StepLa
 
 const exportStep = async (req: req, step: step) => (
     {
-        attrs: typeof step.attrs === 'function' ? {} : exportAttrs(step.attrs, req.translate),
+        attrs: typeof step.attrs === 'function' ? {} : exportAttrs(step.attrs, {}, req.translate),
         step: {
             labels: await exportLabels(req, step.labels),
             ..._.pick(step, 'allow_many', 'if_no_modification'),

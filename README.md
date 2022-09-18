@@ -140,6 +140,7 @@ By default, the value is sent to the browser, and can be modified with potential
 You can also ensure the browser does not modify the value:
 * ```hidden```: not sent to the browser
 * ```readOnly```: sent to the browser, but can not be modified by the browser
+* ```readOnly_ifNotEmpty```: sent to the browser, but can not be modified by the browser if not empty
 * ```toUserOnly```: sent to the browser, but can not be modified by the browser + do not propagate it to next steps (usage example: display it to the user, but do not propagate to createCompte)
 
 

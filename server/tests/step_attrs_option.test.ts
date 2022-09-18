@@ -36,23 +36,27 @@ describe('mapAttrs', () => {
 
 describe('exportAttrs', () => {
     it("should work", () => {
-        const checkSame = (attrs: Dictionary<any>) => assert.deepEqual(exportAttrs(attrs), attrs);
+        const checkSame = (attrs: Dictionary<any>) => assert.deepEqual(exportAttrs(attrs, {}), attrs);
         checkSame({ sn: {} });
         checkSame({ _foo: { properties: { sn: {} } } });
-        assert.deepEqual(exportAttrs({ sn: { readOnly: true, max: 11 } }), { sn: { readOnly: true, optional: true, max: 11 } });
+        assert.deepEqual(exportAttrs({ sn: { readOnly: true, max: 11 } }, {}), { sn: { readOnly: true, optional: true, max: 11 } });
     });
     it("should handle hidden", () => {
-        assert.deepEqual(exportAttrs({ sn: { hidden: true } }), {});
-        assert.deepEqual(exportAttrs({ _foo: { properties: { sn: { hidden: true } } } }), { _foo: { properties: {} }});
+        assert.deepEqual(exportAttrs({ sn: { hidden: true } }, {}), {});
+        assert.deepEqual(exportAttrs({ _foo: { properties: { sn: { hidden: true } } } }, {}), { _foo: { properties: {} }});
+    });
+    it("should handle readOnly_ifNotEmpty", () => {
+        assert.deepEqual(exportAttrs({ sn: { readOnly_ifNotEmpty: true } }, {}), { sn: {} });
+        assert.deepEqual(exportAttrs({ sn: { readOnly_ifNotEmpty: true } }, { sn: 'foo' }), { sn: { readOnly: true, optional: true }});
     });
     it("should handle toUserOnly", () => {
-        assert.deepEqual(exportAttrs({ sn: { toUserOnly: true } }), { sn: { optional: true, readOnly: true }});
-        assert.deepEqual(exportAttrs({ sn: { toUserOnly: true, max: 22 } }), { sn: { optional: true, readOnly: true, max: 22 }});
-        assert.deepEqual(exportAttrs({ a_or_b }), { a_or_b: { oneOf: [
+        assert.deepEqual(exportAttrs({ sn: { toUserOnly: true } }, {}), { sn: { optional: true, readOnly: true }});
+        assert.deepEqual(exportAttrs({ sn: { toUserOnly: true, max: 22 } }, {}), { sn: { optional: true, readOnly: true, max: 22 }});
+        assert.deepEqual(exportAttrs({ a_or_b }, {}), { a_or_b: { oneOf: [
             { const: "a", merge_patch_parent_properties: { a: {} } },
             { const: "b", merge_patch_parent_properties: { a: { optional: true, readOnly: true }, b: {} } },
         ] } });
-        assert.deepEqual(exportAttrs(a_then_bc), { a: {
+        assert.deepEqual(exportAttrs(a_then_bc, {}), { a: {
             optional: true, 
             if: { optional: false },
             then: { merge_patch_parent_properties: { b: {}, c: { optional: true, readOnly: true } } }

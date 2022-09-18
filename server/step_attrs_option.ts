@@ -211,7 +211,7 @@ const may_set_translated = (translate: translate, default_opts: SharedStepAttrOp
 }
 
 type ClientSideStepAttrOption = StepAttrOptionM<ClientSideOnlyStepAttrOption>
-const exportAttr = ({ toUserOnly, oneOf_async, properties, toUser, then, oneOf, ...opt_} : StepAttrOption, translate: translate, default_opts: SharedStepAttrOption) => {
+const exportAttr = ({ toUserOnly, readOnly_ifNotEmpty, oneOf_async, properties, toUser, then, oneOf, ...opt_} : StepAttrOption, attr: string, v: v, translate: translate, default_opts: SharedStepAttrOption) => {
     const opt : ClientSideStepAttrOption = opt_;
 
     may_set_translated(translate, default_opts, opt, 'title')
@@ -219,8 +219,9 @@ const exportAttr = ({ toUserOnly, oneOf_async, properties, toUser, then, oneOf, 
     if (opt.labels) opt.labels = _.mapValues(opt.labels, translate)
 
     if (toUserOnly) opt.readOnly = true
+    if (readOnly_ifNotEmpty && v[attr]) opt.readOnly = true
     if (oneOf_async) opt.oneOf_async = "true";
-    if (properties) opt.properties = exportAttrs(properties, translate);
+    if (properties) opt.properties = exportAttrs(properties, v, translate);
 
     function rec_mpp(one: Mpp<StepAttrOption>): Mpp<ClientSideStepAttrOption>
     function rec_mpp(one: StepAttrOptionChoicesT<StepAttrOption>): StepAttrOptionChoicesT<ClientSideStepAttrOption>
@@ -228,7 +229,7 @@ const exportAttr = ({ toUserOnly, oneOf_async, properties, toUser, then, oneOf, 
         one = { ...one }
         may_set_translated(translate, null, one, 'title')
         if (one.merge_patch_parent_properties) {
-            return { ...one, merge_patch_parent_properties: exportAttrs(one.merge_patch_parent_properties, translate) };
+            return { ...one, merge_patch_parent_properties: exportAttrs(one.merge_patch_parent_properties, v, translate) };
         } else {
             return one;
         }
@@ -240,8 +241,8 @@ const exportAttr = ({ toUserOnly, oneOf_async, properties, toUser, then, oneOf, 
     return opt;
 }
 
-export const exportAttrs = (attrs: StepAttrsOption, translate: translate = _ => null): Dictionary<ClientSideStepAttrOption> => (
-    _.mapValues(_.omitBy(attrs, val => val.hidden), (opts, attr) => exportAttr(opts, translate, shared_conf.default_attrs_opts[attr]))
+export const exportAttrs = (attrs: StepAttrsOption, v: v, translate: translate = _ => null): Dictionary<ClientSideStepAttrOption> => (
+    _.mapValues(_.omitBy(attrs, val => val.hidden), (opts, attr) => exportAttr(opts, attr, v, translate, shared_conf.default_attrs_opts[attr]))
 )
 
 export const eachAttrs = (attrs: StepAttrsOption, f: (opts: StepAttrOption, key: string, attrs: StepAttrsOption, cond: boolean) => void) => {
