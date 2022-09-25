@@ -56,7 +56,7 @@ describe('v_display', () => {
   <tr><th>Champ</th><th>Ancienne valeur</th><th>Nouvelle valeur</th></tr>
   <tr><td>Courriel personnel</td><td>foo@bar.com</td><td><i>supprimée</i></td></tr>
   <tr><td>Nom de naissance</td><td><i>aucune</i></td><td>Rigaux</td></tr>
-  <tr><td>Nom d'usage</td><td>Rigaud</td><td>Rigaux</td></tr>
+  <tr><td>NOM</td><td>Rigaud</td><td>Rigaux</td></tr>
   <tr><td>Date de naissance</td><td>02/10/1975</td><td>02/10/2010</td></tr>
   <tr><td>J'autorise</td><td></td><td>l'envoi de SMS</td></tr>
   <tr><td>{SMSU}foo</td><td><i>aucune</i></td><td>true</td></tr>

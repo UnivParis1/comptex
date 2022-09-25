@@ -29,8 +29,9 @@ export default {
         givenName: { title: "Prénom", allowedChars: allowedCharsInNames, normalize: normalizeNomPopre },
         altGivenName: { title: 'Autres prénoms', allowedChars: allowedCharsInNames, normalize: normalizeNomPopre },
         sn: {
-            title: "Nom d'usage", allowedChars: allowedCharsInNames, normalize: normalizeNomPopre, 
+            title: "NOM", allowedChars: allowedCharsInNames, normalize: normalizeNomPopre, 
             labels: { tooltip: "Nom marital, nom d'épouse ou nom de naissance" },
+            onFocusOut(v: CommonV) { v.birthName ||= v.sn },
         },
         birthName: { 
             title: "Nom de naissance", allowedChars: allowedCharsInNames, normalize: normalizeNomPopre, 
