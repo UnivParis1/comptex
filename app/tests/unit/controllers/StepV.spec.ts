@@ -14,7 +14,7 @@ const mountStepV = ({ attrs, v, v_pre = {}, initialStep = false }) => {
         propsData: {
             step: { labels: { title: "Title1<>", description: "Desc1-{{v_pre.attr1}}-{{v.attr1}}" } },
             attrs, all_attrs_flat: _.clone(attrs),
-            v: _.clone(v), v_orig: _.clone(v), v_pre,
+            v: _.clone(v), v_pre,
             stepName: 'foo',
             wanted_id: initialStep ? null : 'xxx',
         }, 

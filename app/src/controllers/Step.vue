@@ -8,7 +8,7 @@
     <StepV v-if="v"
         :wanted_id="wanted_id" :stepName="stepName"
         :id="id" :v_pre="v_pre"
-        :step="step" :attrs="attrs" :all_attrs_flat="all_attrs_flat" :v="v" :v_orig="v_orig" :v_ldap="v_ldap"
+        :step="step" :attrs="attrs" :all_attrs_flat="all_attrs_flat" :v="v" :v_ldap="v_ldap"
         :additional_public_info="additional_public_info"
     ></StepV>
 </div>
@@ -32,7 +32,6 @@ function AttrsForm_data() {
       attrs: <StepAttrsOption> undefined,
       all_attrs_flat: <StepAttrsOption> undefined,
       v: <V> undefined,
-      v_orig: <V> undefined,
       v_ldap: <V> undefined,
       fatal_error: undefined,
       fatal_error_html: undefined,

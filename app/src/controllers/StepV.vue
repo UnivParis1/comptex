@@ -91,6 +91,7 @@ import { filterAttrs, formatValue } from "../../../shared/v_utils";
 
 function AttrsForm_data() {
     return {
+      v_orig: undefined,
       resp: undefined,
       to_import: undefined,
       imported: <any[]> undefined,
@@ -115,7 +116,7 @@ export default Vue.extend({
     props: [
         'wanted_id', 'stepName', 
         'id', 'v_pre',
-        'step', 'attrs', 'all_attrs_flat', 'v', 'v_orig', 'v_ldap',
+        'step', 'attrs', 'all_attrs_flat', 'v', 'v_ldap',
         'additional_public_info',
     ],
     data: AttrsForm_data,
@@ -146,6 +147,7 @@ export default Vue.extend({
 
         other_attrs(): StepAttrsOption {
             let { attrs, current_defaults } = compute_mppp_and_handle_default_values(this.attrs, this.prev_defaults, this.v);
+            this.v_orig ??= Helpers.copy(this.v)
             this.prev_defaults = current_defaults;
 
             // no need to go through chosen oneOf, since "compute_mppp_and_handle_default_values" has already merged things
@@ -349,7 +351,8 @@ export default Vue.extend({
                 } else {
                 console.log("adding " + attr + " = " + val); 
                 this.v[attr] = val;
-                this.v_orig[attr] = val;
+                // NB: in unit tests, v_orig may not be computed yet
+                if (this.v_orig) this.v_orig[attr] = val;
             }
             }
           });
