@@ -146,7 +146,10 @@ You can also ensure the browser does not modify the value:
 
 
 You can customize the way it is displayed:
-* ```uiHidden```: use `true with `readOnly` or `toUserOnly` to hide the `<input>` (useful when you want to display the value in step `description`) ; use `false` with `readOnly` to force display of an empty input.
+* ```uiHidden```: 
+  * use `true` with `readOnly` or `toUserOnly` to hide the `<input>` (useful when you want to display the value in step `description`)
+  * use `false` with `readOnly` to force display of an empty input
+  * use `"ifFalsy"` to hide if the value if [falsy](https://developer.mozilla.org/en-US/docs/Glossary/falsy)
 * ```title```: (*text*) the `<label>`. Use [Unicode non-breaking space](https://en.wikipedia.org/wiki/Non-breaking_space) to force layout
 * ```description```: *(html)* displayed below the `<input>`. For `items.properties` or with `uiOptions.texts_are_vue_template`, it is a *vue template*
 * ```uiPlaceholder```: the `<input>` placeholder

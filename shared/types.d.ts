@@ -35,7 +35,7 @@ interface StepAttrItemsOption {
         date_todayButton?: string
     };
 
-    uiHidden?: boolean;
+    uiHidden?: boolean | 'ifFalsy';
 
     uiType?: uiTypes;
 

@@ -150,7 +150,7 @@ export default Vue.extend({
 
             // no need to go through chosen oneOf, since "compute_mppp_and_handle_default_values" has already merged things
             attrs = filterAttrs(attrs, 'never', (opts, k) => (
-                !opts.uiHidden &&
+                (opts.uiHidden === 'ifFalsy' ? this.v[k] : opts.uiHidden !== true) &&
                 !(this.to_import && this.to_import.fields.includes(k)) &&
                 !(this.$route.query && (k in this.$route.query)) // do not display things that have been forced in the url
             ));
