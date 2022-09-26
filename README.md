@@ -214,6 +214,7 @@ More complex ACLs are possible. They need to provide 3 functions:
 ## Various
 
 * ```nextBrowserStep```: the name of a step (with a leading `/`) or an external url.
+* ```search_filter```: LDAP filter. A similar result can be obtained with step.acls, but it's harder since you should ensure "v_to_ldap_filter" and "user_to_ldap_filter" do the same thing.
 
 # Authentication
 

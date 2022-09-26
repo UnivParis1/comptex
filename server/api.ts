@@ -382,7 +382,7 @@ const loggedUserInitialSteps = async (req: req) => {
   return await helpers.pmap(l_, async ({ id, stepName, step, filter }) => (
     { id, 
       stepName,
-      ldap_filter: filter,
+      ldap_filter: filter || step.search_filter,
       ...await exportStep(req, step),
     }
   ))
