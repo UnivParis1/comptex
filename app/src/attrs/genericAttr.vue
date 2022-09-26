@@ -53,7 +53,7 @@
   <my-bootstrap-form-group :name="name" 
     :opts="opts"
     :no_html_label="uiType === 'radio' || uiType === 'checkbox'"
-    :validity="validity" v-else-if="opts">
+    :validity="uiType !== 'span' && validity" v-else-if="opts">
 
     <div v-if="uiType === 'radio'">
       <radio-with-validity :name="name" v-model="val"
