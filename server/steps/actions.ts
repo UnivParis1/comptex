@@ -160,6 +160,10 @@ const suggest_action_in_case_of_ldap_homonymes = async (v: v) => {
             /* if 2 homonymes, it may be student account + teacher account. If student score is the highest (requires preferStudent), ignore the second account to decide suggest_action_in_case_of_ldap_homonymes */
             homonymes.length === 2 && homonymes[0].score === 1131101) {
             const existingAccount = homonymes[0]
+            if (existingAccount.accountStatus === 'deleted') {
+                console.log("ignoring old 'deleted' homonyme:", existingAccount.uid);
+                return { action: 'create_account' };
+            }
             const diffs = compare_v(v, existingAccount, v.various?.canAutoMerge_options);
             const force_merge = diffs.major_change && v.various && v.various.allow_homonyme_merge && v.various.allow_homonyme_merge(existingAccount, v);
             if (!force_merge && diffs.major_change) {
@@ -192,8 +196,12 @@ export const createCompteSafe = (l_actions: action[], afterCreateCompte: action[
         case 'modify_account': sv.v.uid = suggestion.existingAccount.uid;
     }
     // ok, let's create it
-    return chain([ createCompte, ...afterCreateCompte ])(req, sv);
+    return chain([ createCompteSafe_, ...afterCreateCompte ])(req, sv);
 }
+
+const createCompteSafe_: action = (req, sv) => (
+    createCompte_(req, sv, { dupcreate: "warn", dupmod: "warn", create: true })
+);
 
 export const createCompte: action = (req, sv) => (
     createCompte_(req, sv, { dupcreate: "ignore", dupmod: "warn", create: true })
