@@ -74,6 +74,7 @@
     <div v-else-if="uiType === 'textarea'">
       <textarea-with-validity :name="name" v-model="val"
         class="form-control"
+        :rows="opts.readOnly ? (value||'').split('\n').length : undefined" 
         :disabled="opts.readOnly" :required="!opts.optional" :validity.sync="validity[name]">
       </textarea-with-validity>
       <span class="attr-description" v-html="opts.description"></span>
