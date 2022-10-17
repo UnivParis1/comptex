@@ -253,7 +253,7 @@ const after_createAccount = async (v: v, attrs: StepAttrsOption, accountStatus: 
     if (v.supannMailPerso) {
         const v_ = v_display(v, flatten_attrs(attrs, v));
         const cc = v.personParrain && await search_ldap.onePersonLoginToMail(v.personParrain)
-        mail.sendWithTemplateFile('warn_user_account_created.html', { from: mailFrom(v), to: v.supannMailPerso, cc, v, v_display: v_, created, isActive: !!accountStatus });
+        mail.sendWithTemplateFile('warn_user_account_created.html', { from: mailFrom(v), to: v.supannMailPerso, cc, v, v_display: v_, created, isActive: !!accountStatus, moderator: req_for_context.user });
     }
 }
 
@@ -318,7 +318,7 @@ export const sendSupannMailPerso = (template: string, params = {}): action => as
 }
 
 export const sendMailWithFileTemplate = (templateName: string, params = {}, opts = {}): action => async (req, sv) => {
-    mail.sendWithTemplateFile(templateName, await prepareMailTemplateParams(req, sv, params, opts));
+    mail.sendWithTemplateFile(templateName, await prepareMailTemplateParams(req, sv, { ...params, moderator: req.user }, opts));
     return { v: sv.v };
 }
 
@@ -345,11 +345,11 @@ export const genLogin: simpleAction = (_req, sv) => {
     }
 };
 
-export const sendValidationEmail: action = (_req, sv) => {
+export const sendValidationEmail: action = (req, sv) => {
     let v = sv.v;
     console.log("action sendValidationEmail to " + v.supannMailPerso);
     const sv_url = conf.mainUrl + "/" + sv.step + "/" + sv.id;
-    mail.sendWithTemplateFile('validation.html', { conf, v, to: v.supannMailPerso, sv_url });
+    mail.sendWithTemplateFile('validation.html', { conf, v, to: v.supannMailPerso, sv_url, moderator: req.user });
     return Promise.resolve({ v });
 };
 
@@ -374,7 +374,7 @@ export const pager_to_homePhone_if_no_homePhone : simpleAction = async function(
     return { v };
 }
 
-export const sendMailNewEtablissement = (to: string): simpleAction => (_req, sv) => {
+export const sendMailNewEtablissement = (to: string): simpleAction => (req, sv) => {
     let v = sv.v;
     if (!v['etablissement_description']) {
         return Promise.resolve({ v });
@@ -384,7 +384,7 @@ export const sendMailNewEtablissement = (to: string): simpleAction => (_req, sv)
     console.log("sending mail", text);
     mail.send({ to, text,
         subject: "Etablissement a ajouter dans LDAP", 
-    });
+    }, req.user);
     v = { ..._.omitBy(v, isEtabAttr), etablissementExterne: conf.ldap.etablissements.attrs.siret.convert.toLdap(v['etablissement_siret']) } as v;
     return Promise.resolve({ v });
 };
