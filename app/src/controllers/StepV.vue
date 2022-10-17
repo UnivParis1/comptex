@@ -133,7 +133,7 @@ export default Vue.extend({
             return !_.every(this.homonym_attrs, attr => this.v[attr])
         },
         noInteraction() {
-            return this.v.noInteraction || this.step?.labels?.okButton && Object.keys(this.attrs_).length === 0;
+            return this.v.noInteraction;
         },
         attrs_() {
             return this.attrs && Helpers.filter(this.attrs, (opts) => !opts.uiHidden);
