@@ -47,7 +47,6 @@ export const getShibUserLdapAttrs: simpleAction_pre = async (req, _sv) => {
     if (!isShibUserInLdap(req)) throw `Unauthorized`;
     let filter = search_ldap.currentUser_to_filter(req.user);
     let v: v = await oneExistingPerson(filter);
-    v.noInteraction = true;
     return v;
 }
 
