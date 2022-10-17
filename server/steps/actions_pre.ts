@@ -11,6 +11,10 @@ import * as conf from '../conf';
 const filters = ldap.filters;
 
 
+export const if_query = (test_query: (query: Dictionary<string>) => boolean, action: action_pre): action_pre => async (req, sv: sv) => (
+    test_query(req.query) ? await action(req, sv) : sv.v
+);
+
 export const chain = (l_actions: action_pre[]): action_pre => (
     async (req, sv: sv) => {
         let v = sv.v
