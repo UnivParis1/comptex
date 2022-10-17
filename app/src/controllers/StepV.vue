@@ -14,6 +14,9 @@
   <div v-if="step_description">
     <component :is="step_description" :v_pre="v_pre" :v="v" :v_display="v_display" :potential_homonyms="potential_homonyms"></component>
   </div>
+  <div v-if="noInteraction">
+    Veuillez patienter
+  </div>
 
   <div v-if="imported">
     <ImportResult :imported="imported" :ordered_fields="to_import.fields" @done="imported = to_import = undefined"></ImportResult>
