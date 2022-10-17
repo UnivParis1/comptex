@@ -81,8 +81,14 @@ export const add_full_v: simpleAction = (_req, sv)  => (
     })
 );
 
-export const if_v = (test_v: (v:v) => boolean, action: action): action => async (req, sv: sva) => (
-    test_v(sv.v) ? await action(req, sv) : { v: sv.v, response: {} }
+export const force_response = (response: response): simpleAction => async (_req, sv) => (
+    { v: sv.v, response }
+)
+
+const empty_action = force_response({})
+
+export const if_v = (test_v: (v:v) => boolean, action: action, action_else?: action): action => async (req, sv: sva) => (
+    await (test_v(sv.v) ? action : action_else || empty_action)(req, sv)
 );
 
 export const handle_exception = (action: action, handler: (err: any, req: req, sv: sva) => Promise<vr>) => (req: req, sv: sva) => (
