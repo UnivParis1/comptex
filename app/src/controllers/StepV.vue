@@ -226,10 +226,6 @@ export default Vue.extend({
                 this.v.supannAliasLogin !== resp.login) {
                 alert("L'utilisateur a été créé, mais avec l'identifiant « " + resp.login + "». Il faut prévenir l'utilisateur");
             }
-            if (conf.printCardUrl && this.attrs.barcode && !this.v.barcode) {
-                document.location.href = conf.printCardUrl(resp.login);
-                return;
-            }
         }
         this.go_back();
       },
