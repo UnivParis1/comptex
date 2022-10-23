@@ -24,6 +24,7 @@ type v = Partial<typeof conf.ldap.people.types> & {
     various?: Dictionary<any> & { 
         allow_homonyme_merge?: allow_homonyme_merge, 
         canAutoMerge_options?: { adding_attr_is_minor_change: boolean },        
+        minor_change?: boolean,
     },
 } & Dictionary<any>
 type response = { [index: string]: any };

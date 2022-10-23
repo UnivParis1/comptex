@@ -250,7 +250,7 @@ const after_createAccount = async (v: v, attrs: StepAttrsOption, accountStatus: 
         await esup_activ_bo.setNewAccountPassword(v.uid, v.supannAliasLogin, v.userPassword, req_for_context);
         // NB: if we have a password, it is a fast registration, so do not send a mail
     }
-    if (v.supannMailPerso) {
+    if (v.supannMailPerso && !v.various?.minor_change) {
         const v_ = v_display(v, flatten_attrs(attrs, v));
         const cc = v.personParrain && await search_ldap.onePersonLoginToMail(v.personParrain)
         mail.sendWithTemplateFile('warn_user_account_created.html', { from: mailFrom(v), to: v.supannMailPerso, cc, v, v_display: v_, created, isActive: !!accountStatus, moderator: req_for_context.user });
