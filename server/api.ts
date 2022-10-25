@@ -275,11 +275,14 @@ function saveRaw(req: req, sv: sv) {
     });
 }
 
-function removeRaw(sv: sv) {
-    return db.save(_.pick(sv, 'id', 'history'), { upsert: false }).then(() => {
-        bus.emit('changed');
-    });
+async function removeManyRaw(svs: sv[]) {
+    for (const sv of svs) {
+        await db.save(_.pick(sv, 'id', 'history'), { upsert: false })
+    } 
+    bus.emit('changed');
 }
+
+const removeRaw = (sv: sv) => removeManyRaw([sv])
 
 function remove(req: req, id: id, wanted_step: string) {
     return getRaw(req, id, wanted_step).then(sv => {
