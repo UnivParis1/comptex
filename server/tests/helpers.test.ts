@@ -122,3 +122,23 @@ describe('array_setAll', () => {
         assert.throws(() => test([], null))
     })
 })
+
+describe('run_if_not_running', () => {
+    it("should run", async () => {
+        let result
+        const f = helpers.run_if_not_running(async (x: string) => {
+            await helpers.setTimeoutPromise(1)
+            result = x
+        })
+        // it must run
+        await f("a"); assert.equal(result, "a")
+        await f("b"); assert.equal(result, "b")
+
+        let pc = f("c")
+        f("d") // should be skipped
+        await pc; assert.equal(result, "c")
+
+        // back to being run
+        await f("e"); assert.equal(result, "e")
+    })
+})

@@ -47,6 +47,8 @@ const conf = {
         transport: sendmailTransport({}),
     },
 
+    sv_ttl_days: 1/*year*/ * 365, // auto-purge after xxx days unmodified
+
     mongodb: { 
         url: "mongodb://localhost:27017/compte-externe",
     },

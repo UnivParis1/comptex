@@ -176,3 +176,16 @@ export function array_setAll<T>(a: T[], values: T[]) {
     a.splice(0, 9999, ...values)
 }
 
+export function run_if_not_running<T extends any[]>(f: (...args: T) => Promise<void>): (...args: T) => Promise<void> {
+    let running = false
+    return async (...args) => {
+        if (!running) {
+            running = true;
+            try {
+                await f(...args)
+            } finally {
+                running = false;
+            }
+        }
+    }
+}

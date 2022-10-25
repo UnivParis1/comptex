@@ -213,12 +213,12 @@ function format_history_event(sv: sv) {
     }
 }
 
-function add_history_event(req: req, sv: sv, action?: 'rejected') {
+function add_history_event(req: req|undefined, sv: sv, action?: 'rejected'|'purged') {
     (sv.history ??= []).push({
         when: new Date(),
-        who: req.user,
+        who: req?.user,
         step: { id: sv.step, title: step(sv).labels.title },
-        ...action === 'rejected' ? { rejected: true } : {},
+        ...action ? { [action]: true } : {},
     })
 }
 
@@ -305,6 +305,29 @@ const non_initial_steps = () => (
     _.pickBy(conf_steps.steps, (step) => !step.initialStep && title_in_list(step.labels))
 );
 
+
+async function purge_old(svs: sv[]) {
+    for (const sv of svs) {
+        console.log("purging old", sv.id, sv.modifyTimestamp)
+        add_history_event(undefined, sv, 'purged')
+    }
+    await removeManyRaw(svs)
+}
+
+const purge_old_if_not_running = helpers.run_if_not_running(purge_old)
+
+function may_purge_old(svs: sv[]) {
+    if (conf.sv_ttl_days) {
+        const now = new Date()
+        let to_purge
+        [ to_purge, svs ] = _.partition(svs, sv => (
+            helpers.addDays(sv.modifyTimestamp, conf.sv_ttl_days) < now
+        ))
+        purge_old_if_not_running(to_purge) // not awaiting
+    }
+    return svs
+}
+
 async function listAuthorized(req: req) {
     if (!req.user) return Promise.reject("Unauthorized");
     const query = await acl_checker.mongo_query(req.user, non_initial_steps())
@@ -316,6 +339,8 @@ async function listAuthorized(req: req) {
         if (!valid) console.error("ignoring sv in db with invalid step " + sv.step);
         return valid;
     });
+    svs = may_purge_old(svs)
+
     const svas = await Promise.all(svs.map(sv => add_step_attrs(req, sv)))
     return await helpers.pmap(svas, sva => export_sv(req, sva));
 }
