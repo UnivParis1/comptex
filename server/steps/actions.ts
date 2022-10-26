@@ -289,8 +289,9 @@ export const expireAccount : simpleAction = (_req, sv) => {
     return crejsonldap_simple(v, { create: false }); // should we return sv.v?
 };
 
-const prepareMailTemplateParams = async (req: req, sv: sva, params: Dictionary<any>, opts: { cc_personParrain?: true }) => {
+export const prepareMailTemplateParams = async (req: req, sv: sv|sva, params: Dictionary<any>, opts: { cc_personParrain?: true }) => {
     const v = sv.v;
+    // @ts-expect-error
     const v_ = v_display(v, flatten_attrs(sv.attrs, v));
     const sv_url = conf.mainUrl + "/" + sv.step + "/" + sv.id;
     let to = params['to'];

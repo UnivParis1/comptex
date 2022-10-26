@@ -10,6 +10,16 @@ import * as cas from '../cas';
 import * as conf from '../conf';
 const filters = ldap.filters;
 
+export const mutate_v = (f: (v:v) => void) : simpleAction_pre => async (_req, sv) => {
+    f(sv.v)
+    return sv.v
+}
+export const check_v = mutate_v
+
+export const addAttrs = (v: Partial<v>): simpleAction_pre => async (_req, sv) => {
+    _.assign(sv.v, v);
+    return sv.v;
+}
 
 export const if_query = (test_query: (query: Dictionary<string>) => boolean, action: action_pre): action_pre => async (req, sv: sv) => (
     test_query(req.query) ? await action(req, sv) : sv.v
