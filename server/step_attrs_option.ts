@@ -30,6 +30,8 @@ export const selectUserProfile = (v: v, profilename: string): v => {
         return undefined;
     }
     v = _.clone(v);
+
+    // on supprime les valeurs globales venant d'un profil non sélectionné
     v.up1Profile.forEach((profile: Dictionary<any>) => {
         _.forEach(profile, (pval, attr) => {
             const val = v[attr];
