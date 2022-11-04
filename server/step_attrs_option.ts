@@ -24,7 +24,7 @@ export const selectUserProfileIfExists = (v: v, profilename: string) => {
 }
 
 export const selectUserProfile = (v: v, profilename: string): v => {
-    const profile = v.up1Profile?.find(p => p.profilename === profilename) as v;
+    let profile = v.up1Profile?.find(p => p.profilename === profilename) as v;
     if (!profile) {
         console.error("no profile " + profilename);
         return undefined;
@@ -40,6 +40,10 @@ export const selectUserProfile = (v: v, profilename: string): v => {
             }
         });
     });
+
+    // on ignore les valeurs null/undefined
+    profile = _.pickBy(profile, (val) => val !== null && val !== undefined)
+
     return { ...v, ...profile };
 };
 

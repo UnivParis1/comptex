@@ -481,6 +481,11 @@ describe('selectUserProfile', () => {
         assert.deepEqual(selectUserProfile(v, 'A'), { ...profileA, ...v });
     });
 
+    it("should ignore null in chosen profile", () => {
+        const v = { etablissementExterne: "A", up1Profile: [ { profilename: 'A', etablissementExterne: null as string } ] } as v;
+        assert.deepEqual(selectUserProfile(v, 'A'), { ...v, profilename: 'A' });
+    });
+
     it("should not keep other profiled attrs from other profiles", () => {
         const v = { up1Profile: [ profileA, profileB ] } as v;
         assert.deepEqual(selectUserProfile({ ...v, givenName: "Boo" }, 'A'), { ...profileA, ...v });
