@@ -258,10 +258,15 @@ export default Vue.extend({
             if (params.prefix) {
                 query = _.mapKeys(query, (_, k) => resp.nextBrowserStep.params.prefix + k)
             }
+            let hash;
+            [ hash, query ] = Helpers.partitionObject(query, (_, val) => val?.length > 1_000)
+            
             if (params.none) {
                 router.push({ path: url });
             } else if (params.mode === 'hash') {
                 router.push({ path: url, hash: "" + new URLSearchParams(_.pickBy(query, (val) => val)) });
+            } else if (hash) {
+                router.push({ path: url, query, hash: "" + new URLSearchParams(_.mapKeys(hash, (_, k) => `set_${k}`)) });
             } else {
                 router.push({ path: url, query });
             }
