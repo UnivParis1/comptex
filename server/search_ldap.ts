@@ -5,6 +5,7 @@ import * as conf from './conf';
 import shared_conf from '../shared/conf';
 import * as ldap from './ldap';
 import * as helpers from './helpers';
+import { email_has_one_of_our_mail_domains } from './utils';
 const filters = ldap.filters;
 
 const maxLoginLength = 10;
@@ -365,10 +366,10 @@ export const filter_user_memberOfs = async <T>(group_cn_to: (cn: string) => T, u
 export const searchInternalMail = async (email: string): Promise<{ internal?: v; external?: true }> => {
     if (!email) return { external: true };
 
-    const domain = email.match(/@(.*)/)?.[1]
-    if (!domain) throw "invalid mail address " + email
+    const is_internal = email_has_one_of_our_mail_domains(email)
+    if (is_internal === undefined) throw "invalid mail address " + email
     
-    if (!conf.ldap.people.mail_domains.includes(domain)) return { external: true };
+    if (!is_internal) return { external: true };
 
     const user = await onePerson(filters.eq('mail', email));
     return { internal: user }

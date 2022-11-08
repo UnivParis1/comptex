@@ -216,4 +216,10 @@ export const deep_extend_concat = <T>(v1: Partial<T>, v2: T): T => {
     }
 }
 
+export function email_has_one_of_our_mail_domains(email: string): boolean | undefined {
+    const domain = email.match(/@(.+)/)?.[1]
+    if (!domain) return undefined
+    return conf.ldap.people.mail_domains.includes(domain)
+}
+
 export const for_unit_tests = { parse_csv }
