@@ -26,7 +26,7 @@ type v = Partial<typeof conf.ldap.people.types> & {
         canAutoMerge_options?: { adding_attr_is_minor_change: boolean },        
         minor_change?: boolean,
     },
-} & Dictionary<any>
+} & Dictionary<any> & ForbiddenProperty<"v"|"attrs"|"step"> /* ensure "v" is not compatible with sv */
 type response = { [index: string]: any };
 interface history_event {
     when: Date

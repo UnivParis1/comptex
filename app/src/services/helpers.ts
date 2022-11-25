@@ -218,7 +218,7 @@ const val_to_csv = (val: Date | string | number, opts: StepAttrOptionM<unknown>)
         return val || ''
     }
 }
-const line_to_csv_ = (line: Dictionary<any>, attrs: StepAttrsOptionM<unknown>) => (
+const line_to_csv_ = (line: Dictionary<Date | string | number>, attrs: StepAttrsOptionM<unknown>) => (
     _.map(attrs, (opts, attr) => val_to_csv(line[attr], opts)).join(',')
 )
 export function to_csv(l, attrs) {

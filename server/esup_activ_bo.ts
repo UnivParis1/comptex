@@ -5,7 +5,7 @@ import * as querystring from 'querystring';
 import * as utils from './utils';
 import * as conf from './conf';
 
-async function callAPI(action: string, params: Dictionary<any>, req_for_context: req) {
+async function callAPI(action: string, params: Dictionary<string>, req_for_context: req) {
     if (!conf.esup_activ_bo.url) throw "configuration issue: conf.esup_activ_bo.url is missing";
     console.log('callAPI', action)
 
@@ -38,7 +38,7 @@ const emptyStringToEmptyList = (values : string[]) => (
 )
 
 function _get_entries(encoded: string) {
-    let r: Dictionary<any> = {}
+    let r: Dictionary<string[]> = {}
     const qs = new URLSearchParams(encoded);
     for (const key of qs.keys()) {
         const key_ = key.replace(/^attr[.]/, '') // ignore "attr."

@@ -23,7 +23,7 @@ export const selectUserProfileIfExists = (v: v, profilename: string) => {
     return profile ? selectUserProfile(v, profilename) : v
 }
 
-export const selectUserProfile = (v: v, profilename: string) => {
+export const selectUserProfile = (v: v, profilename: string): v => {
     const profile = v.up1Profile?.find(p => p.profilename === profilename) as v;
     if (!profile) {
         console.error("no profile " + profilename);

@@ -1,4 +1,5 @@
 type Dictionary<T> = Record<string, T>
+type ForbiddenProperty<Keys extends string> = Partial<Record<Keys, void>>
 
 type uiTypes =
     'radio'|'select'|'checkbox'|'email'|'password'|'text'|'integer'|'number'|'url' |
