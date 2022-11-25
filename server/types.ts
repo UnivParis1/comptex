@@ -58,8 +58,8 @@ type svr = sv & { response?: response }
 type svra = sva & { response?: response }
 type simpleAction = (req: req, sv: {v: v}) => Promise<vr>
 type simpleAction_pre = (req: req, sv: {v: v}) => Promise<v>
-type action_pre = (req: any, sv: sv) => Promise<v>
-type action = (req: any, sv: sva) => Promise<vr>
+type action_pre = (req: req, sv: sv) => Promise<v>
+type action = (req: req, sv: sva) => Promise<vr>
 type acl_ldap_filter = string | boolean
 type acl_mongo_filter = Dictionary<any> | boolean
 type acl_search = {    
