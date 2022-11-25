@@ -13,7 +13,7 @@ export function fromString(addr: string): PostalAddress {
     let country = lines.pop();
     if (country.match(/^france$/i)) {
         let pt = lines.pop();
-        let pt_ = pt.match(/(\d+) (.*)/);
+        let pt_: string[] = pt.match(/(\d+) (.*)/);
         if (!pt_) {
             lines.push(pt);
             pt_ = [];
