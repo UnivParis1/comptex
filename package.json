@@ -28,7 +28,7 @@
     "server-test:w": "npm run server-test -- --watch"
   },
   "engines": {
-    "node": ">= 10.15"
+    "node": ">= 14.21"
   },
   "dependencies": {
     "@types/accept-language-parser": "^1.5.1",
@@ -44,7 +44,7 @@
     "@types/lodash": "^4.14.x",
     "@types/mocha": "^2.2.41",
     "@types/morgan": "^1.7.32",
-    "@types/node": "^10.14.20",
+    "@types/node": "^14.14.20",
     "@types/nodemailer": "4.6.x",
     "@types/session-file-store": "^1.2.0",
     "@types/xml2js": "^0.4.0",
