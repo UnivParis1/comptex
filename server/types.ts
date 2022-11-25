@@ -35,7 +35,7 @@ interface history_event {
     rejected?: true
 }
 type sv = {
-  _id?: mongodb.ObjectID;
+  _id?: mongodb.ObjectId;
   modifyTimestamp?: Date;
   history: history_event[]
 

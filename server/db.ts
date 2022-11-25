@@ -57,16 +57,14 @@ export const save = <T extends { id?: string }>(sv: T, options = { upsert: true 
             return svs().replaceOne({ _id: sv_['_id'] }, sv_, options).then(_ => sv);
 };
 
-export function init(callback: (client: mongodb.Db) => void) {
-  mongodb.MongoClient.connect(conf.mongodb.url, (error, client_) => {
-      if (error) {
-          console.log(error);
-          process.exit(1);
-      }
-      client = client_
-
-      callback(client);
-  });
+export function init(callback: (client: mongodb.MongoClient) => void) {
+  mongodb.MongoClient.connect(conf.mongodb.url).then(client_ => {
+      client = client_.db()
+      callback(client_);
+  }, (error) => {
+    console.log(error);
+    process.exit(1);
+  })
 }
 
 export function may_init(callback: () => void) {
