@@ -62,7 +62,7 @@ export const authentificateUserWithCas = (id: string, proxyticket: string, targe
 // returns "returnAttrs" + possibleChannels + id + code if account is not activated
 // ("code" is useful for setPassword or validateCode)
 // throws: "AuthentificationException"
-export function validateAccount(userInfoToValidate: Dictionary<string>, returnAttrs: string[], req_for_context: req): Promise<Dictionary<string>> {
+export function validateAccount(userInfoToValidate: Dictionary<string>, returnAttrs: string[], req_for_context: req): Promise<Dictionary<string[]>> {
     console.log("esup_activ_bo._validateAccount " + JSON.stringify(userInfoToValidate));
     const attrValues = _.mapKeys(userInfoToValidate, (_value, key) => `attr.${key}`);
     return callAPI("validateAccount", { ...attrValues, returnAttrs: returnAttrs.join(',') }, req_for_context)
@@ -78,7 +78,7 @@ export const updatePersonalInformations = async (id: string, code: string, userI
 async function _getCode(hashInfToValidate: Dictionary<string>, req_for_context: req): Promise<string> {
     const vals = await validateAccount(hashInfToValidate, [], req_for_context);
     if (!vals.code) throw "esup_activ_bo.validateAccount did not return code for " + JSON.stringify(hashInfToValidate) + ". Account already activated?";
-    return vals.code;
+    return vals.code?.[0];
 }
 
 // NB: no error in case of unknown channel
