@@ -16,6 +16,12 @@ export const mutate_v = (f: (v:v) => void) : simpleAction_pre => async (_req, sv
 }
 export const check_v = mutate_v
 
+// use it with a firstAction_pre if you want to merge existing (nextStep) sv.v with the result of the action
+export const assign = (action: firstAction_pre) : simpleAction_pre => async (req, sv) => {
+    const v = await action(req, sv)
+    return { ...sv.v, ...v }
+}
+
 export const addAttrs = (v: Partial<v>): simpleAction_pre => async (_req, sv) => {
     _.assign(sv.v, v);
     return sv.v;
