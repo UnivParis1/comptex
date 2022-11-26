@@ -57,6 +57,7 @@ type vr = {v: v; response?: response }
 type svr = sv & { response?: response }
 type svra = sva & { response?: response }
 type simpleAction = (req: req, sv: {v: v}) => Promise<vr>
+type firstAction_pre = (req: req, sv: unknown) => Promise<v>
 type simpleAction_pre = (req: req, sv: {v: v}) => Promise<v>
 type action_pre = (req: req, sv: sv) => Promise<v>
 type action = (req: req, sv: sva) => Promise<vr>

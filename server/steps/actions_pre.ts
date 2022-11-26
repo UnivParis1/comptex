@@ -72,7 +72,7 @@ export const getOidcAttrs: firstAction_pre = async (req, _sv) => {
     return v;
 };
 
-export const getShibAttrs: simpleAction_pre = async (req, _sv) => {
+export const getShibAttrs: firstAction_pre = async (req, _sv) => {
     if (!req.user) throw `Unauthorized`;
     let v = _.mapValues(conf.shibboleth.header_map, headerName => (
         req.header(headerName)
@@ -81,18 +81,18 @@ export const getShibAttrs: simpleAction_pre = async (req, _sv) => {
     return v;
 };
 
-export const getShibUserLdapAttrs: simpleAction_pre = async (req, _sv) => {
+export const getShibUserLdapAttrs: firstAction_pre = async (req, _sv) => {
     if (!isShibUserInLdap(req)) throw `Unauthorized`;
     let filter = search_ldap.currentUser_to_filter(req.user);
     let v: v = await oneExistingPerson(filter);
     return v;
 }
 
-export const getShibOrCasAttrs: simpleAction_pre = (req, _sv) => (
+export const getShibOrCasAttrs: firstAction_pre = (req, _sv) => (
     (isShibUserInLdap(req) ? getShibUserLdapAttrs : getShibAttrs)(req, _sv)
 )
 
-export const getExistingUser: simpleAction_pre = async (req, _sv)  => {
+export const getExistingUser: firstAction_pre = async (req, _sv)  => {
     if (!req.query.uid) throw "getExistingUser: no req.query.uid"
     const v = await oneExistingPerson(filters.eq("uid", req.query.uid))
     return v
@@ -107,11 +107,11 @@ export const handle_profilename_to_modify_ = (v: v, profilename: string) => {
     return v;
 }
 
-export const getExistingUserWithProfile: simpleAction_pre = (req, _sv)  => (
+export const getExistingUserWithProfile: firstAction_pre = (req, _sv)  => (
     oneExistingPerson(filters.eq("uid", req.query.uid)).then(v => handle_profilename_to_modify(req, v))
 );
 
-export const getShibUserLdapAttrsWithProfile: simpleAction_pre = (req, _sv)  => (
+export const getShibUserLdapAttrsWithProfile: firstAction_pre = (req, _sv)  => (
     getShibUserLdapAttrs(req, null).then(v => handle_profilename_to_modify(req, v))
 );
 
@@ -121,7 +121,7 @@ function handleAttrsRemapAndType(o : Dictionary<string[]>, attrRemapRev: Diction
     return v
 }
 
-export const esup_activ_bo_validateAccount = (isActivation: boolean) : simpleAction_pre => async (req, _sv) => {
+export const esup_activ_bo_validateAccount = (isActivation: boolean) : firstAction_pre => async (req, _sv) => {
     const userInfo = ldap.convertToLdap(conf.ldap.people.types, conf.ldap.people.attrs, search_ldap.v_from_WS(req.query), {});
     const { wantedConvert, attrRemapRev } = ldap.convert_and_remap(conf.ldap.people.types, conf.ldap.people.attrs);
     const o = await esup_activ_bo.validateAccount(userInfo as any, _.without(Object.keys(attrRemapRev), 'userPassword'), req)
@@ -135,7 +135,7 @@ export const esup_activ_bo_validateCode : simpleAction_pre = (req, sv) => (
     esup_activ_bo.validateCode(req.query.supannAliasLogin, req.query.code, req).then(_ => sv.v)
 )
 
-export const esup_activ_bo_authentificateUser = (userAuth: 'useSessionUser' | 'useBasicAuthUser') : simpleAction_pre => async (req, _sv) => {
+export const esup_activ_bo_authentificateUser = (userAuth: 'useSessionUser' | 'useBasicAuthUser') : firstAction_pre => async (req, _sv) => {
     const { wantedConvert, attrRemapRev } = ldap.convert_and_remap(conf.ldap.people.types, conf.ldap.people.attrs);
     const auth = basic_auth(req);
     if (!auth) throw "Bad Request";
@@ -151,7 +151,7 @@ export const esup_activ_bo_authentificateUser = (userAuth: 'useSessionUser' | 'u
     return v
 }
 
-export const esup_activ_bo_authentificateUserWithCas : simpleAction_pre = async (req, _sv) => {
+export const esup_activ_bo_authentificateUserWithCas : firstAction_pre = async (req, _sv) => {
     const { wantedConvert, attrRemapRev } = ldap.convert_and_remap(conf.ldap.people.types, conf.ldap.people.attrs);
     const targetUrl = conf.mainUrl; // anything would do... weird esup_activ_bo... 
     const proxyticket = await cas.get_proxy_ticket(req, targetUrl);
