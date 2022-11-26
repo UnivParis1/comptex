@@ -44,6 +44,28 @@ const isShibUserInLdap = (req: req) => {
     return idp && idp === conf.ldap.shibIdentityProvider;
 }
 
+// relies on headers from mod_auth_openidc
+export const getOidcAttrs: firstAction_pre = async (req, _sv) => {
+    if (!req.header('oidc_claim_sub')) {
+        throw { code: "Unauthorized", authenticate: { type: "franceconnect" } }
+    }
+
+    let v = _.mapValues(conf.oidc.header_map, headerName => (
+        // by default mod_auth_openidc sends utf8 whereas headers should be latin1 (unless one uses "OIDCPassClaimsAs both latin1")
+        // so forcing utf8 interpretation
+        Buffer.from(req.header(headerName), 'latin1').toString('utf-8')
+    )) as any as v;
+    
+    if (v.givenName) [ v.givenName, ...v.altGivenName ] = v.givenName.split(' ');
+    if (v.supannCivilite === 'female') v.supannCivilite = 'Mme'
+    if (v.supannCivilite === 'male') v.supannCivilite = 'M.'
+    if (v.birthDay) v.birthDay = new Date(v.birthDay)
+    v.sn ??= v.birthName
+
+    console.log("action getOidcAttrs:", v, req.headers);
+    return v;
+};
+
 export const getShibAttrs: simpleAction_pre = async (req, _sv) => {
     if (!req.user) throw `Unauthorized`;
     let v = _.mapValues(conf.shibboleth.header_map, headerName => (
