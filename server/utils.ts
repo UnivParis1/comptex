@@ -5,6 +5,7 @@ import * as _ from 'lodash';
 import * as iconv from 'iconv-lite';
 import * as express from 'express';
 import * as csvtojson from 'csvtojson';
+import { CSVParseParam } from 'csvtojson/v2/Parameters';
 import * as crypto from 'crypto'
 import * as session from 'express-session';
 import * as session_file_store from 'session-file-store';
@@ -117,23 +118,23 @@ const toString = (buffer : Buffer) => {
     return r;
 }
 
-const parse_csv = (csv: string, options: csvtojson.ConverterOptions): Promise<{ fields: string[], lines: {}[] }> => (
-    new Promise((resolve, reject) => {
-        const convert = csvtojson({ 
-            delimiter: "auto", // relies on the delimiter most present in headers. Since field names should not contain any known delimiters (,|\t;:), it is ok!
-            checkColumn: true,
-            ...options,
-        });      
+async function parse_csv(csv: string, options: Partial<CSVParseParam>): Promise<{ fields: string[], lines: {}[] }> {
+    const convert = csvtojson({ 
+        delimiter: "auto", // relies on the delimiter most present in headers. Since field names should not contain any known delimiters (,|\t;:), it is ok!
+        checkColumn: true,
+        ...options,
+    });      
+    try {
         let fields: string[];
-        convert.fromString(csv)
-          .on('header', (header: string[]) => fields = header)
-          .on('end_parsed', (lines: {}[]) => resolve({ fields, lines }))
-          .on('error', (err: any) => {
-            console.log("parse_csv failed on\n", csv);
-            reject(err);
-        });
-    })
-);
+        let r = convert.fromString(csv)
+        r.on('header', (header: string[]) => fields = header)
+        const lines = await r
+        return { fields, lines }
+    } catch (err) {
+        console.log("parse_csv failed on\n", csv);
+        throw err
+    }
+}
 export const csv2json = (req: req, res: res): void => {
     const headers = req.query['forced_headers[]'] as any // trailing "[]" is added by axios (it is the default behaviour : 'arrayFormat' 'brackets')
     respondJson(req, res, parse_csv(toString(req.body), { headers, noheader: !!headers }))
