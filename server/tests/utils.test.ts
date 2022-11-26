@@ -78,3 +78,13 @@ describe('deep_extend_concat', () => {
     })
 });
 
+describe('parse_csv', () => {
+    const { parse_csv } = utils.for_unit_tests
+    it("should work", async () => {
+        assert.deepEqual(await parse_csv("a;b\nA;B", {}), {fields: ["a","b"], lines: [{a:"A",b:"B"}] }) 
+        assert.deepEqual(await parse_csv("a,b\nA,B", {}), {fields: ["a","b"], lines: [{a:"A",b:"B"}] }) 
+    })
+    it("should work handle forced headers", async () => {
+        assert.deepEqual(await parse_csv("a;b\nA;B", { headers:["f1","f2"], noheader: true }), {fields: ["f1","f2"], lines: [{f1:"a",f2:"b"}, {f1:"A",f2:"B"}] }) 
+    })
+})

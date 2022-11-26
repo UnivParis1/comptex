@@ -214,3 +214,5 @@ export const deep_extend_concat = <T>(v1: Partial<T>, v2: T): T => {
         return v2;
     }
 }
+
+export const for_unit_tests = { parse_csv }
