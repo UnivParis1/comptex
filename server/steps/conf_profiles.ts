@@ -6,7 +6,7 @@
 
 const profiles : profileValues[] = [
     
-//    { key: "{COMPTEX}test2", name: "XXXXXXXXXXXXXXXXXXXXXXXxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx", fv: () => ({
+//    { const: "{COMPTEX}test2", title: "XXXXXXXXXXXXXXXXXXXXXXXxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx", fv: () => ({
 //        enddate: enddate_S2(),
 //    } as v) },
     
