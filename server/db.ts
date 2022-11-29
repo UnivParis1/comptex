@@ -46,7 +46,11 @@ export const set_additional_public_info = (id: id, additional_public_info: sv['a
 export const listByModerator = (query: Object) : Promise<sv[]> => {
         if (_.isEqual(query, { "$or": [] })) return Promise.resolve(null);
         return (
-            svs().find(query).sort({ step: 1, modifyTimestamp: -1 }).toArray()
+            svs().find(query).project({
+                step: 1, modifyTimestamp: 1,
+                additional_public_info: 1,
+                v: { givenName: 1, sn: 1, prevStep: 1 },
+            }).sort({ step: 1, modifyTimestamp: -1 }).toArray()
         ).then(svs => (
             _.map(svs, fromDB)
         ));
