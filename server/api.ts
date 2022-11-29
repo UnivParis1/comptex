@@ -342,8 +342,8 @@ async function listAuthorized(req: req) {
     svs = may_purge_old(svs)
 
     return await helpers.pmap(svs, async (sv) => (
-        { ...sv, stepName: sv.step, ...await exportStep(req, step(sv)),
-    }))
+        { ...sv, stepName: sv.step, step: await export_step_no_attrs(req, step(sv)) }
+    ))
 }
 
 const body_to_v = search_ldap.v_from_WS;
@@ -391,13 +391,17 @@ const exportLabels = async (req: req, { description_in_list, ...labels }: StepLa
     return translateLabels({ ...labels, description_in_list }, req.translate)
 }
 
+const export_step_no_attrs = async (req: req, step: step) => (
+    {
+        labels: await exportLabels(req, step.labels),
+        ..._.pick(step, 'allow_many', 'if_no_modification'),
+    }
+);
+
 const exportStep = async (req: req, step: step) => (
     {
         attrs: typeof step.attrs === 'function' ? {} : exportAttrs(step.attrs, {}, req.translate),
-        step: {
-            labels: await exportLabels(req, step.labels),
-            ..._.pick(step, 'allow_many', 'if_no_modification'),
-        },
+        step: await export_step_no_attrs(req, step),
     }
 );
 
