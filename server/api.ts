@@ -341,8 +341,9 @@ async function listAuthorized(req: req) {
     });
     svs = may_purge_old(svs)
 
-    const svas = await Promise.all(svs.map(sv => add_step_attrs(req, sv)))
-    return await helpers.pmap(svas, sva => export_sv(req, sva));
+    return await helpers.pmap(svs, async (sv) => (
+        { ...sv, stepName: sv.step, ...await exportStep(req, step(sv)),
+    }))
 }
 
 const body_to_v = search_ldap.v_from_WS;
