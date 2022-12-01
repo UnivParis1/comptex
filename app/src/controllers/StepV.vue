@@ -18,6 +18,11 @@
     Veuillez patienter
   </div>
 
+  <div v-if="v_ldap && v_ldap.global_main_profile && !(v.global_main_profile && v.global_main_profile.description === v_ldap.global_main_profile.description) && !merged_homonyms.some(h => h.uid === v_ldap.uid)" class="alert alert-info">
+        La demande concerne le compte existant « {{v_ldap.uid}} »
+        ({{v_ldap.givenName}} {{v_ldap.sn}} <span v-html="v_ldap.global_main_profile.description"></span>)
+  </div>
+
   <div v-if="imported">
     <ImportResult :imported="imported" :ordered_fields="to_import.fields" @done="imported = to_import = undefined"></ImportResult>
   </div>
