@@ -403,7 +403,9 @@ export default Vue.extend({
           // tell Vue.js
           this.all_potential_homonyms = [...this.all_potential_homonyms]
 
-          this.v_ldap = homonyme;
+          if (homonyme.uid) {
+            this.v_ldap = homonyme;
+          }
           this.v_orig = Helpers.copy(this.v_orig); // make it clear for Vuejs that v_orig has been updated
         },
       reject(v) {
