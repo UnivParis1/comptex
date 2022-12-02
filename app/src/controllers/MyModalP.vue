@@ -1,15 +1,15 @@
 <template>
-    <modal v-if="_active" @cancel="_cancel">
+    <modal v-if="active" @cancel="cancel">
         <h3 slot="header">
-            <button type="button" class="close" @click="_cancel" title="Annuler">&times;</button>
-            <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span> {{_title}}
+            <button type="button" class="close" @click="cancel" title="Annuler">&times;</button>
+            <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span> {{title}}
         </h3>
         <div slot="body">
-            <p class="text-warning" v-html="_msg"></p>
+            <p class="text-warning" v-html="msg"></p>
         </div>
         <div slot="footer">
-            <button type="button" class="btn btn-default" @click="_cancel">{{"Annuler"}}</button>
-            <button type="button" class="btn btn-primary" @click="_ok">{{"Confirmer"}}</button>
+            <button type="button" class="btn btn-default" @click="cancel">{{"Annuler"}}</button>
+            <button type="button" class="btn btn-primary" @click="ok">{{"Confirmer"}}</button>
         </div>
     </modal>
 </template>
@@ -24,24 +24,24 @@ import Modal from '../directives/Modal.vue';
 export default Vue.extend({
     components: { Modal },
     setup() {
-        const _active: Ref<Helpers.promise_defer<null>> = ref(undefined)
-        const _msg = ref("")
-        const _title = ref("")
-        return {
+        const active: Ref<Helpers.promise_defer<null>> = ref(undefined)
+        const msg = ref("")
+        const title = ref("")
+        return {    
             open(labels) {
-                _msg.value = labels.msg
-                _title.value = labels.title || "Attention"
-                _active.value = Helpers.promise_defer()
-                return _active.value.promise
+                msg.value = labels.msg
+                title.value = labels.title || "Attention"
+                active.value = Helpers.promise_defer()
+                return active.value.promise
             },
-            _active, _msg, _title,
-            _cancel() {
-                _active.value.reject("cancel")
-                _active.value = undefined
+            active, msg, title,
+            cancel() {
+                active.value.reject("cancel")
+                active.value = undefined
             },
-            _ok() {
-                _active.value.resolve(null)
-                _active.value = undefined
+            ok() {
+                active.value.resolve(null)
+                active.value = undefined
             },
         }
     },
