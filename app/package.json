@@ -12,7 +12,6 @@
     "test:unit": "vue-cli-service test:unit"
   },
   "dependencies": {
-    "@vue/composition-api": "^0.3.2",
     "@zxcvbn-ts/core": "^2.0.1",
     "@zxcvbn-ts/language-common": "^2.0.1",
     "@zxcvbn-ts/language-fr": "^2.1.0",
@@ -25,7 +24,7 @@
     "prismjs": "^1.24.1",
     "raw-loader": "^0.5.1",
     "tslib": "^2.3.0",
-    "vue": "^2.6.7",
+    "vue": "^2.7.10",
     "vue-async-computed": "^3.8.2",
     "vue-router": "^3.0.2"
   },
@@ -41,7 +40,7 @@
     "chai": "^4.2.0",
     "postcss-import": "^12.0.1",
     "promise-polyfill": "^6.1.0",
-    "vue-template-compiler": "^2.6.6"
+    "vue-template-compiler": "^2.7.10"
   },
   "engines": {
     "node": ">= 4.0.0",

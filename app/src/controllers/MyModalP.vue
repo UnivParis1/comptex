@@ -16,7 +16,7 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { ref, Ref } from '@vue/composition-api';
+import { ref, Ref } from 'vue';
 import * as Helpers from '../services/helpers';
 
 import Modal from '../directives/Modal.vue';

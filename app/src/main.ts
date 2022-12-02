@@ -4,7 +4,6 @@ import AsyncComputed from 'vue-async-computed';
 import { router } from './router';
 import GlobalMixin from './GlobalMixin';
 import genericAttr from './attrs/genericAttr.vue';
-import VueCompositionApi from '@vue/composition-api';
 import conf from './conf';
 
 document.title = conf.title;
@@ -23,7 +22,6 @@ array_includes.shim()
 Vue.mixin(GlobalMixin);
 Vue.use(VueRouter)
 Vue.use(AsyncComputed)
-Vue.use(VueCompositionApi);
 Vue.component('genericAttr', genericAttr); // make it global to break circular dependency
 
 new Vue({ 
