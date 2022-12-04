@@ -196,7 +196,7 @@ export const deep_extend = <T extends Dictionary<any>, U extends Dictionary<any>
         }
         return r;
     } else {
-        return overrides;
+        return overrides as T & U;
     }
 }
 
