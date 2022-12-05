@@ -104,9 +104,30 @@ function AttrsForm_data() {
 
 export let v_from_prevStep = {};
 
+let detectIdle = Helpers.detectIdle()
+
 export default Vue.extend({
     mounted() {
         this.init();
+
+        if (this.step.logout_on_idle) {
+            const detectIdle_action = () => {
+                window.onbeforeunload = () => {} // do not block logout
+                document.location = this.step.logout_on_idle.logoutUrl
+            }
+            detectIdle.install({
+                ...this.step.logout_on_idle,
+                softAction: async () => {
+                    if (!this.$refs.MyModalP.active) {
+                        console.log('detectIdle.softAction')
+                        await this.$refs.MyModalP.open({ msg: 'Vous êtes inactif. Vous allez être rediriger vers la page de déconnexion' })
+                        detectIdle_action()
+                    }
+                },
+                action: detectIdle_action,
+            })
+        }
+
         window.onbeforeunload = (e) => {
             if (!isEqual(this.v, this.v_orig) && !this.resp) {
                 e.preventDefault();

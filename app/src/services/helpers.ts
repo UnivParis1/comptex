@@ -206,6 +206,32 @@ export function isElementInViewport (el : HTMLElement) {
     );
 }
 
+export const detectIdle = () => {
+    let state = {
+        intervalID: undefined,
+        lastChange: undefined,
+    }
+    const install = (conf) => {
+        const intervalCallback = () => {
+            const sinceLastChange = Date.now() - state.lastChange
+            if (sinceLastChange > conf.hardTimeoutMs) {
+                console.log("idle timeout")
+                conf.action()
+            } else if (sinceLastChange > conf.softTimeoutMs) {
+                console.log("idle softTimeoutDetected")
+                conf.softAction()
+            }
+        }
+        state.lastChange = Date.now()
+        document.onmousedown = () => state.lastChange = Date.now()
+        document.onkeydown = () => state.lastChange = Date.now()
+
+        if (state.intervalID) clearInterval(state.intervalID)
+        state.intervalID = setInterval(intervalCallback, conf.softTimeoutMs / 10) // it allows a precision of 10% of softTimeoutMs
+    }
+    return { install }
+}
+
 const val_to_csv = (val: Date | string | number, opts: StepAttrOptionM<unknown>) => {
     if (opts.oneOf) {
         val = formatValue(val, opts)

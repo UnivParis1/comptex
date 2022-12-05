@@ -394,7 +394,7 @@ const exportLabels = async (req: req, { description_in_list, ...labels }: StepLa
 const export_step_no_attrs = async (req: req, step: step) => (
     {
         labels: await exportLabels(req, step.labels),
-        ..._.pick(step, 'allow_many', 'if_no_modification'),
+        ..._.pick(step, 'allow_many', 'if_no_modification', 'logout_on_idle'),
     }
 );
 

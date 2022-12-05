@@ -120,7 +120,8 @@ type step = {
 
   allow_many?: boolean | { forced_headers: string[] }; 
   if_no_modification?: 'disable-okButton',
-  
+  logout_on_idle?: ClientSideSVA['step']['logout_on_idle'],
+
   attrs: StepAttrsOption
   attrs_override?: ((req: req, sv: sv) => Promise<StepAttrsOption>);
   next?: string | ((v: v) => Promise<string>);

@@ -152,6 +152,11 @@ interface ClientSideSVA {
         labels: ClientSideStepLabels
         allow_many?: boolean | { forced_headers: string[] }
         if_no_modification?: 'disable-okButton'
+        logout_on_idle?: {
+            softTimeoutMs: number,
+            hardTimeoutMs: number,
+            logoutUrl: string,
+        },
     }
     additional_public_info?: {
         title_in_list: string // HTML
