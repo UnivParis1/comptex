@@ -83,6 +83,22 @@ export function withSuffixEtiquette(etiquette: string): ldap_conversion {
     };
 }
 
+export function withEtiquetteMulti(etiquette: string): ldap_conversion {
+    return {
+        fromLdapMulti: (l: string[]): string[] => {
+            let l_: string[] = []
+            for (let s of l) {
+                if (_.startsWith(s, etiquette))
+                    l_.push(s.substr(etiquette.length))
+            }
+            return l_;
+        },
+        toLdap: (l: string[]) => ({ action: (vals: string[]) => (
+            vals.filter(s => !_.startsWith(s, etiquette)).concat(l ? l.map(s => etiquette + s) : [])
+        ) }),
+    };
+}
+
 export function has_value(value: string): ldap_conversion {
     return {
         fromLdapMulti: (l: string[]): string => (

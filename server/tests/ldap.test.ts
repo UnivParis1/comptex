@@ -160,6 +160,16 @@ describe('ldap', () => {
 
     });
 
+    describe("etiquetteMulti conversion", () => {
+
+        it("should handle simple fromLdap", () => {
+            assert.deepEqual(ldap_convert.withEtiquetteMulti("{FOO}").fromLdapMulti(["{FOO}bar"]), ["bar"]);
+            assert.deepEqual(ldap_convert.withEtiquetteMulti("{FOO}").fromLdapMulti(["{BAR}bar"]), []);
+            assert.deepEqual(ldap_convert.withEtiquetteMulti("{FOO}").fromLdapMulti(["{FOO}xxx", "{FOO}bar"]), ["xxx", "bar"]);
+        });
+        
+    })
+
     describe("to_boolean_allowing_removing_the_value conversion", () => {
         const conv = ldap_convert.to_boolean_allowing_removing_the_value
 
