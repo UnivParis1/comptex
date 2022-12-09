@@ -157,3 +157,20 @@ describe('run_if_not_running', () => {
         await f("e"); assert.equal(result, "e")
     })
 })
+describe('keyByMulti', () => {
+    it("should work", () => {
+        assert.deepEqual(helpers.keyByMulti(
+            [ 
+                { foo: ["a"], bar: "BAR" }, 
+                { foo: ["b", "c"] },
+            ], 'foo'), 
+            { 
+                a: { foo: [ 'a' ], bar: "BAR" },
+                b: { foo: [ 'b', 'c' ] },
+                c: { foo: [ 'b', 'c' ] },
+            },
+        )
+        assert.deepEqual(helpers.keyByMulti( [ {} ], 'foo'), {})
+        assert.deepEqual(helpers.keyByMulti( [ { foo: [] } ], 'foo'), {})
+    })
+})

@@ -45,6 +45,17 @@ export function pmap (o, f) { return Promise.all(_.map(o, f)) }
 
 export const objectKeys = <T extends {}>(o: T) => <Array<keyof T>>Object.keys(o)
 
+export const keyByMulti = <T>(l: T[], field: string): Dictionary<T> => {
+    let h: Dictionary<T> = {}
+    for (const e of l) {
+        // @ts-expect-error
+        for (const key of e[field] || []) {
+            h[key] = e
+        }
+    }
+    return h
+}
+
 export const anonymize_phoneNumber = (s: string) => (
     s && s.replace(/ /g, "").replace(/^\+33/, "0").substring(0, 6) + "****"
 )
