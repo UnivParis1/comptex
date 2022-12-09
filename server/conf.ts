@@ -104,7 +104,7 @@ const conf = {
                 postalAddress: '',
                 floorNumber: '', roomAccess: '', roomNumber: '', buildingName: '',
                 jpegPhoto: '',
-                personParrain: '', structureParrain: '',
+                personParrain: '', structureParrain: '', groupParrain: '',
 
                 etablissementExterne: '',
                 etablissementInterne: '',
@@ -178,6 +178,7 @@ const conf = {
                 eduPersonPrincipalName: { ldapAttr: 'supannRefId', convert: ldap_convert.withEtiquette("{EPPN}") },                
                 personParrain: { ldapAttr: 'supannParrainDN', convert: ldap_convert.dn("uid", ldap_main.base_people) },
                 structureParrain: { ldapAttr: 'supannParrainDN', convert: ldap_convert.dn("supannCodeEntite", ldap_main.base_structures), convert2: ldap_convert.dn("ou", ldap_main.base_structures_old) },
+                groupParrain: { ldapAttr: 'supannParrainDN', convert: ldap_convert.dn("cn", ldap_main.base_groups) },
                 global_structureParrain: { ldapAttr: 'supannParrainDN', convert: ldap_convert.dns("supannCodeEntite", ldap_main.base_structures), convert2: ldap_convert.dns("ou", ldap_main.base_structures_old) },
                 global_shadowExpire: { ldapAttr: 'shadowExpire', convert: ldap_convert.date_epoch },
                 barcode: { ldapAttr: 'employeeNumber' },
