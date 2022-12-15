@@ -74,7 +74,7 @@ describe('homonyms', () => {
 
     let mock = mocha_axios_mock()
 
-    it("should handle one homonym attr: ignore", async () => {
+    it("should handle one homonym attr: merge", async () => {
         const params = {
             attrs: { attr1: {}, uid: { uiType: 'homonym', optional: true }, sn: {} }, 
             v: { sn: 'Rigaux' },
@@ -97,7 +97,7 @@ describe('homonyms', () => {
         check_display_attrsform(wrapper)
     })
 
-    it("should handle one homonym attr: merge", async () => {
+    it("should handle one homonym attr: ignore", async () => {
         const params = {
             attrs: { attr1: {}, uid: { uiType: 'homonym', optional: true }, sn: {} }, 
             v: { sn: 'Rigaux' },
