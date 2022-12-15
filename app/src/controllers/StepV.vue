@@ -379,21 +379,18 @@ export default Vue.extend({
             if (!val) return;
             const is_id_attr = this.homonym_attrs.includes(attr)
             if (homonyme.mergeAll || is_id_attr || attr.match(/^global_/)) {
-                if (this.v[attr]) {
-                    if (this.v[attr] === val) {
-                        // nothing to do
-                    } else if (is_id_attr) {
-                        // this should never happen since we remove homonyms with same id attr already set
-                        throw "homonyms conflict"
-                    } else {
-                        // no overriding
-                    }
+                if (this.v[attr] && this.v[attr] === val) {
+                    // nothing to do
+                } else if (this.v[attr] && !is_id_attr) {
+                    // no overriding
                 } else {
-                console.log("adding " + attr + " = " + val); 
-                this.v[attr] = val;
-                // NB: in unit tests, v_orig may not be computed yet
-                if (this.v_orig) this.v_orig[attr] = val;
-            }
+                    // NB: we allow overriding v attr. Especially useful when "uid"+"supannAliasLogin" are uiType "homonym"
+                    console.log(this.v[attr] ? "setting" : "adding", attr, "=", val); 
+                    this.v[attr] = val;
+
+                    // NB: in unit tests, v_orig may not be computed yet
+                    if (this.v_orig) this.v_orig[attr] = val;
+                }
             }
           });
 

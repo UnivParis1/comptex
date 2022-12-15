@@ -45,14 +45,14 @@ describe('homonyms', () => {
         supannCivilite: "M.", sn: "Rigaux", givenName: "Pascal", birthName: "Rigaux", birthDay: "1975-10-02T00:00:00.000Z", homePostalAddress: "6 Allée D'ANDREZIEUX\n75018 PARIS\nFrance", supannMailPerso: "pascal@rigaux.org",
     }
     const all_homonymes = [
-        { score: 31110, uid: "prigaux", homePhone: "+33 1 82 09 08 74", ...base_homonyme,
+        { score: 31110, uid: "prigaux", supannAliasLogin: "prigaux", homePhone: "+33 1 82 09 08 74", ...base_homonyme,
           global_main_profile: { source: "SIHAM", willNotExpireSoon: true, description: " est XXX" }, 
         },
         { score: 10, idFoo: "12345", foo: "bar12345", ...base_homonyme, 
            mergeAll: true,
           global_main_profile: { description: " est idFoo" },
         },
-        { score: 10, uid: "prigaux2", idFoo: "5678", foo: "bar5678", ...base_homonyme, 
+        { score: 10, uid: "prigaux2", supannAliasLogin: "prigaux2", idFoo: "5678", foo: "bar5678", ...base_homonyme, 
           mergeAll: true,
           global_main_profile: { description: " est idFoo et uid" }, 
         },
@@ -117,6 +117,29 @@ describe('homonyms', () => {
         await flushPromises()
         check_potential_homonyms(vm, [])
         assert.deepEqual(vm.v, { sn: 'Rigaux' })
+        check_display_attrsform(wrapper)
+    })
+
+    it("should handle two dependent homonym attr: merge", async () => {
+        const params = {
+            attrs: { attr1: {}, uid: { uiType: 'homonym', optional: true }, supannAliasLogin: { uiType: 'homonym', optional: true }, sn: {} }, 
+            v: { sn: 'Rigaux', supannAliasLogin: 'must-be-overwritten' },
+        }
+        const homonymes = all_homonymes.slice(0, 1)
+
+        mock.adapter.onPost(/\/api\/homonymes\/.*/).reply(_ => [200, homonymes])
+        const wrapper = mountStepV(params)
+        await flushPromises()
+        const vm = wrapper.vm as any
+        //
+        check_potential_homonyms(vm, homonymes)
+        check_display_homonyms_stub(wrapper)
+
+        // merge homonyme
+        await vm.merge(vm.potential_homonyms[0])
+        check_potential_homonyms(vm, [])
+        assert.deepEqual(vm.v, _.pick(homonymes[0], 'uid', 'supannAliasLogin', 'sn', 'global_main_profile'))
+        assert.include(wrapper.html(), homonymes[0].global_main_profile.description, 'display a message about the merged homonym')
         check_display_attrsform(wrapper)
     })
 
