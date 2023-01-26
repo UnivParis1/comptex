@@ -32,7 +32,7 @@ export const convert_simple_acl_search = ({ loggedUser_to_subv, ...other } : sim
 const loggedUser_filter = (filter: string): acl_search => convert_simple_acl_search({
     // search users that can moderate "v":
     v_to_moderators_ldap_filter: async (_v) => filter,
-    // can the user moderate any "v":
+    // can the loggedUser moderate any "v":
     loggedUser_to_subv: (user) => {
         if (!user.id) console.error("no user id!?");
         return ldap.exist(search_ldap.currentUser_to_dn(user), filter)
