@@ -55,6 +55,12 @@ export const currentUser_to_filter = (user: CurrentUser) => {
     return filters.eq(attr, user_id)
 }
 
+export const currentUser_to_dn = (user: CurrentUser) => {
+    const user_id = user && user.id
+    const uid = helpers.removeSuffixOrNull(user_id, conf.ldap.uid_to_eppn) || user_id
+    return `uid=${uid},${conf.ldap.base_people}`
+}
+
 export const structures = (token: string, sizeLimit: number) => {
     let words_filter = filters.fuzzy(['description', 'ou'], token);
     let many = [filters.eq("supannCodeEntite", token), 
@@ -252,10 +258,6 @@ export let existLogin = (login: string): Promise<boolean> => (
     ldap.exist(conf.ldap.base_people, filters.eq("uid", login))
 );
 
-export const existPeople = (peopleFilter: string, user: CurrentUser = null): Promise<boolean> => (
-    ldap.exist(conf.ldap.base_people, user ? filters.and([ currentUser_to_filter(user), peopleFilter ]) : peopleFilter)
-);
-
 function truncateLogin(login: string) {
     return login.substr(0, maxLoginLength);
 }
@@ -353,7 +355,7 @@ export const group_and_code_to_choices_using_ou = async (g_a_c: group_and_code_f
 }
 
 export const filter_user_memberOfs = async <T>(group_cn_to: (cn: string) => T, user: CurrentUser) => {
-    const user_ = await ldap.searchOne(conf.ldap.base_people, currentUser_to_filter(user), { memberOf: [''] }, {});
+    const user_ = await ldap.read(currentUser_to_dn(user), { memberOf: [''] }, {});
     const r: T[] = [];
     for (const memberOf of user_.memberOf || []) {
         const cn = conf.ldap.memberOf_to_group_cn(memberOf);

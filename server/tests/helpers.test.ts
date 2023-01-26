@@ -108,6 +108,16 @@ describe('removePrefixOrNull', () => {
     })
 })
 
+describe('removeSuffixOrNull', () => {
+    it("should work", () => {
+        assert.equal(helpers.removeSuffixOrNull("ba", "a"), "b")
+        assert.equal(helpers.removeSuffixOrNull("ba", "ba"), "")
+        assert.equal(helpers.removeSuffixOrNull("ba", "b"), null)
+        assert.equal(helpers.removeSuffixOrNull("aa", null), null)
+        assert.throws(() => helpers.removeSuffixOrNull(null, "a"))
+    })
+})
+
 describe('array_setAll', () => {
     const test = (init_values: string[], values: string[]) => {
         let a = init_values

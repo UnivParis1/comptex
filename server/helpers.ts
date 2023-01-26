@@ -171,6 +171,10 @@ export const removePrefixOrNull = (s: string, prefix: string) => (
 export const removePrefix = (s: string, prefix: string) => (
     s.startsWith(prefix) ? s.substring(prefix.length) : s
 )
+export const removeSuffixOrNull = (s: string, suffix: string) => (
+    s.endsWith(suffix) ? s.slice(0, -suffix.length) : null
+)
+
 
 export function array_setAll<T>(a: T[], values: T[]) {
     a.splice(0, 9999, ...values)

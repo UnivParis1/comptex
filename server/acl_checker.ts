@@ -64,7 +64,7 @@ export const checkAcl = async (user: CurrentUser, v: v, acls: acl_search[]) => {
         return { error: "not logged" };
     } else {
         const filter = await v_to_moderators_ldap_filter(v, acls);
-        const user_ = await search_ldap.onePerson(ldap_filters.and([ filter, search_ldap.currentUser_to_filter(user) ]))
+        const user_ = await ldap.searchOne(search_ldap.currentUser_to_dn(user), filter, { mail: '' }, {})
         if (user_) {
             // ensure moderator.mail is available again for actions.sendMail template
             user.mail = user_.mail

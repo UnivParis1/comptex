@@ -35,7 +35,7 @@ const loggedUser_filter = (filter: string): acl_search => convert_simple_acl_sea
     // can the user moderate any "v":
     loggedUser_to_subv: (user) => {
         if (!user.id) console.error("no user id!?");
-        return search_ldap.existPeople(filters.and([ filter, search_ldap.currentUser_to_filter(user) ]))
+        return ldap.exist(search_ldap.currentUser_to_dn(user), filter)
     },
 });
 
@@ -53,7 +53,7 @@ export const structureAnyRole = (code_attr: string): acl_search => convert_simpl
         return `(supannRoleEntite=*[code=${code}]*)`
     },
     loggedUser_to_subv: (user) => (
-      ldap.searchOne(conf.ldap.base_people, search_ldap.currentUser_to_filter(user), { supannRoleEntite: [''] }, {}).then(user => {
+      ldap.read(search_ldap.currentUser_to_dn(user), { supannRoleEntite: [''] }, {}).then(user => {
         const user_roles = user.supannRoleEntite ? parse_composites(user.supannRoleEntite) as { role: string, code: string }[] : [];
         return user_roles.map(e => ({ [code_attr]: e.code }));
       })
@@ -73,7 +73,7 @@ export const structureRoles = (code_attr: string, rolesFilter: string): acl_sear
         })
     ),
     loggedUser_to_subv: (user) => (
-      ldap.searchOne(conf.ldap.base_people, search_ldap.currentUser_to_filter(user), { supannRoleEntite: [''] }, {}).then(user => (
+      ldap.read(search_ldap.currentUser_to_dn(user), { supannRoleEntite: [''] }, {}).then(user => (
         _rolesGeneriques(rolesFilter).then(roles => {
             const user_roles = user.supannRoleEntite ? parse_composites(user.supannRoleEntite) as { role: string, code: string }[] : [];
             return user_roles.filter(e => roles.includes(e.role)).map(e => ({ [code_attr]: e.code }));
