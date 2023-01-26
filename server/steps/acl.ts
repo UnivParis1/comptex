@@ -10,21 +10,21 @@ const filters = ldap.filters;
 
 type simple_acl_search = {    
     v_to_moderators_ldap_filter(v: v): Promise<string>
-    user_to_subv(user: CurrentUser): Promise<Partial<v>[] | boolean>
+    loggedUser_to_subv(user: CurrentUser): Promise<Partial<v>[] | boolean>
 }
 
 const _normalize__or_subv = (l : boolean | Partial<v>[]) => (
     _.isBoolean(l) ? l : l.length === 0 ? false : l
 );
 
-export const convert_simple_acl_search = ({ user_to_subv, ...other } : simple_acl_search): acl_search => ({
+export const convert_simple_acl_search = ({ loggedUser_to_subv, ...other } : simple_acl_search): acl_search => ({
     ...other,
     async loggedUser_to_ldap_filter(user) {
-        const or_subv = _normalize__or_subv(await user_to_subv(user));
+        const or_subv = _normalize__or_subv(await loggedUser_to_subv(user));
         return _.isBoolean(or_subv) ? or_subv : filters.or(or_subv.map(l => filters.and(search_ldap.subv_to_eq_filters(l))));
     },
     async loggedUser_to_mongo_filter(user) {
-        const or_subv = _normalize__or_subv(await user_to_subv(user));
+        const or_subv = _normalize__or_subv(await loggedUser_to_subv(user));
         return _.isBoolean(or_subv) ? or_subv : db.or(or_subv.map(subv => _.mapKeys(subv, (_,k) => "v." + k)));
     },
 })
@@ -33,7 +33,7 @@ const loggedUser_filter = (filter: string): acl_search => convert_simple_acl_sea
     // search users that can moderate "v":
     v_to_moderators_ldap_filter: async (_v) => filter,
     // can the user moderate any "v":
-    user_to_subv: (user) => {
+    loggedUser_to_subv: (user) => {
         if (!user.id) console.error("no user id!?");
         return search_ldap.existPeople(filters.and([ filter, search_ldap.currentUser_to_filter(user) ]))
     },
@@ -52,7 +52,7 @@ export const structureAnyRole = (code_attr: string): acl_search => convert_simpl
         let code = v[code_attr];
         return `(supannRoleEntite=*[code=${code}]*)`
     },
-    user_to_subv: (user) => (
+    loggedUser_to_subv: (user) => (
       ldap.searchOne(conf.ldap.base_people, search_ldap.currentUser_to_filter(user), { supannRoleEntite: [''] }, {}).then(user => {
         const user_roles = user.supannRoleEntite ? parse_composites(user.supannRoleEntite) as { role: string, code: string }[] : [];
         return user_roles.map(e => ({ [code_attr]: e.code }));
@@ -72,7 +72,7 @@ export const structureRoles = (code_attr: string, rolesFilter: string): acl_sear
             return filters.or(l);
         })
     ),
-    user_to_subv: (user) => (
+    loggedUser_to_subv: (user) => (
       ldap.searchOne(conf.ldap.base_people, search_ldap.currentUser_to_filter(user), { supannRoleEntite: [''] }, {}).then(user => (
         _rolesGeneriques(rolesFilter).then(roles => {
             const user_roles = user.supannRoleEntite ? parse_composites(user.supannRoleEntite) as { role: string, code: string }[] : [];
@@ -91,7 +91,7 @@ export const group_for_each_attr_codes = (codeAttr: string, { code_to_group_cn, 
     v_to_moderators_ldap_filter: async (v) => (
         filters.memberOf(code_to_group_cn(v[codeAttr]))
     ),
-    user_to_subv: async (user) => {
+    loggedUser_to_subv: async (user) => {
       const codes = await search_ldap.filter_user_memberOfs(group_cn_to_code, user);
       return codes.map(code => ({ [codeAttr]: code }))
     },
@@ -111,7 +111,7 @@ export const ldapGroupsMatching = ({ code_to_group_cn, group_cn_to_code } : sear
         return filters.or(groups.map(cn => filters.memberOf(cn)))
     },
     // is "user" memberOf of a group matching "group_cn_to_code"
-    user_to_subv: async (user) => {
+    loggedUser_to_subv: async (user) => {
         const codes = await search_ldap.filter_user_memberOfs(group_cn_to_code, user);
         return codes.length > 0;
     },
