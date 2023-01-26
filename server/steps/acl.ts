@@ -29,7 +29,7 @@ export const convert_simple_acl_search = ({ user_to_subv, ...other } : simple_ac
     },
 })
 
-const peopleFilter = (filter: string): acl_search => convert_simple_acl_search({
+const loggedUser_filter = (filter: string): acl_search => convert_simple_acl_search({
     // search users that can moderate "v":
     v_to_moderators_ldap_filter: async (_v) => filter,
     // can the user moderate any "v":
@@ -40,11 +40,11 @@ const peopleFilter = (filter: string): acl_search => convert_simple_acl_search({
 });
 
 export const ldapGroup = (cn: string): acl_search => (
-    peopleFilter(filters.memberOf(cn))
+    loggedUser_filter(filters.memberOf(cn))
 );
 
 export const user_id = (user_id: string): acl_search => {
-    return peopleFilter(search_ldap.currentUser_to_filter({ id: user_id }));
+    return loggedUser_filter(search_ldap.currentUser_to_filter({ id: user_id }));
 };
 
 export const structureAnyRole = (code_attr: string): acl_search => convert_simple_acl_search({
