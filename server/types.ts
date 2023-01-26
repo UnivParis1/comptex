@@ -64,9 +64,9 @@ type action = (req: req, sv: sva) => Promise<vr>
 type acl_ldap_filter = string | boolean
 type acl_mongo_filter = Dictionary<any> | boolean
 type acl_search = {    
-    v_to_ldap_filter(v: v): Promise<string>
-    user_to_ldap_filter(user: CurrentUser): Promise<acl_ldap_filter>
-    user_to_mongo_filter(user: CurrentUser): Promise<acl_mongo_filter>
+    v_to_moderators_ldap_filter(v: v): Promise<string>
+    loggedUser_to_ldap_filter(user: CurrentUser): Promise<acl_ldap_filter>
+    loggedUser_to_mongo_filter(user: CurrentUser): Promise<acl_mongo_filter>
 }
 
 type profileValuesT<T> = StepAttrOptionChoicesT<T> & { 

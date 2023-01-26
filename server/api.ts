@@ -170,7 +170,7 @@ async function search_with_acls(req: req, wanted_step: string) {
     const sizeLimit = parseInt(req.query.maxRows) || 10;
     const step = conf_steps.steps[wanted_step];
 
-    const acl_ldap_filter = await acl_checker.user_to_ldap_filter(req.user, step.acls);
+    const acl_ldap_filter = await acl_checker.loggedUser_to_ldap_filter(req.user, step.acls);
     const attrTypes = _.pick(conf.ldap.people.types, ['sn', 'givenName', 'uid', 'global_profilename']);
     const vs = await search_ldap.searchPeople_matching_acl_ldap_filter(acl_ldap_filter, step.search_filter, token, attrTypes, { sizeLimit });
     return _.sortBy(vs, 'givenName', 'sn')
