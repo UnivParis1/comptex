@@ -12,7 +12,7 @@
   </div>
 
   <div v-if="step_description">
-    <component :is="step_description" :v_pre="v_pre" :v="v" :v_display="v_display" :potential_homonyms="potential_homonyms"></component>
+    <component :is="step_description" :id="id" :v_pre="v_pre" :v="v" :v_display="v_display" :potential_homonyms="potential_homonyms"></component>
   </div>
   <div v-if="noInteraction">
     Veuillez patienter
@@ -189,7 +189,7 @@ export default Vue.extend({
         },
         step_description() {
             const text = this.step?.labels?.description;
-            return text && Vue.extend({ props: ['v_pre', 'v', 'v_display', 'potential_homonyms'], template: "<div>" + text + "</div>" });
+            return text && Vue.extend({ props: ['id', 'v_pre', 'v', 'v_display', 'potential_homonyms'], template: "<div>" + text + "</div>" });
         },
         step_post_scriptum() {
             const text = this.step?.labels?.post_scriptum;
