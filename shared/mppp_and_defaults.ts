@@ -109,7 +109,7 @@ const get_ordered_opts_and_dependencies = (attrs: StepAttrsOptionM<unknown>) => 
     return mapValues(normal, merge_late_deps)
 }
 
-export function compute_mppp_and_handle_default_values(attrs : StepAttrsOptionM<unknown>, prev_defaults: Dictionary<string> | 'ignore_opts_default', v: CommonV) {
+export function compute_mppp_and_handle_default_values(attrs : StepAttrsOptionM<unknown>, prev_defaults: Dictionary<string> | 'ignore_opts_default', v: CommonV, v_getter?: (opts : StepAttrsOptionM<any>, attr: string) => any) {
     let current_defaults: Dictionary<string> = {};
     const handle_default = (opts: StepAttrOptionM<unknown>, k: string) => {
         if (prev_defaults !== 'ignore_opts_default') may_set_default_value(k, opts, v, prev_defaults || {});
@@ -144,7 +144,8 @@ export function compute_mppp_and_handle_default_values(attrs : StepAttrsOptionM<
             handle_default(opts, k);
 
             // we have final opts & v[k], set conditional deps opts
-            handle_chosen_oneOf_or_if_then_mppp(opts, v[k], (attrs, merge_patch_options) => {
+            const val = v_getter ? v_getter(opts, k) : v[k]
+            handle_chosen_oneOf_or_if_then_mppp(opts, val, (attrs, merge_patch_options) => {
                 forIn(attrs, (opts, innerkey) => {
                     if (attrs_opts_and_deps[innerkey]) { // missing in case of lonely "ignore", already warned about conf error
                         attrs_opts_and_deps[innerkey].deps[k] = { opts, merge_patch_options };

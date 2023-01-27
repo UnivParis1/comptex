@@ -383,6 +383,18 @@ describe('merge_v', () => {
         test(a_then_bc, { c: 'c' }, { a: '', c: 'cc' }, { a: '' });
         test(a_then_bc, { c: 'c' }, { a: 'aa', b: 'bb', c: 'cc' }, { a: 'aa', b: 'bb', c: 'c' });
     });
+    it("should handle if_then merge_patch_parent_properties hidden", () => {
+        // all attrs are "hidden" (usually using forceAttrs)
+        const a_then_b : StepAttrsOption = { a: {
+            hidden: true,
+            optional: true, 
+            if: { optional: false },
+            then: { merge_patch_parent_properties: { 
+                b: { hidden: true },
+            } }
+        } }
+        test(a_then_b, { a: 'a', b: 'b' }, {}, { a: 'a', b: 'b' });
+    });
 
     it("should check validator", () => {
         const attrs = { displayName: {} };
