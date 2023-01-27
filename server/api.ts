@@ -15,6 +15,7 @@ import * as conf_steps from './steps/conf';
 import { export_v, merge_v, exportAttrs, merge_attrs_overrides, selectUserProfile, initAttrs, checkAttrs, transform_object_items_oneOf_async_to_oneOf, findStepAttr, flatMapAttrs } from './step_attrs_option';
 import { filters } from './ldap';
 import gen_gsh_script from './gen_gsh_script';
+import { sv_to_url } from './sv';
 require('./helpers'); // for Promise.prototype.tap
 
 _.each(conf_steps.steps, initAttrs)
@@ -112,7 +113,7 @@ function notifyModerators(req: req, sv: sv, templateName: string) {
     acl_checker.moderators(step(sv).acls, sv.v).then(mails => {
         if (!mails.length) { console.log("no moderators"); return }
         //console.log("moderators", mails);
-        const sv_url = conf.mainUrl + "/" + sv.step + "/" + sv.id;
+        const sv_url = sv_to_url(sv);
         let params = _.merge({ to: mails.join(', '), moderator: req.user, conf, sv_url }, sv);
         mail.sendWithTemplateFile(templateName, params);
     });

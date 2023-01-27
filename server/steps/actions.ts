@@ -13,6 +13,7 @@ import v_display from '../v_display';
 import * as conf from '../conf';
 import client_conf from '../../shared/conf'; // ES6 syntax needed for default export
 import Mustache = require('../mustache_like_templating');
+import { sv_to_url } from '../sv';
 const filters = ldap.filters;
 
 const remove_accents = _.deburr;
@@ -293,7 +294,7 @@ export const prepareMailTemplateParams = async (req: req, sv: sv|sva, params: Di
     const v = sv.v;
     // @ts-expect-error
     const v_ = v_display(v, flatten_attrs(sv.attrs, v));
-    const sv_url = conf.mainUrl + "/" + sv.step + "/" + sv.id;
+    const sv_url = sv_to_url(sv);
     let to = params['to'];
     if (!to) to = v.mail || v.supannMailPerso;
     if (!to && v.various && v.various.full_v) to = v.various.full_v.mail || v.various.full_v.supannMailPerso;
@@ -349,8 +350,7 @@ export const genLogin: simpleAction = (_req, sv) => {
 export const sendValidationEmail: action = (req, sv) => {
     let v = sv.v;
     console.log("action sendValidationEmail to " + v.supannMailPerso);
-    const sv_url = conf.mainUrl + "/" + sv.step + "/" + sv.id;
-    mail.sendWithTemplateFile('validation.html', { conf, v, to: v.supannMailPerso, sv_url, moderator: req.user });
+    mail.sendWithTemplateFile('validation.html', { conf, v, to: v.supannMailPerso, sv_url: sv_to_url(sv), moderator: req.user });
     return Promise.resolve({ v });
 };
 
