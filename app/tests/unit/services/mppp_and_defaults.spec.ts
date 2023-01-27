@@ -38,7 +38,7 @@ describe('sub_and_defaults', function() {
     it('should handle if then merge_patch_parent_properties', () => {
         const attrs = { duration: {
                 optional: true,
-                if: { optional: false },
+                if: 'truthy',
                 then: { merge_patch_parent_properties: { sn: {} } },
         } } as StepAttrsOption;
             

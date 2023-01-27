@@ -146,7 +146,7 @@ const tests: (Omit<ClientSideSVA, 'stepName'> & { test_name: string })[] = [
                     title: 'credit_card',
                     description: 'If you enter anything here then billing_address will be dynamically added to the form.',
                     optional: true,
-                    if: { optional: false },
+                    if: 'truthy',
                     then: {
                         merge_patch_parent_properties: {
                             billing_address: { title: 'billing_address' },

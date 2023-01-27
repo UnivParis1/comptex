@@ -11,7 +11,7 @@ const a_or_b : StepAttrOption = { oneOf: [
 
 const a_then_bc : StepAttrsOption = { a: {
     optional: true, 
-    if: { optional: false },
+    if: 'truthy',
     then: { merge_patch_parent_properties: { 
         b: {},
         c: { readOnly: true }
@@ -58,7 +58,7 @@ describe('exportAttrs', () => {
         ] } });
         assert.deepEqual(exportAttrs(a_then_bc, {}), { a: {
             optional: true, 
-            if: { optional: false },
+            if: 'truthy',
             then: { merge_patch_parent_properties: { b: {}, c: { optional: true, readOnly: true } } }
         } });
     });
@@ -388,7 +388,7 @@ describe('merge_v', () => {
         const a_then_b : StepAttrsOption = { a: {
             hidden: true,
             optional: true, 
-            if: { optional: false },
+            if: 'truthy',
             then: { merge_patch_parent_properties: { 
                 b: { hidden: true },
             } }

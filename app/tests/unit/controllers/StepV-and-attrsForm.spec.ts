@@ -62,7 +62,7 @@ describe('StepV-and-attrsForm', () => {
         const params = {
             attrs: { 
                 global_attr1: { readOnly: true, uiHidden: true,
-                    if: { optional: false },
+                    if: 'truthy',
                     then: { merge_patch_parent_properties: { choice: all_choices } },
                 },
                 choice: choices,
