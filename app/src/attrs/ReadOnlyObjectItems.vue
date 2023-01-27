@@ -9,7 +9,7 @@
     <table class="table table-striped">
     <tbody>
         <tr>
-            <th v-for="(opts, attrName) in attrs">{{opts.title}}</th>
+            <th v-for="(opts, _attrName) in attrs">{{opts.title}}</th>
         </tr>
         <tr v-for="v of v_array">
             <td v-for="(opts, attrName) in attrs" :class="'oneAttr-' + attrName">
