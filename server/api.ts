@@ -147,7 +147,9 @@ async function getRaw(req: req, id: id, wanted_step: string): Promise<sva> {
         sv = await db.get(id);
         if (!sv) throw "invalid id " + id;
         if (!sv.step) throw sv_to_error(sv)
-        if (wanted_step && sv.step !== wanted_step) {
+        if (wanted_step?.startsWith(sv.step + ":")) {
+            sv.step = wanted_step
+        } else if (wanted_step && sv.step !== wanted_step) {
             console.error("user asked for step " + wanted_step + ", but sv is in state " + sv.step);
             throw sv_to_error(sv)
         }
@@ -259,6 +261,7 @@ function setRaw(req: req, id: id, sv: sva, v: v) : Promise<svr> {
         let sv = <sv> _.omit(svr, 'response', 'attrs');
         if (sv.v.various) delete sv.v.various.diff;
         if (sv.step) {
+            if (sv.step.includes(":")) throw `saved name can not contain ":" which is reserved for *alternate* step (got ${sv.step})`
             await saveRaw(req, sv);
         } else if (id !== 'new') { // remove if in already DB
             await removeRaw(sv);
