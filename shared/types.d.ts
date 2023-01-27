@@ -113,7 +113,7 @@ interface CommonStepAttrOptionT<T> extends MinimalStepAttrOption {
   optional?: boolean;
   properties?: Dictionary<T>;
   oneOf?: StepAttrOptionChoicesT<T>[];
-  if?: 'truthy';
+  if?: 'truthy' | 'falsy';
   then?: MppT<T>;
 }
 

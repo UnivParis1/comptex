@@ -1,8 +1,8 @@
 import { forIn, map, mapValues, pickBy } from 'lodash';
 import { find_choice } from './v_utils';
 
-const matches_if = (_if: 'truthy', val: string) => (
-    val
+const matches_if = (if_: 'truthy'|'falsy', val: string) => (
+    if_ === 'truthy' ? val : !val
 )
 
 const handle_then_if_matching = (opts: StepAttrOptionM<unknown>, val: string, rec: (attrs: StepAttrsOptionM<unknown>, mpo: MergePatchOptions) => void) => {

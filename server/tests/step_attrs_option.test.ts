@@ -395,6 +395,17 @@ describe('merge_v', () => {
         } }
         test(a_then_b, { a: 'a', b: 'b' }, {}, { a: 'a', b: 'b' });
     });
+    it("should handle if_then merge_patch_parent_properties with if 'falsy'", () => {
+        // all attrs are "hidden" (usually using forceAttrs)
+        const not_a_then_b : StepAttrsOption = { a: {
+            optional: true, 
+            if: "falsy",
+            then: { merge_patch_parent_properties: { b: {} } }
+        } }
+        test(not_a_then_b, {}, { a: 'aa' }, { a: 'aa' });
+        test(not_a_then_b, {}, { a: '', b: 'bb' }, { a: '', b: 'bb' });
+        test_fail(not_a_then_b, {}, { a: '' }, 'constraint !b.optional failed for undefined');
+    });
 
     it("should check validator", () => {
         const attrs = { displayName: {} };
