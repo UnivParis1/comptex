@@ -60,8 +60,8 @@ attrs: {
             { const: "yes", title: "Demander à l'invité de remplir", 
                 merge_patch_parent_properties: {  
                     supannMailPerso: {  
-                        title: "Email de la personne", 
-                        description: "<br>Un mél va être envoyé à l'invité lui demandant de remplir ses informations personnelles (nom, prénom, date de naissance, coordonnées).", 
+                        title: "Adresse courriel de la personne", 
+                        description: "<br>Un courriel va être envoyé à l'invité lui demandant de remplir ses informations personnelles (nom, prénom, date de naissance, coordonnées).", 
                     }, 
                     } }, 
             { const: "no", title: "Remplir moi-même",  
