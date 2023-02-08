@@ -397,9 +397,9 @@ export const validateMailNoLoop = (idAttr: string): simpleAction => async (_req,
     if (r.external) {
         // ok
     } else if (!r.internal) {
-        throw `L'adresse mail ${email} n'existe pas dans notre université. Conseil : utilisez une adresse mail personnelle.`
+        throw `L'adresse ${email} n'existe pas dans notre université. Conseil : utilisez une adresse de courriel personnelle.`
     } else if (r.internal[idAttr] === v[idAttr]) {
-        throw `Votre propre adresse mail n'est pas autorisée comme email personnel.`
+        throw `Votre propre adresse courriel n'est pas autorisée comme adresse personnelle.`
     }    
     return Promise.resolve({ v });
 }

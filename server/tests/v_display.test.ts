@@ -54,7 +54,7 @@ describe('v_display', () => {
         assert.equal(await v_['various'].diff, 
 `<table border="1" class="v-diff">
   <tr><th>Champ</th><th>Ancienne valeur</th><th>Nouvelle valeur</th></tr>
-  <tr><td>Email personnel</td><td>foo@bar.com</td><td><i>supprimée</i></td></tr>
+  <tr><td>Courriel personnel</td><td>foo@bar.com</td><td><i>supprimée</i></td></tr>
   <tr><td>Nom de naissance</td><td><i>aucune</i></td><td>Rigaux</td></tr>
   <tr><td>Nom d'usage</td><td>Rigaud</td><td>Rigaux</td></tr>
   <tr><td>Date de naissance</td><td>02/10/1975</td><td>02/10/2010</td></tr>
@@ -71,7 +71,7 @@ describe('v_display', () => {
         } as v, { sn: { title: "SN" }});
         assert.equal(await v_, 
 `<table>
-  <tr><td>Email personnel</td><td>foo@bar.com</td></tr>
+  <tr><td>Courriel personnel</td><td>foo@bar.com</td></tr>
   <tr><td>Nom de naissance</td><td>Rigaux</td></tr>
   <tr><td>SN</td><td>Rigaux</td></tr>
 </table>`);

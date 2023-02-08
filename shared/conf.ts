@@ -44,7 +44,7 @@ export default {
         homePostalAddress: { title: "Adresse personnelle", uiType: 'postalAddress' },
         homePhone: { title: "Téléphone personnel", uiType: "phone", format: 'phone' },
         pager: { title: "Mobile personnel", uiType: "frenchMobilePhone", format: 'phone' },
-        supannMailPerso: { title: "Email personnel", uiType: "email", normalize: trim },
+        supannMailPerso: { title: "Courriel personnel", uiType: "email", normalize: trim },
         jpegPhoto: { title: "Photo", format: 'image/jpeg', uiType: 'cameraSnapshot' },
         telephoneNumber: { title: 'Téléphone fixe', uiType: "phone", format: "phone" },
         mobile: { title: "Mobile professionnel", uiType: "phone", format: "phone" },
