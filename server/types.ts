@@ -110,6 +110,7 @@ interface StepNotify {
   added?: string;
   rejected?: string;
   accepted?: string;    
+  preferNonPeopleMailAddresses?: true;
 }
 type step = {
   labels: StepLabels;

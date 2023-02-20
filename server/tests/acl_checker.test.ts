@@ -12,13 +12,13 @@ describe('global', () => {
 
  describe('moderators', () => {
     it('should work', () => (
-        acl_checker.moderators([ acl.user_id("arigaux") ], undefined).then(l => assert.deepEqual(l, [ 'ayme.rigaux@univ-paris1.fr' ]))
+        acl_checker.moderators([ acl.user_id("arigaux") ], false, undefined).then(l => assert.deepEqual(l, [ 'ayme.rigaux@univ-paris1.fr' ]))
     ))
     it('should work on empty case', () => (
-        acl_checker.moderators([], undefined).then(_ => assert.fail("should raise")).catch(err => assert.equal(err, "no_moderators"))
+        acl_checker.moderators([], false, undefined).then(_ => assert.fail("should raise")).catch(err => assert.equal(err, "no_moderators"))
     ))
     it('should work on multiple users', () => (
-        acl_checker.moderators([ acl.user_id("arigaux"), acl.user_id("prigaux"), acl.user_id("arigaux") ], undefined).then(l => assert.deepEqual(l, [ undefined, 'ayme.rigaux@univ-paris1.fr' ]))
+        acl_checker.moderators([ acl.user_id("arigaux"), acl.user_id("prigaux"), acl.user_id("arigaux") ], false, undefined).then(l => assert.deepEqual(l, [ 'ayme.rigaux@univ-paris1.fr' ]))
     ))
  });
 

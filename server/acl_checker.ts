@@ -76,11 +76,20 @@ export const checkAcl = async (user: CurrentUser, v: v, acls: acl_search[]) => {
 }
 
 // compute who will be allowed to act on this "v"
-export const moderators = async (acls: acl_search[], v: v): Promise<string[]> => {
+export const moderators = async (acls: acl_search[], preferNonPeopleMailAddresses: boolean, v: v): Promise<string[]> => {
     if (!acls) return undefined;
 
-    const filter = await v_to_moderators_ldap_filter(v, acls);
-    const mails = await searchPeople(filter, 'mail');
+    const filter = ldap_filters.and([
+        await v_to_moderators_ldap_filter(v, acls),
+        '(mail=*)'
+    ])
+    let mails;
+    if (preferNonPeopleMailAddresses) {
+        mails = await ldap.searchThisAttr(conf.ldap.base_groups, filter, 'mail', '' as string)
+    }
+    if (!mails?.length) {
+        mails = await ldap.searchThisAttr(conf.ldap.base_people, filter, 'mail', '' as string)
+    }
     if (!mails.length) throw "no_moderators";
     return mails;
 };
