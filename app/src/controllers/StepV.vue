@@ -11,7 +11,7 @@
       <br>
   </div>
 
-  <div v-if="step_description">
+  <div class="step_description" v-if="step_description">
     <component :is="step_description" :id="id" :v_pre="v_pre" :v="v" :v_display="v_display" :potential_homonyms="potential_homonyms"></component>
   </div>
   <div v-if="noInteraction">
