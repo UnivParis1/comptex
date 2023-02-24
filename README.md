@@ -213,7 +213,7 @@ More complex ACLs are possible. They need to provide 3 functions:
 
 ## Various
 
-* ```nextBrowserStep```: the name of a step (with a leading `/`) or an external url.
+* ```nextBrowserStep```: the name of a step (with a leading `/`) or an external url. If it contains `{{id}}`, it is replaced by `svr.id`.
 * ```search_filter```: LDAP filter. A similar result can be obtained with step.acls, but it's harder since you should ensure "v_to_moderators_ldap_filter" and "loggedUser_to_ldap_filter" do the same thing.
 
 # Authentication

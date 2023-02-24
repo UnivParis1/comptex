@@ -195,7 +195,8 @@ async function set(req: req, id: id, wanted_step: string, v: v) {
 
     const nextBrowserStep = name2step(wanted_step).nextBrowserStep;
     if (nextBrowserStep) {
-        const url = typeof nextBrowserStep === "function" ? await nextBrowserStep(svr.v) : nextBrowserStep
+        let url = typeof nextBrowserStep === "function" ? await nextBrowserStep(svr.v) : nextBrowserStep
+        url = url.replace('{{id}}', svr.id)
         r.nextBrowserStep = { url };
     }
     return r;
