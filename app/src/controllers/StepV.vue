@@ -69,7 +69,7 @@
 
     <div v-if="step_post_scriptum">
         <hr style="margin-top: 2rem">
-        <component :is="step_post_scriptum" :v_pre="v_pre" :v="v"/>
+        <component :is="step_post_scriptum" :id="id" :v_pre="v_pre" :v="v"/>
     </div>
 
    </div> <!-- !homonyms -->
@@ -193,7 +193,7 @@ export default Vue.extend({
         },
         step_post_scriptum() {
             const text = this.step?.labels?.post_scriptum;
-            return text && Vue.extend({ props: ['v_pre', 'v'], template: "<div>" + text + "</div>" });
+            return text && Vue.extend({ props: ['id', 'v_pre', 'v'], template: "<div>" + text + "</div>" });
         },
         disableOkButton() {
             return this?.step?.if_no_modification === 'disable-okButton' && (isEqual(this.v, this.v_orig) && !this.v?.various?.extern_ask_confirmation)
