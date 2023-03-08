@@ -107,7 +107,7 @@ async function export_sv(req: req, sv: sva): Promise<ClientSideSVA> {
 
 function mayNotifyModerators(req: req, sv: sv|svra, notifyKind: 'accepted'|'added'|'rejected') {
     let notify = step(sv).notify;
-    if (notify) notifyModerators(req, sv, notify[notifyKind]);
+    if (notify?.[notifyKind]) notifyModerators(req, sv, notify[notifyKind]);
 }
 function notifyModerators(req: req, sv: sv, templateName: string) {
     acl_checker.moderators(step(sv).acls, step(sv).notify.preferNonPeopleMailAddresses, sv.v).then(mails => {
