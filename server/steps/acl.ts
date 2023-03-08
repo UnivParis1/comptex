@@ -47,6 +47,30 @@ export const user_id = (user_id: string): acl_search => {
     return loggedUser_filter(search_ldap.currentUser_to_filter({ id: user_id }));
 };
 
+const mail_to_dn = async (mail: string) => (
+    await ldap.searchOneThisAttr(conf.ldap.base, filters.eq('mail', mail), 'dn', '')
+)
+const groupMail_to_memberOf_filter = async (mail: string) => (
+    filters.eq("memberOf", await mail_to_dn(mail))
+)
+
+// similar to acl.ldapGroup, but for groups with a mail address (useful together with flag "preferNonPeopleMailAddresses")
+export const ldapGroupMail = (mail: string): acl_search => convert_simple_acl_search({
+    // search users that can moderate "v":
+    v_to_moderators_ldap_filter: async (_v) => (
+        filters.or([
+            filters.eq('mail', mail),
+            await groupMail_to_memberOf_filter(mail),
+        ])
+    ),
+    // can the loggedUser moderate any "v":
+    loggedUser_to_subv: async (user) => {
+        if (!user.id) console.error("no user id!?");
+        const filter = await groupMail_to_memberOf_filter(mail)
+        return await ldap.exist(search_ldap.currentUser_to_dn(user), filter)
+    },
+});
+
 export const structureAnyRole = (code_attr: string): acl_search => convert_simple_acl_search({
     v_to_moderators_ldap_filter: async (v) => {
         let code = v[code_attr];
