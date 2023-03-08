@@ -9,6 +9,10 @@ export default Vue.extend({
         conf() { return conf },
     },
     methods: {
+        addQueryParams(more_params) {
+            const query = { ...this.$route.query, ...more_params }
+            return { query }
+        },
         routerResolveFullHref(location) {
             const a = document.createElement('a');
             a.href = this.$router.resolve(location).href;
