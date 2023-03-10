@@ -227,3 +227,7 @@ export const parse_composite = (str: string) => {
 export const parse_composites = (strs: string[]) => (
     strs.map(parse_composite)
 );
+
+export const ignore_toLdap = (conversion?: ldap_conversion): ldap_conversion => (
+    { ...conversion, toLdap: _ => ({ action: 'ignore' })}
+)

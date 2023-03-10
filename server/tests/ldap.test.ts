@@ -160,6 +160,14 @@ describe('ldap', () => {
 
     });
 
+    it("ignore_toLdap", async () => {
+        const attrTypes = { givenName: '', sn: '' }
+        const attrsConvert: ldap.AttrsConvert = { sn: { convert: ldap_convert.ignore_toLdap() } }
+        const v = await ldap.read("uid=prigaux," + conf.ldap.base_people, attrTypes, attrsConvert)
+        assert.deepEqual(v, { givenName: 'pascal', sn: 'rigaux' })
+        assert.deepEqual(ldap.convertToLdap(attrTypes, attrsConvert, v, {}), { givenName: 'pascal' })
+    })
+
     describe("etiquetteMulti conversion", () => {
 
         it("should handle simple fromLdap", () => {
