@@ -38,6 +38,9 @@ export function formatValue(val: any, opts : StepAttrOptionM<unknown> = {}): str
     if (opts.oneOf) {
        return find_choice(opts.oneOf, val)?.title
     }
+    if (opts.uiType === 'checkbox') {
+        return val ? 'coché' : 'décoché'
+    }
     if (val instanceof Date) {
         return formatDate(val, 'dd/MM/yyyy');
     } else {
