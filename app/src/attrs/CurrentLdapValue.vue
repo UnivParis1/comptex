@@ -1,12 +1,13 @@
 <template>
   <div class="current-ldap-value" v-if="shown">
-      actuellement : {{ldap_value}} 
+      actuellement : {{formattedLdapValue}} 
       <span v-if="!opts_.readOnly" @click="revert" title="Utiliser la valeur actuelle du compte" class="glyphicon glyphicon-circle-arrow-up"></span>
     </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
+import { formatValue } from '../../../shared/v_utils';
 export default Vue.extend({
   props: ["ldap_value", "value", "opts"],
   data() {
@@ -14,6 +15,9 @@ export default Vue.extend({
   },
   computed: {
       opts_() { return this.opts || {} },
+      formattedLdapValue() {
+          return formatValue(this.ldap_value, this.opts_)
+      },
       shown() {
           return !this.hide 
             && (this.ldap_value || this.ldap_value === ''/* for checkboxes */) // do we have the LDAP value ?
