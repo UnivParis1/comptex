@@ -92,6 +92,12 @@ export const if_v = (test_v: (v:v) => boolean, action: action, action_else?: act
     await (test_v(sv.v) ? action : action_else || empty_action)(req, sv)
 );
 
+export const add_current_ldap_values = (...attrs: string[]): simpleAction => (_req, sv)  => (
+    onePerson(filters.eq("uid", sv.v.uid)).then(full_v => {
+        return { v: { ...sv.v, ..._.pick(full_v, ...attrs) } }
+    })
+);
+
 export const handle_exception = (action: action, handler: (err: any, req: req, sv: sva) => Promise<vr>) => (req: req, sv: sva) => (
     action(req, sv).catch(err => handler(err, req, sv))
 );
