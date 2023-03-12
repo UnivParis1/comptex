@@ -62,7 +62,7 @@ export const init = (app: express.Express) => {
     app.get(pgtUrl, fake_host(cas.serviceValidate({ pgtUrl })))
     app.use("/login/cas_with_pgt", cas.ssout(_ => true))
     app.get("/login/cas_with_pgt", pre_check_PGT, fake_host(chain(cas.serviceValidate({ pgtUrl }), cas.authenticate())), post_check_PGT);
-    app.get("/login/cas", fake_host(chain(cas.serviceValidate(), cas.authenticate())));
+    app.get("/login/local", fake_host(chain(cas.serviceValidate(), cas.authenticate())));
     app.use(cas_express_auth);
 }
 
