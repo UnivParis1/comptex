@@ -97,17 +97,17 @@ export const handle_exception = (action: action, handler: (err: any, req: req, s
 );
 
 export function chain(l_actions: action[]): action {
-    return (req, sv: sva) => {
-        let vr: Promise<vr> = Promise.resolve(sv);
-        l_actions.forEach(action => {
-            vr = vr.then(vr => (
-                action(req, { ...sv, v: vr.v }).then(vr2 => (
-                    // merge "response"s
-                    { v: vr2.v, response: { ...vr.response, ...vr2.response } }
-                ))
-            ));
-        });
-        return vr;
+    return async (req, sv: sva) => {
+        let {v} = sv;
+        let response: response = undefined
+        for (const action of l_actions) {
+            const vr = await action(req, { ...sv, v })
+            // propagate v
+            v = vr.v
+            // merge "response"s
+            response = { ...response, ...vr.response }
+        }
+        return { v, response };
     };
 }
 
