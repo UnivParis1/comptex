@@ -14,7 +14,9 @@ export default Vue.extend({
   },
   computed: {
       shown() {
-          return !this.hide && this.ldap_value && this.ldap_value !== this.value;
+          return !this.hide 
+            && (this.ldap_value || this.ldap_value === ''/* for checkboxes */) // do we have the LDAP value ?
+            && ("" + (this.ldap_value || '')) !== ("" + (this.value || '')) // "true" and true are considered equal
       },
   },
   watch: {
