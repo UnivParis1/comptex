@@ -129,6 +129,7 @@ type step = {
   nextBrowserStep?: string | ((v: v) => Promise<string>); // either /<step> or a full url
   notify?: StepNotify;
   action_pre?: action_pre;
+  action_pre_v_ldap?: action_pre;
   action_pre_before_save?: action;
   action_post?: action;
 }

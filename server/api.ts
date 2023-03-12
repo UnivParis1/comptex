@@ -83,13 +83,17 @@ function action<SV extends sv>(req: req, sv: SV, action_name: 'action_post' | 'a
     });
 }
 
-async function may_export_v_ldap(sv: sva) {
+async function may_export_v_ldap(req: req, sv: sva) {
     if (sv.v && sv.v.uid) {
         let v_ldap: v = await search_ldap.onePerson(filters.eq("uid", sv.v.uid));
         if (!v_ldap) throw "invalid uid " + sv.v.uid
         if (sv.v.profilename_to_modify) {
             const v_ldap_ = selectUserProfile(v_ldap, sv.v.profilename_to_modify)
             if (v_ldap_) v_ldap = v_ldap_;
+        }
+        const f = step(sv).action_pre_v_ldap
+        if (f) {
+            v_ldap = await f(req, { ...sv, v: v_ldap })
         }
         v_ldap = export_v(sv_attrs(sv), v_ldap) as v;
         return { ...sv, v_ldap };
@@ -161,7 +165,7 @@ async function getRaw(req: req, id: id, wanted_step: string): Promise<sva> {
 
 async function get(req: req, id: id, wanted_step: string) {
     let sv = await getRaw(req, id, wanted_step)
-    if (id !== 'new') sv = await may_export_v_ldap(sv)
+    if (id !== 'new') sv = await may_export_v_ldap(req, sv)
     return await export_sv(req, sv)
     // TODO add potential_homonyms si id !== 'new' && attrs && attrs.uid
 }
