@@ -1,18 +1,19 @@
 <template>
   <div class="current-ldap-value" v-if="shown">
       actuellement : {{ldap_value}} 
-      <span @click="revert" title="Utiliser la valeur actuelle du compte" class="glyphicon glyphicon-circle-arrow-up"></span>
+      <span v-if="!opts_.readOnly" @click="revert" title="Utiliser la valeur actuelle du compte" class="glyphicon glyphicon-circle-arrow-up"></span>
     </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
 export default Vue.extend({
-  props: ["ldap_value", "value"],
+  props: ["ldap_value", "value", "opts"],
   data() {
         return { hide: false };  
   },
   computed: {
+      opts_() { return this.opts || {} },
       shown() {
           return !this.hide 
             && (this.ldap_value || this.ldap_value === ''/* for checkboxes */) // do we have the LDAP value ?

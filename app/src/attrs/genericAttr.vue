@@ -124,7 +124,7 @@
     <span class="attr-description" v-html="opts.description"></span>
    </div>
 
-    <CurrentLdapValue v-model="initial_value" :ldap_value="ldap_value" @input="v => val = v"></CurrentLdapValue>
+    <CurrentLdapValue v-model="initial_value" :ldap_value="ldap_value" :opts="opts" @input="v => val = v"></CurrentLdapValue>
 
   </my-bootstrap-form-group>
  </div>

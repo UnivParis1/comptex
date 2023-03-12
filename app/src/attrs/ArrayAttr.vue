@@ -20,7 +20,7 @@
     </my-bootstrap-form-group>
 
     <my-bootstrap-form-group :class="{ hideIt: !currentLdapValue_shown }">
-        <CurrentLdapValue :value="initial_val.join(' ')" :ldap_value="ldap_val.join(' ')" @input="val = [...ldap_val]" @shown="val => currentLdapValue_shown = val"></CurrentLdapValue>
+        <CurrentLdapValue :value="initial_val.join(' ')" :ldap_value="ldap_val.join(' ')" :opts="opts" @input="val = [...ldap_val]" @shown="val => currentLdapValue_shown = val"></CurrentLdapValue>
     </my-bootstrap-form-group>
 </div>
 </template>
