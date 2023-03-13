@@ -106,17 +106,29 @@ describe('ldap', () => {
             let rawLdapValue = ldap.convertToLdap(attrTypes, attrsConvert, e, {});
             assert.deepEqual(rawLdapValue['supannEtablissement'], ["{SAML}https://univ-test.fr"]);
         });
-        it("should convert toLdap (complex)", () => {
+        it("should convert toLdap (valeurs étiquetées ajoutées)", () => {
             let attrTypes = {idpId: '', mifare: '', supannEtablissement: ([] as string[])}
             let e = { idpId: "https://univ-test.fr", mifare: 'mifare_id', supannEtablissement: ["{UAI}0751717J"] };
             let rawLdapValue = ldap.convertToLdap(attrTypes, attrsConvert, e, {});
-            assert.deepEqual(rawLdapValue['supannEtablissement'], ["{SAML}https://univ-test.fr", "{MIFARE}mifare_id", "{UAI}0751717J" ]);
+            assert.deepEqual(rawLdapValue['supannEtablissement'], ["{UAI}0751717J", "{SAML}https://univ-test.fr", "{MIFARE}mifare_id" ]);
         });
-        it("should convert toLdap (complex2)", () => {
+        it("should convert toLdap (valeur étiquetée remplacée)", () => {
             let attrTypes = {idpId: '', mifare: '', supannEtablissement: ([] as string[])}
             let e = { supannEtablissement: ["{UAI}0751717J", "{MIFARE}xxx"], idpId: "https://univ-test.fr", mifare: 'mifare_id' };
             let rawLdapValue = ldap.convertToLdap(attrTypes, attrsConvert, e, {});
             assert.deepEqual(rawLdapValue['supannEtablissement'], ["{UAI}0751717J", "{SAML}https://univ-test.fr", "{MIFARE}mifare_id" ]);
+        });
+        it("should convert toLdap (valeur étiquetée supprimée)", () => {
+            let attrTypes = {mifare: '', supannEtablissement: ([] as string[])}
+            let e = { supannEtablissement: ["{UAI}0751717J", "{MIFARE}xxx"], mifare: '' };
+            let rawLdapValue = ldap.convertToLdap(attrTypes, attrsConvert, e, {});
+            assert.deepEqual(rawLdapValue['supannEtablissement'], ["{UAI}0751717J" ]);
+        });
+        it("should convert toLdap (valeur étiquetée supprimée, avec ordre des valeurs dans v différent)", () => {
+            let attrTypes = {mifare: '', supannEtablissement: ([] as string[])}
+            let e = { mifare: '', supannEtablissement: ["{UAI}0751717J", "{MIFARE}xxx"] };
+            let rawLdapValue = ldap.convertToLdap(attrTypes, attrsConvert, e, {});
+            assert.deepEqual(rawLdapValue['supannEtablissement'], ["{UAI}0751717J" ]);
         });
         it("should work with ldap.read (simple)", () => {
             let attrTypes = {idpId: ''}            

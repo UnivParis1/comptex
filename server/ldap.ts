@@ -121,7 +121,7 @@ function convertAttrFromLdap(attr: string, attrType: LdapAttrValue, conversion: 
 
 export const convert_toLdap_string = (attrConvert: AttrConvert, val: LdapAttrValue) => {
     const modify = to_ldap_modify(attrConvert.convert.toLdap(val))
-    const val_ = modify.action === 'add' ? modify.value : _.isFunction(modify.action) ? modify.action([]) : undefined
+    const val_ = modify.action === 'add' || modify.action === 'set' ? modify.value : _.isFunction(modify.action) ? modify.action([]) : undefined
     if (_.isArray(val_)) {
         if (val_.length > 1) throw "ldap_modify_to_string expected a simple value"
         return val_[0]
@@ -140,13 +140,13 @@ function convertAttrToLdap(attr: string, attrType: LdapAttrValue, conversion: ld
                    conversion.toLdap(v);
             return to_ldap_modify(v_);
         } else if (_.isArray(attrType)) {
-            return to_ldap_add(v); // we know it's an array, that's a valid RawValue
+            return to_ldap_set(v); // we know it's an array, that's a valid RawValue
         } else if (_.isString(attrType)) {
-            return to_ldap_add(v);
+            return to_ldap_set(v);
         } else if (_.isNumber(attrType)) {
-            return to_ldap_add(v.toString());
+            return to_ldap_set(v.toString());
         } else if (attr === 'dn' || attr === 'objectClass') {
-            return to_ldap_add(v.toString());
+            return to_ldap_set(v.toString());
         } else {
             if (!attr.match(/^(noInteraction|various|comment|mailFrom_email|mailFrom_text|duration_or_enddate|etablissement.*|charter|profilename_to_modify)$/)) {
                 console.error(`not converting attribute ${attr} to LDAP`);
@@ -155,26 +155,48 @@ function convertAttrToLdap(attr: string, attrType: LdapAttrValue, conversion: ld
         }
 }
 
-const to_ldap_add = (val : RawValue): ldap_modify => (
-    { action: 'add', value: val }
+const to_ldap_set = (val : RawValue): ldap_modify => (
+    { action: 'set', value: val }
 )
 
 const to_ldap_modify = (val : RawValue | ldap_modify): ldap_modify => (
-    _.isArray(val) || _.isString(val) ? to_ldap_add(val) : val
+    _.isArray(val) || _.isString(val) ? to_ldap_set(val) : val
 )
 
 const to_array = (val: RawValue) => val instanceof Array ? val : [val];
 
 export function convertToLdap<T extends Dictionary<any>>(attrTypes: T, attrsConvert: AttrsConvert, v: Partial<T>, opts : { toJson?: boolean }) {
-    let r: Dictionary<RawValue> = {};
-    _.forEach(v, (val, attr) => {
+    let modifications = _.compact(_.map(v, (val, attr) => {
         let conv = attrsConvert[attr as string] || {};
         let attr_ = opts.toJson && conv.ldapAttrJson || toLdapAttr(conv, attr);
         let modify = convertAttrToLdap(attr, attrTypes[attr], conv.convert, val, opts);
         if (!modify) {
             // TODO: see how to handle this
             console.error("no convertToLdap for attr " + attr + " with value " + val);
-        } else if (modify.action === 'ignore') {
+        }
+        return modify && modify.action !== 'ignore' ? { attr_, modify } : undefined
+     }))
+     return convertToLdap_(modifications, opts);
+}
+
+function convertToLdap_(modifications: { attr_: string; modify: ldap_modify; }[], opts: { toJson?: boolean; }) {
+    let r: Dictionary<RawValue> = {};
+    // first handle all 'set' actions
+    for (const { attr_, modify } of modifications) {
+        if (modify.action === 'set') {
+            let val_ = modify.value;
+            if (val_ === '' && opts.toJson) {
+                val_ = null; // in crejsonldap, null means remove the value
+            }
+            if (attr_ in r) {
+                console.log("convertToLdap: multiple 'set'", { attr_, modify })
+            }
+            r[attr_] = val_;
+        }
+    }
+    for (const { attr_, modify } of modifications) {
+        if (modify.action === 'set') {
+            // already done (see above)
         } else if (modify.action === 'add') {
             let val_ = modify.value;
             if (val_ === '' && opts.toJson) {
@@ -194,7 +216,7 @@ export function convertToLdap<T extends Dictionary<any>>(attrTypes: T, attrsConv
         } else {
             console.error("unknown ldap modify action", modify.action)
         }
-    });
+    }
     return r;
 }
 
