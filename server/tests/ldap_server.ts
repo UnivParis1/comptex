@@ -32,7 +32,7 @@ ldap['SubstringFilter'].prototype.matches = function (target, strictAttrCase?: b
 
 
 const doIt = (params: Dictionary<string>) => {
-const host = 'localhost';
+const host = '127.0.0.1';
 const db = params.DNs;
 
 const server = ldap.createServer();
