@@ -71,7 +71,7 @@ function action_post(req: req, sv: sva): Promise<svra> {
     });
 }
 
-function action<SV extends sv>(req: req, sv: SV, action_name: 'action_post' | 'action_pre_before_save'): Promise<SV & { response?: response }> {
+function action<SV extends sv>(req: req, sv: SV, action_name: 'action_post' | 'action_pre_before_save' | 'action_rejected'): Promise<SV & { response?: response }> {
     let f = step(sv)[action_name];
     if (!f) return Promise.resolve(sv); // nothing to do
     //console.log("calling " + action_name + " for step " + sv.step);
@@ -296,6 +296,7 @@ const removeRaw = (sv: sv) => removeManyRaw([sv])
 async function remove(req: req, id: id, wanted_step: string) {
     const sv = await getRaw(req, id, wanted_step)
     // acls are checked => removing is allowed
+    await action(req, sv, 'action_rejected')
     mayNotifyModerators(req, sv, 'rejected')
     add_history_event(req, sv, 'rejected')
     await removeRaw(sv);

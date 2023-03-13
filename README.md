@@ -84,6 +84,7 @@ It returns { success: true, step: xxx, ... action_pre_before_save || action_post
 
 Read sv from database
 * ```.acls``` is used to check authenticated user is allowed
+* ```.action_rejected``` is called with params (req, sv)
 * ```.notify.rejected``` template is mailed to moderators (moderators computed from ```.acls```)
 
 # Steps configuration

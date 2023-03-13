@@ -132,6 +132,7 @@ type step = {
   action_pre_v_ldap?: action_pre;
   action_pre_before_save?: action;
   action_post?: action;
+  action_rejected?: action;
 }
 type steps = Dictionary<step>
 
