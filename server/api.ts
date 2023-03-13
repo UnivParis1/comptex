@@ -289,13 +289,13 @@ async function removeManyRaw(svs: sv[]) {
 
 const removeRaw = (sv: sv) => removeManyRaw([sv])
 
-function remove(req: req, id: id, wanted_step: string) {
-    return getRaw(req, id, wanted_step).then(sv => {
-        // acls are checked => removing is allowed
-        mayNotifyModerators(req, sv, 'rejected');
-        add_history_event(req, sv, 'rejected')
-        return removeRaw(sv);
-    }).then(_ => ({ success: true }));
+async function remove(req: req, id: id, wanted_step: string) {
+    const sv = await getRaw(req, id, wanted_step)
+    // acls are checked => removing is allowed
+    mayNotifyModerators(req, sv, 'rejected')
+    add_history_event(req, sv, 'rejected')
+    await removeRaw(sv);
+    return { success: true }
 }
 
 const initial_steps = () => (
