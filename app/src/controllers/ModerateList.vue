@@ -7,6 +7,9 @@
 
 <div v-for="(svs_,step) in svsGroupedByStep">      
  <h2 v-if="svs_[0].step.labels" v-html="svs_[0].step.labels.title_in_list || svs_[0].step.labels.title"></h2>
+ <template v-for="description in [svs_[0].step.labels.description_in_list]">
+   <div style="margin-bottom: 0.7rem;" v-html="description"></div>
+ </template>
  <ul>
   <li v-for="sv in svs_">
   le {{sv.modifyTimestamp | date('dd/MM/yyyy à HH:mm')}} : 
