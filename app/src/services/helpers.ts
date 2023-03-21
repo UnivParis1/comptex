@@ -253,3 +253,9 @@ export function to_csv(l, attrs) {
         ...l.map(o => line_to_csv_(o, attrs))
     ].join("\r\n")
 }
+
+export function htmlToText(html) {
+    var temp = document.createElement('div');
+    temp.innerHTML = html;
+    return temp.textContent; // Or return temp.innerText if you need to return only visible text. It's slower.
+}   

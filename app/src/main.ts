@@ -4,9 +4,10 @@ import AsyncComputed from 'vue-async-computed';
 import { router } from './router';
 import GlobalMixin from './GlobalMixin';
 import genericAttr from './attrs/genericAttr.vue';
+import { htmlToText } from './services/helpers'
 import conf from './conf';
 
-document.title = conf.title;
+document.title = htmlToText(conf.title);
 
 import "./filters/various";
 import "./directives/various";
