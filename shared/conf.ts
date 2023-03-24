@@ -2,7 +2,7 @@
 
 import checkDisplayName from './validators/displayName';
 import { is } from './helpers'
-import { capitalize } from 'lodash';
+import { capitalize, deburr } from 'lodash';
 
 const accentsRange = '\u00C0-\u00FC';
 const allowedCharsInNames = "[A-Za-z" + accentsRange + "'. -]";
@@ -15,6 +15,8 @@ const capitalizeUpperCaseWords = (s: string) => s.replace(/([A-Z\u00C0-\u00DC][a
 //const capitalizeUpperCaseWords = (s: string) => s.replace(/(\p{Uppercase_Letter}\p{Lowercase_Letter}*){3,}/gu, capitalize).replace(/\p{Uppercase_Letter}{2}$/u, capitalize)
 
 const normalizeNomPopre = (s: string) => capitalizeUpperCaseWords(normalizeApostropheAndTrim(s))
+
+const normalize_noAccent_noUpperCase = (s:string) => deburr(s.toLowerCase())
 
 const wsgroupsURL = "https://wsgroups.univ-paris1.fr";
 
@@ -91,7 +93,7 @@ export default {
         duration: { title: "Durée" },
         startdate: { title: "Date de début", format: 'date', uiType: 'date' },
         enddate: { title: "Date de fin", format: 'date', uiType: 'date' },
-        supannAliasLogin: { title: 'Identifiant' },
+        supannAliasLogin: { title: 'Identifiant', normalize: normalize_noAccent_noUpperCase },
         supannCodeINE: { title: "Numéro INE" },
         supannEtuId: { title: "Numéro étudiant" },
         supannEmpId: { title: 'Numéro agent' },
