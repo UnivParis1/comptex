@@ -1,9 +1,14 @@
 <template>
 <div class="ReadOnlyObjectItems" v-if="v_array.length">
-    <a class="btn btn-default export" @click="export_csv" href="#" download="comptes.csv" v-if="opts.uiOptions && opts.uiOptions.object_items_export_csv">
-        <span class="glyphicon glyphicon-export"></span>
-        Exporter
-    </a>
+    <div v-if="opts.uiOptions && opts.uiOptions.object_items_export_csv">
+        Exporter : 
+      <template v-for="(name, extension) in { ods: 'Tableur', csv: 'CSV' }">
+        <a class="btn btn-default export" @click.prevent="export_(extension)" title="Exporter">
+            <span class="glyphicon glyphicon-export"></span>
+            {{name}}
+        </a>
+      </template>
+    </div>
 
   <div class="table-responsive">
     <table class="table table-striped">
@@ -43,9 +48,24 @@ export default Vue.extend({
     },
     methods: {
         formatValue,
-        export_csv(event) {
-            const csv = Helpers.to_csv(this.v_array, this.attrs)
-            event.target.href = "data:text/csv;charset=utf-8," + encodeURIComponent(csv)
+        async export_(extension) {
+            const blob = extension === 'csv' ?
+                new Blob(
+                    [Helpers.to_csv(this.v_array, this.attrs)], 
+                    { type: 'text/csv;charset=utf-8' }
+                ) :
+                await (
+                    await import('../services/spreadsheet')
+                ).to_ods(this.v_array, this.attrs)
+
+            if (this.export_ods_link) {
+                // revoke previous blob which should not be useful anymore
+                URL.revokeObjectURL(this.export_ods_link.href)
+            }
+            const link = this.export_ods_link ||= document.createElement("a")
+            link.href = URL.createObjectURL(blob)
+            link.download = "comptes." + extension
+            link.click()
         },
     },
 })
