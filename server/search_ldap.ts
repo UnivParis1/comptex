@@ -243,7 +243,7 @@ export const subv_to_eq_filters = (subv: Partial<v>) => {
     return _.map(v_ldap, (val, attr) => filters.eq(attr, val as string));
 }
 
-export function searchPeople_matching_acl_ldap_filter<T extends {}>(acl_filter: acl_ldap_filter, step_filter: string, token: string, attrTypes: T, options: ldap.Options): Promise<T[]> {
+export function searchPeople_matching_acl_ldap_filter<T extends Partial<typeof conf.ldap.people.types>>(acl_filter: acl_ldap_filter, step_filter: string, token: string, attrTypes: T, options: ldap.Options): Promise<T[]> {
     if (acl_filter === false) return Promise.resolve([]);
     const many_filters = people_filters_(token, [
         ... acl_filter !== true ? [acl_filter] : [],
