@@ -26,7 +26,7 @@ const get_and_remove = <T>(o: Dictionary<T>, key: string): T => {
     return val;
 }
 
-const remove_allowed_words = (words: string[], allowed: Dictionary<number>, prev_allowed: Dictionary<number>, must_remove: boolean) => {
+const remove_allowed_words = (words: string[], allowed: Dictionary<number>, prev_allowed: Dictionary<number>, next_allowed: Dictionary<number>, must_remove: boolean) => {
     const minRemaining = prev_allowed ? 0 : 1;
     let removed = false;
     //console.log(removed, minRemaining, words, allowed);
@@ -43,7 +43,7 @@ const remove_allowed_words = (words: string[], allowed: Dictionary<number>, prev
     }
     //console.log(removed, minRemaining, words);
     if (!removed && must_remove || !minRemaining && words.length) {
-        if (!removed && prev_allowed && prev_allowed[words[0]]) {
+        if (!removed && (prev_allowed && prev_allowed[words[0]] || next_allowed && next_allowed[words[0]])) {
             return "Le nom annuaire doit comprendre de(s) prénom(s) suivi de(s) nom(s)";
         }
         const allowed_ = Object.keys(_.pickBy({ ...(!removed && prev_allowed), ...allowed }, v => v !== 2))
@@ -69,7 +69,7 @@ export default (displayName: string, v_orig: {}) => {
     const allow_no_givenName = _.isEmpty(givenNames) || givenNames[0] === '.' // "." is sometimes used to mean "unknown" (GLPI UP1#113794)
 
     const err = toCheck.length <= 1 && !allow_no_givenName && "Le nom annuaire doit comprendre le prénom et le nom" ||
-        remove_allowed_words(toCheck, allowed_givenNames, undefined, !allow_no_givenName) ||
-        remove_allowed_words(toCheck, allowed_sns, allowed_givenNames, true);
+        remove_allowed_words(toCheck, allowed_givenNames, undefined, allowed_sns, !allow_no_givenName) ||
+        remove_allowed_words(toCheck, allowed_sns, allowed_givenNames, undefined, true);
     return err;
 }
