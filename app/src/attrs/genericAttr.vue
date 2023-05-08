@@ -121,7 +121,7 @@
     </input-with-validity>
     <array-actions @action="name => $emit('array_action', name)" :array_allowed_actions="array_allowed_actions" />
     </div>
-    <span class="attr-description" v-html="opts.description"></span>
+    <span class="attr-description" :class="{ 'attr-readOnly-description': opts.readOnly }" v-html="opts.description"></span>
    </div>
 
     <CurrentLdapValue v-model="initial_value" :ldap_value="ldap_value" :opts="opts" @input="v => val = v"></CurrentLdapValue>
