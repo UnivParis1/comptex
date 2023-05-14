@@ -34,18 +34,19 @@ export const group_for_each_attr_codes = (
 }
 
 export interface MoreAttrOption_cond_overrides { 
-    cond_overrides?: Dictionary<StepAttrOptionT<StepAttrOption_no_extensions>>;
+    cond_overrides?: Dictionary<StepAttrOptionT<StepAttrOption_no_extensions> | ((v: v) => StepAttrOptionT<StepAttrOption_no_extensions>)>;
 }
 
 type StepAttrOption_with_cond_overrides = Dictionary<StepAttrOptionT<MoreAttrOption_cond_overrides>>
 
-const compute_overrides = (allowed_conds: Dictionary<boolean>, with_conds: StepAttrOption_with_cond_overrides) => {
+const compute_overrides = (allowed_conds: Dictionary<boolean>, with_conds: StepAttrOption_with_cond_overrides, v: v) => {
     const override : StepAttrsOption = {};
-    _.each(with_conds, async (opts, attrName) => {
+    _.each(with_conds, (opts, attrName) => {
         if ("cond_overrides" in opts) {
             for (const cond in opts.cond_overrides) {
                 if (allowed_conds[cond]) {
-                    override[attrName] = opts.cond_overrides[cond]
+                    const val = opts.cond_overrides[cond];
+                    override[attrName] = typeof val === "function" ? val(v) : val
                     break;
                 } else {
                     if (!(cond in allowed_conds)) throw "unknown cond_overrides " + cond;
@@ -57,10 +58,10 @@ const compute_overrides = (allowed_conds: Dictionary<boolean>, with_conds: StepA
             override[attrName] = utils.deep_extend(opts, override[attrName])
         }
         if (opts.properties) {
-            extend_override({ properties: compute_overrides(allowed_conds, opts.properties) })
+            extend_override({ properties: compute_overrides(allowed_conds, opts.properties, v) })
         }
         if (opts.then?.merge_patch_parent_properties) {
-            extend_override({ then: { merge_patch_parent_properties: compute_overrides(allowed_conds, opts.then.merge_patch_parent_properties) } })
+            extend_override({ then: { merge_patch_parent_properties: compute_overrides(allowed_conds, opts.then.merge_patch_parent_properties, v) } })
         }
     });
     return override
@@ -78,7 +79,7 @@ export const handle_attrs_cond_overrides = (conds: Dictionary<(v: v) => boolean>
     const attrs = step_attrs_option.mapAttrs(with_conds, (opts) => _.omit(opts, ['cond_overrides']));
     const attrs_override = async (_req: req, sv: sv) => {
         const allowed_conds = _.mapValues(conds, predicate => predicate(sv.v));
-        const override = compute_overrides(allowed_conds, with_conds)
+        const override = compute_overrides(allowed_conds, with_conds, sv.v)
         return override;
     };
     return { attrs, attrs_override };

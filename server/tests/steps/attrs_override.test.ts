@@ -47,6 +47,29 @@ describe('handle_attrs_cond_overrides', () => {
         })
     });
 
+    it("should handle computed override", async () => {
+        const test1: one_test = {
+            conds, 
+            with_conds: { 
+                sn: { 
+                    title: "SN",
+                    cond_overrides: { foo: (v) => ({ title: `Hello ${v.givenName}` }) },
+                },
+            }, 
+            expected_without_conds: { 
+                sn: { title: "SN" }
+            },
+            v: { givenName: "Pascal" } as v, 
+            expected_overrides: { sn: { title: `Hello Pascal` } },
+        }
+        await test(test1)
+        await test({ 
+            ...test1,
+            v: {} as v,
+            expected_overrides: {},
+        })
+    });
+
     it("should handle if_then", async () => {
         const test1: one_test = {
             conds, 
