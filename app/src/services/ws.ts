@@ -152,10 +152,10 @@ function _handleErr(err : AxiosError, $scope = null, redirect = false) {
         history.back();
         return Promise.reject("...");
     } else {
-        const json_error = resp.data && resp.data.error ? resp.data : { error: err.message }
+        const json_error = resp.data && (resp.data.error || resp.data.error_html) ? resp.data : { error: err.message }
         const msg = json_error.error
         console.error(resp || err)
-        if (redirect && !window.history.state) {
+        if (redirect && !window.history.state || json_error.error_html && !msg) {
             $scope.fatal_error = msg;
             $scope.fatal_error_html = json_error.error_html;
         } else {

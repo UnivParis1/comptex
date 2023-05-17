@@ -1,5 +1,5 @@
 <template>
-<div class="alert alert-danger" role="alert" v-if="fatal_error">
+<div class="alert alert-danger" role="alert" v-if="fatal_error || fatal_error_html">
     <p v-if="fatal_error_html" v-html="fatal_error_html"></p>
     <p v-else style="white-space: pre">{{fatal_error}}</p>
 </div>
