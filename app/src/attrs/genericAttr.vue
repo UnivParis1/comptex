@@ -11,6 +11,11 @@
     :opts="opts">
   </DateThreeInputsAttr>
 
+  <DateTimeAttr v-model="val" :name="name" v-else-if="uiType === 'datetime'"
+    :ldap_value="ldap_value"
+    :opts="opts">
+  </DateTimeAttr>
+
   <ReadOnlyObjectItems :v_array="val" v-else-if="opts.items && opts.items.properties" 
     :opts="opts" />
 
@@ -138,6 +143,7 @@ import { formatValue } from '../../../shared/v_utils'
 import * as Ws from '../services/ws';
 
 import DateAttr from './DateAttr.vue';
+import DateTimeAttr from './DateTimeAttr.vue';
 import DateThreeInputsAttr from './DateThreeInputsAttr.vue';
 import AddressAttr from './AddressAttr.vue';
 import ArrayAttr from './ArrayAttr.vue';
@@ -158,7 +164,7 @@ function add_to_oneOf_if_missing(choices: Ws.StepAttrOptionChoices[], to_have) {
 export default Vue.extend({
     props: ['value', 'real_name', 'name', 'opts', 'v', 'ldap_value', 'stepName', 'array_allowed_actions_'],
     components: { 
-        DateAttr, DateThreeInputsAttr, ArrayAttr, ReadOnlyObjectItems, AddressAttr, cameraSnapshotAttr, PasswordAttr, AutocompleteAttr, CurrentLdapValue, FileUploadAttr,
+        DateAttr, DateTimeAttr, DateThreeInputsAttr, ArrayAttr, ReadOnlyObjectItems, AddressAttr, cameraSnapshotAttr, PasswordAttr, AutocompleteAttr, CurrentLdapValue, FileUploadAttr,
         PhotoUploadAttr: () => import('./PhotoUploadAttr.vue'),
     },
     data() {

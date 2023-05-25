@@ -91,6 +91,7 @@ function _jpeg_data_URL_to_base64(data_URL: string): string {
 
 const attr_format_to_converter = {
     'date': { fromWs: (val: string) => new Date(val), toWs: (val: Date) => val.toJSON(), fromCSV: _fromCSVDate },
+    'datetime': { fromWs: (val: string) => new Date(val), toWs: (val: Date) => val.toJSON(), fromCSV: _fromCSVDate },
     'image/jpeg': { fromWs: _base64_to_jpeg_data_URL, toWs: _jpeg_data_URL_to_base64 },
     'phone': { fromWs: Helpers.maybeFormatPhone("0"), toWs: Helpers.maybeFormatPhone("+33 ") },
 }

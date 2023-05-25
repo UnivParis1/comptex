@@ -3,8 +3,9 @@ type ForbiddenProperty<Keys extends string> = Partial<Record<Keys, void>>
 
 type uiTypes =
     'radio'|'select'|'checkbox'|'email'|'password'|'text'|'integer'|'number'|'url' |
-    'textarea'|'phone'|'frenchMobilePhone'|'frenchPostalCode'|'date' |
-    'dateThreeInputs'|'postalAddress'|'cameraSnapshot'|'photoUpload'|'fileUpload' |
+    'textarea'|'phone'|'frenchMobilePhone'|'frenchPostalCode'|
+    'date' |' dateThreeInputs' | 'datetime' |
+    'postalAddress'|'cameraSnapshot'|'photoUpload'|'fileUpload' |
     'autocomplete'|'newPassword'|'siret' | 'array' |
     'homonym' | 'queryParamForActionPre' |
     'tab' | 'iframe' |

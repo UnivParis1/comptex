@@ -1,6 +1,6 @@
 import Vue from "vue";
 
-import { pickBy, findKey, find, isEmpty, uniq } from 'lodash';
+import { pickBy, findKey, find, isEmpty, uniq, some } from 'lodash';
 import * as Helpers from '../services/helpers';
 import genericAttr from './genericAttr.vue';
 
@@ -42,6 +42,11 @@ export default Vue.extend({
         },
         attrs_outside_tabs() {
             return pickBy(this.attrs, (opts, _) => opts.uiType !== 'homonym' && opts.uiType !== 'tab');
+        },
+        browser_validate() {
+            // when you set the date part of a datetime, the input is not valid, but we can't know it with Vue
+            // => we force default browser validation, which is quite ok (but will not handle our tabs)
+            return some(this.attrs, (opts, _) => opts.uiType === 'datetime');
         },
     },
     methods: {

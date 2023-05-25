@@ -81,6 +81,7 @@ const tests: (Omit<ClientSideSVA, 'stepName'> & { test_name: string })[] = [
             native_date: { title: 'Native', "description": "May not work on some browsers, notably Firefox Desktop and IE.", uiType: 'date', minDate: '-50SY', maxDate: '+10EY', uiOptions: { date_todayButton: 'Now' } },
             // @ts-expect-error
             alternative_date: { title: 'Alternative', description: 'These work on most platforms.', uiType: 'dateThreeInputs', minDate: '-50SY', maxDate: '+10EY' },
+            datetime: { title: 'Date + time', uiType: 'datetime', optional: true },
         },
         v: {},
     },
