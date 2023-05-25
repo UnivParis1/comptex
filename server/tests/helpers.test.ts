@@ -3,6 +3,8 @@
 import { assert } from './test_utils';
 import * as helpers from '../helpers';
 
+process.env.TZ = 'Etc/GMT-3'
+
 describe('nextDate', () => {
         it ("should work", () => {
             assert.equal(helpers.nextDate("XXXX-07-01", new Date('2017-06-30T23:59:59.000Z')).toISOString(), '2017-07-01T00:00:00.000Z');
@@ -92,6 +94,47 @@ describe('to_DD_MM_YYYY', () => {
         assert.equal(helpers.to_DD_MM_YYYY(new Date("1975-10-02")), "02/10/1975")
     })
 })
+
+describe('formatDate', () => {
+    it ("should work", () => {
+        assert.deepEqual(helpers.formatDate(new Date("1975-10-02T12:59:00Z"), 'dd/MM/yyyy à HH:mm'), "02/10/1975 à 15:59");
+    })
+})
+
+describe('milliseconds_to_DaysHoursMinutes', () => {
+    it ("should work", () => {
+        assert.deepEqual(helpers.milliseconds_to_DaysHoursMinutes(1000), { days: 0, hours: 0, minutes: 0 });
+        assert.deepEqual(helpers.milliseconds_to_DaysHoursMinutes(59 * 1000), { days: 0, hours: 0, minutes: 1 });
+        assert.deepEqual(helpers.milliseconds_to_DaysHoursMinutes(60 * 1000), { days: 0, hours: 0, minutes: 1 });
+        assert.deepEqual(helpers.milliseconds_to_DaysHoursMinutes(61 * 1000), { days: 0, hours: 0, minutes: 1 });
+        assert.deepEqual(helpers.milliseconds_to_DaysHoursMinutes(91 * 1000), { days: 0, hours: 0, minutes: 2 });
+        assert.deepEqual(helpers.milliseconds_to_DaysHoursMinutes(3599 * 1000), { days: 0, hours: 1, minutes: 0 });
+        assert.deepEqual(helpers.milliseconds_to_DaysHoursMinutes(3600 * 1000), { days: 0, hours: 1, minutes: 0 });
+        assert.deepEqual(helpers.milliseconds_to_DaysHoursMinutes(3660 * 1000), { days: 0, hours: 1, minutes: 1 });
+        assert.deepEqual(helpers.milliseconds_to_DaysHoursMinutes(24 * 3600 * 1000), { days: 1, hours: 0, minutes: 0 });
+        assert.deepEqual(helpers.milliseconds_to_DaysHoursMinutes(999 * 24 * 3600 * 1000), { days: 999, hours: 0, minutes: 0 });
+    });
+});
+
+describe('milliseconds_to_french_text', () => {
+    it ("should work", () => {
+        assert.deepEqual(helpers.milliseconds_to_french_text(1000), '');
+        assert.deepEqual(helpers.milliseconds_to_french_text(60 * 1000), '1 minute');
+        assert.deepEqual(helpers.milliseconds_to_french_text(3600 * 1000), '1 heure');
+        assert.deepEqual(helpers.milliseconds_to_french_text(3660 * 1000), '1 heure et 1 minute');
+        assert.deepEqual(helpers.milliseconds_to_french_text(24 * 3600 * 1000), '1 jour');
+        assert.deepEqual(helpers.milliseconds_to_french_text(2 * 24 * 3600 * 1000), '2 jours');
+    })
+    it ("should not work display minutes if days", () => {
+        assert.deepEqual(helpers.milliseconds_to_french_text(((2 * 24 + 4) * 3600 + 23 * 60) * 1000), '2 jours et 4 heures');
+    });
+    it ("should not work display hours if many days", () => {
+        assert.deepEqual(helpers.milliseconds_to_french_text(((7 * 24 + 4) * 3600 + 23 * 60) * 1000), '7 jours');
+    });
+    it ("should not work display minutes if many hours", () => {
+        assert.deepEqual(helpers.milliseconds_to_french_text((10 * 3600 + 23 * 60) * 1000), '10 heures');
+    });
+});
 
 describe('removePrefix', () => {
     it("should work", () => {

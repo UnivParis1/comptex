@@ -26,6 +26,33 @@ export const toYYYY_MM_DD = (date: Date) => (
     date?.toISOString()?.replace(/T.*/, '')
 )
 
+export const milliseconds_to_DaysHoursMinutes = (ms: number) => {
+    const minutes = Math.round(ms / 60 / 1000)
+    return { 
+        days: Math.floor(minutes / 60 / 24), 
+        hours: Math.floor(minutes / 60) % 24, 
+        minutes: minutes % 60,
+    }
+}
+
+export const milliseconds_to_french_text = (ms: number) => {
+    const translate = { days: ['jour', 'jours'], hours: ['heure', 'heures'], minutes: ['minute', 'minutes'] }
+    const dhm = milliseconds_to_DaysHoursMinutes(ms)
+    const to_text = (field: 'days'|'hours'|'minutes') => {
+        const val = dhm[field]
+        return val === 0 ? '' : val + " " + translate[field][val > 1 ? 1 : 0]
+    }
+
+    const d = to_text('days')
+    const h = to_text('hours')
+    const m = to_text('minutes')
+
+    return (
+        dhm.days >= 7 ? [d] : dhm.days >= 1 ? [d,h]: 
+        dhm.hours >= 10 ? [h] : [h,m]
+    ).filter(s => s).join(' et ')
+}
+
 export const setTimeoutPromise = (time: number) => (
     new Promise((resolve, _) => setTimeout(resolve, time))
 );
