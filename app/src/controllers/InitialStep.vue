@@ -30,7 +30,7 @@
         <div v-html="labels.description_in_list"></div>
     </div>
     <div v-else>
-        <h2>
+        <h2 v-if="title_in_list !== ' '">
             <router-link :to="'/' + step.id" v-html="title_in_list"></router-link>
         </h2>
         <div v-html="labels.description_in_list"></div>

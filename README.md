@@ -99,7 +99,7 @@ The labels:
 * title: *(html)* title displayed on step page
 * description: *(vue template)* displayed below title, before attrs
 * post_scriptum: *(vue template)* displayed after the `<form>`
-* title_in_list: *(html)* override `title` in list of steps.
+* title_in_list: *(html)* override `title` in list of steps. If empty, the step is hidden. If " ", only the description_in_list is displayed.
 * description_in_list: *(html)* displayed below title in list of steps. Can be computed
 * okButton: *(html)* for the button which submits the step page. If empty, no button is displayed (useful for information pages, with no `attrs`)
 * cancelButton: *(html)* for the button which rejects a "next" step.
