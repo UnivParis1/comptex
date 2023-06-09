@@ -147,6 +147,10 @@ function _handleErr(err : AxiosError, $scope = null, redirect = false) {
             document.location.reload();
         }
         return Promise.reject("restarting...");
+    } else if (resp.status === 400 && resp.data?.force_history_back) {
+        alert(resp.data.message);
+        history.back();
+        return Promise.reject("...");
     } else {
         const json_error = resp.data && resp.data.error ? resp.data : { error: err.message }
         const msg = json_error.error
