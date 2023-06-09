@@ -80,7 +80,18 @@ export async function async_render_(parsed: parsed_template, params: any, escape
         if (current.val) {
             r += one.before
         }
-        const val = one.expr && await (one.expr === '.' ? current.val : rec_get(contexts, one.expr))
+
+        // evaluate expression, which can be things like: ".", "v.xxx", "v === 'foo'"
+        let [,expr, cond, , cond_value] = one.expr.match(/(.*) (===|!==) (['"])(.*)\3/) || [ '', one.expr ]
+        const expr_val = expr && await (expr === '.' ? current.val : rec_get(contexts, expr))
+        let val = expr_val
+        if (cond) {
+            val = expr_val === cond_value
+            if (cond === '!==') val = !val
+        } else {
+            if (expr.match(/[!=]=/)) throw "invalid expression " + expr
+        }
+
         if (one.op === '/') {
             if (current.array && current.array_pos+1 < current.array.length) {
                 // go back to loop start with next elt

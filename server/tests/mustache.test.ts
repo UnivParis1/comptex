@@ -74,6 +74,17 @@ describe('Mustache', () => {
             // complex path (it relies on lodash.get)
             "{{ ['{x:y}z'] }}": "XYZ",
         
+            // string equals condition
+            "{{#if bbb === 'BBB'}}isBBB{{/}}": "isBBB",
+            '{{#if bbb === "BBB"}}isBBB{{/}}': "isBBB",
+            "{{#if bbb === 'AAA'}}BBB{{/}}": "",
+            '{{#if bbb === "AAA"}}BBB{{/}}': "",
+            "{{#if bbb !== 'AAA'}}isBBB{{/}}": "isBBB",
+            '{{#if bbb !== "AAA"}}isBBB{{/}}': "isBBB",
+            "{{#if bbb !== 'BBB'}}BBB{{/}}": "",
+            '{{#if bbb !== "BBB"}}BBB{{/}}': "",
+            '{{#if bbb !== 111}}BBB{{/}}': "invalid expression bbb !== 111",
+
             // promises
             "{{ppp}}": "PPP",
             "{{ppp}}-{{ppp}}": "PPP-PPP",
