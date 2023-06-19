@@ -184,7 +184,7 @@ const suggest_action_in_case_of_ldap_homonymes = async (v: v) => {
             /* if 2 homonymes, it may be student account + teacher account. If student score is the highest (requires preferStudent), ignore the second account to decide suggest_action_in_case_of_ldap_homonymes */
             homonymes.length === 2 && homonymes[0].score === 1131101) {
             const existingAccount = homonymes[0]
-            if (existingAccount.accountStatus === 'deleted') {
+            if (existingAccount.accountStatus === 'deleted' && !existingAccount.global_siham) {
                 console.log("ignoring old 'deleted' homonyme:", existingAccount.uid);
                 return { action: 'create_account' };
             }

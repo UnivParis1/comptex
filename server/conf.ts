@@ -122,6 +122,7 @@ const conf = {
                 global_profilename: [''],
                 global_barcode: '',
                 global_mifare: '',
+                global_siham: '',
                 global_shadowExpire: new Date(),
 
                 eduPersonPrimaryAffiliation: '',
@@ -185,6 +186,7 @@ const conf = {
                 global_barcode: { ldapAttr: 'employeeNumber' },
                 mifare: { ldapAttr: 'supannRefId', convert: ldap_convert.withEtiquette("{MIFARE}")  },
                 global_mifare: { ldapAttr: 'supannRefId', convert: ldap_convert.withEtiquette("{MIFARE}")  },
+                global_siham: { ldapAttr: 'supannRefId', convert: ldap_convert.withEtiquette("{SIHAM}")  },
                 jpegPhoto: { ldapAttr: 'jpegPhoto;base64' },
                 termsOfUse: { ldapAttr: 'up1TermsOfUse' },
                 ..._.fromPairs(['{SMSU}CG', '{PHOTO}PUBLIC', '{PHOTO}INTRANET', '{PHOTO}STUDENT'].map(value => 
