@@ -3,4 +3,4 @@
 if (!process.env.NODE_ENV) {
    process.env.NODE_ENV = 'production';
 }
-require('./server/start-server');
+require('./server/build/server/start-server');
