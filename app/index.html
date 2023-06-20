@@ -4,9 +4,10 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="<%= webpackConfig.output.publicPath %>bootstrap/css/bootstrap.css">
-  <link rel="stylesheet" href="<%= webpackConfig.output.publicPath %>app.css">
-  <script src="<%= webpackConfig.output.publicPath %>promise-polyfill.js"></script>
+  <link rel="stylesheet" href="/bootstrap/css/bootstrap.css">
+  <link rel="stylesheet" href="/app.css">
+  <script src="/promise-polyfill.js"></script>
+  <script type="module" src="/src/main.ts"></script>
 </head>
 <body>
   <!--[if lt IE 11]>
@@ -17,7 +18,7 @@
     <div class="page">
       <div class="comptex-bandeau">
         <p class="text-center">
-            <img src="<%= webpackConfig.output.publicPath %>header.png" alt="">
+            <img src="/header.png" alt="">
         </p>
         <h1 class="text-center" style="margin-bottom: 1em" v-html="conf.title"></h1>
       </div>

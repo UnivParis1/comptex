@@ -4,7 +4,7 @@ import { pickBy, findKey, find, isEmpty, uniq, some } from 'lodash';
 import * as Helpers from '../services/helpers';
 import genericAttr from './genericAttr.vue';
 
-import template from '!raw-loader!./attrsForm.html';
+import template from './attrsForm.html?raw';
 
 const firstInvalidFormElement = (subform) => (
     find(subform.elements, input => !(input.validity && input.validity.valid))

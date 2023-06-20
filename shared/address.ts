@@ -1,4 +1,4 @@
-type PostalAddress = { 
+export type PostalAddress = { 
       country: string, 
       lines: string,
       line2: string, postalCode: string, town: string,

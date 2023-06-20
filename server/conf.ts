@@ -9,8 +9,7 @@ import * as session from 'express-session';
 import * as session_file_store from 'session-file-store';
 import { sameKeyNameChoices } from './helpers';
 import * as grouped_calls from './helper_grouped_calls';
-// @ts-expect-error
-import * as vue_config from '../app/vue.config';
+import shared_conf from '../shared/conf';
 
 const ldap_base = "dc=univ,dc=fr";
 const ldap_main = {
@@ -39,7 +38,7 @@ const internal_organizations = [
 const conf = {
     maxLiveModerators: 100,
 
-    mainUrl: 'https://comptex.univ.fr' + vue_config.publicPath.replace(/\/$/, ''),
+    mainUrl: 'https://comptex.univ.fr' + shared_conf.base_pathname.replace(/\/$/, ''),
     
     mail: {
         from: 'Assistance <assistance@univ.fr>',

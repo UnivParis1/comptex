@@ -5,10 +5,9 @@
   "author": "Pascal Rigaux <pascal.rigaux@univ-paris1.fr>",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "build:atomic": "vue-cli-service build --dest dist.new && rm -rf dist && mv dist.new dist",
-    "lint": "vue-cli-service lint",
+    "dev": "vite",
+    "build": "vue-tsc --noEmit && vite build",
+    "build:atomic": "vite build --outDir dist.new && rm -rf dist && mv dist.new dist",
     "test:unit": "vue-cli-service test:unit"
   },
   "dependencies": {
@@ -23,8 +22,8 @@
     "exif-js": "^2.3.0",
     "load-script-once": "^1.1.2",
     "prismjs": "^1.24.1",
-    "raw-loader": "^0.5.1",
     "tslib": "^2.3.0",
+    "vite-plugin-vue2": "^2.0.3",
     "vue": "^2.7.10",
     "vue-async-computed": "^3.8.2",
     "vue-router": "^3.0.2"
@@ -32,9 +31,6 @@
   "devDependencies": {
     "@types/chai": "^4.1.0",
     "@types/mocha": "^5.2.4",
-    "@vue/cli-plugin-typescript": "4.x",
-    "@vue/cli-plugin-unit-mocha": "4.x",
-    "@vue/cli-service": "4.x",
     "@vue/test-utils": "^1.0.0-beta.20",
     "autoprefixer": "^9.5.0",
     "axios-mock-adapter": "^1.19.0",
