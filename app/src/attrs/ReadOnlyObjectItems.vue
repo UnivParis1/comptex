@@ -37,7 +37,7 @@ import * as Helpers from '../services/helpers';
 export default Vue.extend({
     props: ['v_array', 'opts'],
     data() {
-        const attrs = omitBy(this.opts.items.properties, (opts) => opts.uiHidden === true)
+        const attrs: SharedStepAttrsOption = omitBy(this.opts.items.properties, (opts) => opts.uiHidden === true)
         return {
             attrs,
             attr_templates: mapValues(attrs, (opts, _) => {

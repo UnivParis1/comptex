@@ -7,11 +7,11 @@ export const find_choice = (oneOf: StepAttrOptionChoicesT<StepAttrOptionM<unknow
 )
 
 export function filterAttrs(attrs: StepAttrsOptionM<unknown>, oneOfTraversal: 'always' | 'never', f: (opts: StepAttrOptionM<unknown>, key: string, attrs: StepAttrsOptionM<unknown>) => boolean): StepAttrsOptionM<unknown> {
-    function rec_mpp<T extends MppT<unknown>>(mpp: T) {
+    function rec_mpp<T, U extends MppT<StepAttrOptionM<T>>>(mpp: U): U {
         return mpp.merge_patch_parent_properties ? { ...mpp, merge_patch_parent_properties: rec(mpp.merge_patch_parent_properties) } : mpp
     }
-    function rec(attrs: StepAttrsOptionM<unknown>) {
-        let r: StepAttrsOptionM<unknown> = {};  
+    function rec<T>(attrs: StepAttrsOptionM<T>) {
+        let r: StepAttrsOptionM<T> = {};  
         forIn(attrs, (opts, key) => {
             if (!f(opts, key, attrs)) return;
             r[key] = opts = { ...opts };
@@ -30,7 +30,7 @@ export function filterAttrs(attrs: StepAttrsOptionM<unknown>, oneOfTraversal: 'a
     return rec(attrs);
 }
 
-export function formatValue(val: any, opts : StepAttrOptionM<unknown> = {}): string {
+export function formatValue(val: any, opts : StepAttrOptionM<unknown> = {}): string | undefined {
     if (val instanceof Array) {
         const l = val.map(val_ => formatValue(val_, opts))
         return l.join(', ')

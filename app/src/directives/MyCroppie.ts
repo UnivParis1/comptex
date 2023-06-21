@@ -16,7 +16,7 @@ export default Vue.extend({
       },
       methods: {
         init() {
-          this.croppie = new Croppie(this.$el, {
+          this.croppie = new Croppie(this.$el as HTMLElement, {
             enableExif: true, enableOrientation: true,
             ...this.options.init,
           });

@@ -47,7 +47,7 @@ export default Vue.extend({
     props: ['value', 'opts'],
     data() {
         return {
-            validity: { year: {}, month: {}, day: {} },
+            validity: { year: {} as ValidityState, month: {} as ValidityState, day: {} as ValidityState },
             ...init(this.value),
         };
     },

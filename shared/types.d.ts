@@ -162,5 +162,7 @@ interface ClientSideSVA {
     additional_public_info?: {
         title_in_list: string // HTML
         description: string // HTML
-    }
+    },
+    modifyTimestamp?: Date
+    id?: string,
 }
