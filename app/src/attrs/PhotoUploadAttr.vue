@@ -19,8 +19,9 @@
         </div>
         <nav class="photoModifyButtons">
             <ul class="nav">
-                <li><button type="button" @click="$refs.croppie.rotate(90)" title="Rotation droite">↺</button></li>
-                <li><button type="button" @click="$refs.croppie.rotate(-90)" title="Rotation gauche">↻</button></li>
+                
+                <li><!-- @vue-ignore --><button type="button" @click="$refs.croppie.rotate(90)" title="Rotation droite">↺</button></li>
+                <li><!-- @vue-ignore --><button type="button" @click="$refs.croppie.rotate(-90)" title="Rotation gauche">↻</button></li>
                 <li><button type="button" @click="croppieValidate()" title="Valider la photo" class="submit"><span class="glyphicon glyphicon-ok"></span></button></li>
                 <li><button type="button" @click="cancel()" title="Annuler"><span class="glyphicon glyphicon-remove"></span></button></li>
             </ul>

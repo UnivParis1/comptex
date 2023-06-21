@@ -20,7 +20,7 @@
         </div>
 
         <p v-if="forced_headers_">
-            <input v-model="ignore_first_line" type="checkbox"> Ignorer la 1ère ligne</input>
+            <input v-model="ignore_first_line" type="checkbox"> Ignorer la 1ère ligne
         </p>
 
         <button type="button" class="btn btn-primary" @click="to_import = null">
