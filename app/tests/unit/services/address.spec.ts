@@ -1,4 +1,4 @@
-import { assert } from 'chai';
+import { assert, describe, it } from 'vitest';
 import * as Address from '@/../../shared/address';
 import * as Helpers from '@/services/helpers';
 

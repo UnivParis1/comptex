@@ -1,7 +1,7 @@
+import { assert, describe, it } from 'vitest';
 import * as _ from 'lodash'
 import { mount, createLocalVue, Wrapper } from '@vue/test-utils'
 import { flushPromises } from '../test_utils';
-import { assert } from 'chai';
 import AsyncComputed from 'vue-async-computed';
 import genericAttr from '@/attrs/genericAttr.vue';
 
