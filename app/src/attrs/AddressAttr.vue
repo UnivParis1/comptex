@@ -57,10 +57,12 @@ export default Vue.extend({
     components: { CurrentLdapValue },
     data() {
         return {
-            validity: { country: {}, address_lines: {}, postalCode: {}, town: {} },
+            validity: { country: {} as ValidityState, address_lines: {} as ValidityState, postalCode: {} as ValidityState, town: {} as ValidityState },
             ...Address.fromString(this.value),
-            ldap_val: this.ldap_value && Address.fromString(this.ldap_value) || {},
+            ldap_val: this.ldap_value && Address.fromString(this.ldap_value) || {} as Address.PostalAddress,
             postalCode_modified: false,
+
+            towns: undefined as string[], // cf asyncComputed
         };
     },
     watch: {

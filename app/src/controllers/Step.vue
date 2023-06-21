@@ -35,6 +35,9 @@ function AttrsForm_data() {
       v_ldap: <V> undefined,
       fatal_error: undefined,
       fatal_error_html: undefined,
+
+      // from Ws.getInScope
+      additional_public_info: undefined as ClientSideSVA['additional_public_info'], 
     };    
 }
 

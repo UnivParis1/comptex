@@ -23,7 +23,7 @@ export default Vue.extend({
     components: { PasswordStrength: () => import("@/directives/PasswordStrength.vue") },
     data() {
         return {
-          validity: { userPassword: {}, userPassword2: {}, submitted: false },
+          validity: { userPassword: {} as ValidityState, userPassword2: {} as ValidityState, submitted: false },
           val: this.value,
           userPassword2: null,
         };
