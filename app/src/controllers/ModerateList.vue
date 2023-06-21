@@ -12,7 +12,7 @@
  </template>
  <ul>
   <li v-for="sv in svs_">
-  le {{sv.modifyTimestamp | date('dd/MM/yyyy à HH:mm')}} : 
+  le {{formatDate(sv.modifyTimestamp, 'dd/MM/yyyy à HH:mm')}} : 
    <router-link :to="'/' + sv.stepName + '/' + sv.id">
      {{sv.v.sn || 'inconnu'}}
      {{sv.v.givenName || 'inconnu'}}
@@ -56,6 +56,7 @@ export default Vue.extend({
       },
   },
   methods: {
+    formatDate: Helpers.formatDate,
     listRec(params) {
         this.cancelP = axios.CancelToken.source();
 

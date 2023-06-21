@@ -94,6 +94,12 @@ export default Vue.extend({
           }
       },
 
+      formatIdpId(s) {
+          s = s.replace(/^https?:\/\//, '');
+          s = s.replace(/.*\.(.*\..*)/, '$1');
+          return s;
+      },
+
       reject() {
           this.$emit('reject', this.v);
       }

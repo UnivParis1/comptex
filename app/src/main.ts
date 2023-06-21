@@ -9,7 +9,6 @@ import conf from './conf';
 
 document.title = htmlToText(conf.title);
 
-import "./filters/various";
 import "./directives/various";
 import "./directives/validators";
 import "./directives/Bootstrap";
