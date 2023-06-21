@@ -2,7 +2,7 @@
 
    <fieldset v-if="v.Shib_Identity_Provider">  
     <my-bootstrap-form-group name="Shib_Identity_Provider" label="Etablissement">
-      <input name="Shib_Identity_Provider" :value="v.Shib_Identity_Provider | formatIdpId" type="text" disabled class="form-control">
+      <input name="Shib_Identity_Provider" :value="formatIdpId(v.Shib_Identity_Provider)" type="text" disabled class="form-control">
     </my-bootstrap-form-group>
    </fieldset>
 
