@@ -1,8 +1,8 @@
+import { assert, describe, it } from 'vitest'
 import * as _ from 'lodash'
 import { mount, createLocalVue } from '@vue/test-utils'
 import { mocha_axios_mock, flushPromises } from '../test_utils';
 import VueRouter from 'vue-router'
-import { assert } from 'chai';
 import StepV from '@/controllers/StepV.vue';
 
 

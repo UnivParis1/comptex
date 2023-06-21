@@ -1,4 +1,4 @@
-import { assert } from 'chai';
+import { assert, describe, it } from 'vitest'
 import { forIn } from 'lodash';
 import { compute_mppp_and_handle_default_values as compute } from '@/../../shared/mppp_and_defaults';
 import { V, StepAttrsOption } from '@/services/ws';

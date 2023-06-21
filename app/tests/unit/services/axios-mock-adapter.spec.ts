@@ -1,5 +1,4 @@
-import { assert } from 'chai';
-
+import { assert, describe, it } from 'vitest';
 import axios from 'axios';
 import { mocha_axios_mock, should_throw } from '../test_utils';
 
