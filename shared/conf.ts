@@ -21,7 +21,7 @@ const normalize_noAccent_noUpperCase_trim = (s:string) => trim(deburr(s.toLowerC
 const wsgroupsURL = "https://wsgroups.univ-paris1.fr";
 
 export default {
-    base_pathname: '/foo/',
+    base_pathname: '/',
     wsgroupsURL,
     title: "Gestion de comptes",
     may_display_fieldIsRequired_hint: true,
