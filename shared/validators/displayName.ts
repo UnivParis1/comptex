@@ -55,9 +55,9 @@ const remove_allowed_words = (words: string[], allowed: Dictionary<number>, prev
 
 const _merge_at = (v: {}, attrs: string[]): string[] => _.compact(_.merge(_.at(v, attrs)))
 
+export const prepare_for_compare = (val: string) => remove_special_chars(remove_accents(val)).toLowerCase()    
 
 export default (displayName: string, v_orig: {}) => {
-    const prepare_for_compare = (val: string) => remove_special_chars(remove_accents(val)).toLowerCase()    
 
     const sns = _merge_at(v_orig, shared_conf.sns)
     const givenNames = _merge_at(v_orig, shared_conf.givenNames)
