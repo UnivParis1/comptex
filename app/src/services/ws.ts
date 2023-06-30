@@ -243,7 +243,8 @@ export function getInScope($scope, id: string, params, hash_params, expectedStep
             $scope.v_ldap = sv.v_ldap ? fromWs(sv.v_ldap, all_attrs) : id === 'new' ? cloneDeep(v) : undefined;
             handleAttrsValidators_and_computeValue_and_allowUnchangedValue(all_attrs, v, Helpers.copy(v));
             Helpers.eachObject(all_attrs, (attr, opts) => {
-                let param = opts.uiType !== 'newPassword' && params[attr]
+                let param
+                if (opts.uiType === 'newPassword') return
 
                 // NB: hash params is useful for very long values (think jpegPhoto) since GET URI length has limitations
                 if (!param) {
@@ -255,6 +256,10 @@ export function getInScope($scope, id: string, params, hash_params, expectedStep
                 }
                 if (!param && !v[attr]) {
                     param = params[`default_${attr}`] || hash_params[`default_${attr}`]
+                }
+                if (!param && !v[attr]) {
+                    param = params[attr]
+                    if (param) all_attrs[attr].readOnly = true
                 }
                 if (param) {
                     v[attr] = fromWs_one(attr, param, all_attrs)
