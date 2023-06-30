@@ -230,10 +230,10 @@ If `.action_pre` or `.action_post` throws exception `Unauthorized`
 # Attribute values in URL
 
 You can set attribute values in the URL.
-* `?sn=Rigaux` : forces the value, the field is fully hidden
 * `?readOnly_sn=Rigaux` : forces the value, the field is readonly
 * `?set_sn=Rigaux` : forces the value, the field is editable
 * `?default_sn=Rigaux` : if the value is empty, sets the value.
+* `?sn=Rigaux` : if the value is empty, sets the value. The field is hidden if `uiHidden: "ifForcedInQuery"` is allowed for this attribute, otherwise it is readonly
 
 NB : you can use the query part or the hash part of the URL (hash part is useful for long values to bypass URI length limitations)
 

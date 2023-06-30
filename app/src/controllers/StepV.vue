@@ -183,7 +183,7 @@ export default Vue.extend({
             attrs = filterAttrs(attrs, 'never', (opts, k) => (
                 (opts.uiHidden === 'ifFalsy' ? this.v[k] : opts.uiHidden !== true) &&
                 !(this.to_import && this.to_import.fields.includes(k)) &&
-                !(this.$route.query && (k in this.$route.query)) // do not display things that have been forced in the url
+                !(opts.uiHidden === 'ifForcedInQuery' && this.$route.query && (k in this.$route.query)) // do not display things that have been forced in the url
             ));
             return attrs;
         },
