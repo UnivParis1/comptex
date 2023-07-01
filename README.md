@@ -263,3 +263,42 @@ When using Shibboleth authentication, you should protect against CSRF using:
 ```xml
 <Sessions ... cookieProps="; path=/; HttpOnly; Secure; SameSite=lax">
 ```
+
+## Apache FranceConnect configuration
+
+(needed for actions_pre.getOidcAttrs)
+
+```ApacheConf
+  OIDCProviderIssuer https://app.franceconnect.gouv.fr
+  OIDCProviderAuthorizationEndpoint https://app.franceconnect.gouv.fr/api/v1/authorize
+  OIDCProviderTokenEndpoint https://app.franceconnect.gouv.fr/api/v1/token
+  OIDCProviderUserInfoEndpoint https://app.franceconnect.gouv.fr/api/v1/userinfo
+  OIDCProviderEndSessionEndpoint https://app.franceconnect.gouv.fr/api/v1/logout
+  OIDCProviderTokenEndpointAuth client_secret_post
+
+  OIDCClientID xxx
+  OIDCClientSecret xxx
+  OIDCScope "openid profile email"
+
+  # OIDCRedirectURI is a vanity URL that must point to a path protected by this module but must NOT point to any content
+  OIDCRedirectURI https://comptex.univ.fr/franceconnect/redirect_uri
+
+  <Location /franceconnect>
+     AuthType openid-connect
+     Require valid-user
+  </Location>
+
+  <Location ~ "^/(app1|app2)/api/comptes/" >
+   <If "%{QUERY_STRING} =~ /franceconnect/" >
+     AuthType openid-connect
+     Require valid-user
+     # do not force authentication (prefer an HTTP error than try to complete OIDC on API which can NOT work)
+     OIDCUnAuthAction pass
+   </If>
+  </Location>
+
+  <Location ~ /login/franceconnect$ >
+     AuthType openid-connect
+     Require valid-user
+  </Location>
+```
