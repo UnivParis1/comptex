@@ -124,6 +124,10 @@ export default {
 
     pattern: {
         frenchMobilePhone: "(0|\\+33)\\s*[67](\\s*[0-9]){8}",        
+        mobilePhone: [
+            "(0|\\+33)\\s*[67](\\s*[0-9]){8}", // french
+            "\\+(1|2[07]|3[0-469]|4[013-9]|5[1-8]|6[0-6]|7|8[1246]|9[0-58]|[0-9]{3})(\\s*[0-9]){4,14}", // international country code, less than 15 digits
+        ].join('|'),
         phone: [
             "0\\s*[1-9](\\s*[0-9]){8}", // french
             "\\+(1|2[07]|3[0-469]|4[013-9]|5[1-8]|6[0-6]|7|8[1246]|9[0-58]|[0-9]{3})(\\s*[0-9]){4,14}", // international country code, less than 15 digits
@@ -134,6 +138,7 @@ export default {
     error_msg: {
         radio_required: 'Veuillez sélectionner une de ces options.',
         phone: 'Le champ doit être un numéro de téléphone. Exemples : 01 02 03 04 05  ou  +41 66 555 44 33  ou  +886 1 1234 5678',
+        mobilePhone: 'Le champ doit être un numéro de téléphone mobile. Exemples : 06 02 03 04 05  ou  +41 66 555 44 33  ou  +886 1 1234 5678',
         frenchMobilePhone: 'Le champ doit être un numéro de téléphone mobile français. Exemple : 06 02 03 04 05',
         frenchPostalCode: 'Le champ doit être un code postal. Exemple : 75013',
         country: 'Veuillez saisir un nom de pays',
