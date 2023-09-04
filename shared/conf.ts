@@ -87,7 +87,7 @@ export default {
             et
             <a target="_blank" href="http://www.renater.fr/IMG/pdf/Charte_RENATER_Vjanv2014.pdf" >du réseau RENATER</a>.
             <br>
-            Votre compte et son mot de passe associé sont strictement personnels :
+            Votre compte et le mot de passe associé sont strictement personnels :
             vous êtes seul responsable de l'usage qui en est fait.`,
         },
         duration_or_enddate: { title: "Fin du compte" },
