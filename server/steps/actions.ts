@@ -97,7 +97,7 @@ export const force_response = (response: response): simpleAction => async (_req,
     { v: sv.v, response }
 )
 
-const empty_action = force_response({})
+const empty_action: simpleAction = async (_req, sv) => sv 
 
 export const if_v = (test_v: (v:v) => boolean, action: action, action_else?: action): action => async (req, sv: sva) => (
     await (test_v(sv.v) ? action : action_else || empty_action)(req, sv)
@@ -326,7 +326,7 @@ export const prepareMailTemplateParams = async (req: req, sv: sv|sva, params: Di
 
 export const sendMail = (template: string, params = {}, opts : { cc_personParrain?: true } = {}): action => async (req, sv) => {
     mail.sendWithTemplate(template, await prepareMailTemplateParams(req, sv, params, opts));
-    return { v: sv.v };
+    return sv
 };
 
 export const sendSupannMailPerso = (template: string, params = {}): action => async (req, sv) => {
