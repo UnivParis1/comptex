@@ -176,7 +176,7 @@ export default Vue.extend({
 
         other_attrs(): StepAttrsOption {
             let { attrs, current_defaults } = compute_mppp_and_handle_default_values(this.attrs, this.prev_defaults, this.v);
-            this.v_orig ??= Helpers.copy(this.v)
+            this.v_orig ??= _.cloneDeep(this.v)
             this.prev_defaults = current_defaults;
 
             // no need to go through chosen oneOf, since "compute_mppp_and_handle_default_values" has already merged things
@@ -408,7 +408,7 @@ export default Vue.extend({
           if (homonyme.uid) {
             this.v_ldap = homonyme;
           }
-          this.v_orig = Helpers.copy(this.v_orig); // make it clear for Vuejs that v_orig has been updated
+          this.v_orig = _.cloneDeep(this.v_orig); // make it clear for Vuejs that v_orig has been updated
         },
       reject(v) {
         this.v = v;
