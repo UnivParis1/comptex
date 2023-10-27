@@ -68,7 +68,7 @@ Vue.component("nowrap-after-text", {
 
 Vue.component("my-bootstrap-form-group", {
     props: [
-        'name', 'label', 'validity', 'opts', 'hideErrors', 
+        'name', 'label', 'validity', 'opts', 'hideErrors', 'required',
         'no_html_label', // useful to avoid creating another <label> tag which would conflict with internal <label> (esp. needed for checkbox, file upload)
     ],
     template: `
