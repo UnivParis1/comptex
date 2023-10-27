@@ -139,9 +139,9 @@ describe('homonymes', () => {
                     console.log(l);
                     assert.equal(l.length, 2);
                     assert.equal(l[0].uid, "prigaux");
-                    assert.equal(l[0].score, 30000);
+                    assert.equal(l[0].score, 300100);
                     assert.equal(l[1].uid, "e10000000");
-                    assert.equal(l[1].score, 20100);
+                    assert.equal(l[1].score, 201100);
                 })
         ));
         it('should detect using birthName', () => (
@@ -161,7 +161,7 @@ describe('homonymes', () => {
         it('should sort according to preferStudent', () => (
             search_ldap.homonymes(
                 { sn: 'rigaux', givenName: 'pascal', birthDay: new Date('1975-10-02'), profilename: '{COMPTEX}learner.xxx' } as v).then(l => {
-                    assert.deepEqual(l.map(e => _.pick(e, 'uid', 'score')), [ { score: 1120100, uid: 'e10000000' }, { score: 30000, uid: 'prigaux' } ])
+                    assert.deepEqual(l.map(e => _.pick(e, 'uid', 'score')), [ { score: 11201100, uid: 'e10000000' }, { score: 300100, uid: 'prigaux' } ])
                 })
         ));
         it('should not detect homonyme with birth date a little different', () => (
@@ -169,7 +169,7 @@ describe('homonymes', () => {
                 { sn: 'rigaux', givenName: 'ayme', birthDay: new Date('1975-10-02') } as v).then(l => {
                     assert.equal(l.length, 1);
                     assert.equal(l[0].uid, "arigaux");
-                    assert.equal(l[0].score, 20000);
+                    assert.equal(l[0].score, 200100);
                 })
         ));
        

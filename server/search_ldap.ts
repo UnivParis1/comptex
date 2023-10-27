@@ -187,6 +187,7 @@ function homonymes_scoring(l: typeof conf.ldap.people.types[], preferStudent: bo
             _homonymes_accountStatus_score[e.accountStatus || ''] || 0,
             e.up1KrbPrincipal ? 1 : 0, // has password
             e.mailHost ? 1 : 0, // has email address
+            e.global_eduPersonAffiliation ? 1 : 0, // préfère un profile valide, avec affiliation
             e.supannEmpId ? 1 : 0, // SIHAM user. Why prefer it over ???
             e.global_eduPersonPrimaryAffiliation === 'student' ? 1 : 0, // still prefer student ???
       ];
