@@ -29,7 +29,7 @@ const account_identification : StepAttrsOption = {
                 },
             } } },
             { const: "other", title: "Autre", merge_patch_parent_properties: { supannAliasLogin: {
-                pattern: '[a-z][a-z0-9-]{1,11}',
+                pattern: '[a-z][a-z0-9\\-]{1,11}',
                 labels: {
                     custom_error_message: `L'identifiant est composé de 2 à 11 caractères`,
                 },
