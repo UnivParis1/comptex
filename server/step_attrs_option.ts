@@ -89,7 +89,7 @@ function validate(key: string, opt: StepAttrOption, more_opt: SharedStepAttrOpti
         }
         if (val === '' || val === undefined || val === null || _.isArray(val) && _.isEmpty(val)) {
             if (!opt.optional)
-                throw `constraint !${key}.optional failed for ${val}`;
+                throw `constraint !${key}.optional failed for ${JSON.stringify(val)}`;
             else 
                 return; // no more checks if optional
         }
@@ -99,11 +99,11 @@ function validate(key: string, opt: StepAttrOption, more_opt: SharedStepAttrOpti
         }
         if (opt.min) {
             if (!((""+val).match(/\d+/) && opt.min <= val))
-                throw `constraint ${key}.min >= ${opt.min} failed for ${val}`;
+                throw `constraint ${key}.min >= ${opt.min} failed for ${JSON.stringify(val)}`;
         }
         if (opt.max) {
             if (!((""+val).match(/\d+/) && 0 <= val && val <= opt.max))
-                throw `constraint ${key}.max <= ${opt.max} failed for ${val}`;
+                throw `constraint ${key}.max <= ${opt.max} failed for ${JSON.stringify(val)}`;
         }
         if (opt.minDate) {
             let val_ = val && new Date(val)
@@ -121,32 +121,32 @@ function validate(key: string, opt: StepAttrOption, more_opt: SharedStepAttrOpti
         if (opt.minlength) {
             let val_ = val !== undefined ? val : '';
             if (!(_.isString(val_) && opt.minlength <= val_.length))
-                throw `constraint ${key}.minlength ${opt.minlength} failed for ${val}`;
+                throw `constraint ${key}.minlength ${opt.minlength} failed for ${JSON.stringify(val)}`;
         }
         if (opt.maxlength) {
             let val_ = val !== undefined ? val : '';
             if (!(_.isString(val_) && val_.length <= opt.maxlength))
-                throw `constraint ${key}.maxlength ${opt.maxlength} failed for ${val}`;
+                throw `constraint ${key}.maxlength ${opt.maxlength} failed for ${JSON.stringify(val)}`;
         }
         if (opt.pattern) {
             let val_ = val !== undefined ? val : '';
             if (!(_.isString(val_) && val_.match("^(" + opt.pattern + ")$")))
-                throw `constraint ${key}.pattern ${opt.pattern} failed for ${val}`;
+                throw `constraint ${key}.pattern ${opt.pattern} failed for ${JSON.stringify(val)}`;
         }
         if (opt.allowedChars) {
             let val_ = val !== undefined ? val : '';
             if (!(_.isString(val_) && val_.match("^(" + opt.allowedChars + "*)$")))
-                throw `constraint ${key}.allowedChars ${opt.allowedChars} failed for ${val}`;
+                throw `constraint ${key}.allowedChars ${opt.allowedChars} failed for ${JSON.stringify(val)}`;
         }
         if (opt.items || opt.uiType === 'array') {
             if (val !== undefined) {
-                if (!_.isArray(val)) throw `constraint ${key} is array failed for ${val}`;
+                if (!_.isArray(val)) throw `constraint ${key} is array failed for ${JSON.stringify(val)}`;
                 val.forEach((val_, i) => validate(`${key}-${i}`, { ..._.pick(opt, 'optional', 'oneOf'), ...opt.items }, more_opt && more_opt.items, val_, prev, v));
             }
         } else if (opt.oneOf) {
             if (val !== undefined && !find_choice(opt.oneOf, val)) {
                 const keys = opt.oneOf.map(e => e.const);
-                throw `constraint ${key}.oneOf ${keys} failed for ${val}`;
+                throw `constraint ${key}.oneOf ${keys} failed for ${JSON.stringify(val)}`;
             }
         }
         if (more_opt && more_opt.validator) {
