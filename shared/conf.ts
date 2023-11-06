@@ -16,7 +16,7 @@ const capitalizeUpperCaseWords = (s: string) => s.replace(/([A-Z\u00C0-\u00DC][a
 
 const normalizeNomPopre = (s: string) => capitalizeUpperCaseWords(normalizeApostropheAndTrim(s))
 
-const normalize_noAccent_noUpperCase = (s:string) => deburr(s.toLowerCase())
+const normalize_noAccent_noUpperCase_trim = (s:string) => trim(deburr(s.toLowerCase()))
 
 const wsgroupsURL = "https://wsgroups.univ-paris1.fr";
 
@@ -94,7 +94,7 @@ export default {
         duration: { title: "Durée" },
         startdate: { title: "Date de début", format: 'date', uiType: 'date' },
         enddate: { title: "Date de fin", format: 'date', uiType: 'date' },
-        supannAliasLogin: { title: 'Identifiant', normalize: normalize_noAccent_noUpperCase },
+        supannAliasLogin: { title: 'Identifiant', normalize: normalize_noAccent_noUpperCase_trim },
         supannCodeINE: { title: "Numéro INE" },
         supannEtuId: { title: "Numéro étudiant" },
         supannEmpId: { title: 'Numéro agent' },
