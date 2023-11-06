@@ -229,7 +229,7 @@ describe('merge_v', () => {
     });
     it ("should validate required", () => {
         test_fail({ sn: {} }, {}, {}, "constraint !sn.optional failed for undefined");
-        test_fail({ sn: {} }, {}, { sn: '' }, "constraint !sn.optional failed for ");
+        test_fail({ sn: {} }, {}, { sn: '' }, `constraint !sn.optional failed for ""`);
         test_fail({ sn: {} }, prev, {}, "constraint !sn.optional failed for undefined");
         test_fail({ sn: {} }, {}, { sn: null }, "constraint !sn.optional failed for null");
         test({ sn: {} }, prev, v, v);
@@ -237,11 +237,11 @@ describe('merge_v', () => {
     });
     it ("should check allowedChars", () => {
         test({ sn: { allowedChars: "[xy]" } }, {}, { sn: 'x' }, { sn: 'x' });
-        test_fail({ sn: { allowedChars: "[xy]" } }, {}, { sn: 'X' }, "constraint sn.allowedChars [xy] failed for X");
+        test_fail({ sn: { allowedChars: "[xy]" } }, {}, { sn: 'X' }, `constraint sn.allowedChars [xy] failed for "X"`);
     });
     it ("should check pattern", () => {
         test({ sn: { pattern: "x" } }, {}, { sn: 'x' }, { sn: 'x' });
-        test_fail({ sn: { pattern: "x" } }, {}, { sn: 'X' }, "constraint sn.pattern x failed for X");
+        test_fail({ sn: { pattern: "x" } }, {}, { sn: 'X' }, `constraint sn.pattern x failed for "X"`);
     });
     it ("should not check pattern if optional and value is empty", () => {
         test({ sn: { optional: true, pattern: "x" } }, {}, {}, {});
@@ -255,10 +255,10 @@ describe('merge_v', () => {
     });
     it ("should check minlength/maxlength", () => {
         test({ attr1: { minlength: 2 } }, {}, { attr1: "ab" }, { attr1: "ab" });
-        test_fail({ attr1: { minlength: 2 } }, {}, { attr1: "a" }, "constraint attr1.minlength 2 failed for a");
+        test_fail({ attr1: { minlength: 2 } }, {}, { attr1: "a" }, `constraint attr1.minlength 2 failed for "a"`);
         test_fail({ attr1: { minlength: 2 } }, {}, { attr1: 12 }, "constraint attr1.minlength 2 failed for 12"); // no stringification (?)
         test({ attr1: { maxlength: 2 } }, {}, { attr1: "ab" }, { attr1: "ab" });
-        test_fail({ attr1: { maxlength: 2 } }, {}, { attr1: "abc" }, "constraint attr1.maxlength 2 failed for abc");
+        test_fail({ attr1: { maxlength: 2 } }, {}, { attr1: "abc" }, `constraint attr1.maxlength 2 failed for "abc"`);
     });
     it ("should check minDate/maxDate", () => {
         const v = { attr1: helpers.addDays(new Date(), 100) }
@@ -277,10 +277,10 @@ describe('merge_v', () => {
     it ("should check array", () => {
         test_fail({ altGivenName: { items: {} } }, {}, {}, 'constraint !altGivenName.optional failed for undefined');
         // @ts-expect-error
-        test_fail({ altGivenName: { items: {} } }, {}, { altGivenName: 'x' }, 'constraint altGivenName is array failed for x');
+        test_fail({ altGivenName: { items: {} } }, {}, { altGivenName: 'x' }, 'constraint altGivenName is array failed for "x"');
         // @ts-expect-error
-        test_fail({ altGivenName: { items: {}, optional: true } }, {}, { altGivenName: 'x' }, 'constraint altGivenName is array failed for x');
-        test_fail({ altGivenName: { items: {} } }, {}, { altGivenName: [] }, 'constraint !altGivenName.optional failed for ');
+        test_fail({ altGivenName: { items: {}, optional: true } }, {}, { altGivenName: 'x' }, 'constraint altGivenName is array failed for "x"');
+        test_fail({ altGivenName: { items: {} } }, {}, { altGivenName: [] }, 'constraint !altGivenName.optional failed for []');
         test({ altGivenName: { items: {}, optional: true } }, {}, {}, {});
         test({ altGivenName: { items: {}, optional: true } }, {}, { altGivenName: [] }, { altGivenName: [] });
         test({ altGivenName: { items: {} } }, {}, { altGivenName: ["x"] }, { altGivenName: ["x"] });
@@ -290,7 +290,7 @@ describe('merge_v', () => {
         test(attrs, {}, { attr1: 1 }, { attr1: 1 });
         test_fail(attrs, {}, { attr1: 2 }, "constraint attr1.oneOf 1 failed for 2");
         test_fail(attrs, {}, { attr1: undefined }, 'constraint !attr1.optional failed for undefined');
-        test_fail(attrs, {}, { attr1: "" }, 'constraint !attr1.optional failed for ');
+        test_fail(attrs, {}, { attr1: "" }, 'constraint !attr1.optional failed for ""');
     });
     it ("should check oneOf array", () => {
         const attrs = { attr1: { items: {}, oneOf: [ { const: "1" }, { const: "2" } ] } };
@@ -299,8 +299,8 @@ describe('merge_v', () => {
         test_fail(attrs, {}, { attr1: 2 }, "constraint attr1 is array failed for 2");
         test_fail(attrs, {}, { attr1: [3] }, "constraint attr1-0.oneOf 1,2 failed for 3");
         test_fail(attrs, {}, { attr1: undefined }, 'constraint !attr1.optional failed for undefined');
-        test_fail(attrs, {}, { attr1: "" }, 'constraint !attr1.optional failed for ');
-        test_fail(attrs, {}, { attr1: [] }, 'constraint !attr1.optional failed for ');
+        test_fail(attrs, {}, { attr1: "" }, 'constraint !attr1.optional failed for ""');
+        test_fail(attrs, {}, { attr1: [] }, 'constraint !attr1.optional failed for []');
     });
     it ("should check oneOf non-optional array", () => {
         const attrs = { attr1: { optional: true, items: {}, oneOf: [ { const: "1" }, { const: "2" } ] } };
@@ -371,7 +371,7 @@ describe('merge_v', () => {
         };
         test(attrs, {}, { duration: 1, profilename: "p1" }, { duration: 1, profilename: "p1" });
         test(attrs, {}, { duration: 2, profilename: "p2" }, { duration: 2, profilename: "p2" });
-        test_fail(attrs, {}, { duration: 1, profilename: "p2" }, "constraint profilename.oneOf p1 failed for p2");
+        test_fail(attrs, {}, { duration: 1, profilename: "p2" }, `constraint profilename.oneOf p1 failed for "p2"`);
     });
 
     it ("should handle if_then merge_patch_parent_properties", () => {
