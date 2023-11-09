@@ -199,7 +199,6 @@ export const esupUserApps_add_canAccess = (app: string): simpleAction_pre => asy
 }
 
 export const check_v_otp: simpleAction_pre = async (req, {v}) => {
-    console.log('check_v_otp', v)
     if (!v.otp) throw "internal error: missing otp in saved v"
     if (req.query.otp !== v.otp) {
         console.error("missing/bad otp: wanted", v.otp, "got", req.query.otp)
