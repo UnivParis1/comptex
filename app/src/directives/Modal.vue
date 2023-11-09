@@ -1,6 +1,6 @@
 <template> 
 <transition name="modal">
- <div class="modal modal-mask" style="display: block" @click="$emit('cancel')">
+ <div class="modal modal-mask" style="display: block" @click="$emit('cancel')" @keydown.esc="$emit('cancel')">
   <div class="modal-dialog" role="document" @click.stop="">
     <div class="modal-content panel-warning">
       <div class="modal-header panel-heading">
