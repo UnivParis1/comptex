@@ -9,7 +9,7 @@
         </div>
         <div slot="footer">
             <button type="button" class="btn btn-default" @click="cancel">{{"Annuler"}}</button>
-            <button type="button" class="btn btn-primary" @click="ok">{{"Confirmer"}}</button>
+            <button type="button" class="btn btn-primary" @click="ok" v-auto-focus>{{"Confirmer"}}</button>
         </div>
     </modal>
 </template>
