@@ -15,6 +15,9 @@ export default defineConfig({
     },
   },
   server: {
+    fs: {
+        allow: ['../shared', '.'], // NB: when "base" is "/", this is not needed. Looks like a bug in vite
+    },
     proxy: {
         '/api': {
             target: 'http://localhost:8000',
