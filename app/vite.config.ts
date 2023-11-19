@@ -1,7 +1,7 @@
 import { fileURLToPath, URL } from 'url'
 
 import { defineConfig } from 'vite'
-import { createVuePlugin as vue } from "vite-plugin-vue2";
+import vue from '@vitejs/plugin-vue2'
 import shared_conf from '../shared/conf';
 
 // https://vitejs.dev/config/
