@@ -292,6 +292,13 @@ describe('merge_v', () => {
         test_fail(attrs, {}, { attr1: undefined }, 'constraint !attr1.optional failed for undefined');
         test_fail(attrs, {}, { attr1: "" }, 'constraint !attr1.optional failed for ""');
     });
+    it("should check optional oneOf", () => {
+        const attrs = { attr1: { optional: true, oneOf: [ { const: "1" } ] } };
+        test(attrs, {}, { attr1: 1 }, { attr1: 1 });
+        test_fail(attrs, {}, { attr1: 2 }, "constraint attr1.oneOf 1 failed for 2");
+        test(attrs, {}, { attr1: undefined }, { attr1: undefined });
+        test(attrs, {}, {}, {});
+    });
     it ("should check oneOf array", () => {
         const attrs = { attr1: { items: {}, oneOf: [ { const: "1" }, { const: "2" } ] } };
         test(attrs, {}, { attr1: [1] }, { attr1: [1] });
