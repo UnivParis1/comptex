@@ -55,7 +55,7 @@ app.use('/api', myBodyParser, force_noCache, translate.express_handler, api);
 // handle main Vue html page.
 // list valid urls (as already done in app/src/router.ts) 
 // (NB: we could use a catchall, but it is better to get 404 errors)
-app.use([ "login", "steps", ...Object.keys(conf_steps.steps), "playground" ].map(path => "/" + path), utils.index_html);
+app.use([ "login", "steps", ...Object.keys(conf_steps.steps), "playground" ].map(path => "/" + path), force_noCache, utils.index_html);
 
 db.may_init(() => {
     let port = process.env.PORT || 8080;        // set our port
