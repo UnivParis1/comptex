@@ -1,6 +1,7 @@
 'use strict';
 
 import { assert } from '../test_utils';
+import * as conf from '../../conf'
 import * as test_ldap from '../test_ldap';
 import * as acl from '../../steps/acl';
 
@@ -76,12 +77,12 @@ describe('global', () => {
     ));
 
     it('loggedUser_to_ldap_filter should work', () => (
-        acl.structureRoles('structureParrain', "(up1TableKey=*)").loggedUser_to_ldap_filter({ 'id': 'arigaux@univ-paris1.fr' } as CurrentUser).then(filter => (
+        acl.structureRoles('structureParrain', "(up1TableKey=*)").loggedUser_to_ldap_filter({ 'id': 'arigaux' + conf.ldap.uid_to_eppn } as CurrentUser).then(filter => (
             assert.deepEqual(filter, '(supannParrainDN=supannCodeEntite=DGH,ou=structures,dc=univ,dc=fr)')
         ))
     ));
     it('loggedUser_to_ldap_filter if user with no role', () => (
-        acl.structureRoles('structureParrain', "(up1TableKey=*)").loggedUser_to_ldap_filter({ 'id': 'ayrigaux@univ-paris1.fr' } as CurrentUser).then(filter => (
+        acl.structureRoles('structureParrain', "(up1TableKey=*)").loggedUser_to_ldap_filter({ 'id': 'ayrigaux' + conf.ldap.uid_to_eppn } as CurrentUser).then(filter => (
             assert.deepEqual(filter, '(|(supannParrainDN=supannCodeEntite=DGH,ou=structures,dc=univ,dc=fr)(supannParrainDN=supannCodeEntite=DGHA,ou=structures,dc=univ,dc=fr))')
         ))
     ));
