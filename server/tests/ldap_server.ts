@@ -80,7 +80,7 @@ server.search(params.base, (req, res, next) => {
       return next();
   } else {
       console.log("ldap_server.search: unknown dn", dn);
-      console.log(db);
+      console.log(Object.keys(db));
       return next(new ldap.NoSuchObjectError(dn));
   }
 });
