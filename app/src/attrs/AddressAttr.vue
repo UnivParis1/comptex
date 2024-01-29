@@ -40,7 +40,11 @@
  </div>
  <div v-else>
    <my-bootstrap-form-group name="address_lines" :validity="validity">
-     <textarea-with-validity rows="5" v-model="lines" class="form-control" :required="!opts.optional" :validity.sync="validity.address_lines"></textarea-with-validity>
+     <textarea-with-validity rows="5" v-model="lines" class="form-control" 
+        :required="!opts.optional" :validity.sync="validity.address_lines"
+        placeholder="Adresse postale
+(sans le nom de pays)"
+     ></textarea-with-validity>
    </my-bootstrap-form-group>
  </div>
 </div>
