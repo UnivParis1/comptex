@@ -1,5 +1,5 @@
 import Vue from "vue";
-import * as Croppie from 'croppie';
+import Croppie from 'croppie';
 import 'croppie/croppie.css';
 
 import * as EXIF from 'exif-js';
