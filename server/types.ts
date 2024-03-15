@@ -33,6 +33,7 @@ interface history_event {
     who: CurrentUser
     step: { id: string; title: string }
     rejected?: true
+    purged?: true
 }
 type sv = {
   _id?: mongodb.ObjectId;
