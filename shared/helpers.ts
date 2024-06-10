@@ -85,10 +85,28 @@ export function formatDate(date : Date | string, format : string) : string {
 }
 
 const frenchPhone_pattern = "^(\\+33|0)\\s*[1-9](\\s*[0-9]){8}$"
+const french_outre_mer_to_international_prefix: Dictionary<string> = {
+    // Guadeloupe/Saint-Barthélemy/Saint-Martin
+    '06 90': '+590',
+    '06 91': '+590',
+    // La Réunion 
+    '06 92': '+262',
+    '06 93': '+262',
+    // Guyanne
+    '06 94': '+594',
+    // Martinique
+    '06 96': '+596',
+    '06 97': '+596',
+    // Mayotte
+    '06 39': '+262',
+}
 
 export const maybeFormatPhone = (resultFrenchPrefix: string) => (maybePhone : string) : string => {
     if (maybePhone.match(frenchPhone_pattern)) {
-        return maybePhone.replace(/^(\+33|0)/, '').replace(/\s/g, '').replace(/(.)(..)(..)(..)(..)/, resultFrenchPrefix + "$1 $2 $3 $4 $5");
+        return maybePhone.replace(/^(\+33|0)/, '').replace(/\s/g, '').replace(/(.)(..)(..)(..)(..)/, (_, p1, p2, p3, p4, p5) => {
+            const prefix = french_outre_mer_to_international_prefix[`0${p1} ${p2}`]
+            return (prefix ? prefix + ' ' : resultFrenchPrefix) + `${p1} ${p2} ${p3} ${p4} ${p5}`
+        })
     }
     return maybePhone;
 }

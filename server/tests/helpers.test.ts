@@ -37,6 +37,20 @@ describe('addDays', () => {
     })
 });
 
+describe('maybeFormatPhone', () => {
+    it("should work", () => {
+        assert.equal(helpers.maybeFormatPhone("+33 ")("+33 6 23 45 67 89"), "+33 6 23 45 67 89")
+        assert.equal(helpers.maybeFormatPhone("+33 ")("0623456789"), "+33 6 23 45 67 89")
+        assert.equal(helpers.maybeFormatPhone("0")("0623456789"), "06 23 45 67 89")
+    })
+
+    it("should handle french_outre_mer", () => {
+        assert.equal(helpers.maybeFormatPhone("xx")("+33 6 90 45 67 89"), "+590 6 90 45 67 89")
+        assert.equal(helpers.maybeFormatPhone("xx")(   "06 90 45 67 89"), "+590 6 90 45 67 89")
+        assert.equal(helpers.maybeFormatPhone("xx")("+33 6 92 00 12 34"), "+262 6 92 00 12 34")
+    })
+})
+
 describe('anonymize_phoneNumber', () => {
     it("should work", () => {
         assert.equal(helpers.anonymize_phoneNumber("+33 6 23 45 67 89"), "062345****")
