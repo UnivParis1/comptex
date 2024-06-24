@@ -22,8 +22,9 @@ export const nextDate = (pattern : string, date: Date) => {
     return r;
 }
 
+export type YYYY_MM_DD = string & { _type?: 'YYYY_MM_DD' }
 export const toYYYY_MM_DD = (date: Date) => (
-    date?.toISOString()?.replace(/T.*/, '')
+    date?.toISOString()?.replace(/T.*/, '') as YYYY_MM_DD
 )
 
 export const milliseconds_to_DaysHoursMinutes = (ms: number) => {
