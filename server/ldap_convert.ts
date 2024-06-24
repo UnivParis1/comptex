@@ -1,6 +1,7 @@
 'use strict';
 
 import * as _ from 'lodash';
+import { toYYYY_MM_DD } from './helpers';
 
 export const datetime: ldap_conversion = {
         fromLdap: (dt: string): Date => {
@@ -20,7 +21,7 @@ export const date: ldap_conversion = {
             return m && new Date(Date.UTC(parseInt(m[1]), parseInt(m[2]) - 1, parseInt(m[3])));
         },
         toLdap: (d: Date): string => (
-            d.toISOString().replace(/T.*/, '').replace(/-/g, '')
+            toYYYY_MM_DD(d).replace(/-/g, '')
         ),
     };
 
