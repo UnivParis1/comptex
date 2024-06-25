@@ -33,7 +33,7 @@ describe('addDays', () => {
     it("should work with float", () => {
         const d = new Date("2017-01-31T23:00:00.000Z");
         const d2 = helpers.addDays(d, 0.9999);
-        assert.equal(d2.toISOString().replace(/T.*/, ''), '2017-02-01');
+        assert.equal(helpers.toYYYY_MM_DD(d2), '2017-02-01');
     })
 });
 
