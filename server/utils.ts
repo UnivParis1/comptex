@@ -72,6 +72,7 @@ export const http_request_json = async (url: string, { params, ...options }: htt
         ...(params ? { body: JSON.stringify(params) } : {}),
         ...options, 
     } as const
+    //console.log({url, options_, params})
     const data = await http_request(url, options_)
     try {
         return JSON.parse(data)
