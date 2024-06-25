@@ -38,7 +38,7 @@ export const query_string = (qs: Dictionary<string>) => {
 interface http_client_Options {
     headers? : {};
     timeout?: number;
-    method?: 'GET' | 'POST' | 'PUT'
+    method?: 'GET' | 'POST' | 'PUT' | 'DELETE'
 }
 
 export const http_request = (url: string, options: http_client_Options & { body?: string }) : Promise<string> => {
