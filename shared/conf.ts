@@ -174,5 +174,7 @@ export default {
     // used for homonyms detection & displayName validation
     sns: ['sn', 'birthName'],
     givenNames: ['givenName', 'altGivenName'],
+
+    fileUpload_default_acceptedMimeTypes: [ 'image/png', 'image/jpeg', 'application/pdf' ]
 };
 

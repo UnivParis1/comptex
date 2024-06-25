@@ -36,8 +36,9 @@
 import { round } from "lodash";
 import Vue from "vue";
 import * as Helpers from '../services/helpers';
+import conf from '../conf'
 
-const default_acceptedMimeTypes = [ 'image/png', 'image/jpeg', 'application/pdf' ]
+const default_acceptedMimeTypes = conf.fileUpload_default_acceptedMimeTypes
 
 const dataURL_to_mimeType = (val: string) => (
     val?.match(/^data:(\w{1,30}\/\w{1,30})/)?.[1]
