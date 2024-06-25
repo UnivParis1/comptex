@@ -28,7 +28,7 @@ const deepEqualP = async <T>(actual: T, expected: T, message?: string): Promise<
 // wrap 'assert' only to ensure proper types...
 export const assert = {
   equal: <T>(actual: T, expected: T, message?: string): void => raw_assert.equal(actual, expected, message),
-  deepEqual: <T>(actual: T, expected: T, message?: string): void => raw_assert.deepEqual(actual, expected, message),
+  deepEqual: <T>(actual: T, expected: T, message?: string): void => raw_assert.deepStrictEqual(actual, expected, message),
   deepEqualP,
   // @ts-expect-error
   fail: (raw_assert.fail as (...any) => void),
