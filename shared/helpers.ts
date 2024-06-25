@@ -136,3 +136,7 @@ export const to_absolute_date = (date: Date | relativeDate) => (
 )
 
 export const throw_ = (e: any) => { throw e }
+
+export const dataURL_to_mimeType = (val: string) => (
+    val?.match(/^data:(\w{1,30}\/\w{1,30})/)?.[1]
+)

@@ -36,13 +36,10 @@
 import { round } from "lodash";
 import Vue from "vue";
 import * as Helpers from '../services/helpers';
+import { dataURL_to_mimeType } from '../../../shared/helpers';
 import conf from '../conf'
 
 const default_acceptedMimeTypes = conf.fileUpload_default_acceptedMimeTypes
-
-const dataURL_to_mimeType = (val: string) => (
-    val?.match(/^data:(\w{1,30}\/\w{1,30})/)?.[1]
-)
 
 const formatMB = (n: number) => {
     const n_ = n / 1024 / 1024;
