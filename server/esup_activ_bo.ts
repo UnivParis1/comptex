@@ -108,8 +108,9 @@ export function validatePassword(id: string, password: string, req_for_context: 
         const translate: Dictionary<string> = {
             "Password does not contain enough unique characters": "Le mot de passe doit contenir plus de caractères différents",
             "it is based on a dictionary word": "Ce mot de passe est trop proche d'un mot du dictionnaire ou d'un mot de passe connu",
+            "it is too simplistic/systematic": "Le mot de passe est trop simpliste/systématique",
         }
-        throw translate[err] || err;
+        throw translate[err] || "Mot de passe non accepté : " + err;
     });
 }
 
