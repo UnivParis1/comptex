@@ -75,7 +75,8 @@ export const getOidcAttrs: firstAction_pre = async (req, _sv) => {
 export const getShibAttrs: firstAction_pre = async (req, _sv) => {
     if (!req.user) throw `Unauthorized`;
     let v = _.mapValues(conf.shibboleth.header_map, headerName => (
-        req.header(headerName)
+        // Shibboleth uses UTF8 whereas Nodejs reads them as ISO-8859-1 ( cf https://github.com/nodejs/node/issues/39748#issuecomment-897700314 )
+        Buffer.from(req.header(headerName), 'latin1').toString()
     )) as any as v;
     console.log("action getShibAttrs:", v);
     return v;
