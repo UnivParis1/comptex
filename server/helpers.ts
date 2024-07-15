@@ -56,6 +56,15 @@ export const keyByMulti = <T>(l: T[], field: string): Dictionary<T> => {
     return h
 }
 
+// name from Rust: https://doc.rust-lang.org/std/iter/trait.Iterator.html#method.find_map
+export function findMap <T, V>(l: T[], f: (e: T) => V | undefined | null): V | undefined {
+    for (const e of l) {
+        const e_ = f(e)
+        if (e_ !== undefined && e_ !== null) return e_
+    }
+    return undefined
+}
+
 export const anonymize_phoneNumber = (s: string) => (
     s && s.replace(/ /g, "").replace(/^\+33/, "0").substring(0, 6) + "****"
 )
