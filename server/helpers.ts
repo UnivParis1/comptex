@@ -64,6 +64,12 @@ export function findMap <T, V>(l: T[], f: (e: T) => V | undefined | null): V | u
     }
     return undefined
 }
+export async function pfind<T>(l: T[], f: (e: T) => any): Promise<T | undefined> {
+    for (const e of l) {
+        if (await f(e)) return e
+    }
+    return undefined
+}
 
 export const anonymize_phoneNumber = (s: string) => (
     s && s.replace(/ /g, "").replace(/^\+33/, "0").substring(0, 6) + "****"
