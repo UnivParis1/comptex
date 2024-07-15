@@ -74,10 +74,20 @@ export const getOidcAttrs: firstAction_pre = async (req, _sv) => {
 
 export const getShibAttrs: firstAction_pre = async (req, _sv) => {
     if (!req.user) throw `Unauthorized`;
-    let v = _.mapValues(conf.shibboleth.header_map, headerName => (
+    let v = _.mapValues(conf.shibboleth.header_map, header => {
+        const header_ = typeof header === 'string' ? { shibAttr: header, type: '' } : header
         // Shibboleth uses UTF8 whereas Nodejs reads them as ISO-8859-1 ( cf https://github.com/nodejs/node/issues/39748#issuecomment-897700314 )
-        Buffer.from(req.header(headerName), 'latin1').toString()
-    )) as any as v;
+        const s_latin1 = req.header(header_.shibAttr)
+        if (!s_latin1) return undefined
+        const s = Buffer.from(s_latin1, 'latin1').toString()
+        if (_.isArray(header_.type)) {
+            // https://wiki.shibboleth.net/confluence/display/SHIB2/NativeSPAttributeAccess :
+            // > multiple attribute values are separated by a semicolon, and semicolons in values are escaped with a backslash
+            return s.split(";") // NB: it should handle escaped ";"
+        } else {
+            return s
+        }
+    }) as any as v;
     console.log("action getShibAttrs:", v);
     return v;
 };
