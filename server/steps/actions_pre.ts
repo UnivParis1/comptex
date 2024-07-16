@@ -8,6 +8,7 @@ import { selectUserProfile, merge_v } from '../step_attrs_option';
 import * as esup_activ_bo from '../esup_activ_bo';
 import * as cas from '../cas';
 import * as conf from '../conf';
+import { findMap } from '../helpers';
 const filters = ldap.filters;
 
 export const mutate_v = (f: (v:v) => void) : simpleAction_pre => async (_req, sv) => {
@@ -74,13 +75,21 @@ export const getOidcAttrs: firstAction_pre = async (req, _sv) => {
 
 export const getShibAttrs: firstAction_pre = async (req, _sv) => {
     if (!req.user) throw `Unauthorized`;
+    const get_header = (attr: string) => {
+        const s = req.header(attr)
+        if (s === '') return undefined
+        if (s === undefined) console.warn(`attribute ${attr} must be declared in shibboleth attribute-map.xml`)
+        return s
+    }
     let v = _.mapValues(conf.shibboleth.header_map, header => {
-        const header_ = typeof header === 'string' ? { shibAttr: header, type: '' } : header
-        // Shibboleth uses UTF8 whereas Nodejs reads them as ISO-8859-1 ( cf https://github.com/nodejs/node/issues/39748#issuecomment-897700314 )
-        const s_latin1 = req.header(header_.shibAttr)
+        const header_: { shibAttr: string, fallbackShibAttrs?: string[], type?: string | string[] | Date } = typeof header === 'string' ? { shibAttr: header, type: '' } : header
+        let s_latin1 = get_header(header_.shibAttr) ?? findMap(header_.fallbackShibAttrs || [], get_header)
         if (!s_latin1) return undefined
+        // Shibboleth uses UTF8 whereas Nodejs reads them as ISO-8859-1 ( cf https://github.com/nodejs/node/issues/39748#issuecomment-897700314 )
         const s = Buffer.from(s_latin1, 'latin1').toString()
-        if (_.isArray(header_.type)) {
+        if (_.isDate(header_.type)) {
+            return new Date(s)
+        } else if (_.isArray(header_.type)) {
             // https://wiki.shibboleth.net/confluence/display/SHIB2/NativeSPAttributeAccess :
             // > multiple attribute values are separated by a semicolon, and semicolons in values are escaped with a backslash
             return s.split(";") // NB: it should handle escaped ";"
