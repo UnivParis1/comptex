@@ -36,6 +36,7 @@ interface StepAttrItemsOption {
         texts_are_html?: boolean
         texts_are_vue_template?: boolean
         date_todayButton?: string
+        custom_error_message__always_displayed?: true
     };
 
     uiHidden?: boolean | 'ifFalsy' | 'ifForcedInQuery';

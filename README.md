@@ -164,7 +164,7 @@ You can customize the way it is displayed:
 * ```uiOptions.readOnly__avoid_disabled_input```: display value as text instead of `disabled <input>`. Hint: use CSS to force a same width for all fields (example `.instead_of_disabled_input { display: inline-block; min-width: 6em }`)
 * ```uiOptions.readOnly__vue_template```: vue template displayed instead of the value when readOnly
 
-* ```labels.custom_error_message```: displayed when the value is not valid
+* ```labels.custom_error_message```: displayed in red when the value is not valid, otherwise displayed in black if `uiOptions.custom_error_message__always_displayed`
 * ```labels.advice_after_submit```: displayed after first submit
 * ```labels.tooltip```: a "?" is displayed next to the `<label>`, click or hover it to display the tooltip message
 * ```labels.warning```: similar to tooltip, but with a "warning" sign
