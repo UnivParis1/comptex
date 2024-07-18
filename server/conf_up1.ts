@@ -173,8 +173,10 @@ export const attrs : StepAttrsOption = {
     },
     newPassword: {
         uiType: 'newPassword',
-        labels: { custom_error_message: 'Veuillez choisir un mot de passe comportant au moins 8 caractères. Ce mot de passe doit contenir des lettres minuscules, des lettres majuscules et des chiffres.' },
+        
+        description: 'Veuillez choisir un mot de passe comportant au moins 8 caractères. Ce mot de passe doit contenir des lettres minuscules, des lettres majuscules et des chiffres.',
         pattern: "(?=.*[0-9])(?=.*[A-Z])(?=.*[a-z])[ -~]{8,}", // must contain digit / uppercase / lowercase. must be printable ASCII chars
+        allowedChars: '[ -~]', // for better error messages
     },
     roomNumber: {
         // 2021-09 : autoriser les nouveaux numéros de bureau PMF (GLPI UP1#118479)
