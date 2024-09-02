@@ -12,15 +12,20 @@
             :editable="false" :validity.sync="validity[name]"></typeahead>
       <array-actions @action="name => $emit('array_action', name)" :array_allowed_actions="array_allowed_actions" />
     </div>
+
+    <CurrentLdapValue :value="value" :ldap_value="ldap_value" :readOnly="opts.readOnly" @input="v => value = v"></CurrentLdapValue>
+
   </my-bootstrap-form-group>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
 import * as Ws from '../services/ws';
+import CurrentLdapValue from './CurrentLdapValue.vue';
 
 export default Vue.extend({
-    props: ['value', 'name', 'real_name', 'opts', 'v', 'stepName', 'array_allowed_actions'],
+    props: ['value', 'name', 'real_name', 'opts', 'v', 'ldap_value', 'stepName', 'array_allowed_actions'],
+    components: { CurrentLdapValue },
     data() {
         return {
           validity: !this.opts.readOnly && { [this.name]: {} },

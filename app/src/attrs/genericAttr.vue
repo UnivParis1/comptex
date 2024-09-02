@@ -47,6 +47,7 @@
   </PasswordAttr>
 
   <AutocompleteAttr v-model="val" :name="name" :real_name="real_name" :v="v" v-else-if="uiType === 'autocomplete'"
+     :ldap_value="ldap_value"
      :stepName="stepName"
      @array_action="name => $emit('array_action', name)" :array_allowed_actions="array_allowed_actions"
      :opts="opts">
