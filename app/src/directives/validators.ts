@@ -55,6 +55,7 @@ Vue.component('input-with-validity', {
     value: 'on_value_set',
     min(v) { this._attrUpdated('min', v) },
     max(v) { this._attrUpdated('max', v) },
+    pattern(v) { this._attrUpdated('pattern', v) },
     sameAs(v) { this._attrUpdated('pattern', Helpers.escapeRegexp(v)) },
   },
   methods: {
