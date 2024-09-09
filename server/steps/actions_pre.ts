@@ -102,7 +102,14 @@ export const getShibAttrs: firstAction_pre = async (req, _sv) => {
 };
 
 export const getShibUserLdapAttrs: firstAction_pre = async (req, _sv) => {
-    if (!isShibUserInLdap(req)) throw `Unauthorized`;
+    if (!isShibUserInLdap(req)) {
+        if (req.user) {
+            console.log(`user is logged with external IDP ${req.header('Shib-Identity-Provider')} but we require the local IDP`)
+            throw { code: "Unauthorized", authenticate: { need_relog_local: true } }
+        } else {
+            throw `Unauthorized`
+        }
+    }
     let filter = search_ldap.currentUser_to_filter(req.user);
     let v: v = await oneExistingPerson(filter);
     return v;

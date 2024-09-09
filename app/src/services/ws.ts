@@ -141,7 +141,8 @@ function _handleErr(err : AxiosError, $scope = null, redirect = false) {
         console.log("must relog", resp.headers.toString());
         restarting = true;
         const type = resp.data && resp.data.authenticate && resp.data.authenticate.type || $scope.$route.query.idp || 'local';
-        document.location.href = conf.base_pathname + 'login/' + type + '?then=' + encodeURIComponent($scope.$route.fullPath);
+        const location = conf.base_pathname + 'login/' + type + '?then=' + encodeURIComponent($scope.$route.fullPath);
+        document.location.href = resp.data?.authenticate?.need_relog_local ? `/Shibboleth.sso/Logout?return=${encodeURIComponent(location)}` : location
         return Promise.reject("logging...");
     } else if (resp.status === 401) {
         if (confirm("Votre session a expiré, vous allez devoir recommencer.")) {
