@@ -14,6 +14,7 @@
     //"noImplicitAny": false,
     "strictNullChecks": false, //"strictPropertyInitialization": true,
     "useUnknownInCatchVariables": false,
+    "skipLibCheck": true,
     
     "types" : [
         "body-parser", "express", "lodash", "mocha", "mongodb", "morgan", "node", "nodemailer", "xml2js"
