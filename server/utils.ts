@@ -100,7 +100,7 @@ export function respondJson(req: req, res: express.Response, p: Promise<response
         res.json(r);
     }, err => {
         const errMsg = err?.code || "" + err;
-	if (errMsg === 'OK') {} else if (errMsg === 'Unauthorized') { console.info(logPrefix, err) } else { console.error("ERROR", logPrefix, err) }
+	if (errMsg === 'OK') {} else if (errMsg === 'Unauthorized') { console.info(logPrefix, err) } else { console.error("ERROR", logPrefix, err?.code ? JSON.stringify(err) : err) }
         res.status(http_statuses[errMsg] || 500);
         res.json(err?.code ? err : {error: errMsg, stack: err?.stack});
     });
