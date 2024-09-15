@@ -123,6 +123,26 @@ export const toWs = (v: V, attrs: StepAttrsOption): VRaw => to_or_from_ws('toWs'
 
 const fromWs_one = (attr: string, val, attrs) => fromWs({ [attr]: val }, attrs)[attr]
 
+
+async function try_firefox_trigger_clear_history() {
+    console.log("trying firefox-trigger-clear-history")
+    Helpers.createCookie('forceBrowserExit', 'true', 0); // cf https://github.com/UnivParis1/firefox-trigger-clear-history/blob/master/index.js#L19
+
+    const wait_for_clear_history = async (count: number) => {
+        await setTimeoutPromise(20/*milliseconds*/)
+        if (count > 99) {
+            console.log("firefox-trigger-clear-history failed")
+        } else if (document.cookie.match("forceBrowserExit=true")) {
+            // wait some more
+            await wait_for_clear_history(count+1)
+        } else {
+            console.log("firefox-trigger-clear-history succeeded, reloading page")
+            document.location.reload();
+        }
+    }
+    await wait_for_clear_history(1)
+}
+
 let restarting = false;
 
 function _handleErr(err : AxiosError, $scope = null, redirect = false) {
@@ -154,6 +174,9 @@ function _handleErr(err : AxiosError, $scope = null, redirect = false) {
         history.back();
         return Promise.reject("...");
     } else {
+        if (resp.status === 403 && resp.data?.authenticate?.need_logout) {
+            try_firefox_trigger_clear_history() // in background
+        }
         const json_error = resp.data && (resp.data.error || resp.data.error_html) ? resp.data : { error: err.message }
         const msg = json_error.error
         console.error(resp || err)
