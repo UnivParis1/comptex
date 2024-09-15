@@ -122,6 +122,11 @@ export default Vue.extend({
             }
             detectIdle.install({
                 ...this.step.logout_on_idle,
+                if: () => (
+                    !this.step.logout_on_idle.noLogoutIfVIsEmpty ||
+                        // if v is empty, ignoring actions
+                        Object.entries(this.v).some(([k,v]) => !(k === "various" || isEmpty(v)))
+                ),
                 softAction: async () => {
                     if (!this.$refs.MyModalP.active) {
                         console.log('detectIdle.softAction')

@@ -158,6 +158,7 @@ interface ClientSideSVA {
             softTimeoutMs: number,
             hardTimeoutMs: number,
             logoutUrl: string,
+            noLogoutIfVIsEmpty?: true,
         },
     }
     additional_public_info?: {

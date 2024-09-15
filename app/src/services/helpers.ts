@@ -215,11 +215,19 @@ export const detectIdle = () => {
         const intervalCallback = () => {
             const sinceLastChange = Date.now() - state.lastChange
             if (sinceLastChange > conf.hardTimeoutMs) {
-                console.log("idle timeout")
-                conf.action()
+                if (!conf.if()) {
+                    console.log(`idle, but "conf.if" is false`)
+                } else {
+                    console.log("idle timeout")
+                    conf.action()
+                }
             } else if (sinceLastChange > conf.softTimeoutMs) {
-                console.log("idle softTimeoutDetected")
-                conf.softAction()
+                if (!conf.if()) {
+                    console.log(`idle, but "conf.if" is false`)
+                } else {
+                    console.log("idle softTimeoutDetected")
+                    conf.softAction()
+                }
             }
         }
         state.lastChange = Date.now()
