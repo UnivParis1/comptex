@@ -237,7 +237,6 @@ const conf = {
 
     oidc: {
         header_map: {
-            mail: 'oidc_claim_email',
             birthName: 'oidc_claim_family_name',
             givenName: 'oidc_claim_given_name',
             supannMailPerso: 'oidc_claim_email',
