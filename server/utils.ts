@@ -35,7 +35,7 @@ export const query_string = (qs: Dictionary<string>) => {
     return params ? "?" + params : ""
 }
 
-interface http_client_Options {
+export interface http_client_Options {
     headers? : {};
     timeout?: number;
     method?: 'GET' | 'POST' | 'PUT' | 'DELETE'
