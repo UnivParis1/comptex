@@ -118,13 +118,13 @@ Vue.component('input-with-validity', {
 Vue.component('radio-with-validity', {
   template: `
   <span :class="disabled && 'disabled-radio'">
-    <label :class="long_lines ? 'my-radio' : 'my-radio-inline'" v-for="(descr, val) in values">
+    <label :class="long_lines_ ? 'my-radio' : 'my-radio-inline'" v-for="(descr, val) in values">
        <input type="radio" :name="name" :value="val" :checked="!val && !value ||val == value" @change="onchange" :required="required" :disabled="disabled">
        <span v-html="descr" v-if="texts_are_html"></span>
        <span v-else>{{descr}}</span>
 </label>
   </span>`,
-  props: ['value', 'name', 'values', 'required', 'disabled', 'texts_are_html'],
+  props: ['value', 'name', 'values', 'required', 'disabled', 'texts_are_html', 'long_lines'],
   mixins: [ checkValidity ],
   mounted() {
     this.checkValidity();
@@ -133,8 +133,8 @@ Vue.component('radio-with-validity', {
       value: 'on_value_set',
   },
   computed: {
-      long_lines() {
-        return Object.values(this.values).some((text: any) => text.length > 40)
+      long_lines_() {
+        return this.long_lines ?? Object.values(this.values).some((text: any) => text.length > 40)
       },
   },
   methods: {

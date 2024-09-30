@@ -65,6 +65,7 @@
       <radio-with-validity :name="name" v-model="val"
           :values="choicesMap" v-if="choicesMap"
           :texts_are_html="uiOptions.texts_are_html"
+          :long_lines="uiOptions.long_lines"
           :disabled="opts.readOnly" :required="!opts.optional" :validity.sync="validity[name]">
       </radio-with-validity>
       <span class="attr-description" v-html="opts.description"></span>

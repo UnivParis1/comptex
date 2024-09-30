@@ -36,6 +36,7 @@ interface StepAttrItemsOption {
         readOnly__vue_template?: string
         texts_are_html?: boolean
         texts_are_vue_template?: boolean
+        long_lines?: boolean
         date_todayButton?: string
     };
 
