@@ -12,7 +12,7 @@ export const error_codes = {
 function _id(id: string = undefined) {
     return new mongodb.ObjectID(id);
 }
-function fromDB(sv_: any) {
+export function fromDB(sv_: any) {
     return renameKey(sv_, '_id', 'id') as sv;
 }
 function toDB<T extends { id?: string }>(sv: T) {
