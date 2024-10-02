@@ -46,6 +46,14 @@ export const handle_exception = (action: action_pre, handler: (err: any, req: re
     action(req, sv).catch(err => handler(err, req, sv))
 );
 
+export const pager_to_homePhone : simpleAction_pre = async function(_req, { v }) {
+    if (v.pager) {
+        const { pager, ...v_ } = v;
+        v = { ...v_, homePhone: pager } as v;
+    }
+    return v
+}
+
 const isShibUserInLdap = (req: req) => {
     let idp = req.header('Shib-Identity-Provider');
     return idp && idp === conf.ldap.shibIdentityProvider;
