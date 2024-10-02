@@ -2,8 +2,7 @@
 <div>
   <my-bootstrap-form-group name="userPassword" :opts="opts" :validity="validity" hideErrors=1>
     <input-with-validity name="userPassword" v-model="val" type="password" autocomplete="new-password" :pattern="passwordPattern" :required="!opts.optional" :validity.sync="validity.userPassword"></input-with-validity>
-    <span class="help-block" :class="{ 'help-block-always': uiOptions.custom_error_message__always_displayed }" 
-        v-if="uiOptions.custom_error_message__always_displayed || !validity.userPassword.valid">{{
+    <span class="help-block" v-if="!validity.userPassword.valid">{{
         opts.labels && opts.labels.custom_error_message
     }}</span>
     <PasswordStrength v-if="!passwordPattern" :passwd="val"></PasswordStrength>
@@ -38,9 +37,6 @@ export default Vue.extend({
       error_msg() {
           return conf.error_msg;
       },
-      uiOptions() {
-          return this.opts?.uiOptions ?? {}
-      }
     },
     watch: {
         value(val) {
