@@ -79,6 +79,16 @@ export function may_init(callback: () => void) {
     }
 }
 
+export const open_and_run_promise_and_close = (callback: () => Promise<void>) => (
+    new Promise<void>((resolve, _reject) => {
+        init(async client => {
+            await callback()
+            client.close()
+            resolve()
+        })
+    })
+)
+
 export const new_id = () => (
     "" + _id()
 );
