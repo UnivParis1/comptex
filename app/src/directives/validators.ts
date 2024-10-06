@@ -156,6 +156,8 @@ Vue.component('select-with-validity', {
         <!-- NB: the choice is hidden in the list on Firefox/Chrome but not on Safari -->
         <!-- NB: the choice will disappear once a valid value is chosen, so it disappears from the list in Safari -->
         <option v-if="invalid_choice" disabled hidden :value='value'>Choisir</option>
+        <!-- add empty choice -->
+        <option v-if="!required && !has_empty_choice" value=''>--</option>
         <template v-for="option in choices">
           <optgroup v-if="option.header" :label="option.header"></optgroup>
           <option :value="option.const">
@@ -170,6 +172,9 @@ Vue.component('select-with-validity', {
       this.checkValidity();
     },
     computed: {
+        has_empty_choice() {
+            return this.choices?.find(choice => choice.const === '')
+        },
         invalid_choice() {
             const valid_choice = (this.value ?? '') === '' ? !this.required : this.choices?.find(choice => choice.const === this.value)
             return !valid_choice
