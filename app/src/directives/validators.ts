@@ -149,8 +149,13 @@ Vue.component('radio-with-validity', {
 });
 
 Vue.component('select-with-validity', {
-    template: `
-    <select :name="name" :value="value" @change="onchange" class="form-control">
+    template: /*html*/`
+    <select :name="name" :value="value" @change="onchange" class="form-control" :required="required">
+        <!-- In case of invalid choice, Firefox/Chrome display a "" value (cool) but Safari display the first non disabled <option> -->
+        <!-- To help Safari, we explictly add a "disabled" entry corresponding to the current value. 
+        <!-- NB: the choice is hidden in the list on Firefox/Chrome but not on Safari -->
+        <!-- NB: the choice will disappear once a valid value is chosen, so it disappears from the list in Safari -->
+        <option v-if="invalid_choice" disabled hidden :value='value'>Choisir</option>
         <template v-for="option in choices">
           <optgroup v-if="option.header" :label="option.header"></optgroup>
           <option :value="option.const">
@@ -159,10 +164,16 @@ Vue.component('select-with-validity', {
         </template>
     </select>
     `,
-    props: ['value', 'name', 'choices'],
+    props: ['value', 'name', 'choices', 'required'],
     mixins: [ checkValidity ],
     mounted() {
       this.checkValidity();
+    },
+    computed: {
+        invalid_choice() {
+            const valid_choice = (this.value ?? '') === '' ? !this.required : this.choices?.find(choice => choice.const === this.value)
+            return !valid_choice
+        },
     },
     watch: {
       value: 'on_value_set',
