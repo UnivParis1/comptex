@@ -52,7 +52,7 @@ describe('minimal', async () => {
 
     it('renders select', async () => {
         const opts: StepAttrOptionM<unknown> = { uiType: 'select', oneOf: [ { const: "a", title: "A" }, { const: "b", title: "B" } ] }
-        const wrapper = mount_test({ name: "attr1", opts, v: { attr1: undefined } })
+        const wrapper = mount_test({ name: "attr1", opts, v: { attr1: "a" } })
         await flushPromises()
         //
         const selectWrapper = wrapper.find('select')
@@ -60,9 +60,25 @@ describe('minimal', async () => {
         const options = wrapper.findAll("select option").wrappers
         assert.deepEqual(options.map(inputAttrs), [ { value: "a" }, { value: "b" } ])
         // nothing selected by default
-        assert.equal(inputValue(selectWrapper), '')
+        assert.equal(inputValue(selectWrapper), 'a')
 
         await options[1].setSelected()
+        assert.equal(inputValue(selectWrapper), 'b')
+    })
+
+    it('renders select with invalid choice', async () => {
+        const opts: StepAttrOptionM<unknown> = { uiType: 'select', oneOf: [ { const: "a", title: "A" }, { const: "b", title: "B" } ] }
+        const wrapper = mount_test({ name: "attr1", opts, v: { attr1: undefined } })
+        await flushPromises()
+        //
+        const selectWrapper = wrapper.find('select')
+        assert.deepEqual(inputAttrs(selectWrapper), { name: "attr1", required: "required" })
+        const options = wrapper.findAll("select option").wrappers
+        assert.deepEqual(options.map(inputAttrs), [ { disabled: "disabled", hidden: "hidden", value: "" },{ value: "a" }, { value: "b" } ])
+        // nothing selected by default
+        assert.equal(inputValue(selectWrapper), '')
+
+        await options[2].setSelected()
         assert.equal(inputValue(selectWrapper), 'b')
     })
 
