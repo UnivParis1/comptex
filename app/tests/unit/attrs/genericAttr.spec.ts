@@ -82,6 +82,22 @@ describe('minimal', async () => {
         assert.equal(inputValue(selectWrapper), 'b')
     })
 
+    it('renders select with optional value', async () => {
+        const opts: StepAttrOptionM<unknown> = { optional: true, uiType: 'select', oneOf: [ { const: "a", title: "A" }, { const: "b", title: "B" } ] }
+        const wrapper = mount_test({ name: "attr1", opts, v: { attr1: undefined } })
+        await flushPromises()
+        //
+        const selectWrapper = wrapper.find('select')
+        assert.deepEqual(inputAttrs(selectWrapper), { name: "attr1" })
+        const options = wrapper.findAll("select option").wrappers
+        assert.deepEqual(options.map(inputAttrs), [ { value: "" }, { value: "a" }, { value: "b" } ])
+        // nothing selected by default
+        assert.equal(inputValue(selectWrapper), '')
+
+        await options[2].setSelected()
+        assert.equal(inputValue(selectWrapper), 'b')
+    })
+
     it('limits oneOf to opts.max', async () => {
         const opts: StepAttrOptionM<unknown> = { max: 2, uiType: 'select', oneOf: [ { const: "1", title: "A" }, { const: "2", title: "B" }, { const: "3", title: "C" } ] }
         const wrapper = mount_test({ name: "attr1", opts, v: { attr1: undefined } })
