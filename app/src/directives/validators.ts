@@ -176,6 +176,16 @@ Vue.component('select-with-validity', {
         })
       },
     },
+    methods: {
+        checkValidity() {
+            if (!this.disabled) { 
+                // We need to block submit if invalid_choice. On Firefox/Chrome, it is still needed if non "required"
+                // (we make a specific msg in case the choices have a non-allowed "" choice... would it be better to remove it from the "choices"??)
+                this.$el.setCustomValidity(this.invalid_choice ? ((this.value ?? "") === "" && this.has_empty_choice ? "Faire un autre choix" : "Sélectionnez un élément dans la liste !") : "")
+            }
+            checkValidity.methods.checkValidity.call(this);
+        },
+    },    
 });
 
 // Emitted values: '' | true
