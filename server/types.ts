@@ -79,6 +79,7 @@ type Mpp<T> = MppT<T>
 interface ServiceSideOnlyStepAttrOptions {
   hidden?: boolean;  
   readOnly_ifNotEmpty?: boolean;
+  optional_ifEmpty?: boolean;
 
   items?: MinimalStepAttrOption & { properties?: StepAttrsOptionT<unknown> }
 

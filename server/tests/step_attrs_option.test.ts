@@ -49,6 +49,12 @@ describe('exportAttrs', () => {
         assert.deepEqual(exportAttrs({ sn: { readOnly_ifNotEmpty: true } }, {}), { sn: {} });
         assert.deepEqual(exportAttrs({ sn: { readOnly_ifNotEmpty: true } }, { sn: 'foo' }), { sn: { readOnly: true, optional: true }});
     });
+    it("should handle optional_ifEmpty", () => {
+        assert.deepEqual(exportAttrs({ sn: { optional_ifEmpty: true } }, {}), { sn: { optional: true } });
+        assert.deepEqual(exportAttrs({ sn: { optional_ifEmpty: true } }, { sn: 'foo' }), { sn: { optional: false } });
+        assert.deepEqual(exportAttrs({ sn: { optional_ifEmpty: true, optional: false } }, {}), { sn: { optional: true } });
+        assert.deepEqual(exportAttrs({ sn: { optional_ifEmpty: true, optional: true } }, { sn: 'foo' }), { sn: { optional: false } });
+    });
     it("should handle toUserOnly", () => {
         assert.deepEqual(exportAttrs({ sn: { toUserOnly: true } }, {}), { sn: { optional: true, readOnly: true }});
         assert.deepEqual(exportAttrs({ sn: { toUserOnly: true, max: 22 } }, {}), { sn: { optional: true, readOnly: true, max: 22 }});

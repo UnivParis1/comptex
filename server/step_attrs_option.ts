@@ -226,7 +226,7 @@ const may_set_translated = (translate: translate, default_opts: SharedStepAttrOp
 }
 
 type ClientSideStepAttrOption = StepAttrOptionM<ClientSideOnlyStepAttrOption>
-const exportAttr = ({ toUserOnly, readOnly_ifNotEmpty, oneOf_async, properties, toUser, then, oneOf, ...opt_} : StepAttrOption, attr: string, v: v, translate: translate, default_opts: SharedStepAttrOption) => {
+const exportAttr = ({ toUserOnly, readOnly_ifNotEmpty, optional_ifEmpty, oneOf_async, properties, toUser, then, oneOf, ...opt_} : StepAttrOption, attr: string, v: v, translate: translate, default_opts: SharedStepAttrOption) => {
     const opt : ClientSideStepAttrOption = opt_;
 
     may_set_translated(translate, default_opts, opt, 'title')
@@ -235,6 +235,7 @@ const exportAttr = ({ toUserOnly, readOnly_ifNotEmpty, oneOf_async, properties, 
 
     if (toUserOnly) opt.readOnly = true
     if (readOnly_ifNotEmpty && v[attr]) opt.readOnly = true
+    if (optional_ifEmpty) opt.optional = !v[attr]
     if (oneOf_async) opt.oneOf_async = "true";
     if (properties) opt.properties = exportAttrs(properties, v, translate);
 
