@@ -17,8 +17,13 @@ async function export_spreadsheet_raw(table_rows: string) {
 `<?xml version="1.0" encoding="UTF-8"?>
 <manifest:manifest xmlns:manifest="urn:oasis:names:tc:opendocument:xmlns:manifest:1.0">
   <manifest:file-entry manifest:full-path="/" manifest:media-type="${mimetype}"/>
+  <manifest:file-entry manifest:full-path="styles.xml" manifest:media-type="text/xml"/>
   <manifest:file-entry manifest:full-path="content.xml" manifest:media-type="text/xml"/>
 </manifest:manifest>
+`),
+        "styles.xml": fflate.strToU8( 
+`<?xml version="1.0" encoding="UTF-8"?>
+<office:document-styles xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" />
 `),
         "content.xml": fflate.strToU8( 
 `<?xml version="1.0" encoding="UTF-8"?>
@@ -43,8 +48,8 @@ async function export_spreadsheet_raw(table_rows: string) {
  </office:automatic-styles>
  <office:body>
   <office:spreadsheet>
-   <table:table>
-    <table:table-column /> <!-- needed for schema compliance -->
+   <table:table table:name="Feuille1"> <!-- "name" needed for MS-Office365 -->
+    <table:table-column /> <!-- needed for schema compliance (??) -->
 ${table_rows}
    </table:table>
   </office:spreadsheet>
@@ -61,7 +66,7 @@ ${table_rows}
 
 export async function to_ods(l: V[], attrs: StepAttrsOption) {
     const format_table_cell_header = txt => (
-        `      <table:table-cell table:style-name="mytitle"><text:p>${escapeXml(txt)}</text:p></table:table-cell>`
+        `      <table:table-cell office:value-type="string" office:string-value="${escapeXml(txt)}" table:style-name="mytitle" />`
     )
     const format_table_cell = cell => (
       typeof cell === 'number' ?
