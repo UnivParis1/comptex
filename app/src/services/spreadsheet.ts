@@ -14,14 +14,14 @@ async function export_spreadsheet_raw(table_rows: string) {
     const entries = {
         "mimetype": fflate.strToU8(mimetype),
         "META-INF/manifest.xml": fflate.strToU8(
-`<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+`<?xml version="1.0" encoding="UTF-8"?>
 <manifest:manifest xmlns:manifest="urn:oasis:names:tc:opendocument:xmlns:manifest:1.0">
   <manifest:file-entry manifest:full-path="/" manifest:media-type="${mimetype}"/>
   <manifest:file-entry manifest:full-path="content.xml" manifest:media-type="text/xml"/>
 </manifest:manifest>
 `),
         "content.xml": fflate.strToU8( 
-`<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+`<?xml version="1.0" encoding="UTF-8"?>
 <office:document-content office:version="1.1"
     xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0"
     xmlns:table="urn:oasis:names:tc:opendocument:xmlns:table:1.0"
