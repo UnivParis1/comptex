@@ -85,7 +85,7 @@ export default Vue.extend({
                  return includes(u.global_profilename, choice.const);
              });
              if (need_profile.optional) {
-                 oneOf.unshift({ const: '', title: 'Créer un nouveau profil' })
+                 oneOf.unshift({ const: '__NONE__', title: 'Créer un nouveau profil' })
              }
              if (oneOf.length === 1) {
                  this.gotoStep(u, oneOf[0].const);
@@ -98,7 +98,7 @@ export default Vue.extend({
          }
      },
      gotoStep(u, profilename = undefined) {
-        router.push(`/${this.step.id}?uid=${u.uid}` + (profilename ? `&profilename_to_modify=${profilename}` : ''));
+        router.push(`/${this.step.id}?uid=${u.uid}` + (profilename && profilename !== '__NONE__' ? `&profilename_to_modify=${profilename}` : ''));
      },
   },  
 });
