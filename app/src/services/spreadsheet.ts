@@ -1,7 +1,7 @@
 // NB: it would be easier to generate a "Single OpenDocument XML" http://docs.oasis-open.org/office/v1.2/os/OpenDocument-v1.2-os-part1.html#element-office_document
 // alas Microsoft 365 still does not implement it in 2023
 
-import { makeZip } from "client-zip"
+import * as fflate from "fflate"
 import * as _ from 'lodash'
 import { V, StepAttrsOption } from "./ws"
 
@@ -11,16 +11,16 @@ const escapeXml = (unsafe: string) => (unsafe || '').replace(/[<>&"]/g, c => XML
 async function export_spreadsheet_raw(table_rows: string) {
     const mimetype = "application/vnd.oasis.opendocument.spreadsheet"
 
-    const entries = [
-        { name: "mimetype", input: mimetype },    
-        { name: "META-INF/manifest.xml", input :
+    const entries = {
+        "mimetype": fflate.strToU8(mimetype),
+        "META-INF/manifest.xml": fflate.strToU8(
 `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <manifest:manifest xmlns:manifest="urn:oasis:names:tc:opendocument:xmlns:manifest:1.0">
   <manifest:file-entry manifest:full-path="/" manifest:media-type="${mimetype}"/>
   <manifest:file-entry manifest:full-path="content.xml" manifest:media-type="text/xml"/>
 </manifest:manifest>
-` },
-        { name: "content.xml", input: 
+`),
+        "content.xml": fflate.strToU8( 
 `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <office:document-content office:version="1.1"
     xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0"
@@ -49,11 +49,11 @@ ${table_rows}
    </table:table>
   </office:spreadsheet>
  </office:body>
-</office:document-content>` },
-    ]
+</office:document-content>`),
+    }
 
     return new Response(
-        makeZip(entries), 
+        fflate.zipSync(entries), 
         { headers: { "Content-Type": mimetype } }
     ).blob()
 }
