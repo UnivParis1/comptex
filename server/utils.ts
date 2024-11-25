@@ -159,7 +159,7 @@ export const wait = (milliseconds: number) => (
 
 import { spawn } from 'child_process';
 
-export function popen(inText: string, cmd: string, params: string[]): Promise<string> {
+export function popen(inText: string, cmd: string, params: string[], opts?: { log_stderr?: true }): Promise<string> {
     let p = spawn(cmd, params);
     p.stdin.write(inText);
     p.stdin.end();
@@ -167,9 +167,10 @@ export function popen(inText: string, cmd: string, params: string[]): Promise<st
     return <Promise<string>> new Promise((resolve, reject) => {
         let output = '';
         let get_ouput = (data: any) => { output += data; };
+        let error_log = (data: any) => console.error(`${cmd} stderr : ${data}`)
         
         p.stdout.on('data', get_ouput);
-        p.stderr.on('data', get_ouput);
+        p.stderr.on('data', opts?.log_stderr ? error_log : get_ouput);
         p.on('error', event => {
             reject(event);
         });
