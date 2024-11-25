@@ -184,8 +184,8 @@ describe('findMap', () => {
     it("should work", () => {
         assert.equal(helpers.findMap([1, 2], nb => nb === 2 ? 4 : null), 4)
         assert.equal(helpers.findMap([1, 2], nb => nb === 1 ? 4 : null), 4)
-        assert.equal(helpers.findMap([1, 2], _ => null), null)
-        assert.equal(helpers.findMap([1, 2], _ => undefined), null)
+        assert.equal(helpers.findMap([1, 2], _ => (null as any)), null)
+        assert.equal(helpers.findMap([1, 2], _ => (undefined as any)), null)
         assert.equal(helpers.findMap(["aaa", "bbb"], s => helpers.removePrefixOrNull(s, "a")), "aa")
         assert.equal(helpers.findMap(["aaa", "bbb"], s => helpers.removePrefixOrNull(s, "b")), "bb")
         assert.equal(helpers.findMap(["aaa", "bbb"], s => helpers.removePrefixOrNull(s, "c")), null)
