@@ -47,7 +47,7 @@ const compute_overrides = (allowed_conds: Dictionary<boolean>, with_conds: StepA
                 if (allowed_conds[cond]) {
                     const val = opts.cond_overrides[cond];
                     override[attrName] = typeof val === "function" ? val(v) : val
-                    break;
+                    break; // order of conditions is important: first matching condition wins
                 } else {
                     if (!(cond in allowed_conds)) throw "unknown cond_overrides " + cond;
                 }
