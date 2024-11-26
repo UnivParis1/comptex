@@ -414,6 +414,16 @@ describe('merge_v', () => {
         test_fail(not_a_then_b, {}, { a: '' }, 'constraint !b.optional failed for undefined');
     });
 
+    it("should handle if 'modified' merge_patch_parent_properties", () => {
+        const attrs: StepAttrsOption = { a: {
+            if: 'modified',
+            then: { merge_patch_parent_properties: { b: {} } }
+        } }
+        test(attrs, { a: "aa" }, { a: "aa", b: "bb" }, { a: "aa" });
+        test(attrs, { a: "aa" }, { a: "a2", b: "bb" }, { a: "a2", b: "bb" });
+        test(attrs, {         }, { a: "a2", b: "bb" }, { a: "a2", b: "bb" });
+    });
+
     it("should check validator", () => {
         const attrs = { displayName: {} };
         const more_attrs= { displayName: { validator: checkDisplayName }};

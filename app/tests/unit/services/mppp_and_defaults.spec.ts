@@ -6,7 +6,7 @@ import { V, StepAttrsOption } from '@/services/ws';
 describe('sub_and_defaults', function() {
 
     function test(params, wanted) {
-        const r = compute(params.attrs, params.prev_defaults, params.v);
+        const r = compute(params.attrs, params.prev_defaults, params.v, params.v_orig);
         //console.log('attrs:' + JSON.stringify(r.attrs));
         //console.log('v:' + JSON.stringify(params.v));
         if (wanted.attrNames) assert.equal(Object.keys(r.attrs).join(' '), wanted.attrNames);
@@ -45,6 +45,21 @@ describe('sub_and_defaults', function() {
         test({ attrs, v: { duration: "" } as V },
              { attrNames: 'duration' })
         test({ attrs, v: { duration: "x" } as V },
+             { attrNames: 'duration sn' });
+    });
+
+    it('should handle if "modified" then merge_patch_parent_properties', () => {
+        const attrs = { duration: {
+                optional: true,
+                if: 'modified',
+                then: { merge_patch_parent_properties: { sn: {} } },
+        } } as StepAttrsOption;
+            
+        test({ attrs, v: { duration: "" } as V, v_orig: { duration: "" } },
+             { attrNames: 'duration' })
+        test({ attrs, v: { duration: "x2" } as V, v_orig: { duration: "x1" } },
+             { attrNames: 'duration sn' });
+        test({ attrs, v: { duration: "x2" } as V },
              { attrNames: 'duration sn' });
     });
 

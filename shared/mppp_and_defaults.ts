@@ -1,15 +1,16 @@
 import { forIn, map, mapValues, pickBy } from 'lodash';
 import { find_choice } from './v_utils';
 
-const matches_if = (if_: 'truthy'|'falsy', val: string) => (
+const matches_if = (if_: 'truthy'|'falsy'|'modified', val: string, val_orig: string | undefined) => (
+    if_ === 'modified' ? val != val_orig :
     if_ === 'truthy' ? val : !val
 )
 
-const handle_then_if_matching = (opts: StepAttrOptionM<unknown>, val: string, rec: (attrs: StepAttrsOptionM<unknown>, mpo: MergePatchOptions) => void) => {
+const handle_then_if_matching = (opts: StepAttrOptionM<unknown>, val: string, val_orig: string | undefined, rec: (attrs: StepAttrsOptionM<unknown>, mpo: MergePatchOptions) => void) => {
     const then_mppp = opts?.then?.merge_patch_parent_properties
     if (opts.if && then_mppp) {
         //console.log(opts.if, val)
-        if (matches_if(opts.if, val)) rec(then_mppp, opts.then.merge_patch_options);
+        if (matches_if(opts.if, val, val_orig)) rec(then_mppp, opts.then.merge_patch_options);
     }
 }
 
@@ -20,8 +21,8 @@ const handle_chosen_oneOf_mppp = (opts: StepAttrOptionM<unknown>, val: string, r
     }
 }
 
-const handle_chosen_oneOf_or_if_then_mppp = (opts: StepAttrOptionM<unknown>, val: any, rec: (attrs: StepAttrsOptionM<unknown>, mpo: MergePatchOptions) => void) => {
-    handle_then_if_matching(opts, val, rec);
+const handle_chosen_oneOf_or_if_then_mppp = (opts: StepAttrOptionM<unknown>, val: any, orig_val: any, rec: (attrs: StepAttrsOptionM<unknown>, mpo: MergePatchOptions) => void) => {
+    handle_then_if_matching(opts, val, orig_val, rec);
     handle_chosen_oneOf_mppp(opts, val, rec);
 }
 
@@ -109,7 +110,11 @@ const get_ordered_opts_and_dependencies = (attrs: StepAttrsOptionM<unknown>) => 
     return mapValues(normal, merge_late_deps)
 }
 
-export function compute_mppp_and_handle_default_values(attrs : StepAttrsOptionM<unknown>, prev_defaults: Dictionary<string> | 'ignore_opts_default', v: CommonV, v_getter?: (opts : StepAttrsOptionM<any>, attr: string) => any) {
+export function compute_mppp_and_handle_default_values(
+        attrs : StepAttrsOptionM<unknown>, prev_defaults: Dictionary<string> | 'ignore_opts_default', 
+        v: CommonV, v_orig?: CommonV,
+        v_getter?: (opts : StepAttrsOptionM<any>, attr: string) => any,
+) {
     let current_defaults: Dictionary<string> = {};
     const handle_default = (opts: StepAttrOptionM<unknown>, k: string) => {
         if (prev_defaults !== 'ignore_opts_default') may_set_default_value(k, opts, v, prev_defaults || {});
@@ -145,7 +150,7 @@ export function compute_mppp_and_handle_default_values(attrs : StepAttrsOptionM<
 
             // we have final opts & v[k], set conditional deps opts
             const val = v_getter ? v_getter(opts, k) : v[k]
-            handle_chosen_oneOf_or_if_then_mppp(opts, val, (attrs, merge_patch_options) => {
+            handle_chosen_oneOf_or_if_then_mppp(opts, val, v_orig?.[k], (attrs, merge_patch_options) => {
                 forIn(attrs, (opts, innerkey) => {
                     if (attrs_opts_and_deps[innerkey]) { // missing in case of lonely "ignore", already warned about conf error
                         attrs_opts_and_deps[innerkey].deps[k] = { opts, merge_patch_options };

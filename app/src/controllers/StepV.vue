@@ -180,7 +180,7 @@ export default Vue.extend({
         },
 
         other_attrs(): StepAttrsOption {
-            let { attrs, current_defaults } = compute_mppp_and_handle_default_values(this.attrs, this.prev_defaults, this.v);
+            let { attrs, current_defaults } = compute_mppp_and_handle_default_values(this.attrs, this.prev_defaults, this.v, this.v_orig ?? this.v);
             this.v_orig ??= _.cloneDeep(this.v)
             this.prev_defaults = current_defaults;
 
