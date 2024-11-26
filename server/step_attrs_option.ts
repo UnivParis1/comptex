@@ -74,7 +74,7 @@ export function merge_v(attrs_ : StepAttrsOption, more_attrs: SharedStepAttrsOpt
     const v_getter = (opt: StepAttrOption, attr: string) => (
         opt.hidden || opt.readOnly ? prev[attr] : v[attr]
     )
-    let { attrs } = compute_mppp_and_handle_default_values(attrs_, 'ignore_opts_default', v as any, v_getter)
+    let { attrs } = compute_mppp_and_handle_default_values(attrs_, 'ignore_opts_default', v as any, prev, v_getter)
     merge_one_level(attrs);
 
     if (!opts?.no_diff) r['various'].diff = diff;
