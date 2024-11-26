@@ -149,6 +149,12 @@ function validate(key: string, opt: StepAttrOption, more_opt: SharedStepAttrOpti
                 throw `constraint ${key}.oneOf ${keys} failed for ${JSON.stringify(val)}`;
             }
         }
+        if (opt.uiType === 'fileUpload' && val) {
+            const allowed = opt.acceptedMimeTypes || shared_conf.fileUpload_default_acceptedMimeTypes
+            const mimeType = helpers.dataURL_to_mimeType(val)
+            if (!mimeType) throw `constraint ${key}.uiType "fileUpload" failed (invalid data URI)`;
+            if (!allowed.includes(mimeType)) throw `constraint ${key}.acceptedMimeTypes failed for ${mimeType}`;
+        }
         if (more_opt && more_opt.validator) {
             const err = more_opt.validator(val, prev);
             if (err) throw err;
