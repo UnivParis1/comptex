@@ -437,7 +437,11 @@ const loggedUserInitialSteps = async (req: req) => {
 router.get('/steps/loggedUserInitialSteps', (req : req, res) => {
     respondJson(req, res, loggedUserInitialSteps(req));
 });
-    
+
+export function stop_polling() {
+    bus.emit('changed');
+}
+
 router.get('/comptes', (req : req, res) => {
     if (req.query.poll) {
         // raise the limit above what we want
