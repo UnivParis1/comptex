@@ -71,11 +71,11 @@ export function init(callback: (client: mongodb.MongoClient) => void) {
   })
 }
 
-export function may_init(callback: () => void) {
+export function may_init(callback: (client : mongodb.MongoClient | null) => void) {
     if (conf.mongodb.url) {
         init(callback)
     } else {
-        callback()
+        callback(null)
     }
 }
 

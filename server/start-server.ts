@@ -4,8 +4,10 @@ import * as path from 'path';
 import * as logger from 'morgan';
 import * as bodyParser from 'body-parser';
 
+import * as ldap from './ldap';
+
 import * as db from './db';
-import api from './api';
+import api, { stop_polling } from './api';
 import * as utils from './utils';
 import * as cas from './cas';
 import * as translate from './translate'
@@ -57,9 +59,26 @@ app.use('/api', myBodyParser, force_noCache, translate.express_handler, api);
 // (NB: we could use a catchall, but it is better to get 404 errors)
 app.use([ "login", "steps", ...Object.keys(conf_steps.steps), "playground" ].map(path => "/" + path), force_noCache, utils.index_html);
 
-db.may_init(() => {
+db.may_init(mongo_client => {
     let port = process.env.PORT || 8080;        // set our port
-    app.listen(port);
+    let server = app.listen(port);
     console.log('Started on port ' + port);
-});
 
+    process.on('SIGTERM', () => {
+        console.info('Stopping...')
+        server?.close((err) => {
+            // all requests are now finished
+            if (err) console.error("Stopping HTTP server failed", err)
+            mongo_client?.close()
+            ldap.close_client()
+            console.info('Stopped')
+            process.exit(0)
+        })
+        server = undefined // avoir errors if SIGTERM is received multiple times
+        
+        // http server is not listening anymore, but requests created before can still be in progress.
+
+        // polling requests would block the stopping, stop them:
+        stop_polling()
+    })    
+});
