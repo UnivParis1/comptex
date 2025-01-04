@@ -24,7 +24,7 @@ async function key2name(raw: any, spec: StepAttrOption, if_empty : string = '') 
         const title = l?.[0]?.title
         if (title) return title
     }
-    if (_.isString(raw) && raw.length > 1000) {
+    if (spec?.format === 'image/jpeg' && _.isString(raw)) {
         return "<i>-</i>"
     }
 
