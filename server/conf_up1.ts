@@ -42,14 +42,26 @@ export const search_supannActivite = (opts: StepAttrOption) => ({
     ...opts
 });
 
+const roomNumber_PMF = {
+    // nouveaux numéros de bureau PMF (GLPI UP1#169957)
+    pattern: "[A-C][0-9][0-9]-[0-9][0-9][0-9A-Z]", // NB: \d ne fonctionne pas
+    description: "(Exemples : A05-005, C20-010, B04-10A)",
+    allowUnchangedValue: true,
+    labels: { 
+        custom_error_message: "Veuiller saisir un numéro de bureau comme dans les exemples",
+    },
+}
+
+
 const get_buildingNameChoices = async () => {
     const l = await ldap.search(conf.ldap.base_structures, "(supannTypeEntite={SIHAM}LDT)", 
         { const: '', title: '', postalAddress: '' }, 
         { const: { ldapAttr: 'description' }, title: { ldapAttr: 'description' }, postalAddress: { convert: ldap_convert.postalAddress } }, 
         {})
     return l.map(({ postalAddress, ...choice }) => (
-        { ...choice, merge_patch_parent_properties: {
-            postalAddress_: { default: postalAddress }
+        { ...choice, merge_patch_options: { newRootProperties: 'ignore' }, merge_patch_parent_properties: {
+            postalAddress_: { default: postalAddress },
+            ...(choice.const === 'Centre Pierre Mendès France' ? { roomNumber: roomNumber_PMF } : {}),
         } } as StepAttrOptionChoices
     ))
 }
@@ -166,8 +178,8 @@ export const attrs : StepAttrsOption = {
     },
     roomNumber: {
         // 2021-09 : autoriser les nouveaux numéros de bureau PMF (GLPI UP1#118479)
-        pattern: "(([A-Z]\\s[0-9]+)|([0-9]+(\\s[A-Z])?))(\\sbis|\\ster)?|[ABC][\\s.][0-9]{1,2}[\\s.][0-9]{2,3}[A-Z]?",
-        description: "(Exemples : 1805 ; A 406 ; 305 B ; A 406 bis ; 1506 ter ; C.4.03 ; B.8.05A)",
+        pattern: "(([A-Z] [0-9]+)|([0-9]+( [A-Z])?))( bis| ter)?",
+        description: "(Exemples : 1805 ; A 406 ; 305 B ; A 406 bis ; 1506 ter)",
         allowUnchangedValue: true,
         labels: { 
             custom_error_message: "Veuiller saisir un numéro de bureau sous la forme lettre+espace+numéro ou numéro+espace+lettre (en majuscule).",
