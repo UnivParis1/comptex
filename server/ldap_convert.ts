@@ -209,7 +209,7 @@ const unescape_sharpFF = (attr_value: string) => (
 const parse_up1Profile_one = (str: string) => {
     let r: Dictionary<string[]> = {};
     str.replace(/\[([^\[\]=]+)=((?:[^\[\]]|\[[^\[\]]*\])*)\]/g, (_m, key, val) => {
-        r[unescape_sharpFF(key)] = val.split(';').map(unescape_sharpFF);
+        (r[unescape_sharpFF(key)] ??= []).push(...val.split(';').map(unescape_sharpFF));
         return '';
     });
     return r;

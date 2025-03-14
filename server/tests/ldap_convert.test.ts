@@ -26,6 +26,7 @@ describe('parse_composite', () => {
 const up1Profile_tests = [
     { s: '[a=aaa][b=b1;b2]', parsed: { a: [ 'aaa' ], b: [ 'b1', 'b2' ] } },
     { s: '[a=aaa][b=b1#3bb2]', parsed: { a: [ 'aaa' ], b: [ 'b1;b2' ] } },
+    { s: '[a=aaa][b=b1][b=b2]', parsed: { a: [ 'aaa' ], b: [ 'b1', 'b2' ] } },
     { s: '[a#3Ba=aaa]', parsed: { "a;a": [ 'aaa' ] } },
     { s: '[a=#09#09aaa]', parsed: { "a": [ '\t\taaa' ] } },
 ];
