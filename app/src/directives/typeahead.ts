@@ -8,7 +8,7 @@ const typeaheadComponent = Vue.extend({
    <div :class="{ 'input-group': loading }">
     <input :id="id" class="form-control" :name="name" v-magic-aria :placeholder="placeholder" v-if="!is_textarea"
            v-model="query" ref="input"
-           type="text" autocomplete="off"
+           type="text" :autocomplete="autocomplete || 'off'"
            @keydown.down.prevent="down"
            @keydown.up.prevent="up"
            @keydown.enter.prevent="hit"
@@ -18,7 +18,7 @@ const typeaheadComponent = Vue.extend({
            @input="input_changed">
     <textarea :id="id" class="form-control" :name="name" :placeholder="placeholder" v-else
            v-model="query" ref="input"
-           type="text" autocomplete="off" :rows="rows"
+           type="text" :autocomplete="autocomplete || 'off'" :rows="rows"
            @keydown.down="mayDown"
            @keydown.up="mayUp"
            @keydown.enter="mayHit"
@@ -66,6 +66,7 @@ const typeaheadComponent = Vue.extend({
       is_textarea: { type: Boolean, default: false },
       name: { type: String },
       id: { type: String },
+      autocomplete: { type: String },
       placeholder: { type: String },
       rows: { type: Number },
   },
