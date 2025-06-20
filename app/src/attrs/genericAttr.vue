@@ -120,6 +120,7 @@
         v-bind="input_attrs"
         :disabled="opts.readOnly"
         :placeholder="opts.uiPlaceholder" :inputmode="uiOptions.inputmode"
+        :autocomplete="uiOptions.autofill_detail_tokens"
         :type="type" :realType="realType" :required="!opts.optional" :pattern="opts.pattern" :allowedChars="opts.allowedChars" :validator="opts.validator"
         :min="opts.min" :max="opts.max" :minlength="opts.minlength" :maxlength="opts.maxlength" :step="uiType === 'number' && 'any'"
         :onFocusOut="opts.onFocusOut && (() => opts.onFocusOut(v))"

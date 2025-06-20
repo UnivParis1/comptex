@@ -24,6 +24,7 @@ interface StepAttrItemsOption {
     uiOptions?: { 
         rows?: number;
         autocomplete?: boolean
+        autofill_detail_tokens?: 'name'|'given-name'|'additional-name'|'family-name'|'email'
         inputmode?: 'numeric'
         removable?: boolean
         addable?: boolean
