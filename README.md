@@ -156,6 +156,7 @@ You can customize the way it is displayed:
 * ```uiPlaceholder```: the `<input>` placeholder
 * ```uiOptions.rows```: number of lines (uiType textarea)
 * ```uiOptions.autocomplete```: enable localStorage history for uiType textarea
+* ```uiOptions.autofill_detail_tokens```: sets the input `autocomplete` attribute
 * ```uiOptions.title_rowspan```: allow title to span next titles
 * ```uiOptions.title_hidden```: do not display the title
 * ```uiOptions.texts_are_html```: treat `labels` / `oneOf`[].`title` as HTML
