@@ -29,19 +29,22 @@ export default {
     // order of keys is used in CompareUsers
     default_attrs_opts: is<SharedStepAttrsOption>({
         supannCivilite: { title: "Civilité" },
-        givenName: { title: "Prénom", allowedChars: allowedCharsInNames, normalize: normalizeNomPopre },
-        altGivenName: { title: 'Autres prénoms', allowedChars: allowedCharsInNames, normalize: normalizeNomPopre },
+        givenName: { title: "Prénom", allowedChars: allowedCharsInNames, normalize: normalizeNomPopre, uiOptions: { autofill_detail_tokens: 'given-name' } },
+        altGivenName: { title: 'Autres prénoms', allowedChars: allowedCharsInNames, normalize: normalizeNomPopre, uiOptions: { autofill_detail_tokens: 'additional-name' } },
         sn: {
             title: "NOM", allowedChars: allowedCharsInNames, normalize: normalizeNomPopre, 
             labels: { tooltip: "Nom marital, nom d'épouse ou nom de naissance" },
             onFocusOut(v: CommonV) { v.birthName ||= v.sn },
+            uiOptions: { autofill_detail_tokens: 'family-name' },
         },
         birthName: { 
             title: "Nom de naissance", allowedChars: allowedCharsInNames, normalize: normalizeNomPopre, 
+            uiOptions: { autofill_detail_tokens: 'family-name' },
             labels: { tooltip: "si différent du nom d'usage" },
         },
         displayName: { 
             title: "Nom annuaire", validator: checkDisplayName,
+            uiOptions: { autofill_detail_tokens: 'name' },
             description: "Nom affiché dans l'annuaire de l'université.",
         },
         birthDay: { title: "Date de naissance", format: 'date', uiType: 'date', minDate: new Date('1900'), maxDate: new Date() },
