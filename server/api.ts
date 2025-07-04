@@ -106,7 +106,9 @@ async function export_sv(req: req, sv: sva): Promise<ClientSideSVA> {
     sv.v = export_v(sv_attrs(sv), sv.v) as v;
     await transform_object_items_oneOf_async_to_oneOf(sv.attrs, sv.v) // modifies sv.attrs
     const attrs = exportAttrs(sv.attrs, sv.v, req.translate);
-    return { ...sv as any, stepName: sv.step, ...await exportStep(req, step(sv)), attrs };
+    let sv_ = { ...sv as any, stepName: sv.step, ...await exportStep(req, step(sv)), attrs }
+    delete sv_.history
+    return sv_
 }
 
 function mayNotifyModerators(req: req, sv: sv|svra, notifyKind: 'accepted'|'added'|'rejected') {
