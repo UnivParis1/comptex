@@ -104,6 +104,9 @@ async function may_export_v_ldap(req: req, sv: sva) {
 async function export_sv(req: req, sv: sva): Promise<ClientSideSVA> {
     sv = _.clone(sv);
     sv.v = export_v(sv_attrs(sv), sv.v) as v;
+    if ('sv_history' in sv.attrs) {
+        sv.v.sv_history = sv.history
+    }
     await transform_object_items_oneOf_async_to_oneOf(sv.attrs, sv.v) // modifies sv.attrs
     const attrs = exportAttrs(sv.attrs, sv.v, req.translate);
     let sv_ = { ...sv as any, stepName: sv.step, ...await exportStep(req, step(sv)), attrs }
