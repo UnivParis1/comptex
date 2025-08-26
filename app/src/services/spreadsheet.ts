@@ -52,8 +52,12 @@ ${table_rows}
 </office:document-content>`),
     }
 
+    // explicit cast is needed until fflate is updated to generate index.d.ts with tsc >= 5.9.x
+    // (cf https://devblogs.microsoft.com/typescript/announcing-typescript-5-9/#lib.d.ts-changes )
+    const zip = fflate.zipSync(entries) as Uint8Array<ArrayBuffer>
+
     return new Response(
-        fflate.zipSync(entries), 
+        zip,
         { headers: { "Content-Type": mimetype } }
     ).blob()
 }
