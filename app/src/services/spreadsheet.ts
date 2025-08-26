@@ -56,10 +56,7 @@ ${table_rows}
     // (cf https://devblogs.microsoft.com/typescript/announcing-typescript-5-9/#lib.d.ts-changes )
     const zip = fflate.zipSync(entries) as Uint8Array<ArrayBuffer>
 
-    return new Response(
-        zip,
-        { headers: { "Content-Type": mimetype } }
-    ).blob()
+    return new Blob([zip], { "type": mimetype })
 }
 
 export async function to_ods(l: V[], attrs: StepAttrsOption) {
