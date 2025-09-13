@@ -132,19 +132,19 @@ export const convertAttrToLdapFilter = (attr: string, attrConvert: AttrConvert, 
     filters.eq(toLdapAttr(attrConvert, attr), convert_toLdap_string(attrConvert, val))
 )
 
-function convertAttrToLdap(attr: string, attrType: LdapAttrValue, conversion: ldap_conversion, v: any, opts: { toJson?: boolean }): ldap_modify {
+function convertAttrToLdap(attr: string, attrType: LdapAttrValue, conversion: ldap_conversion, val: any, opts: { toJson?: boolean }): ldap_modify {
         if (conversion) {
-            const v_ = opts.toJson && conversion.toLdapJson ? conversion.toLdapJson(v) : 
-                   conversion.toLdap(v);
-            return to_ldap_modify(v_);
+            const val_ = opts.toJson && conversion.toLdapJson ? conversion.toLdapJson(val) : 
+                   conversion.toLdap(val);
+            return to_ldap_modify(val_);
         } else if (_.isArray(attrType)) {
-            return to_ldap_set(v); // we know it's an array, that's a valid RawValue
+            return to_ldap_set(val); // we know it's an array, that's a valid RawValue
         } else if (_.isString(attrType)) {
-            return to_ldap_set(v);
+            return to_ldap_set(val);
         } else if (_.isNumber(attrType)) {
-            return to_ldap_set(v.toString());
+            return to_ldap_set(val.toString());
         } else if (attr === 'dn' || attr === 'objectClass') {
-            return to_ldap_set(v.toString());
+            return to_ldap_set(val.toString());
         } else {
             if (!attr.match(/^(noInteraction|various|comment|mailFrom_email|mailFrom_text|duration_or_enddate|etablissement.*|charter|profilename_to_modify)$/)) {
                 console.error(`not converting attribute ${attr} to LDAP`);
