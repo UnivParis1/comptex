@@ -30,10 +30,13 @@ export const addAttrs = (v: Partial<v>): simpleAction => (_req, sv) => {
     return Promise.resolve(sv);
 }
 
-export const addProfileAttrs = (profiles: profileValues[]): simpleAction => (_req, sv) => {
-    _.defaults(sv.v, { profilename: profiles[0].const });
-    let profile = _.find(profiles, p => p.const === sv.v.profilename);
-    if (!profile) throw "invalid profile " + sv.v.profilename;
+/**
+ * @param {string} const_profile_attr - profiles are usually used with attr "profilename". But if comptex instance uses only one profile, profiles may be used with a specific attr, for example scd_type_compte
+ */
+export const addProfileAttrs = (profiles: profileValues[], const_profile_attr = 'profilename'): simpleAction => (_req, sv) => {
+    _.defaults(sv.v, { [const_profile_attr]: profiles[0].const });
+    let profile = _.find(profiles, p => p.const === sv.v[const_profile_attr]);
+    if (!profile) throw "invalid profile " + sv.v[const_profile_attr];
     sv.v = deep_extend(sv.v, profile.fv());
     return Promise.resolve(sv);
 }
