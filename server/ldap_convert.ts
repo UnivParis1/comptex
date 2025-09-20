@@ -133,6 +133,46 @@ export function match(predicate: (s: string) => boolean): ldap_conversion {
     };
 }
 
+type withEtiquetteAndMaybeNoteParams<T1, T2> = { attr: T1, attr2: T2, etiquette: string, separator: string, ldapAttr?: string, encoding?: 'urlencoding' }
+function withEtiquetteAndMaybeNote_<T extends string>({ attr, attr2, etiquette, separator, ldapAttr, encoding } : withEtiquetteAndMaybeNoteParams<T, T>) {
+    const decode = (s: string) => encoding === 'urlencoding' && s ? decodeURIComponent(s) : s
+    const encode = (s: string) => encoding === 'urlencoding' && s ? encodeURIComponent(s) : s
+    const split_ = (s: string) => s.split(separator, 2) as [string, string?]
+    let attr_convert: ldap_conversion = {
+        fromLdapMulti: (l: string[]): string => {
+            for (let s of l) {
+                if (_.startsWith(s, etiquette))
+                    return decode(split_(s.substr(etiquette.length))[0])
+            }
+            return null;
+        },
+        toLdap: (suffix: string) => ({ action: (vals: string[]) => (
+            vals.filter(s => !_.startsWith(s, etiquette)) // we remove all values beginning with etiquette
+                .concat(suffix ? [etiquette + encode(suffix)] : []) // we add our value after the other remaining values
+        ) }),
+    }
+
+    let attr2_convert: ldap_conversion = {
+        fromLdapMulti: (l: string[]): string => {
+            for (let s of l) {
+                if (_.startsWith(s, etiquette))
+                    return decode(split_(s.substr(etiquette.length))[1])
+            }
+            return null;
+        },
+        toLdap: (note: string) => ({ late: true, action: (vals: string[]) => (
+            // the value has been added by attr_convert, we add the note as suffix
+            vals.map(val => _.startsWith(val, etiquette) ? val + separator + encode(note) : val)
+        ) }),
+    }
+
+    let r = { [attr]: { ldapAttr: ldapAttr || attr, convert: attr_convert }, [attr2]: { ldapAttr, convert: attr2_convert } }
+    return r as { [attr in T]: AttrConvert }
+}
+export function withEtiquetteAndMaybeNote<Attr extends string, Attr2 extends string>(params: withEtiquetteAndMaybeNoteParams<Attr, Attr2>) {
+    return withEtiquetteAndMaybeNote_<Attr|Attr2>(params)
+}
+
 export function dn(attrName: string, base: string): ldap_conversion {
     return {
         fromLdapMulti: (l: string[]): string => {

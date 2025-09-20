@@ -162,7 +162,7 @@ describe('ldap', () => {
 
     it("ignore_toLdap", async () => {
         const attrTypes = { givenName: '', sn: '' }
-        const attrsConvert: ldap.AttrsConvert = { sn: { convert: ldap_convert.ignore_toLdap() } }
+        const attrsConvert: AttrsConvert = { sn: { convert: ldap_convert.ignore_toLdap() } }
         const v = await ldap.read("uid=prigaux," + conf.ldap.base_people, attrTypes, attrsConvert)
         assert.deepEqual(v, { givenName: 'pascal', sn: 'rigaux' })
         assert.deepEqual(ldap.convertToLdap(attrTypes, attrsConvert, v, {}), { givenName: 'pascal' })
@@ -194,7 +194,31 @@ describe('ldap', () => {
             assert.deepEqual(ldap.convertToLdap(attrTypes, attrsConvert, { supannFCSub: "foo", supannFCSub_bool: '' }, {}), { supannFCSub: [] });
         });
     })
-    
+
+    describe("withEtiquetteAndMaybeNote", () => {
+        const attrsConvert = ldap_convert.withEtiquetteAndMaybeNote({ attr: "aaa", attr2: "aaa_note", etiquette: "https://univ.fr/aaa=", separator: "/note=", ldapAttr: 'eduPersonEntitlement', encoding: 'urlencoding' })
+
+        it("should be handled by convertToLdap", () => {
+            let attrTypes = { aaa: '', aaa_note: '' }
+            assert.deepEqual(ldap.convertToLdap(attrTypes, attrsConvert, {}, {}), {});
+            assert.deepEqual(ldap.convertToLdap(attrTypes, attrsConvert, { aaa: 'foo' }, {}), { eduPersonEntitlement: ["https://univ.fr/aaa=foo"] });
+            assert.deepEqual(ldap.convertToLdap(attrTypes, attrsConvert, { aaa: 'foo', aaa_note: 'Note' }, {}), { eduPersonEntitlement: ["https://univ.fr/aaa=foo/note=Note"] });
+            assert.deepEqual(ldap.convertToLdap(attrTypes, attrsConvert, { aaa_note: 'Note', aaa: 'foo' }, {}), { eduPersonEntitlement: ["https://univ.fr/aaa=foo/note=Note"] });
+            assert.deepEqual(ldap.convertToLdap(attrTypes, attrsConvert, { aaa_note: 'Note' }, {}), { eduPersonEntitlement: [] });
+        });
+
+        it("should be nice with previous values", () => {
+            let attrTypes = { aaa: '', aaa_note: '', eduPersonEntitlement: [''] }
+            assert.deepEqual(ldap.convertToLdap(attrTypes, attrsConvert, 
+                { eduPersonEntitlement: ['https://univ.fr/bbb=foo'], aaa: 'foo' }, {}), 
+                { eduPersonEntitlement: ["https://univ.fr/bbb=foo", "https://univ.fr/aaa=foo"] });
+            assert.deepEqual(ldap.convertToLdap(attrTypes, attrsConvert, 
+                { eduPersonEntitlement: ['https://univ.fr/bbb=foo'], aaa: 'foo', aaa_note: 'Note' }, {}), 
+                { eduPersonEntitlement: ["https://univ.fr/bbb=foo", "https://univ.fr/aaa=foo/note=Note"] });
+        });
+
+    })
+
     describe("up1Profile conversion", () => {
         let attrsConvert = { 
             global_profilename: { ldapAttr: 'up1Profile', convert: ldap_convert.up1Profile_field('up1Source') },

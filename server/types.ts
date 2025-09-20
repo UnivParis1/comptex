@@ -140,7 +140,7 @@ type step = {
 type steps = Dictionary<step>
 
 type ldap_RawValue = string | string[]
-type ldap_modify = { action: 'set'|'add'|'delete', value: ldap_RawValue } | { action: 'ignore' } | { action: (vals : string[]) => string[] }
+type ldap_modify = { action: 'set'|'add'|'delete', value: ldap_RawValue } | { action: 'ignore' } | { late?: true, action: (vals : string[]) => string[] }
 
 type ldap_conversion = {
     fromLdap?(s: string): any;
@@ -151,5 +151,8 @@ type ldap_conversion = {
     toLdapJson?(v: any): ldap_RawValue;
     applyAttrsRemapAndType?: true, 
 }
+
+type AttrConvert = { convert?: ldap_conversion, convert2?: ldap_conversion, ldapAttr?: string, ldapAttrJson?: string; fallbackLdapAttrs?: string[] }
+type AttrsConvert = Dictionary<AttrConvert>
 
 }

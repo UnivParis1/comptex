@@ -38,6 +38,54 @@ describe('ldap_convert', () => {
             assert.deepEqual(conv.fromLdapMulti([]), []);
         })
     })
+
+    describe('withEtiquetteAndMaybeNote', () => {
+        it("toLdap should work", () => {
+            const { aaa, aaa_note } = ldap_convert.withEtiquetteAndMaybeNote({ attr: "aaa", attr2: "aaa_note", etiquette: "https://univ.fr/aaa=", separator: "/note=" })
+            const aaa_action = aaa.convert.toLdap("foo") as ldap_modify            
+            assert.equal(typeof aaa_action.action, "function")
+            if (typeof aaa_action.action === "function") {
+                assert.equal(aaa_action.late, undefined)
+                assert.deepEqual(aaa_action.action([]), ["https://univ.fr/aaa=foo"])
+                assert.deepEqual(aaa_action.action(['https://univ.fr/aaa=bar']), ["https://univ.fr/aaa=foo"])
+                assert.deepEqual(aaa_action.action(['https://univ.fr/bbb=foo']), ['https://univ.fr/bbb=foo', "https://univ.fr/aaa=foo"])
+            }
+
+            const aaa_note_action = aaa_note.convert.toLdap("Note") as ldap_modify            
+            assert.equal(typeof aaa_note_action.action, "function")
+            if (typeof aaa_note_action.action === "function") {
+                assert.equal(aaa_note_action.late, true)
+                assert.deepEqual(aaa_note_action.action([]), [])
+                assert.deepEqual(aaa_note_action.action(['https://univ.fr/bbb=foo']), ['https://univ.fr/bbb=foo'])
+                assert.deepEqual(aaa_note_action.action(['https://univ.fr/aaa=foo']), ["https://univ.fr/aaa=foo/note=Note"])
+            }
+        });
+
+        it("toLdap should handle encoding", () => {
+            const { aaa, aaa_note } = ldap_convert.withEtiquetteAndMaybeNote({ attr: "aaa", attr2: "aaa_note", etiquette: "https://univ.fr/aaa=", separator: "/note=", encoding: 'urlencoding' })
+            const aaa_action = aaa.convert.toLdap("foo bar") as ldap_modify            
+            assert.equal(typeof aaa_action.action, "function")
+            if (typeof aaa_action.action === "function") {
+                assert.deepEqual(aaa_action.action([]), ["https://univ.fr/aaa=foo%20bar"])
+            }
+
+            const aaa_note_action = aaa_note.convert.toLdap("Note foo") as ldap_modify            
+            assert.equal(typeof aaa_note_action.action, "function")
+            if (typeof aaa_note_action.action === "function") {
+                assert.deepEqual(aaa_note_action.action(['https://univ.fr/aaa=foo']), ["https://univ.fr/aaa=foo/note=Note%20foo"])
+            }
+        });
+
+        it("fromLdap should work", () => {
+            const { aaa, aaa_note } = ldap_convert.withEtiquetteAndMaybeNote({ attr: "aaa", attr2: "aaa_note", etiquette: "https://univ.fr/aaa=", separator: "/note=", encoding: 'urlencoding' })
+            assert.equal(aaa.convert.fromLdapMulti(["https://univ.fr/aaa=foo"]), "foo")
+            assert.equal(aaa.convert.fromLdapMulti(["https://univ.fr/aaa=foo/note=Note"]), "foo")
+            assert.equal(aaa.convert.fromLdapMulti(["https://univ.fr/aaa=foo%20bar/note=Note"]), "foo bar")
+            assert.equal(aaa_note.convert.fromLdapMulti(["https://univ.fr/aaa=foo"]), undefined)
+            assert.equal(aaa_note.convert.fromLdapMulti(["https://univ.fr/aaa=foo/note=Note"]), "Note")
+            assert.equal(aaa_note.convert.fromLdapMulti(["https://univ.fr/aaa=foo/note=Note%20foo"]), "Note foo")
+        });
+    })
 });
 
 describe('parse_composite', () => {

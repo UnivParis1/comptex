@@ -24,9 +24,6 @@ export type Options = ldapjs.SearchOptions
 export type LdapAttrValue = string | number | Date | string[] | number[] | LdapEntry[];
 export type LdapEntry = { [index: string]: LdapAttrValue };
 
-type AttrConvert = { convert?: ldap_conversion, convert2?: ldap_conversion, ldapAttr?: string, ldapAttrJson?: string; fallbackLdapAttrs?: string[] }
-export type AttrsConvert = Dictionary<AttrConvert>
-
 type RawValue = ldap_RawValue;
 type RawValueB = Buffer | Buffer[]
 
@@ -174,6 +171,10 @@ export function convertToLdap<T extends Dictionary<any>>(attrTypes: T, attrsConv
         }
         return modify && modify.action !== 'ignore' ? { attr_, modify } : undefined
      }))
+     
+     // if multiples actions are modifying the same value, an action is allowed to run "late" instead of default "early"
+     modifications = _.flatten(_.partition(modifications, mod => !("late" in mod.modify)))
+
      return convertToLdap_(modifications, opts);
 }
 

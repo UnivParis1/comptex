@@ -150,7 +150,7 @@ export const getShibUserLdapAttrsWithProfile: firstAction_pre = (req, _sv)  => (
     getShibUserLdapAttrs(req, null).then(v => handle_profilename_to_modify(req, v))
 );
 
-function handleAttrsRemapAndType(o : Dictionary<string[]>, attrRemapRev: Dictionary<string[]>, wantedConvert: ldap.AttrsConvert) {
+function handleAttrsRemapAndType(o : Dictionary<string[]>, attrRemapRev: Dictionary<string[]>, wantedConvert: AttrsConvert) {
     const v: v = ldap.handleAttrsRemapAndType(o as any, attrRemapRev, { possibleChannels: [], code: '', ...conf.ldap.people.types }, wantedConvert)
     v['various'] = { esup_activ_bo_orig: o }
     return v
