@@ -63,8 +63,8 @@ export function withEtiquette(etiquette: string): ldap_conversion {
             }
             return null;
         },
-        toLdap: (s: string) => ({ action: (vals: string[]) => (
-            vals.filter(s => !_.startsWith(s, etiquette)).concat(s ? [etiquette + s] : [])
+        toLdap: (suffix: string) => ({ action: (vals: string[]) => (
+            vals.filter(s => !_.startsWith(s, etiquette)).concat(suffix ? [etiquette + suffix] : [])
         ) }),
     };
 }
@@ -78,8 +78,8 @@ export function withSuffixEtiquette(etiquette: string): ldap_conversion {
             }
             return null;
         },
-        toLdap: (s: string) => ({ action: (vals: string[]) => (
-            vals.filter(s => !_.endsWith(s, etiquette)).concat(s ? [s + etiquette] : [])
+        toLdap: (prefix: string) => ({ action: (vals: string[]) => (
+            vals.filter(s => !_.endsWith(s, etiquette)).concat(prefix ? [prefix + etiquette] : [])
         ) }),
     };
 }
@@ -94,8 +94,8 @@ export function withEtiquetteMulti(etiquette: string): ldap_conversion {
             }
             return l_;
         },
-        toLdap: (l: string[]) => ({ action: (vals: string[]) => (
-            vals.filter(s => !_.startsWith(s, etiquette)).concat(l ? l.map(s => etiquette + s) : [])
+        toLdap: (suffixes: string[]) => ({ action: (vals: string[]) => (
+            vals.filter(s => !_.startsWith(s, etiquette)).concat(suffixes ? suffixes.map(s => etiquette + s) : [])
         ) }),
     };
 }
