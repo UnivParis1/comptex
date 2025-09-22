@@ -237,5 +237,6 @@ export default Vue.extend({
 }
 .PhotoUploadAttr .on-the-right {
     display: flex;
+    align-items: start;
 }
 </style>
