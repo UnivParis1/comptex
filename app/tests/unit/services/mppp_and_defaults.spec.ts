@@ -182,6 +182,27 @@ describe('sub_and_defaults', function() {
         test(params, { attrNames: 'duration sn givenName' })
     });
     
+    it('should handle inner merge_patch_parent_properties order of appearance depth-first', () => {
+        const attrs = { duration: { oneOf: [ 
+            { const: "1", merge_patch_parent_properties: { 
+                sn: {
+                    oneOf: [
+                        { const: "rigaux", merge_patch_parent_properties: {
+                            givenName: {},
+                        } }
+                    ],
+                },
+                sn2: {},
+            } }, 
+            { const: "2" }
+            ] } } as StepAttrsOption;
+            
+        let params = { attrs, v: { duration: "2", sn: "rigaux" } as V };
+        test(params, { attrNames: 'duration' });
+        params.v['duration'] = "1";
+        test(params, { attrNames: 'duration sn givenName sn2' })
+    });
+    
     it('should handle default', () => {
         const attrs = { duration: { oneOf: [ 
             { const: "1", merge_patch_parent_properties: { sn: { default: "a" } } }, 
