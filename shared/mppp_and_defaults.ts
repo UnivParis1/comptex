@@ -79,11 +79,11 @@ const get_ordered_opts_and_dependencies = (attrs: StepAttrsOptionM<unknown>) => 
     };
 
     function rec_mpp(key: string, mpp: MppT<unknown>) {
-        forIn(mpp.merge_patch_parent_properties || {}, (_opts, innerkey) => {
+        forIn(mpp.merge_patch_parent_properties || {}, (opts, innerkey) => {
             const late = is_late(innerkey, mpp);
             getitem(innerkey, late)[late ? 'late_deps' : 'deps'][key] = null;
+            rec(innerkey, opts, false);
         })
-        forIn(mpp.merge_patch_parent_properties, (opts, key) => rec(key, opts, false));
     }
 
     function rec(key: string, opts: StepAttrOptionM<unknown>, always: boolean) {
