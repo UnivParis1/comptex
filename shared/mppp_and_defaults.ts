@@ -79,28 +79,26 @@ const get_ordered_opts_and_dependencies = (attrs: StepAttrsOptionM<unknown>) => 
     };
 
     function rec_mpp(key: string, mpp: MppT<unknown>) {
-        for (const innerkey in mpp.merge_patch_parent_properties || {}) {
+        forIn(mpp.merge_patch_parent_properties || {}, (_opts, innerkey) => {
             const late = is_late(innerkey, mpp);
             getitem(innerkey, late)[late ? 'late_deps' : 'deps'][key] = null;
+        })
+        forIn(mpp.merge_patch_parent_properties, (opts, key) => rec(key, opts, false));
+    }
+
+    function rec(key: string, opts: StepAttrOptionM<unknown>, always: boolean) {
+        if (always) getitem(key, false).opts = opts;
+        if (opts.then) {
+            rec_mpp(key, opts.then)
         }
-        rec(mpp.merge_patch_parent_properties, false);
+        if (opts.oneOf) {
+            for (const one of opts.oneOf) {
+                rec_mpp(key, one);
+            }
+        }
     }
 
-    function rec(attrs: StepAttrsOptionM<unknown>, always: boolean) {
-        forIn(attrs, (opts, key) => {
-            if (always) getitem(key, false).opts = opts;
-            if (opts.then) {
-                rec_mpp(key, opts.then)
-            }
-            if (opts.oneOf) {
-                for (const one of opts.oneOf) {
-                    rec_mpp(key, one);
-                }
-            }
-        });
-    }
-
-    rec(attrs, true);
+    forIn(attrs, (opts, key) => rec(key, opts, true));
 
     if (Object.keys(late).length) console.error("configuration error: " + Object.keys(late).join(',') + " is only present with newRootProperties 'ignore'");
 
