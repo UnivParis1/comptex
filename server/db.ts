@@ -3,15 +3,20 @@
 import * as _ from 'lodash';
 import * as mongodb from 'mongodb';
 import * as conf from './conf';
-import { renameKey } from './helpers';
+import { renameKey, throw_ } from './helpers';
+import { UUID } from 'bson';
 
 export const error_codes = {
     DuplicateKey: 11000,
 }
 
-function _id(id: string = undefined) {
-    return new mongodb.ObjectID(id);
-}
+const _id = (id: string = undefined) => (
+    typeof id === 'object' ? id :
+    id?.match(/^\w{24}$/) ? new mongodb.ObjectID(id) : 
+    id?.match(/^\w{8}-\w{4}-\w{4}-\w{4}-\w{12}$/) ? new UUID(id) :
+    throw_("invalid id")
+)
+
 export function fromDB(sv_: any) {
     return renameKey(sv_, '_id', 'id') as sv;
 }
@@ -90,5 +95,5 @@ export const open_and_run_promise_and_close = (callback: () => Promise<void>) =>
 )
 
 export const new_id = () => (
-    "" + _id()
+    "" + new UUID()
 );
