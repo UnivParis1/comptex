@@ -5,7 +5,7 @@
      <table class="table table-bordered">
        <tbody>
          <tr><th></th><th>Compte demandé</th><th>Compte existant</th></tr>
-         <tr v-for="{ attr, cmp, skip } in comparisons" v-if="!skip">
+         <tr v-for="{ attr, cmp } in comparisons">
            <td>{{default_attrs_title[attr] || attr}}</td>
            <td v-html="cmp[0]"></td>
            <td v-html="cmp[1]"></td>
@@ -49,7 +49,7 @@ function computeComparisons(v, homonyme) {
                 cmp = Helpers.formatDifferences(val1, val2, JsDiff);
             }
             return { attr, cmp, skip };
-        });
+        }).filter(e => !e.skip);
 }
 
 export default Vue.extend({
