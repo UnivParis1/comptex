@@ -6,9 +6,9 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
+import { defineComponent } from 'vue'
 import { formatValue } from '../../../shared/v_utils';
-export default Vue.extend({
+export default defineComponent({
   props: ["ldap_value", "value", "opts"],
   data() {
         return { hide: false };  

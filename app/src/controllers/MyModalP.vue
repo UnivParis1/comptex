@@ -15,13 +15,13 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
+import { defineComponent } from "vue";
 import { ref, Ref } from 'vue';
 import * as Helpers from '../services/helpers';
 
 import Modal from '../directives/Modal.vue';
 
-export default Vue.extend({
+export default defineComponent({
     components: { Modal },
     setup() {
         const active: Ref<Helpers.promise_defer<null>> = ref(undefined)

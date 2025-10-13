@@ -26,7 +26,7 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
+import { defineComponent } from "vue";
 import CurrentLdapValue from './CurrentLdapValue.vue';
 import * as _ from 'lodash';
 
@@ -38,7 +38,7 @@ function array_move_elt(array, index: number, direction: -1 | 1) {
     array.splice(index + direction, 0, array.splice(index, 1)[0]);
 }
 
-export default Vue.extend({
+export default defineComponent({
     props: ['name', 'value', 'ldap_value', 'opts', 'stepName', 'v'],
     components: { CurrentLdapValue },
     data() {

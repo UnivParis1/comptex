@@ -55,7 +55,7 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
+import { defineComponent } from "vue";
 import MyCroppie from '../directives/MyCroppie';
 import * as Helpers from '../services/helpers';
 
@@ -63,7 +63,7 @@ import * as Helpers from '../services/helpers';
 const _size = (width, ratio) => ({ width, height: width / ratio })
 const _size_px = ({ width, height }) => ({ width: `${width}px`, height: `${height}px` })
 
-export default Vue.extend({
+export default defineComponent({
     components: { MyCroppie },
     props: ['value', 'name', 'opts'],
     data() {

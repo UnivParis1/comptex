@@ -15,10 +15,10 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
+import { defineComponent } from "vue";
 import conf from '../conf';
 
-export default Vue.extend({
+export default defineComponent({
     props: ['value', 'opts', 'submitted'],
     components: { PasswordStrength: () => import("@/directives/PasswordStrength.vue") },
     data() {

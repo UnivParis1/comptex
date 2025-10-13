@@ -51,12 +51,12 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
+import { defineComponent } from "vue";
 import * as Helpers from '../services/helpers';
 import * as Address from '../../../shared/address';
 import CurrentLdapValue from './CurrentLdapValue.vue';
 
-export default Vue.extend({
+export default defineComponent({
     props: ['value', 'ldap_value', 'opts'],
     components: { CurrentLdapValue },
     data() {

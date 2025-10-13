@@ -25,7 +25,7 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
+import { defineComponent } from "vue";
 import * as _ from 'lodash'
 import * as Helpers from '../services/helpers';
 
@@ -43,7 +43,7 @@ const month2maxDay = [undefined,
         31, 30, 31, 30, 31];
 
 
-export default Vue.extend({
+export default defineComponent({
     props: ['value', 'opts'],
     data() {
         return {

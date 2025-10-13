@@ -1,4 +1,4 @@
-import Vue from "vue";
+import { defineComponent } from "vue";
 import { uniq } from "lodash";
 import conf from '../conf';
 import * as Helpers from '../services/helpers';
