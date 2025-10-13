@@ -34,10 +34,10 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
+import { defineComponent } from "vue";
 import { sortBy, mapKeys } from 'lodash';
 
-export default Vue.extend({
+export default defineComponent({
     props: ['imported', 'ordered_fields'],
     computed: {
         sorted_imported() {

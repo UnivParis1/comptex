@@ -8,7 +8,7 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
+import { defineComponent } from "vue";
 
 function toCanvas(video_elt) {
     let canvas = document.createElement("canvas");
@@ -31,7 +31,7 @@ function may_crop_portrait(canvas, { width, height }) {
 }
 
 
-export default Vue.extend({
+export default defineComponent({
     props: ['width', 'height', 'doget'],
     async mounted() {
         let elt = this.$refs.video;

@@ -1,8 +1,8 @@
-import Vue from "vue";
+import { defineComponent } from "vue";
 import * as Helpers from '../services/helpers';
 
 /* inspired from https://github.com/pespantelis/vue-typeahead */
-const typeaheadComponent = Vue.extend({
+const typeaheadComponent = defineComponent({
     template: `
   <div>
    <div :class="{ 'input-group': loading }">

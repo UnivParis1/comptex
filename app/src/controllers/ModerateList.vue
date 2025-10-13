@@ -31,7 +31,7 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import { defineComponent } from 'vue';
 import axios from 'axios';
 import * as Helpers from '../services/helpers';
 import * as Ws from '../services/ws';
@@ -39,7 +39,7 @@ import InitialStep from './InitialStep.vue';
 import { prepare_for_compare } from '../../../shared/validators/displayName';
 import { at } from 'lodash';
 
-export default Vue.extend({
+export default defineComponent({
   name: 'ModerateList',
   components: { InitialStep },
   data: () => ({

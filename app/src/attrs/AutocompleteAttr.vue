@@ -19,11 +19,11 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
+import { defineComponent } from "vue";
 import * as Ws from '../services/ws';
 import CurrentLdapValue from './CurrentLdapValue.vue';
 
-export default Vue.extend({
+export default defineComponent({
     props: ['value', 'name', 'real_name', 'opts', 'v', 'ldap_value', 'stepName', 'array_allowed_actions'],
     components: { CurrentLdapValue },
     data() {
@@ -60,7 +60,7 @@ export default Vue.extend({
             return this.opts.formatting_html ? this.opts.formatting_html(e) : this.formatting(e);
         },
         formatting_vue(e) {
-            return e?.title && Vue.extend({ props: ['v'], template: "<div>" + e.title + "</div>" });
+            return e?.title && defineComponent({ props: ['v'], template: "<div>" + e.title + "</div>" });
         },
     },
 });

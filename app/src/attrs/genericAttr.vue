@@ -140,7 +140,7 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
+import { defineComponent } from "vue";
 import { includes, find, isNil, keyBy, mapValues } from 'lodash';
 import { isDateInputSupported } from '../services/helpers';
 import { formatValue } from '../../../shared/v_utils'
@@ -165,7 +165,7 @@ function add_to_oneOf_if_missing(choices: Ws.StepAttrOptionChoices[], to_have) {
     return choices
 }
 
-export default Vue.extend({
+export default defineComponent({
     props: ['value', 'real_name', 'name', 'opts', 'v', 'ldap_value', 'stepName', 'array_allowed_actions_'],
     components: { 
         DateAttr, DateTimeAttr, DateThreeInputsAttr, ArrayAttr, ReadOnlyObjectItems, AddressAttr, cameraSnapshotAttr, PasswordAttr, AutocompleteAttr, CurrentLdapValue, FileUploadAttr,
@@ -234,7 +234,7 @@ export default Vue.extend({
         vue_component_description() {
             if (!this.uiOptions.texts_are_vue_template) return undefined;
             const text = this.opts.description;
-            return text && Vue.extend({ props: ['v'], template: "<div>" + text + "</div>" });
+            return text && defineComponent({ props: ['v'], template: "<div>" + text + "</div>" });
         },
     },
     asyncComputed: {

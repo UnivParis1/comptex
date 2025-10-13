@@ -40,12 +40,12 @@
 
 <script lang="ts">
 import { includes } from 'lodash';
-import Vue from "vue";
+import { defineComponent } from "vue";
 import * as Ws from '../services/ws';
 import { router } from '../router';
 import genericAttr from '../attrs/genericAttr.vue';
 
-export default Vue.extend({
+export default defineComponent({
    props: ['step'],
    components: { genericAttr },
    data() { 

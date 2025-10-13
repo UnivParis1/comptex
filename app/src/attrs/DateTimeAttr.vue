@@ -9,13 +9,13 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
+import { defineComponent } from "vue";
 import { formatDate, to_absolute_date } from "../services/helpers";
 import CurrentLdapValue from './CurrentLdapValue.vue';
 
 const init = (d: Date) => formatDate(d, 'yyyy-MM-ddTHH:mm');
 
-export default Vue.extend({
+export default defineComponent({
     props: ['name', 'value', 'ldap_value', 'opts'],
     components: { CurrentLdapValue },
     data() {

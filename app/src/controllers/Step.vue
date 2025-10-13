@@ -15,7 +15,7 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
+import { defineComponent } from "vue";
 import * as Helpers from '../services/helpers';
 import * as Ws from '../services/ws';
 import { router } from '../router';
@@ -41,7 +41,7 @@ function AttrsForm_data() {
     };    
 }
 
-export default Vue.extend({
+export default defineComponent({
     mounted() {
         const prevStep = this.$route.query?.prev;
         if (prevStep && isEmpty(v_from_prevStep)) {

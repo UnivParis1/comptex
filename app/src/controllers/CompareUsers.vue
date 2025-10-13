@@ -16,7 +16,7 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import { defineComponent } from 'vue';
 import * as _ from 'lodash';
 import conf from '../conf';
 import * as Helpers from '../services/helpers';
@@ -52,7 +52,7 @@ function computeComparisons(v, homonyme) {
         }).filter(e => !e.skip);
 }
 
-export default Vue.extend({
+export default defineComponent({
     props: ['v', 'homonyme'],
     computed: {
         comparisons() {

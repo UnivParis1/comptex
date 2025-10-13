@@ -1,4 +1,4 @@
-import Vue from "vue";
+import { defineComponent } from "vue";
 
 import { pickBy, findKey, find, isEmpty, uniq, some } from 'lodash';
 import * as Helpers from '../services/helpers';
@@ -22,7 +22,7 @@ const ensureElementErrorIsVisible = (subform) => {
 }
 
 
-export default Vue.extend({
+export default defineComponent({
     props: ['v', 'v_ldap', 'attrs', 'step_labels', 'stepName', 'disableOkButton'],
     data() {
         return {

@@ -29,12 +29,12 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
+import { defineComponent } from "vue";
 import { mapValues, omitBy } from 'lodash'
 import { formatValue } from "../../../shared/v_utils";
 import * as Helpers from '../services/helpers';
 
-export default Vue.extend({
+export default defineComponent({
     props: ['v_array', 'opts'],
     data() {
         const attrs: SharedStepAttrsOption = omitBy(this.opts.items.properties, (opts) => opts.uiHidden === true)
@@ -42,7 +42,7 @@ export default Vue.extend({
             attrs,
             attr_templates: mapValues(attrs, (opts, _) => {
                 const template = opts.uiOptions?.readOnly__vue_template || opts.description
-                return template && Vue.extend({ props: ['v', 'value'], template: "<div>" + template + "</div>" })
+                return template && defineComponent({ props: ['v', 'value'], template: "<div>" + template + "</div>" })
             })
         }
     },

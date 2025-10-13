@@ -34,7 +34,7 @@
 
 <script lang="ts">
 import { round } from "lodash";
-import Vue from "vue";
+import { defineComponent } from "vue";
 import * as Helpers from '../services/helpers';
 import { dataURL_to_mimeType } from '../../../shared/helpers';
 import conf from '../conf'
@@ -47,7 +47,7 @@ const formatMB = (n: number) => {
 }
 
 
-export default Vue.extend({
+export default defineComponent({
     props: ['value', 'name', 'opts'],
     data() {
         return {

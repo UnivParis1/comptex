@@ -1,11 +1,11 @@
-import Vue from "vue";
+import { defineComponent } from "vue";
 import Croppie from 'croppie';
 import 'croppie/croppie.css';
 
 import * as EXIF from 'exif-js';
 window['EXIF'] = EXIF; // for Croppie
 
-export default Vue.extend({
+export default defineComponent({
       props: [ 'data', 'options' ],
       template: '<div></div>',
       mounted() {

@@ -38,7 +38,7 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
+import { defineComponent } from 'vue';
 import * as _ from 'lodash'
 import Prism from 'prismjs'
 import 'prismjs/components/prism-json'
@@ -175,7 +175,7 @@ const tests: (Omit<ClientSideSVA, 'stepName'> & { test_name: string })[] = [
     }
 ]
 
-export default Vue.extend({
+export default defineComponent({
     components: { StepV },
     data() {
         return {
