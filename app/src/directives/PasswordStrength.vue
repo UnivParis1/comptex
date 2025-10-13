@@ -8,7 +8,7 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
+import { defineComponent } from "vue";
 
 import { zxcvbn, zxcvbnOptions } from '@zxcvbn-ts/core'
 import zxcvbnCommonPackage from '@zxcvbn-ts/language-common'
@@ -28,7 +28,7 @@ zxcvbnOptions.setOptions(options)
 const colors = [ "red", "#ffd801", "orange", "#3bce08", "#3bce08" ];
 const msgs = [ "Très faible", "Faible", "Moyen", "Fort", "Très fort" ];
 
-export default Vue.extend({
+export default defineComponent({
     props: ['passwd'],
     computed: {
         cc() {

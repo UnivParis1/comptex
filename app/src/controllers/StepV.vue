@@ -79,7 +79,7 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
+import { defineComponent } from "vue";
 import conf from '../conf';
 import * as Helpers from '../services/helpers';
 import * as Ws from '../services/ws';
@@ -112,7 +112,7 @@ export let v_from_prevStep = {};
 
 let detectIdle = Helpers.detectIdle()
 
-export default Vue.extend({
+export default defineComponent({
     mounted() {
         this.init();
 
@@ -198,11 +198,11 @@ export default Vue.extend({
         },
         step_description() {
             const text = this.step?.labels?.description;
-            return text && Vue.extend({ props: ['id', 'v_pre', 'v', 'v_display', 'potential_homonyms'], template: "<div>" + text + "</div>" });
+            return text && defineComponent({ props: ['id', 'v_pre', 'v', 'v_display', 'potential_homonyms'], template: "<div>" + text + "</div>" });
         },
         step_post_scriptum() {
             const text = this.step?.labels?.post_scriptum;
-            return text && Vue.extend({ props: ['id', 'v_pre', 'v'], template: "<div>" + text + "</div>" });
+            return text && defineComponent({ props: ['id', 'v_pre', 'v'], template: "<div>" + text + "</div>" });
         },
         disableOkButton() {
             return this?.step?.if_no_modification === 'disable-okButton' && (isEqual(this.v, this.v_orig) && !this.v?.various?.extern_ask_confirmation)
@@ -310,7 +310,7 @@ export default Vue.extend({
       templated_response(resp, template: string) {
         this.resp = {
             ...resp,
-            component: Vue.extend({ props: ['resp', 'v_pre', 'v'], template }),
+            component: defineComponent({ props: ['resp', 'v_pre', 'v'], template }),
         };
       },
       v_display(attr: string) {

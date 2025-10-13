@@ -1,5 +1,5 @@
 <script lang="ts">
-import Vue from "vue";
+import { defineComponent } from "vue";
 import conf from '../conf';
 import * as Helpers from '../services/helpers'; 
 
@@ -10,7 +10,7 @@ function attrs_data(vm) {
     return { validity };
 }
 
-export default Vue.extend({
+export default defineComponent({
     props: ['v', 'attrs'],
     model: { prop: 'v', event: 'change' },
     data: function() { return attrs_data(this); },

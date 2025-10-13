@@ -50,10 +50,10 @@
 
 <script lang="ts">
 import { tail } from "lodash";
-import Vue from "vue";
+import { defineComponent } from "vue";
 import * as Ws from '../services/ws';
 
-export default Vue.extend({
+export default defineComponent({
     props: [ 'attrs', 'forced_headers' ],
     data() {
         return {

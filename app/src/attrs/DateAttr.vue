@@ -12,13 +12,13 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
+import { defineComponent } from "vue";
 import { toYYYY_MM_DD, to_absolute_date } from "../services/helpers";
 import CurrentLdapValue from './CurrentLdapValue.vue';
 
 const init = toYYYY_MM_DD;
 
-export default Vue.extend({
+export default defineComponent({
     props: ['name', 'value', 'ldap_value', 'opts'],
     components: { CurrentLdapValue },
     data() {
