@@ -233,7 +233,7 @@ const typeaheadComponent = defineComponent({
 });
 
 // specialization
-Vue.component("typeahead", {
+export default defineComponent({
     mixins: [typeaheadComponent],
     data: () => ({
         noResultsMsg: "Aucun résultat",

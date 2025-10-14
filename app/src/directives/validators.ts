@@ -1,7 +1,9 @@
-import { defineComponent } from "vue";
+import { App } from 'vue';
 import { uniq } from "lodash";
 import conf from '../conf';
 import * as Helpers from '../services/helpers';
+
+export default (Vue: App) => {
 
 const checkValidity = {
   methods: {
@@ -287,3 +289,5 @@ Vue.component('history-textarea-with-validity', {
         },    
   },
 });
+
+}
