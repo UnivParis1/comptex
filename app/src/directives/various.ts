@@ -1,9 +1,11 @@
-import Vue from "vue";
+import { App } from "vue";
 import conf from '../conf';
 import loadScriptOnce from 'load-script-once';
 import webcamLivePortrait from './webcamLivePortrait.vue';
 import { finallyP } from '../services/helpers';
 import { debounce } from 'lodash';
+
+export default (Vue: App) => {
 
 Vue.component('webcamLivePortrait', webcamLivePortrait);
 
@@ -103,3 +105,5 @@ Vue.directive('iframe-auto-height', function (el: HTMLElement) {
         )
     })    
 })
+
+}

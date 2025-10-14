@@ -1,4 +1,6 @@
-import Vue from "vue";
+import { App } from "vue";
+
+export default (Vue: App) => {
 
 Vue.component("validation-errors", {
     props: ['name', 'validity', 'custom_message', 'custom_msg_is_html'],
@@ -121,3 +123,5 @@ Vue.component('array-actions', {
         </button>
     </span>`
 })
+
+}
