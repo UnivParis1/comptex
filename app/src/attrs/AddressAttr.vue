@@ -1,7 +1,7 @@
 <template>
 <div v-if="opts.readOnly">
    <my-bootstrap-form-group name="address_lines" :opts="opts">
-      <textarea :rows="(value||'').split('\n').length" :value="value" class="form-control" disabled></textarea>
+      <textarea :rows="(modelValue||'').split('\n').length" :value="modelValue" class="form-control" disabled></textarea>
    </my-bootstrap-form-group>
 </div>
 <div v-else>
@@ -58,12 +58,12 @@ import CurrentLdapValue from './CurrentLdapValue.vue';
 import { asyncComputed } from "@/services/helpers"
 
 export default defineComponent({
-    props: ['value', 'ldap_value', 'opts'],
+    props: ['modelValue', 'ldap_value', 'opts'],
     components: { CurrentLdapValue },
     data() {
         return {
             validity: { country: {} as ValidityState, address_lines: {} as ValidityState, postalCode: {} as ValidityState, town: {} as ValidityState },
-            ...Address.fromString(this.value),
+            ...Address.fromString(this.modelValue),
             ldap_val: this.ldap_value && Address.fromString(this.ldap_value) || {} as Address.PostalAddress,
             postalCode_modified: false,
 

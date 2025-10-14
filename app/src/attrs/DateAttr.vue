@@ -3,7 +3,7 @@
     <span :class="{ inputWithButton: todayButton }">
       <input-with-validity :name="name" v-model="val" type="date"
          :disabled="opts.readOnly"
-         :min="min" :max="max" :required="!opts.optional" :validity.sync="validity[name]"></input-with-validity>
+         :min="min" :max="max" :required="!opts.optional" v-model:validity="validity[name]"></input-with-validity>
       <button v-if="todayButton" class="btn btn-primary" type="button" @click="set_today">{{todayButton}}</button>
     </span>
     <CurrentLdapValue :modelValue="initial_val" :ldap_value="ldap_val" :opts="opts" @update:modelValue="v => val = v"></CurrentLdapValue>
@@ -19,10 +19,10 @@ import CurrentLdapValue from './CurrentLdapValue.vue';
 const init = toYYYY_MM_DD;
 
 export default defineComponent({
-    props: ['name', 'value', 'ldap_value', 'opts'],
+    props: ['name', 'modelValue', 'ldap_value', 'opts'],
     components: { CurrentLdapValue },
     data() {
-        const val = init(this.value);
+        const val = init(this.modelValue);
         const ldap_val = init(this.ldap_value);
         return {
             validity: { [this.name]: {} },

@@ -172,7 +172,10 @@ Vue.component('select-with-validity', {
         </template>
     </select>
     `,
-    props: ['modelValue', 'name', 'choices', 'required'],
+    props: [
+        'modelValue', 'name', 'choices', 'required',
+        'validity' // unused, only emitted. But it allows v-model:validity="..."
+    ],
     mixins: [ checkValidity ],
     mounted() {
       this.checkValidity();

@@ -54,7 +54,7 @@ const typeaheadComponent = defineComponent({
   </div>`,
 
   props: {
-      value: { default: null /* help typescript */ },
+      modelValue: { default: null /* help typescript */ },
       options: { type: [Array, Function] }, // either an Array (that will be filtered by matcher) or a function (String => Promise<T>)
       minChars: { type: Number, default: 0 },
       limit: { type: Number, default: 10 },
@@ -89,7 +89,7 @@ const typeaheadComponent = defineComponent({
   },
 
   mounted() {
-    this.checkValidity(this.value, 'parent');
+    this.checkValidity(this.modelValue, 'parent');
   },
 
   watch: {

@@ -16,10 +16,10 @@ import CurrentLdapValue from './CurrentLdapValue.vue';
 const init = (d: Date) => formatDate(d, 'yyyy-MM-ddTHH:mm');
 
 export default defineComponent({
-    props: ['name', 'value', 'ldap_value', 'opts'],
+    props: ['name', 'modelValue', 'ldap_value', 'opts'],
     components: { CurrentLdapValue },
     data() {
-        const val = init(this.value);
+        const val = init(this.modelValue);
         const ldap_val = init(this.ldap_value);
         return {
             validity: { [this.name]: {} },

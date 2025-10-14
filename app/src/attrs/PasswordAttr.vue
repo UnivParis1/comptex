@@ -19,12 +19,12 @@ import { defineAsyncComponent, defineComponent } from "vue";
 import conf from '../conf';
 
 export default defineComponent({
-    props: ['value', 'opts', 'submitted'],
+    props: ['modelValue', 'opts', 'submitted'],
     components: { PasswordStrength: defineAsyncComponent(() => import("@/directives/PasswordStrength.vue")) },
     data() {
         return {
           validity: { userPassword: {} as ValidityState, userPassword2: {} as ValidityState, submitted: false },
-          val: this.value,
+          val: this.modelValue,
           userPassword2: null,
         };
     },
