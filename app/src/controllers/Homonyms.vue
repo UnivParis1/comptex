@@ -16,12 +16,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineAsyncComponent, defineComponent } from 'vue'
 
 export default defineComponent({
   props: ['v', 'l'],
 
-  components: { 'compare-users': () => import('./CompareUsers.vue') },
+  components: { 'compare-users': defineAsyncComponent(() => import('./CompareUsers.vue')) },
 
   methods: {
       merge(homonym) {

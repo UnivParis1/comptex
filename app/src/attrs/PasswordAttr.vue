@@ -15,12 +15,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineAsyncComponent, defineComponent } from "vue";
 import conf from '../conf';
 
 export default defineComponent({
     props: ['value', 'opts', 'submitted'],
-    components: { PasswordStrength: () => import("@/directives/PasswordStrength.vue") },
+    components: { PasswordStrength: defineAsyncComponent(() => import("@/directives/PasswordStrength.vue")) },
     data() {
         return {
           validity: { userPassword: {} as ValidityState, userPassword2: {} as ValidityState, submitted: false },
