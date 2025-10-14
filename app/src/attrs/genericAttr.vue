@@ -140,7 +140,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineAsyncComponent, defineComponent } from "vue";
 import { includes, find, isNil, keyBy, mapValues } from 'lodash';
 import { isDateInputSupported } from '../services/helpers';
 import { formatValue } from '../../../shared/v_utils'
@@ -170,7 +170,7 @@ export default defineComponent({
     props: ['modelValue', 'real_name', 'name', 'opts', 'v', 'ldap_value', 'stepName', 'array_allowed_actions_'],
     components: { 
         DateAttr, DateTimeAttr, DateThreeInputsAttr, ArrayAttr, ReadOnlyObjectItems, AddressAttr, cameraSnapshotAttr, PasswordAttr, AutocompleteAttr, CurrentLdapValue, FileUploadAttr,
-        PhotoUploadAttr: () => import('./PhotoUploadAttr.vue'),
+        PhotoUploadAttr: defineAsyncComponent(() => import('./PhotoUploadAttr.vue')),
     },
     data() {
         return {
