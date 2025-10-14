@@ -9,11 +9,11 @@
       <typeahead :id="name" :name="name" v-model="val" :options="search" :minChars="3" :formatting="formatting" :formatting_html="formatting_html"
             :required="!opts.optional || array_allowed_actions.remove"
             :placeholder="opts.uiPlaceholder"
-            :editable="false" :validity.sync="validity[name]"></typeahead>
+            :editable="false" v-model:validity="validity[name]"></typeahead>
       <array-actions @action="name => $emit('array_action', name)" :array_allowed_actions="array_allowed_actions" />
     </div>
 
-    <CurrentLdapValue :value="value" :ldap_value="ldap_value" :readOnly="opts.readOnly" @input="v => val = v"></CurrentLdapValue>
+    <CurrentLdapValue :modelValue="modelValue" :ldap_value="ldap_value" :readOnly="opts.readOnly" @update:modelValue="v => val = v"></CurrentLdapValue>
 
   </my-bootstrap-form-group>
 </template>
@@ -24,7 +24,7 @@ import * as Ws from '../services/ws';
 import CurrentLdapValue from './CurrentLdapValue.vue';
 
 export default defineComponent({
-    props: ['value', 'name', 'real_name', 'opts', 'v', 'ldap_value', 'stepName', 'array_allowed_actions'],
+    props: ['modelValue', 'name', 'real_name', 'opts', 'v', 'ldap_value', 'stepName', 'array_allowed_actions'],
     components: { CurrentLdapValue },
     data() {
         return {
@@ -34,7 +34,7 @@ export default defineComponent({
     },
     asyncComputed: {
         valueS() {
-            return this.value && Ws.search(this.stepName, this.real_name || this.name, this.value, 1).then(l => l && l[0])
+            return this.modelValue && Ws.search(this.stepName, this.real_name || this.name, this.modelValue, 1).then(l => l && l[0])
         },
     },
     watch: {
@@ -44,7 +44,7 @@ export default defineComponent({
         val(val) {
             console.log("val changed", val);
             if (val) {
-                this.$emit('input', val.const);
+                this.$emit('update:modelValue', val.const);
                 if (this.opts.onChange) this.opts.onChange(this.v, val.const, val);
             }
         },

@@ -1,7 +1,7 @@
 <template>
   <my-bootstrap-form-group name="jpegPhoto" :opts="opts" :validity="validity" v-if="!opts.readOnly || val">
       <!-- for validation: -->
-      <input-with-validity name="jpegPhoto" :value="val" type="text" style="display: none" :required="!opts.optional" :validity.sync="validity.jpegPhoto"></input-with-validity>
+      <input-with-validity name="jpegPhoto" :modelValue="val" type="text" style="display: none" :required="!opts.optional" v-model:validity="validity.jpegPhoto"></input-with-validity>
 
       <div v-if="val">
           <img :src="val">
@@ -33,11 +33,11 @@ export default defineComponent({
         };
     },
     watch: {
-        value(val) {
+        modelValue(val) {
             this.val = val;
         },
         val(val) {
-            this.$emit('input', val);
+            this.$emit('update:modelValue', val);
         },
     },
 });

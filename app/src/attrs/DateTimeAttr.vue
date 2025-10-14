@@ -2,8 +2,8 @@
   <my-bootstrap-form-group :name="name" :opts="opts" :validity="validity">
     <input-with-validity :name="name" v-model="val" type="datetime-local"
         :disabled="opts.readOnly"
-        :min="min" :max="max" :required="!opts.optional" :validity.sync="validity[name]"></input-with-validity>
-    <CurrentLdapValue :value="initial_val" :ldap_value="ldap_val" @input="v => val = v"></CurrentLdapValue>
+        :min="min" :max="max" :required="!opts.optional" v-model:validity="validity[name]"></input-with-validity>
+    <CurrentLdapValue :modelValue="initial_val" :ldap_value="ldap_val" @update:modelValue="v => val = v as any"></CurrentLdapValue>
     <span class="attr-description" v-html="opts.description"></span>
   </my-bootstrap-form-group>
 </template>
@@ -29,11 +29,11 @@ export default defineComponent({
         };
     },
     watch: {
-        value(datetime) {
+        modelValue(datetime) {
             if (datetime && datetime !== this.datetime) this.val = init(datetime);
         },
         datetime(datetime) {
-            this.$emit('input', datetime);
+            this.$emit('update:modelValue', datetime);
         },
     },
     computed: {

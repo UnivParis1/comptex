@@ -1,13 +1,13 @@
 <template>
 <div>
   <my-bootstrap-form-group name="userPassword" :opts="opts" :validity="validity">
-    <input-with-validity name="userPassword" v-model="val" type="password" autocomplete="new-password" :pattern="passwordPattern" :allowedChars="opts.allowedChars" :required="!opts.optional" :validity.sync="validity.userPassword"></input-with-validity>
+    <input-with-validity name="userPassword" v-model="val" type="password" autocomplete="new-password" :pattern="passwordPattern" :allowedChars="opts.allowedChars" :required="!opts.optional" v-model:validity="validity.userPassword"></input-with-validity>
     <span class="attr-description" v-html="opts.description"></span>
     <PasswordStrength v-if="!passwordPattern" :passwd="val"></PasswordStrength>
   </my-bootstrap-form-group>
 
   <my-bootstrap-form-group name="userPassword2" :required="!opts.optional" :label="default_attrs_title.userPassword2" :validity="validity" hideErrors=1>
-    <input-with-validity name="userPassword2" v-model="userPassword2" type="password" autocomplete="new-password" :same-as="val" :required="!opts.optional" :validity.sync="validity.userPassword2"></input-with-validity>
+    <input-with-validity name="userPassword2" v-model="userPassword2" type="password" autocomplete="new-password" :same-as="val" :required="!opts.optional" v-model:validity="validity.userPassword2"></input-with-validity>
     <span class="help-block" v-if="validity.userPassword2.patternMismatch && !validity.userPassword.patternMismatch">Les mots de passe ne sont pas identiques</span>
     <span class="attr-description" v-html="opts.labels && opts.labels.tab_post_scriptum"></span>
   </my-bootstrap-form-group>
@@ -37,11 +37,11 @@ export default defineComponent({
       },
     },
     watch: {
-        value(val) {
+        modelValue(val) {
             this.val = val;
         },
         val(val) {
-            this.$emit('input', val);
+            this.$emit('update:modelValue', val);
         },
         submitted(b) {
             this.validity.submitted = b;

@@ -66,14 +66,14 @@
           :values="choicesMap" v-if="choicesMap"
           :texts_are_html="uiOptions.texts_are_html"
           :long_lines="uiOptions.long_lines"
-          :disabled="opts.readOnly" :required="!opts.optional" :validity.sync="validity[name]">
+          :disabled="opts.readOnly" :required="!opts.optional" v-model:validity="validity[name]">
       </radio-with-validity>
       <span class="attr-description" v-html="opts.description"></span>
     </div>
 
     <div v-else-if="uiType === 'textarea' && uiOptions.autocomplete && !opts.readOnly">
       <history-textarea-with-validity :name="name" v-model="val"
-        :rows="uiOptions.rows" :required="!opts.optional" :validity.sync="validity[name]">
+        :rows="uiOptions.rows" :required="!opts.optional" v-model:validity="validity[name]">
       </history-textarea-with-validity>
       <span class="attr-description" v-html="opts.description"></span>
     </div>
@@ -81,8 +81,8 @@
     <div v-else-if="uiType === 'textarea'">
       <textarea-with-validity :name="name" v-model="val"
         class="form-control"
-        :rows="uiOptions.rows || (opts.readOnly ? (value||'').split('\n').length : undefined)" 
-        :disabled="opts.readOnly" :required="!opts.optional" :validity.sync="validity[name]">
+        :rows="uiOptions.rows || (opts.readOnly ? (modelValue||'').split('\n').length : undefined)" 
+        :disabled="opts.readOnly" :required="!opts.optional" v-model:validity="validity[name]">
       </textarea-with-validity>
       <span class="attr-description" v-html="opts.description"></span>
     </div>
@@ -92,7 +92,7 @@
         <!-- wait until oneOf is computed. <select-with-validity> can NOT handle "value" is in computed "oneOf" -->
       <select-with-validity :name="name" v-model="val" v-if="oneOf"
         :disabled="opts.readOnly"
-        :choices="oneOf" :required="!opts.optional" :validity.sync="validity[name]">
+        :choices="oneOf" :required="!opts.optional" v-model:validity="validity[name]">
       </select-with-validity>
       <array-actions @action="name => $emit('array_action', name)" :array_allowed_actions="array_allowed_actions" />
      </div>
@@ -104,7 +104,7 @@
       <label>
         <checkbox-with-validity :name="name" v-model="val"
             :disabled="opts.readOnly"
-            :required="!opts.optional" :validity.sync="validity[name]">
+            :required="!opts.optional" v-model:validity="validity[name]">
         </checkbox-with-validity>
         <span class="attr-description" v-html="opts.description"></span>
       </label>
@@ -125,7 +125,7 @@
         :type="type" :realType="realType" :required="!opts.optional" :pattern="opts.pattern" :allowedChars="opts.allowedChars" :validator="opts.validator"
         :min="opts.min" :max="opts.max" :minlength="opts.minlength" :maxlength="opts.maxlength" :step="uiType === 'number' && 'any'"
         :onFocusOut="opts.onFocusOut && (() => opts.onFocusOut(v))"
-        :title="opts.labels && opts.labels.tooltip" :validity.sync="validity[name]">
+        :title="opts.labels && opts.labels.tooltip" v-model:validity="validity[name]">
     </input-with-validity>
     <array-actions @action="name => $emit('array_action', name)" :array_allowed_actions="array_allowed_actions" />
     </div>
@@ -133,7 +133,7 @@
     <span class="attr-description" :class="{ 'attr-readOnly-description': opts.readOnly }" v-html="opts.description" v-else></span>
    </div>
 
-    <CurrentLdapValue v-model="initial_value" :ldap_value="ldap_value" :opts="opts" @input="v => val = v"></CurrentLdapValue>
+    <CurrentLdapValue :modelValue="initial_value" :ldap_value="ldap_value" :opts="opts" @update:modelValue="v => val = v"></CurrentLdapValue>
 
   </my-bootstrap-form-group>
  </div>
@@ -166,7 +166,7 @@ function add_to_oneOf_if_missing(choices: Ws.StepAttrOptionChoices[], to_have) {
 }
 
 export default defineComponent({
-    props: ['value', 'real_name', 'name', 'opts', 'v', 'ldap_value', 'stepName', 'array_allowed_actions_'],
+    props: ['modelValue', 'real_name', 'name', 'opts', 'v', 'ldap_value', 'stepName', 'array_allowed_actions_'],
     components: { 
         DateAttr, DateTimeAttr, DateThreeInputsAttr, ArrayAttr, ReadOnlyObjectItems, AddressAttr, cameraSnapshotAttr, PasswordAttr, AutocompleteAttr, CurrentLdapValue, FileUploadAttr,
         PhotoUploadAttr: () => import('./PhotoUploadAttr.vue'),
@@ -174,8 +174,8 @@ export default defineComponent({
     data() {
         return {
             validity: { [this.name]: {} },
-            val: this.value,
-            initial_value: this.value,
+            val: this.modelValue,
+            initial_value: this.modelValue,
         };
     },
     computed: {
@@ -218,7 +218,7 @@ export default defineComponent({
             return this.uiType === 'select' ? (
                 this.oneOf && find(this.oneOf, choice => (
                     // (allow equality if value is number and choice.const is string)
-                    choice.const == this.value // tslint:disable-line
+                    choice.const == this.modelValue // tslint:disable-line
                 )) 
             ) : this.val;
         },
@@ -250,7 +250,7 @@ export default defineComponent({
         },
     },
     watch: {
-        value(val) {
+        modelValue(val) {
             this.val = val;
         },
         val(val) {
@@ -258,7 +258,7 @@ export default defineComponent({
                 const val_ = this.opts.normalize(val);
                 if (val_ !== val) { this.val = val = val_ }
             }
-            this.$emit('input', val);
+            this.$emit('update:modelValue', val);
         },
     },
 });

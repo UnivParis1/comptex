@@ -9,7 +9,7 @@
 import { defineComponent } from 'vue'
 import { formatValue } from '../../../shared/v_utils';
 export default defineComponent({
-  props: ["ldap_value", "value", "opts"],
+  props: ["ldap_value", "modelValue", "opts"],
   data() {
         return { hide: false };  
   },
@@ -21,7 +21,7 @@ export default defineComponent({
       shown() {
           return !this.hide 
             && (this.ldap_value || this.ldap_value === ''/* for checkboxes */) // do we have the LDAP value ?
-            && ("" + (this.ldap_value || '')) !== ("" + (this.value || '')) // "true" and true are considered equal
+            && ("" + (this.ldap_value || '')) !== ("" + (this.modelValue || '')) // "true" and true are considered equal
       },
   },
   watch: {
@@ -32,7 +32,7 @@ export default defineComponent({
   },
   methods: {
       revert() {
-          this.$emit('input', this.ldap_value);
+          this.$emit('update:modelValue', this.ldap_value);
           this.hide = true;
       }
   }

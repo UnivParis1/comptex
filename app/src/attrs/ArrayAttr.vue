@@ -2,7 +2,7 @@
 
 <div class="ArrayAttr">
     <template v-for="(item, i) in val">
-        <genericAttr :real_name="name" :name="name + (i ? '-' + i : '')" :opts="i ? item_opts : first_item_opts" :value="item" @input="v => set_item(i, v)" @array_action="name => array_action(name, i)"
+        <genericAttr :real_name="name" :name="name + (i ? '-' + i : '')" :opts="i ? item_opts : first_item_opts" :modelValue="item" @update:modelValue="v => set_item(i, v)" @array_action="name => array_action(name, i)"
                 :stepName="stepName" :v="v"
                 :array_allowed_actions_="{ remove: !opts.readOnly && uiOptions.removable !== false && (opts.optional || i > 0), 
                         move_up: uiOptions.orderable && i > 0, 
@@ -20,7 +20,7 @@
     </my-bootstrap-form-group>
 
     <my-bootstrap-form-group :class="{ hideIt: !currentLdapValue_shown }">
-        <CurrentLdapValue :value="initial_val" :ldap_value="ldap_val" :opts="opts" @input="val = [...ldap_val]" @shown="val => currentLdapValue_shown = val"></CurrentLdapValue>
+        <CurrentLdapValue :modelValue="initial_val" :ldap_value="ldap_val" :opts="opts" @update:modelValue="val = [...ldap_val]" @shown="val => currentLdapValue_shown = val"></CurrentLdapValue>
     </my-bootstrap-form-group>
 </div>
 </template>
@@ -39,10 +39,10 @@ function array_move_elt(array, index: number, direction: -1 | 1) {
 }
 
 export default defineComponent({
-    props: ['name', 'value', 'ldap_value', 'opts', 'stepName', 'v'],
+    props: ['name', 'modelValue', 'ldap_value', 'opts', 'stepName', 'v'],
     components: { CurrentLdapValue },
     data() {
-        let val = init(this.value);
+        let val = init(this.modelValue);
         if (val.length === 0 && !this.opts.optional) val.push('');
         return {
             validity: { [this.name]: {} },
@@ -64,13 +64,13 @@ export default defineComponent({
         },
     },
     watch: {
-        value(val) {
+        modelValue(val) {
             this.val = init(val);
         },
     },
     methods: {
         tellParent() {
-            this.$emit('input', this.val);
+            this.$emit('update:modelValue', this.val);
         },
         set_item(i, v) {
             this.$set(this.val, i, v);
