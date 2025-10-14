@@ -65,11 +65,11 @@ const _size_px = ({ width, height }) => ({ width: `${width}px`, height: `${heigh
 
 export default defineComponent({
     components: { MyCroppie },
-    props: ['value', 'name', 'opts'],
+    props: ['modelValue', 'name', 'opts'],
     data() {
         return {
             validity: { [this.name]: {} },
-            val: this.value,
+            val: this.modelValue,
             toValidate: null, prev_val_before_croppie: null,
             error: null,
             withCroppie: false,

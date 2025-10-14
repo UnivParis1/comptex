@@ -24,11 +24,11 @@
 import { defineComponent } from "vue";
 
 export default defineComponent({
-    props: ['value', 'opts'],
+    props: ['modelValue', 'opts'],
     data() {
         return {
             validity: { jpegPhoto: {} },
-            val: this.value,
+            val: this.modelValue,
             doGet: null,
         };
     },

@@ -44,11 +44,11 @@ const month2maxDay = [undefined,
 
 
 export default defineComponent({
-    props: ['value', 'opts'],
+    props: ['modelValue', 'opts'],
     data() {
         return {
             validity: { year: {} as ValidityState, month: {} as ValidityState, day: {} as ValidityState },
-            ...init(this.value),
+            ...init(this.modelValue),
         };
     },
     watch: {
@@ -56,7 +56,7 @@ export default defineComponent({
             if (val && val !== this.currentValue) Helpers.assign(this, init(val));
         },
         currentValue(val) {
-            if (+val !== +this.value) {
+            if (+val !== +this.modelValue) {
                 this.$emit('update:modelValue', val);
             }
         },
