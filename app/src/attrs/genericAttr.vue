@@ -157,6 +157,7 @@ import PasswordAttr from './PasswordAttr.vue';
 import AutocompleteAttr from './AutocompleteAttr.vue';
 import CurrentLdapValue from './CurrentLdapValue.vue';
 import FileUploadAttr from './FileUploadAttr.vue';
+import { asyncComputed } from "@/services/helpers"
 
 function add_to_oneOf_if_missing(choices: Ws.StepAttrOptionChoices[], to_have) {
     if (!isNil(to_have) && choices && !choices.some(choice => choice.const === to_have)) {
@@ -176,6 +177,7 @@ export default defineComponent({
             validity: { [this.name]: {} },
             val: this.modelValue,
             initial_value: this.modelValue,
+            asyncComputed: {},
         };
     },
     computed: {
@@ -236,9 +238,7 @@ export default defineComponent({
             const text = this.opts.description;
             return text && defineComponent({ props: ['v'], template: "<div>" + text + "</div>" });
         },
-    },
-    asyncComputed: {
-        async oneOf_() {
+        ...asyncComputed('oneOf_', async function () {
             const opts = this.opts || {};
             if (opts.oneOf) {
                 return opts.oneOf;
@@ -247,7 +247,7 @@ export default defineComponent({
             } else {
                 return undefined;
             }
-        },
+        }),
     },
     watch: {
         modelValue(val) {

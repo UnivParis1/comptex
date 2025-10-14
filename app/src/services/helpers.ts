@@ -276,3 +276,15 @@ export function htmlToText(html) {
     temp.innerHTML = html;
     return temp.textContent; // Or return temp.innerText if you need to return only visible text. It's slower.
 }   
+
+export const asyncComputed = (name, asyncCompute) => ({
+    async [name + '_promise']() {
+        this.asyncComputed[name] = await asyncCompute.apply(this)
+    },
+    [name]() {
+        // compute + re-compute it when needed
+        this[name + '_promise'];
+
+        return this.asyncComputed[name]
+    },
+})
