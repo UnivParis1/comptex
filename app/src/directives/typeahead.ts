@@ -15,7 +15,7 @@ const typeaheadComponent = defineComponent({
            @keydown.esc="stopAndClose"
            @blur="stopAndClose"
            @focus="open"
-           @input="input_changed">
+           @update:modelValue="input_changed">
     <textarea :id="id" class="form-control" :name="name" :placeholder="placeholder" v-else
            v-model="query" ref="input"
            type="text" :autocomplete="autocomplete || 'off'" :rows="rows"
@@ -26,7 +26,7 @@ const typeaheadComponent = defineComponent({
            @blur="stopAndClose"
            @click="stopAndClose"
            @focus="open"
-           @input="input_changed"></textarea>
+           @update:modelValue="input_changed"></textarea>
     <span class="input-group-addon" style="background: #fff" v-if="loading">
      <span class="glyphicon glyphicon-refresh glyphicon-spinning"></span>
     </span>
@@ -93,7 +93,7 @@ const typeaheadComponent = defineComponent({
   },
 
   watch: {
-    value(v) {
+    modelValue(v) {
         this.query = this.formatting(v);
         this.checkValidity(v, 'parent');
     },
@@ -102,7 +102,7 @@ const typeaheadComponent = defineComponent({
   methods: {
     input_changed() {
         if (this.editable) {
-            this.$emit('input', this.query);
+            this.$emit('update:modelValue', this.query);
         }
         this.checkValidity(this.query, 'input');
         this.open();
@@ -207,7 +207,7 @@ const typeaheadComponent = defineComponent({
     hit () {
         let chosen = this.items[this.current];
         this.query = this.formatting(chosen);
-        this.$emit('input', chosen);
+        this.$emit('update:modelValue', chosen);
         if (!this.editable) {
             this.emitValidity({ valid : true });
         }
