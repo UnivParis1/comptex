@@ -9,9 +9,9 @@
     <span style="display: inline-block" v-if="!opts.readOnly">
 
       <!-- for validation: -->
-      <input-with-validity :name="name" :value="toValidate ? 'EDITING': val" type="text" style="display: none" :required="!opts.optional"
+      <input-with-validity :name="name" :modelValue="toValidate ? 'EDITING': val" type="text" style="display: none" :required="!opts.optional"
          :validator="val => val === 'EDITING' ? 'Cliquez sur le bouton vert pour valider la photo, ou le bouton à sa droite pour annuler.' : ''"
-         :validity.sync="validity[name]"></input-with-validity>
+         v-model:validity="validity[name]"></input-with-validity>
 
       <span v-if="toValidate" class="photoModify">
         <div class="photoBorder">
@@ -97,11 +97,11 @@ export default defineComponent({
        },
     },
     watch: {
-        value(val) {
+        modelValue(val) {
             this.val = val;
         },
         val(val) {
-            this.$emit('input', val);
+            this.$emit('update:modelValue', val);
         },
     },
     mounted() {

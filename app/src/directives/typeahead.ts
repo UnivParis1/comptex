@@ -93,7 +93,7 @@ const typeaheadComponent = defineComponent({
   },
 
   watch: {
-    value(v) {
+    modelValue(v) {
         this.query = this.formatting(v);
         this.checkValidity(v, 'parent');
     },
@@ -102,7 +102,7 @@ const typeaheadComponent = defineComponent({
   methods: {
     input_changed() {
         if (this.editable) {
-            this.$emit('input', this.query);
+            this.$emit('update:modelValue', this.query);
         }
         this.checkValidity(this.query, 'input');
         this.open();
@@ -207,7 +207,7 @@ const typeaheadComponent = defineComponent({
     hit () {
         let chosen = this.items[this.current];
         this.query = this.formatting(chosen);
-        this.$emit('input', chosen);
+        this.$emit('update:modelValue', chosen);
         if (!this.editable) {
             this.emitValidity({ valid : true });
         }

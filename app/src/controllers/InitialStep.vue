@@ -6,7 +6,7 @@
         <form novalidate v-if="step.ldap_filter || step.attrs.profilename_to_modify" class="form-horizontal">
             <my-bootstrap-form-group :name="searchUser_inputName" label="Choisir un utilisateur">
                 <typeahead :minChars="3" :editable="false" :name="searchUser_inputName"
-                            @input="withUser"
+                            @update:modelValue="withUser"
                     :options="people_search"
                     :formatting="e => e && (e.givenName + ' ' + e.sn)"></typeahead>
                 <div v-if="profiles" style="padding-top: 1rem">

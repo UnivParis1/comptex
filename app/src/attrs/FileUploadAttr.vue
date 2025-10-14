@@ -20,7 +20,7 @@
        
 
       <!-- for validation: -->
-      <input-with-validity :name="name" :value="val" type="text" style="display: none" :required="!opts.optional" :validity.sync="validity[name]"></input-with-validity>
+      <input-with-validity :name="name" :modelValue="val" type="text" style="display: none" :required="!opts.optional" v-model:validity="validity[name]"></input-with-validity>
 
       <label class="btn btn-default">
           {{val || error ? 'Choisir un autre fichier' : 'Choisir un fichier'}}
@@ -74,11 +74,11 @@ export default defineComponent({
        },
     },
     watch: {
-        value(val) {
+        modelValue(val) {
             this.val = val;
         },
         val(val) {
-            this.$emit('input', val);
+            this.$emit('update:modelValue', val);
         },
     },
     methods: {

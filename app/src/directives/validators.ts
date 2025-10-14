@@ -6,7 +6,7 @@ import * as Helpers from '../services/helpers';
 const checkValidity = {
   methods: {
     onchange(event) {
-        this.$emit("input", event.target.value);
+        this.$emit("update:modelValue", event.target.value);
         setTimeout(() => this.checkValidity(), 1); // workaround https://bugzilla.mozilla.org/show_bug.cgi?id=1584963
         return false;
     },
@@ -35,8 +35,11 @@ const checkValidity = {
 };
 
 Vue.component('input-with-validity', {
-  template: "<input :name='name' :value='value' :type='type' :disabled='disabled'>",
-  props: ['value', 'name', 'type', 'sameAs', 'allowedChars', 'realType', 'pattern', 'min', 'max', 'minlength', 'maxlength', 'step', 'validator', 'disabled', 'onFocusOut'],
+  template: "<input :name='name' :value='modelValue' :type='type' :disabled='disabled'>",
+  props: [
+    'modelValue', 'name', 'type', 'sameAs', 'allowedChars', 'realType', 'pattern', 'min', 'max', 'minlength', 'maxlength', 'step', 'validator', 'disabled', 'onFocusOut',
+    'validity' // unused, only emitted. But it allows v-model:validity="..."
+  ],
   mixins: [checkValidity],
   mounted() {
     let element = this.$el;
@@ -52,7 +55,7 @@ Vue.component('input-with-validity', {
     this.checkValidity();
   },
   watch: {
-    value: 'on_value_set',
+    modelValue: 'on_value_set',
     min(v) { this._attrUpdated('min', v) },
     max(v) { this._attrUpdated('max', v) },
     pattern(v) { this._attrUpdated('pattern', v) },
@@ -60,7 +63,7 @@ Vue.component('input-with-validity', {
   },
   methods: {
     tellParent() { 
-        this.$emit("input", this.$el.value);
+        this.$emit("update:modelValue", this.$el.value);
     },
     checkValidity() {
         if (!this.disabled) { 
@@ -119,18 +122,18 @@ Vue.component('radio-with-validity', {
   template: `
   <span :class="disabled && 'disabled-radio'">
     <label :class="long_lines_ ? 'my-radio' : 'my-radio-inline'" v-for="(descr, val) in values">
-       <input type="radio" :name="name" :value="val" :checked="!val && !value ||val == value" @change="onchange" :required="required" :disabled="disabled">
+       <input type="radio" :name="name" :value="val" :checked="!val && !modelValue ||val == modelValue" @change="onchange" :required="required" :disabled="disabled">
        <span v-html="descr" v-if="texts_are_html"></span>
        <span v-else>{{descr}}</span>
 </label>
   </span>`,
-  props: ['value', 'name', 'values', 'required', 'disabled', 'texts_are_html', 'long_lines'],
+  props: ['modelValue', 'name', 'values', 'required', 'disabled', 'texts_are_html', 'long_lines'],
   mixins: [ checkValidity ],
   mounted() {
     this.checkValidity();
   },
   watch: {
-      value: 'on_value_set',
+      modelValue: 'on_value_set',
   },
   computed: {
       long_lines_() {
@@ -153,12 +156,12 @@ Vue.component('radio-with-validity', {
 
 Vue.component('select-with-validity', {
     template: /*html*/`
-    <select :name="name" :value="value" @change="onchange" class="form-control" :required="required">
+    <select :name="name" :value="modelValue" @change="onchange" class="form-control" :required="required">
         <!-- In case of invalid choice, Firefox/Chrome display a "" value (cool) but Safari display the first non disabled <option> -->
         <!-- To help Safari, we explictly add a "disabled" entry corresponding to the current value. 
         <!-- NB: the choice is hidden in the list on Firefox/Chrome but not on Safari -->
         <!-- NB: the choice will disappear once a valid value is chosen, so it disappears from the list in Safari -->
-        <option v-if="invalid_choice" disabled hidden :value='value'>Choisir</option>
+        <option v-if="invalid_choice" disabled hidden :value='modelValue'>Choisir</option>
         <!-- add empty choice -->
         <option v-if="!required && !has_empty_choice" value=''>--</option>
         <template v-for="option in choices">
@@ -169,7 +172,7 @@ Vue.component('select-with-validity', {
         </template>
     </select>
     `,
-    props: ['value', 'name', 'choices', 'required'],
+    props: ['modelValue', 'name', 'choices', 'required'],
     mixins: [ checkValidity ],
     mounted() {
       this.checkValidity();
@@ -179,17 +182,17 @@ Vue.component('select-with-validity', {
             return this.choices?.find(choice => choice.const === '')
         },
         invalid_choice() {
-            const valid_choice = (this.value ?? '') === '' ? !this.required : this.choices?.find(choice => choice.const === this.value)
+            const valid_choice = (this.modelValue ?? '') === '' ? !this.required : this.choices?.find(choice => choice.const === this.modelValue)
             return !valid_choice
         },
     },
     watch: {
-      value: 'on_value_set',
+      modelValue: 'on_value_set',
       choices() {
           setTimeout(() => {
             // this.$el.value is now updated according to new "choices"
             // if it is different, it means current choice is no more allowed
-            if (this.$el.value !== this.value) {
+            if (this.$el.value !== this.modelValue) {
                 this.onchange({ target: this.$el })
             }
         })
@@ -200,7 +203,7 @@ Vue.component('select-with-validity', {
             if (!this.disabled) { 
                 // We need to block submit if invalid_choice. On Firefox/Chrome, it is still needed if non "required"
                 // (we make a specific msg in case the choices have a non-allowed "" choice... would it be better to remove it from the "choices"??)
-                this.$el.setCustomValidity(this.invalid_choice ? ((this.value ?? "") === "" && this.has_empty_choice ? "Faire un autre choix" : "Sélectionnez un élément dans la liste !") : "")
+                this.$el.setCustomValidity(this.invalid_choice ? ((this.modelValue ?? "") === "" && this.has_empty_choice ? "Faire un autre choix" : "Sélectionnez un élément dans la liste !") : "")
             }
             checkValidity.methods.checkValidity.call(this);
         },
@@ -209,18 +212,18 @@ Vue.component('select-with-validity', {
 
 // Emitted values: '' | true
 Vue.component('checkbox-with-validity', {
-    template: `<input type="checkbox" :name="name" :checked="value" @change="onchange">`,
-    props: ['value', 'name'],
+    template: `<input type="checkbox" :name="name" :checked="modelValue" @change="onchange">`,
+    props: ['modelValue', 'name'],
     mixins: [ checkValidity ],
     mounted() {
       this.checkValidity();
     },
     watch: {
-      value: 'on_value_set',
+      modelValue: 'on_value_set',
     },
     methods: {
         onchange(event) {
-            this.$emit("input", event.target.checked || '');
+            this.$emit("update:modelValue", event.target.checked || '');
             this.checkValidity();
             return false;
         },    
@@ -228,20 +231,20 @@ Vue.component('checkbox-with-validity', {
 });
   
 Vue.component('textarea-with-validity', {
-  template: `<textarea :value="value" @input="onchange"></textarea>`,
-  props: ['value'],
+  template: `<textarea :value="modelValue" @input="onchange"></textarea>`,
+  props: ['modelValue'],
   mixins: [ checkValidity ],
   mounted() {
     this.checkValidity();
   },
   watch: {
-    value: 'on_value_set',
+    modelValue: 'on_value_set',
   },
 });
 
 Vue.component('history-textarea-with-validity', {
-  template: `<typeahead :name="name" :value="value" @input="onchange" :required="required" :is_textarea="true" :rows="rows" :minChars="1" :options="history" :validity.sync="validity"></typeahead>`,
-  props: ['name', 'value', 'required', 'rows'],
+  template: `<typeahead :name="name" :modelValue="modelValue" @update:modelValue="onchange" :required="required" :is_textarea="true" :rows="rows" :minChars="1" :options="history" v-model:validity="validity"></typeahead>`,
+  props: ['name', 'modelValue', 'required', 'rows'],
   data() {
     return { history: [], validity: {} };
   },
@@ -256,12 +259,12 @@ Vue.component('history-textarea-with-validity', {
     this.checkValidity();
   },
   beforeDestroy() {
-    if (this.value) {
-        localStorage[this.localStorage_key] = JSON.stringify(uniq([ this.value, ...this.history ]));
+    if (this.modelValue) {
+        localStorage[this.localStorage_key] = JSON.stringify(uniq([ this.modelValue, ...this.history ]));
     }
   },
   watch: {
-    value: 'on_value_set',
+    modelValue: 'on_value_set',
     validity(validity) {
         // re-emit
         this.$emit('update:validity', validity);
@@ -269,7 +272,7 @@ Vue.component('history-textarea-with-validity', {
   },
   methods: {
         onchange(val) {
-            this.$emit("input", val || '');
+            this.$emit("update:modelValue", val || '');
             this.checkValidity();
             return false;
         },    

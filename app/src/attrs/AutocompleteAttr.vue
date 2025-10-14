@@ -9,11 +9,11 @@
       <typeahead :id="name" :name="name" v-model="val" :options="search" :minChars="3" :formatting="formatting" :formatting_html="formatting_html"
             :required="!opts.optional || array_allowed_actions.remove"
             :placeholder="opts.uiPlaceholder"
-            :editable="false" :validity.sync="validity[name]"></typeahead>
+            :editable="false" v-model:validity="validity[name]"></typeahead>
       <array-actions @action="name => $emit('array_action', name)" :array_allowed_actions="array_allowed_actions" />
     </div>
 
-    <CurrentLdapValue :value="value" :ldap_value="ldap_value" :readOnly="opts.readOnly" @input="v => val = v"></CurrentLdapValue>
+    <CurrentLdapValue :modelValue="modelValue" :ldap_value="ldap_value" :readOnly="opts.readOnly" @update:modelValue="v => val = v"></CurrentLdapValue>
 
   </my-bootstrap-form-group>
 </template>
@@ -44,7 +44,7 @@ export default defineComponent({
         val(val) {
             console.log("val changed", val);
             if (val) {
-                this.$emit('input', val.const);
+                this.$emit('update:modelValue', val.const);
                 if (this.opts.onChange) this.opts.onChange(this.v, val.const, val);
             }
         },

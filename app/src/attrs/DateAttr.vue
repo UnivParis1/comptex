@@ -6,7 +6,7 @@
          :min="min" :max="max" :required="!opts.optional" :validity.sync="validity[name]"></input-with-validity>
       <button v-if="todayButton" class="btn btn-primary" type="button" @click="set_today">{{todayButton}}</button>
     </span>
-    <CurrentLdapValue :value="initial_val" :ldap_value="ldap_val" :opts="opts" @input="v => val = v"></CurrentLdapValue>
+    <CurrentLdapValue :modelValue="initial_val" :ldap_value="ldap_val" :opts="opts" @update:modelValue="v => val = v"></CurrentLdapValue>
     <span class="attr-description" v-html="opts.description"></span>
   </my-bootstrap-form-group>
 </template>
@@ -32,11 +32,11 @@ export default defineComponent({
         };
     },
     watch: {
-        value(date) {
+        modelValue(date) {
             if (date && date !== this.date) this.val = init(date);
         },
         date(date) {
-            this.$emit('input', date);
+            this.$emit('update:modelValue', date);
         },
     },
     computed: {
