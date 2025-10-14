@@ -73,7 +73,7 @@ export default defineComponent({
             this.$emit('update:modelValue', this.val);
         },
         set_item(i, v) {
-            this.$set(this.val, i, v);
+            this.val[i] = v;
             this.tellParent();
         },
         array_action(name, i) {
