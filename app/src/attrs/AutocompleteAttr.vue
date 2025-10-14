@@ -22,6 +22,7 @@
 import { defineComponent } from "vue";
 import * as Ws from '../services/ws';
 import CurrentLdapValue from './CurrentLdapValue.vue';
+import { asyncComputed } from "@/services/helpers"
 
 export default defineComponent({
     props: ['value', 'name', 'real_name', 'opts', 'v', 'ldap_value', 'stepName', 'array_allowed_actions'],
@@ -30,12 +31,13 @@ export default defineComponent({
         return {
           validity: !this.opts.readOnly && { [this.name]: {} },
           val: undefined,
+          asyncComputed: {},
         };
     },
-    asyncComputed: {
-        valueS() {
+    computed: {
+        ...asyncComputed('valueS', function() {
             return this.value && Ws.search(this.stepName, this.real_name || this.name, this.value, 1).then(l => l && l[0])
-        },
+        }),
     },
     watch: {
         valueS(val) {

@@ -55,6 +55,7 @@ import { defineComponent } from "vue";
 import * as Helpers from '../services/helpers';
 import * as Address from '../../../shared/address';
 import CurrentLdapValue from './CurrentLdapValue.vue';
+import { asyncComputed } from "@/services/helpers"
 
 export default defineComponent({
     props: ['value', 'ldap_value', 'opts'],
@@ -67,6 +68,7 @@ export default defineComponent({
             postalCode_modified: false,
 
             towns: undefined as string[], // cf asyncComputed
+            asyncComputed: {},
         };
     },
     watch: {
@@ -85,13 +87,11 @@ export default defineComponent({
             }
         },
     },
-    asyncComputed: {
-        async towns() {
+    computed: {
+        ...asyncComputed('towns', async function () {
             const code = this.postalCode;
             return code?.match('^[0-9]{5}$') ? await Helpers.frenchPostalCodeToTowns(code) : [];
-        },
-    },
-    computed: {
+        }),
         currentValue() {
             return Address.toString(this);
         },
