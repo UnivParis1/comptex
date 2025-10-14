@@ -13,7 +13,7 @@
       <array-actions @action="name => $emit('array_action', name)" :array_allowed_actions="array_allowed_actions" />
     </div>
 
-    <CurrentLdapValue :value="value" :ldap_value="ldap_value" :readOnly="opts.readOnly" @input="v => value = v"></CurrentLdapValue>
+    <CurrentLdapValue :value="value" :ldap_value="ldap_value" :readOnly="opts.readOnly" @input="v => val = v"></CurrentLdapValue>
 
   </my-bootstrap-form-group>
 </template>
