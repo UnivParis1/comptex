@@ -47,7 +47,7 @@ export default Vue.extend({
         return {
             validity: { [this.name]: {} },
             val,
-            ldap_val: init(this.ldap_value),
+            ldap_val: this.ldap_value !== undefined ? init(this.ldap_value) : undefined,
             initial_val: [...val],
             currentLdapValue_shown: false,
         };
