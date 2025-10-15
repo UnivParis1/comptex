@@ -210,7 +210,7 @@ export default Vue.extend({
     },
     methods: {
         set_v_string() {
-            console.log('set_v_string', this.v)
+            console.log('set_v_string', {...this.v})
             this.v_string = JSON.stringify(this.v, null, 4)
             this.v_has_dates = Object.values(this.v).some(_.isDate)
         },
