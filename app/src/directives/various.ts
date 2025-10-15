@@ -4,6 +4,7 @@ import loadScriptOnce from 'load-script-once';
 import webcamLivePortrait from './webcamLivePortrait.vue';
 import { finallyP } from '../services/helpers';
 import { debounce } from 'lodash';
+import { Directive } from "vue";
 
 export default (Vue: App) => {
 
@@ -32,7 +33,7 @@ Vue.directive('auto-focus', {
     inserted(el : HTMLElement) { 
         el.focus();
     }
-})
+} as Directive<HTMLElement, void>)
 
 // emits 'change' event
 Vue.component('input-file', {
