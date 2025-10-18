@@ -104,6 +104,7 @@ function AttrsForm_data() {
       to_import: undefined,
       imported: <any[]> undefined,
       all_potential_homonyms: undefined,
+      v_ldap_homonyme: undefined,
     };    
 }
 
@@ -150,7 +151,7 @@ export default Vue.extend({
     props: [
         'wanted_id', 'stepName', 
         'id', 'v_pre',
-        'step', 'attrs', 'all_attrs_flat', 'v', 'v_ldap',
+        'step', 'attrs', 'all_attrs_flat', 'v', 'v_ldap_in',
         'additional_public_info',
     ],
     data: AttrsForm_data,
@@ -165,6 +166,9 @@ export default Vue.extend({
         },
         noInteraction() {
             return this.v.noInteraction;
+        },
+        v_ldap() {
+            return this.v_ldap_homonyme ?? this.v_ldap_in
         },
         attrs_() {
             return this.attrs && Helpers.filter(this.attrs, (opts) => !opts.uiHidden);
@@ -411,7 +415,7 @@ export default Vue.extend({
           this.all_potential_homonyms = [...this.all_potential_homonyms]
 
           if (homonyme.uid) {
-            this.v_ldap = homonyme;
+            this.v_ldap_homonyme = homonyme;
           }
           this.v_orig = _.cloneDeep(this.v_orig); // make it clear for Vuejs that v_orig has been updated
         },
