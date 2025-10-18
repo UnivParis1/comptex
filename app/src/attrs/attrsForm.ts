@@ -60,7 +60,7 @@ export default defineComponent({
           }
           
           let deferred =  Helpers.promise_defer()
-          this.$emit('submit', this.v, deferred);
+          this.$emit('submit', deferred);
           return deferred.promise.catch(error => {
               if (error.attrName) {
                   this.ensureAttrIsVisible(error.attrName)
@@ -101,7 +101,7 @@ export default defineComponent({
       },
 
       reject() {
-          this.$emit('reject', this.v);
+          this.$emit('reject');
       }
     },
 });

@@ -239,9 +239,8 @@ export default defineComponent({
                 await (this.to_import ? this.send_new_many() : this.send());
             }
         },
-      submit(v, deferred) {
+      submit(deferred) {
           // NB: must resolves "deferred" which blocks submitting until promise is finished
-          this.v = v;
           let p = this.submit_();
           Helpers.promise_defer_pipe(p, deferred)
       },
@@ -419,8 +418,7 @@ export default defineComponent({
           }
           this.v_orig = _.cloneDeep(this.v_orig); // make it clear for Vuejs that v_orig has been updated
         },
-      reject(v) {
-        this.v = v;
+      reject() {
         Ws.remove(this.id, this.stepName).then(this.go_back);
       }
     },
