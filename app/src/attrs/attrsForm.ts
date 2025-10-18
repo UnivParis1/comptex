@@ -1,4 +1,4 @@
-import { defineComponent } from "vue";
+import { defineComponent, nextTick } from "vue";
 
 import { pickBy, findKey, find, isEmpty, uniq, some } from 'lodash';
 import * as Helpers from '../services/helpers';
@@ -88,7 +88,7 @@ export default defineComponent({
                         console.log("forcing tab", this.selectedTab, "which contains errors")
                       }
                       // if we forced a tab, we must wait for element to be visible
-                      Vue.nextTick(() => ensureElementErrorIsVisible(subform))
+                      nextTick(() => ensureElementErrorIsVisible(subform))
                       break
                   }
               }
