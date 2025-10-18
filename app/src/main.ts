@@ -1,6 +1,4 @@
-import Vue from "vue";
-import VueRouter from "vue-router";
-import AsyncComputed from 'vue-async-computed';
+import { createApp } from 'vue';
 import { router } from './router';
 import GlobalMixin from './GlobalMixin';
 import genericAttr from './attrs/genericAttr.vue';
@@ -9,21 +7,23 @@ import conf from './conf';
 
 document.title = htmlToText(conf.title);
 
-import "./directives/various";
-import "./directives/validators";
-import "./directives/Bootstrap";
-import "./directives/typeahead";
+import various from "./directives/various";
+import validators from './directives/validators'
+import Bootstrap from './directives/Bootstrap'
+import typeahead from './directives/typeahead'
 
 // especially needed on MSIE to allow "includes" in step.labels.description Vue.js template
 import array_includes from 'array-includes';
 array_includes.shim()
 
+let app = createApp({})
+various(app)
+Bootstrap(app)
+validators(app)
+app.component('typeahead', typeahead)
 
-Vue.mixin(GlobalMixin);
-Vue.use(VueRouter)
-Vue.use(AsyncComputed)
-Vue.component('genericAttr', genericAttr); // make it global to break circular dependency
+app.mixin(GlobalMixin);
+app.use(router)
+app.component('genericAttr', genericAttr); // make it global to break circular dependency
 
-new Vue({ 
-    router
-}).$mount(".page");
+app.mount(".page");
