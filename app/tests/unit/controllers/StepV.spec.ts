@@ -1,26 +1,23 @@
 import { assert, describe, it } from 'vitest'
 import * as _ from 'lodash'
-import { mount, createLocalVue } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import { mocha_axios_mock, flushPromises } from '../test_utils';
-import VueRouter from 'vue-router'
 import StepV from '@/controllers/StepV.vue';
 
 
 
 const mountStepV = ({ attrs, v, v_pre = {}, initialStep = false }) => {
-    const localVue = createLocalVue()
-    localVue.use(VueRouter)
     return mount(StepV, {
-        propsData: {
+        props: {
             step: { labels: { title: "Title1<>", description: "Desc1-{{v_pre.attr1}}-{{v.attr1}}" } },
             attrs, all_attrs_flat: _.clone(attrs),
             v: _.clone(v), v_pre,
             stepName: 'foo',
             wanted_id: initialStep ? null : 'xxx',
         }, 
-        localVue, 
-        router: new VueRouter(),
-        stubs: { MyModalP: true, attrsForm: true, Homonyms: true }
+        global: {
+            stubs: { MyModalP: true, attrsForm: true, Homonyms: true }
+        }        
     })
 
 }
