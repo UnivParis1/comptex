@@ -1,7 +1,7 @@
 import { fileURLToPath, URL } from 'url'
 
 import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue2'
+import vue from '@vitejs/plugin-vue'
 import shared_conf from '../shared/conf';
 
 // https://vitejs.dev/config/
@@ -11,7 +11,7 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
-      'vue': 'vue/dist/vue.js', // the default does NOT have the compiler we need for "vue template"s (cf README.md)
+      'vue': 'vue/dist/vue.esm-bundler.js', // the default does NOT have the compiler we need for "vue template"s (cf README.md)
     },
   },
   server: {
