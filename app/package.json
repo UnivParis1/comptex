@@ -12,7 +12,7 @@
     "typecheck": "vue-tsc --noEmit"
   },
   "dependencies": {
-    "@vitejs/plugin-vue2": "^2.3.1",
+    "@vitejs/plugin-vue": "^6.x",
     "@zxcvbn-ts/core": "^2.0.1",
     "@zxcvbn-ts/language-common": "^2.0.1",
     "@zxcvbn-ts/language-fr": "^2.1.0",
@@ -25,19 +25,18 @@
     "load-script-once": "^1.1.2",
     "prismjs": "^1.24.1",
     "tslib": "^2.3.0",
-    "vue": "^2.7.10",
-    "vue-async-computed": "^3.8.2",
-    "vue-router": "^3.0.2",
+    "vue": "^3.5.22",
+    "vue-router": "^4.5.1",
     "vue-tsc": "^2.1.6"
   },
   "devDependencies": {
-    "@vue/test-utils": "^1.0.0-beta.20",
+    "@vue/test-utils": "^2.4.6",
     "autoprefixer": "^9.5.0",
     "axios-mock-adapter": "^1.19.0",
     "jsdom": "^22.1.0",
     "postcss-import": "^12.0.1",
     "promise-polyfill": "^6.1.0",
-    "vitest": "^0.32.2",
+    "vitest": "^3.2.4",
     "vue-template-compiler": "^2.7.10"
   },
   "engines": {
