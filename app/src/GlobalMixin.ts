@@ -1,9 +1,9 @@
 import * as _ from 'lodash';
-import Vue from 'vue';
+import { ComponentOptionsMixin } from 'vue';
 import conf from './conf';
 
 
-export default Vue.extend({
+export default {
     computed: {
         default_attrs_title() { return _.mapValues(conf.default_attrs_opts, (opts) => opts['title']) },
         conf() { return conf },
@@ -27,4 +27,4 @@ export default Vue.extend({
             elt.setSelectionRange(0, 0);
         },
     },
-});
+} satisfies ComponentOptionsMixin;
