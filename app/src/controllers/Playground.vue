@@ -46,6 +46,7 @@ import 'prismjs/themes/prism.css'
 import StepV from './StepV.vue';
 import axios from 'axios';
 import MockAdapter from "axios-mock-adapter"
+import { assign } from '@/services/helpers';
 
 const tests: (Omit<ClientSideSVA, 'stepName'> & { test_name: string })[] = [
     {
@@ -196,7 +197,7 @@ export default defineComponent({
         v_string(s) { 
             this.v_html = s.length > 1000 ? undefined : Prism.highlight(s, Prism.languages.json, 'json');
             if (!this.v_has_dates) {
-                try { this.v = JSON.parse(s); this.v_err = false } catch (e) { this.v_err = true }
+                try { assign(this.v, JSON.parse(s)); this.v_err = false } catch (e) { this.v_err = true }
             }
         },
         attrs_string(s) { 
