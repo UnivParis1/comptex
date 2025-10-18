@@ -1,29 +1,27 @@
 import { assert, describe, it } from 'vitest';
 import * as _ from 'lodash'
-import { mount, createLocalVue } from '@vue/test-utils'
-//import { mocha_axios_mock, flushPromises } from '../test_utils';
-import VueRouter from 'vue-router'
+import { mount } from '@vue/test-utils'
 import StepV from '@/controllers/StepV.vue';
 import { flushPromises } from '../test_utils';
 
 
 
 const mountStepV = ({ attrs, v, v_pre = {}, initialStep = false }) => {
-    const localVue = createLocalVue()
-    localVue.use(VueRouter)
-    localVue.directive('on-submit', _ => {}) // ignore it
-    localVue.directive('on-visible', _ => {}) // ignore it
     return mount(StepV, {
-        propsData: {
+        props: {
             step: { labels: { title: "Title1<>" } },
             attrs, all_attrs_flat: _.clone(attrs),
             v: _.clone(v), v_orig: _.clone(v), v_pre,
             stepName: 'foo',
             wanted_id: initialStep ? null : 'xxx',
         }, 
-        localVue, 
-        router: new VueRouter(),
-        stubs: { MyModalP: true, Homonyms: true, 'my-bootstrap-form-group': true, 'input-with-validity': true, 'radio-with-validity': true }
+        global: {
+            directives: {
+                'on-submit': _ => {}, // ignore it
+                'on-visible': _ => {}, // ignore it
+            },
+            stubs: { MyModalP: true, Homonyms: true, 'input-with-validity': true, 'radio-with-validity': true }
+        },
     })
 
 }
@@ -39,7 +37,7 @@ describe('StepV-and-attrsForm', () => {
         //
         const html = wrapper.html()
         assert.match(html, /<h2.*>Title1&lt;&gt;<\/h2>/, 'title')
-        assert.deepEqual(_.omit(wrapper.find('input-with-validity-stub')?.attributes(), 'validity'), { name: 'attr1', value: 'val1', required: "true", type: "text" });
+        assert.deepEqual(_.omit(wrapper.find('input-with-validity-stub')?.attributes(), 'validity'), { name: 'attr1', modelvalue: 'val1', required: "true", step: "false", type: "text" });
     })
 
     it('renders', async () => {
@@ -91,7 +89,7 @@ describe('StepV-and-attrsForm', () => {
         // set choice
         vm.v.choice = "enroll"
         await flushPromises()
-        assert.deepEqual(_.omit(wrapper.find('input-with-validity-stub')?.attributes(), 'validity'), { name: 'attr1', value: '', required: "true", type: "text" });
+        assert.deepEqual(_.omit(wrapper.find('input-with-validity-stub')?.attributes(), 'validity'), { name: 'attr1', modelvalue: '', required: "true", type: "text", disabled: "false", step: "false" });
     })
 })
 
