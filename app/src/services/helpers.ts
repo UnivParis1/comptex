@@ -69,6 +69,15 @@ export * from '../../../shared/helpers';
         return <T1 & T2> o;
     }
 
+    export function object_replace<T>(o: T, o2: T) {
+        let o_only = new Set(Object.keys(o))
+        for (const k in o2) {
+            o[k] = o2[k]
+            o_only.delete(k)
+        }
+        o_only.forEach(k => delete o[k])
+    }
+
     export function simpleEach(a, fn) {
         var len = a.length;
         for (var i = 0; i < len; i++) {
