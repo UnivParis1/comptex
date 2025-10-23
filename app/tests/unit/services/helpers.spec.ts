@@ -100,4 +100,28 @@ describe('service helpers', function() {
             assert.deepEqual(Helpers.compute_absolute_date('+1SY', new Date("2020-01-02")), new Date("2021-01-01"))
         })
     })
+
+    describe('object_replace', function() {
+        function check(o, o2) {
+            Helpers.object_replace(o, o2)
+            assert.deepEqual(o, o2)
+        }
+
+        it('should work with strings', () => {
+            check({}, {})
+            check({ a: "A" }, {})
+            check({ a: "A" }, { a: "A" })
+            check({ a: "A" }, { a: "Aa" })
+            check({ a: "A" }, { b: "B" })
+        })
+
+        it('should work with arrays', () => {
+            check({}, {})
+            check({ a: "A" }, {})
+            check({ a: ["A"] }, { a: [] })
+            check({ a: ["A"] }, { a: ["A"] })
+            check({ a: ["A"] }, { a: ["Aa"] })
+            check({ a: ["A"] }, { b: ["B"] })
+        })
+    })
 });
