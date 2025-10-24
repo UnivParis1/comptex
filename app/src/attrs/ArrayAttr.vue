@@ -30,11 +30,11 @@ import { defineComponent } from "vue";
 import CurrentLdapValue from './CurrentLdapValue.vue';
 import * as _ from 'lodash';
 
-function init(val) {
+function init(val: string | string[] | undefined) {
     return val instanceof Array ? val : val ? [val] : [];
 }
 
-function array_move_elt(array, index: number, direction: -1 | 1) {
+function array_move_elt(array: string[], index: number, direction: -1 | 1) {
     array.splice(index + direction, 0, array.splice(index, 1)[0]);
 }
 

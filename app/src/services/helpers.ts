@@ -57,12 +57,12 @@ export * from '../../../shared/helpers';
         return o instanceof c && o;
     }
 
-    export function copy<T>(o : T, opts = {}) : T {
+    export function copy<T>(o : T, opts: { allAttrs?: boolean } = {}) : T {
         return assign({}, o, opts);
     }
 
     // similar to ES6 Object.assign
-    export function assign<T1, T2>(o: T1, o2: T2, opts = {}): T1 & T2 {
+    export function assign<T1, T2>(o: T1, o2: T2, opts: { allAttrs?: boolean } = {}): T1 & T2 {
         eachObject(o2, function (k, v) {
             o[k] = v;
         }, opts);
