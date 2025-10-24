@@ -74,7 +74,9 @@ export default defineComponent({
     },
     watch: {
         modelValue(val) {
-            if (val && val !== this.currentValue) Helpers.assign(this, Address.fromString(val));
+            if (val && val !== this.currentValue) {
+                Helpers.assign(this, Address.fromString(val));
+            }
         },
         currentValue(val) {
             this.$emit('update:modelValue', val);
