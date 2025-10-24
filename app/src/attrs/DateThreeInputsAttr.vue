@@ -29,7 +29,7 @@ import { defineComponent } from "vue";
 import * as _ from 'lodash'
 import * as Helpers from '../services/helpers';
 
-function init(date) {
+function init(date?: Date) {
     return {
         year: date && date.getUTCFullYear() || '',
         month: date && (date.getUTCMonth() + 1) || '',
