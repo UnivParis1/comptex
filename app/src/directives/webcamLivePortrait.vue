@@ -18,7 +18,7 @@ function toCanvas(video_elt) {
     return canvas;
 }
 
-function may_crop_portrait(canvas, { width, height }) {
+function may_crop_portrait(canvas: HTMLCanvasElement, { width, height }: { width: number, height: number }) {
     let real_width = width * (canvas.height / height);
     let width_offset = (canvas.width - real_width) / 2;
     if (width_offset <= 0) return canvas;
