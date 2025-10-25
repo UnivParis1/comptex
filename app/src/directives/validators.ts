@@ -143,6 +143,9 @@ Vue.component('radio-with-validity', {
     },
     checkValidity() {
         const el = this.$el.querySelector('input'); // any <input> will do
+        if (!el) {
+            throw "expected an <input> for field " + this.name
+        }
         this.checkValidityEl(el);
     },
   },
