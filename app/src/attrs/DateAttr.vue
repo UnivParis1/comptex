@@ -20,6 +20,7 @@ const init = toYYYY_MM_DD;
 
 export default defineComponent({
     props: ['name', 'modelValue', 'ldap_value', 'opts'],
+    emits: ['update:modelValue'],
     components: { CurrentLdapValue },
     data() {
         const val = init(this.modelValue);

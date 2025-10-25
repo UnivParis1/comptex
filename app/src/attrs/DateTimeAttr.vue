@@ -17,6 +17,7 @@ const init = (d: Date) => formatDate(d, 'yyyy-MM-ddTHH:mm');
 
 export default defineComponent({
     props: ['name', 'modelValue', 'ldap_value', 'opts'],
+    emits: ['update:modelValue'],
     components: { CurrentLdapValue },
     data() {
         const val = init(this.modelValue);

@@ -168,6 +168,7 @@ function add_to_oneOf_if_missing(choices: Ws.StepAttrOptionChoices[], to_have) {
 
 export default defineComponent({
     props: ['modelValue', 'real_name', 'name', 'opts', 'v', 'ldap_value', 'stepName', 'array_allowed_actions_'],
+    emits: ['update:modelValue', 'array_action'],
     components: { 
         DateAttr, DateTimeAttr, DateThreeInputsAttr, ArrayAttr, ReadOnlyObjectItems, AddressAttr, cameraSnapshotAttr, PasswordAttr, AutocompleteAttr, CurrentLdapValue, FileUploadAttr,
         PhotoUploadAttr: defineAsyncComponent(() => import('./PhotoUploadAttr.vue')),

@@ -10,6 +10,7 @@ import { defineComponent } from 'vue'
 import { formatValue } from '../../../shared/v_utils';
 export default defineComponent({
   props: ["ldap_value", "modelValue", "opts"],
+  emits: ['update:modelValue', 'shown'],
   data() {
         return { hide: false };  
   },

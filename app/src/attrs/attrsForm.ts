@@ -24,6 +24,7 @@ const ensureElementErrorIsVisible = (subform) => {
 
 export default defineComponent({
     props: ['v', 'v_ldap', 'attrs', 'step_labels', 'stepName', 'disableOkButton'],
+    emits: ['submit', 'reject'],
     data() {
         return {
             selectedTab: undefined,

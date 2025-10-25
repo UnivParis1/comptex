@@ -20,6 +20,7 @@ import { defineAsyncComponent, defineComponent } from 'vue'
 
 export default defineComponent({
   props: ['v', 'l'],
+  emits: ['merge'],
 
   components: { 'compare-users': defineAsyncComponent(() => import('./CompareUsers.vue')) },
 

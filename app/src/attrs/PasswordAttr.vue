@@ -20,6 +20,7 @@ import conf from '../conf';
 
 export default defineComponent({
     props: ['modelValue', 'opts', 'submitted'],
+    emits: ['update:modelValue'],
     components: { PasswordStrength: defineAsyncComponent(() => import("@/directives/PasswordStrength.vue")) },
     data() {
         return {

@@ -108,6 +108,7 @@ Vue.component("my-bootstrap-form-group", {
 
 Vue.component('array-actions', {
     props: [ 'array_allowed_actions' ],
+    emits: ['action'],
     template: `<span class="input-group-btn" v-if="array_allowed_actions.any">
         <button class="btn btn-danger" type="button" @click="$emit('action', 'move_up')" aria-label="Move up" v-if="array_allowed_actions.move_up || array_allowed_actions.move_down" :disabled="!array_allowed_actions.move_up">
             <i class="glyphicon glyphicon-arrow-up"></i>

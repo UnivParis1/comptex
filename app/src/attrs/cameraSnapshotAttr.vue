@@ -25,6 +25,7 @@ import { defineComponent } from "vue";
 
 export default defineComponent({
     props: ['modelValue', 'opts'],
+    emits: ['update:modelValue'],
     data() {
         return {
             validity: { jpegPhoto: {} },

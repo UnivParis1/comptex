@@ -7,6 +7,7 @@ window['EXIF'] = EXIF; // for Croppie
 
 export default defineComponent({
       props: [ 'data', 'options' ],
+      emits: ['error'],
       template: '<div></div>',
       mounted() {
         this.init();

@@ -49,6 +49,7 @@ const formatMB = (n: number) => {
 
 export default defineComponent({
     props: ['modelValue', 'name', 'opts'],
+    emits: ['update:modelValue'],
     data() {
         return {
             validity: { [this.name]: {} },

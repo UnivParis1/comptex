@@ -9,6 +9,7 @@ Vue.component('webcamLivePortrait', webcamLivePortrait);
 
 Vue.component('autocomplete-user', {
   template: `<input type="search">`,
+  emits: ['select'],
   mounted() {
     let select = (_event, ui) => {
         this.$emit("select", ui.item);
@@ -32,9 +33,9 @@ Vue.directive('auto-focus', {
     }
 })
 
-// emits 'change' event
 Vue.component('input-file', {
     template: "<input @change='read' type='file'>",
+    emits: ['change'],
     methods: {
         read: function (e) {
             this.$emit('change', e.target.files[0] as File);
