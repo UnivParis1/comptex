@@ -55,6 +55,7 @@ import * as Ws from '../services/ws';
 
 export default defineComponent({
     props: [ 'attrs', 'forced_headers' ],
+    emits: ['change'],
     data() {
         return {
             to_import: undefined,

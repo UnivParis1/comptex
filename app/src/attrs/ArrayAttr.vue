@@ -40,6 +40,7 @@ function array_move_elt(array, index: number, direction: -1 | 1) {
 
 export default defineComponent({
     props: ['name', 'modelValue', 'ldap_value', 'opts', 'stepName', 'v'],
+    emits: ['update:modelValue'],
     components: { CurrentLdapValue },
     data() {
         let val = init(this.modelValue);

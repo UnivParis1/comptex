@@ -40,6 +40,7 @@ Vue.component('input-with-validity', {
     'modelValue', 'name', 'type', 'sameAs', 'allowedChars', 'realType', 'pattern', 'min', 'max', 'minlength', 'maxlength', 'step', 'validator', 'disabled', 'onFocusOut',
     'validity' // unused, only emitted. But it allows v-model:validity="..."
   ],
+  emits: ['update:modelValue', 'update:validity'],
   mixins: [checkValidity],
   mounted() {
     let element = this.$el;
@@ -128,6 +129,7 @@ Vue.component('radio-with-validity', {
 </label>
   </span>`,
   props: ['modelValue', 'name', 'values', 'required', 'disabled', 'texts_are_html', 'long_lines'],
+  emits: ['update:modelValue', 'update:validity'],
   mixins: [ checkValidity ],
   mounted() {
     this.checkValidity();
@@ -176,6 +178,7 @@ Vue.component('select-with-validity', {
         'modelValue', 'name', 'choices', 'required',
         'validity' // unused, only emitted. But it allows v-model:validity="..."
     ],
+    emits: ['update:modelValue', 'update:validity'],
     mixins: [ checkValidity ],
     mounted() {
       this.checkValidity();
@@ -217,6 +220,7 @@ Vue.component('select-with-validity', {
 Vue.component('checkbox-with-validity', {
     template: `<input type="checkbox" :name="name" :checked="modelValue" @change="onchange">`,
     props: ['modelValue', 'name'],
+    emits: ['update:modelValue', 'update:validity'],
     mixins: [ checkValidity ],
     mounted() {
       this.checkValidity();
@@ -236,6 +240,7 @@ Vue.component('checkbox-with-validity', {
 Vue.component('textarea-with-validity', {
   template: `<textarea :value="modelValue" @input="onchange"></textarea>`,
   props: ['modelValue'],
+  emits: ['update:modelValue', 'update:validity'],
   mixins: [ checkValidity ],
   mounted() {
     this.checkValidity();
@@ -248,6 +253,7 @@ Vue.component('textarea-with-validity', {
 Vue.component('history-textarea-with-validity', {
   template: `<typeahead :name="name" :modelValue="modelValue" @update:modelValue="onchange" :required="required" :is_textarea="true" :rows="rows" :minChars="1" :options="history" v-model:validity="validity"></typeahead>`,
   props: ['name', 'modelValue', 'required', 'rows'],
+  emits: ['update:modelValue', 'update:validity'],
   data() {
     return { history: [], validity: {} };
   },

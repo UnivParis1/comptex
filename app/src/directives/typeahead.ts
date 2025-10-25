@@ -70,6 +70,7 @@ const typeaheadComponent = defineComponent({
       placeholder: { type: String },
       rows: { type: Number },
   },
+  emits: ['update:modelValue', 'update:validity'],
 
   data () {
     return {

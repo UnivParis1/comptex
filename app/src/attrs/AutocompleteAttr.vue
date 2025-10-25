@@ -26,6 +26,7 @@ import { asyncComputed } from "@/services/helpers"
 
 export default defineComponent({
     props: ['value', 'name', 'real_name', 'opts', 'v', 'ldap_value', 'stepName', 'array_allowed_actions'],
+    emits: ['update:modelValue', 'array_action'],
     components: { CurrentLdapValue },
     data() {
         return {

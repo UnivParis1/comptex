@@ -33,6 +33,7 @@ function may_crop_portrait(canvas, { width, height }) {
 
 export default defineComponent({
     props: ['width', 'height', 'doget'],
+    emits: ['error', 'image'],
     async mounted() {
         let elt = this.$refs.video;
         

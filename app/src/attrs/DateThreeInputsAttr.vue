@@ -45,6 +45,7 @@ const month2maxDay = [undefined,
 
 export default defineComponent({
     props: ['modelValue', 'opts'],
+    emits: ['update:modelValue'],
     data() {
         return {
             validity: { year: {} as ValidityState, month: {} as ValidityState, day: {} as ValidityState },

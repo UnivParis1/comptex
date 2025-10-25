@@ -39,6 +39,7 @@ import { sortBy, mapKeys } from 'lodash';
 
 export default defineComponent({
     props: ['imported', 'ordered_fields'],
+    emits: ['done'],
     computed: {
         sorted_imported() {
             // display errors first, then moderation, ok, ignored
