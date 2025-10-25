@@ -20,26 +20,26 @@
   </my-bootstrap-form-group> 
 </template>
 
-<script lang="ts">
-import { defineComponent } from "vue";
+<script setup lang="ts">
+import { reactive, ref, watch } from 'vue';
+import { toRwRef } from '@/services/helpers';
 
-export default defineComponent({
-    props: ['modelValue', 'opts'],
-    emits: ['update:modelValue'],
-    data() {
-        return {
-            validity: { jpegPhoto: {} },
-            val: this.modelValue,
-            doGet: null,
-        };
-    },
-    watch: {
-        modelValue(val) {
-            this.val = val;
-        },
-        val(val) {
-            this.$emit('update:modelValue', val);
-        },
-    },
-});
+import webcamLivePortrait from '@/directives/webcamLivePortrait.vue';
+
+const props = defineProps<{
+    modelValue: string | undefined,
+    opts: SharedStepAttrOption & CommonStepAttrOptionT<{}>,
+}>()
+
+const emit = defineEmits<{
+    'update:modelValue': [val: string],
+}>();
+
+const validity = reactive({ jpegPhoto: {} })
+const val = toRwRef(() => props.modelValue)
+const doGet = ref(null)
+
+watch(val, (val) => {
+    emit('update:modelValue', val);
+})
 </script>
