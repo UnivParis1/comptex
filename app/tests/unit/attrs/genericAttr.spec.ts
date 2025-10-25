@@ -171,8 +171,8 @@ describe('validity', async () => {
         const wrapper = mount_test({ name: "attr1", opts: { uiType: 'postalAddress' }, v: { attr1: address } })
         const addressAttr = wrapper.getComponent(AddressAttr).vm as any
         assert.equal(addressAttr.currentValue, address)
-        assert.equal(addressAttr.country, 'FRANCE')
-        assert.equal(addressAttr.town, 'PARIS')
+        assert.equal(addressAttr.a.country, 'FRANCE')
+        assert.equal(addressAttr.a.town, 'PARIS')
         // NB: genericAttr validity is not updated, but we don't care. What is important is AddressAttr validity
         assert.isTrue(addressAttr.validity.country.valid)
         assert.isTrue(addressAttr.validity.town.valid)
@@ -183,7 +183,7 @@ describe('validity', async () => {
         // NB: genericAttr validity is not updated, but we don't care. What is important is AddressAttr validity
         const addressAttr = wrapper.getComponent(AddressAttr).vm
         assert.equal(addressAttr.currentValue, undefined)
-        assert.equal(addressAttr.country, 'FRANCE')
+        assert.equal(addressAttr.a.country, 'FRANCE')
         assert.isTrue(addressAttr.validity.country.valid)
         assert.isTrue(addressAttr.validity.town.valueMissing)
     })

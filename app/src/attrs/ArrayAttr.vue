@@ -26,9 +26,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
-import CurrentLdapValue from './CurrentLdapValue.vue';
 import * as _ from 'lodash';
+import { V } from "@/services/ws";
+import { toRwRef } from "@/services/helpers";
+import { computed, ref } from "vue";
 
 function init(val: string | string[] | undefined) {
     return val instanceof Array ? val : val ? [val] : [];
@@ -37,54 +38,58 @@ function init(val: string | string[] | undefined) {
 function array_move_elt(array: string[], index: number, direction: -1 | 1) {
     array.splice(index + direction, 0, array.splice(index, 1)[0]);
 }
+</script>
 
-export default defineComponent({
-    props: ['name', 'modelValue', 'ldap_value', 'opts', 'stepName', 'v'],
-    emits: ['update:modelValue'],
-    components: { CurrentLdapValue },
-    data() {
-        let val = init(this.modelValue);
-        if (val.length === 0 && !this.opts.optional) val.push('');
-        return {
-            validity: { [this.name]: {} },
-            val,
-            ldap_val: this.ldap_value !== undefined ? init(this.ldap_value) : undefined,
-            initial_val: [...val],
-            currentLdapValue_shown: false,
-        };
-    },
-    computed: {
-        first_item_opts() { 
-            return { ..._.pick(this.opts, 'title', 'labels', 'uiOptions', 'optional', 'readOnly', 'oneOf', 'oneOf_async'), ...this.opts.items };
-        },
-        item_opts() {
-            return { ...this.first_item_opts, optional: true };
-        },
-        uiOptions() {
-            return this.opts.uiOptions || {}
-        },
-    },
-    watch: {
-        modelValue(val) {
-            this.val = init(val);
-        },
-    },
-    methods: {
-        tellParent() {
-            this.$emit('update:modelValue', this.val);
-        },
-        set_item(i, v) {
-            this.val[i] = v;
-            this.tellParent();
-        },
-        array_action(name, i) {
-                 if (name === "remove_item") this.val.splice(i, 1);
-            else if (name === "move_up") array_move_elt(this.val, i, -1);
-            else if (name === "move_down") array_move_elt(this.val, i, 1);
-            else console.error("internal error: unknown array_action", name)
-            this.tellParent();
-        }
+<script setup lang="ts">
+import CurrentLdapValue from "./CurrentLdapValue.vue";
+import genericAttr from "./genericAttr.vue";
+
+const props = defineProps<{
+    name: string,
+    modelValue: string | string[] | undefined,
+    ldap_value: string | undefined,
+    opts: SharedStepAttrOption & CommonStepAttrOptionT<{}>,
+    stepName: string,
+    v: V,
+
+}>()
+const emit = defineEmits<{
+    'update:modelValue': [val: string[]],
+}>();
+
+const val = toRwRef(() => {
+    let val = init(props.modelValue)
+    if (val.length === 0 && !props.opts.optional) val.push('');
+    return val
+})
+
+const ldap_val = computed(() => props.ldap_value !== undefined ? init(props.ldap_value) : undefined)
+
+const initial_val = [...val.value]
+
+const currentLdapValue_shown = ref(false)
+
+const first_item_opts = computed(() => ({
+    ..._.pick(props.opts, 'title', 'labels', 'uiOptions', 'optional', 'readOnly', 'oneOf', 'oneOf_async'), ...props.opts.items,
+}))
+const item_opts = computed(() => ({
+    ...first_item_opts.value, optional: true,
+}))
+const uiOptions = computed(() => props.opts.uiOptions || {})
+
+function tellParent() {
+    emit('update:modelValue', val.value);
+}
+function set_item(i, v) {
+    val.value[i] = v;
+    tellParent();
+}
+function array_action(name: string, i: number) {
+            if (name === "remove_item") val.value.splice(i, 1);
+    else if (name === "move_up") array_move_elt(val.value, i, -1);
+    else if (name === "move_down") array_move_elt(val.value, i, 1);
+    else console.error("internal error: unknown array_action", name)
+    tellParent();
+}
     
-    },
-});
 </script>

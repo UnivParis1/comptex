@@ -5,37 +5,33 @@
     </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
+<script setup lang="ts">
+import { computed, ref, watch } from 'vue';
 import { formatValue } from '../../../shared/v_utils';
-export default defineComponent({
-  props: ["ldap_value", "modelValue", "opts"],
-  emits: ['update:modelValue', 'shown'],
-  data() {
-        return { hide: false };  
-  },
-  computed: {
-      opts_() { return this.opts || {} },
-      formattedLdapValue() {
-          return formatValue(this.ldap_value, this.opts_)
-      },
-      shown() {
-          return !this.hide 
-            && (this.ldap_value || this.ldap_value === ''/* for checkboxes */) // do we have the LDAP value ?
-            && ("" + (this.ldap_value || '')) !== ("" + (this.modelValue || '')) // "true" and true are considered equal
-      },
-  },
-  watch: {
-      shown: {
-          handler() { this.$emit('shown', this.shown) },
-          immediate: true,
-      },
-  },
-  methods: {
-      revert() {
-          this.$emit('update:modelValue', this.ldap_value);
-          this.hide = true;
-      }
-  }
+
+const props = defineProps<{
+    modelValue: string | string[] | undefined,
+    ldap_value: string | string[] | undefined,
+    opts?: SharedStepAttrOption & CommonStepAttrOptionT<{}>,
+}>()
+const emit = defineEmits<{
+    'update:modelValue': [val: string | string[]],
+    shown: [val: boolean],
+}>();
+
+const hide = ref(false)
+
+const opts_ = computed(() => props.opts || {})
+const formattedLdapValue = computed(() => formatValue(props.ldap_value, opts_.value))
+const shown = computed(() => {
+          return !hide.value 
+            && (props.ldap_value || props.ldap_value === ''/* for checkboxes */) // do we have the LDAP value ?
+            && ("" + (props.ldap_value || '')) !== ("" + (props.modelValue || '')) // "true" and true are considered equal
 })
+watch(shown, () => emit('shown', shown.value), { immediate: true })
+
+function revert() {
+    emit('update:modelValue', props.ldap_value);
+    hide.value = true;
+}
 </script>
