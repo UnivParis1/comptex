@@ -8,7 +8,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { onMounted, useTemplateRef, watch } from "vue";
 
 function toCanvas(video_elt) {
     let canvas = document.createElement("canvas");
@@ -30,26 +30,36 @@ function may_crop_portrait(canvas: HTMLCanvasElement, { width, height }: { width
     return c;
 }
 
+</script>
+<script setup lang="ts">
 
-export default defineComponent({
-    props: ['width', 'height', 'doget'],
-    emits: ['error', 'image'],
-    async mounted() {
-        let elt = this.$refs.video;
+const props = defineProps<{
+    width: number,
+    height: number,
+    doget: any,
+}>()
+
+const emit = defineEmits<{
+    'error': [err: any],
+    'image': [dataURL: string],
+}>();
+
+
+const video = useTemplateRef('video')
+onMounted(async () => {
+        let elt = video.value;
         
-        if (this.height) elt.height = this.height;
+        if (props.height) elt.height = props.height;
         
         try {
             elt.srcObject = await navigator.mediaDevices.getUserMedia({ video: true });
         } catch (err) {
             console.error(err);
-            this.$emit('error', err);
+            emit('error', err);
         }
-   },
-   watch: {
-       doget() {
-           this.$emit('image', may_crop_portrait(toCanvas(this.$refs.video), this).toDataURL('image/jpeg'));
-       },
-   },
-});
+})
+
+watch(() => props.doget, () => {
+    emit('image', may_crop_portrait(toCanvas(video.value), props).toDataURL('image/jpeg'));
+})
 </script>
