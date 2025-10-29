@@ -144,7 +144,7 @@ describe('validity', async () => {
         const wrapper = mount_test({ name: "attr1", opts: { uiType: 'date' }, v: { attr1: undefined } })
 
         // NB: genericAttr validity is not updated, but we don't care. What is important is DateAttr validity
-        const dateAttr = wrapper.getComponent(DateAttr).vm as any
+        const dateAttr = wrapper.getComponent(DateAttr).vm
         assert.isTrue(dateAttr.validity.attr1.valueMissing)
         await wrapper.setProps({ modelValue: new Date("2001-01-31") })
         assert.isFalse(dateAttr.validity.attr1.valueMissing)
@@ -157,7 +157,7 @@ describe('validity', async () => {
         const wrapper = mount_test({ name: "attr1", opts: { uiType: 'date' }, v: { attr1: undefined } })
 
         // NB: genericAttr validity is not updated, but we don't care. What is important is DateAttr validity
-        const dateAttr = wrapper.getComponent(DateAttr).vm as any
+        const dateAttr = wrapper.getComponent(DateAttr).vm
         assert.isTrue(dateAttr.validity.attr1.valueMissing)
         
         await wrapper.find('input').setValue('2001-01-31')
@@ -169,7 +169,7 @@ describe('validity', async () => {
     it('handles postalAddress (init)', async () => {
         const address = '90 RUE DE TOLBIAC\n75013 PARIS\nFRANCE'
         const wrapper = mount_test({ name: "attr1", opts: { uiType: 'postalAddress' }, v: { attr1: address } })
-        const addressAttr = wrapper.getComponent(AddressAttr).vm as any
+        const addressAttr = wrapper.getComponent(AddressAttr).vm
         assert.equal(addressAttr.currentValue, address)
         assert.equal(addressAttr.a.country, 'FRANCE')
         assert.equal(addressAttr.a.town, 'PARIS')
