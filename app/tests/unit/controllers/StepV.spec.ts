@@ -81,7 +81,7 @@ describe('homonyms', () => {
         mock.adapter.onPost(/\/api\/homonymes\/.*/).reply(_ => [200, homonymes])
         const wrapper = mountStepV(params)
         await flushPromises()
-        const vm = wrapper.vm as any
+        const vm = wrapper.vm
         //
         check_potential_homonyms(vm, homonymes)
         check_display_homonyms_stub(wrapper)
@@ -104,7 +104,7 @@ describe('homonyms', () => {
         mock.adapter.onPost(/\/api\/homonymes\/.*/).reply(_ => [200, homonymes])
         const wrapper = mountStepV(params)
         await flushPromises()
-        const vm = wrapper.vm as any
+        const vm = wrapper.vm
         //
         check_potential_homonyms(vm, homonymes)
         check_display_homonyms_stub(wrapper)
@@ -127,7 +127,7 @@ describe('homonyms', () => {
         mock.adapter.onPost(/\/api\/homonymes\/.*/).reply(_ => [200, homonymes])
         const wrapper = mountStepV(params)
         await flushPromises()
-        const vm = wrapper.vm as any
+        const vm = wrapper.vm
         //
         check_potential_homonyms(vm, homonymes)
         check_display_homonyms_stub(wrapper)
@@ -150,7 +150,7 @@ describe('homonyms', () => {
         mock.adapter.onPost(/\/api\/homonymes\/.*/).reply(_ => [200, homonymes])
         const wrapper = mountStepV(params)
         await flushPromises()
-        const vm = wrapper.vm as any
+        const vm = wrapper.vm
         //
         assert.deepEqual(vm.homonym_attrs, ["uid", "idFoo"], 'homonym_attrs')
         check_display_homonyms_stub(wrapper)
@@ -180,7 +180,7 @@ describe('homonyms', () => {
         mock.adapter.onPost(/\/api\/homonymes\/.*/).reply(_ => [200, homonymes])
         const wrapper = mountStepV(params)
         await flushPromises()
-        const vm = wrapper.vm as any
+        const vm = wrapper.vm
         //
         check_display_homonyms_stub(wrapper)
         check_potential_homonyms(vm, homonymes)
@@ -207,7 +207,7 @@ describe('homonyms', () => {
         mock.adapter.onPut(/\/api\/comptes\//).reply(_ => [ 200, { labels: { added: "Foo" } } ])
         const wrapper = mountStepV(params)
         await flushPromises()
-        const vm = wrapper.vm as any
+        const vm = wrapper.vm
         //
         assert.deepEqual(lastApiCall?.data, JSON.stringify({}))
         check_display_attrsform(wrapper)
@@ -236,7 +236,7 @@ describe('homonyms', () => {
         mock.adapter.onPut(/\/api\/comptes\//).reply(_ => [ 200, { labels: { added: "Foo" } } ])
         const wrapper = mountStepV(params)
         await flushPromises()
-        const vm = wrapper.vm as any
+        const vm = wrapper.vm
         //
         assert.deepEqual(lastApiCall?.data, JSON.stringify({}))
         check_display_attrsform(wrapper)
@@ -274,7 +274,7 @@ describe('homonyms', () => {
         })
         const wrapper = mountStepV(params)
         await flushPromises()
-        const vm = wrapper.vm as any
+        const vm = wrapper.vm
         //
         assert.deepEqual(lastApiCall?.data, JSON.stringify({}))
         check_display_attrsform(wrapper)
@@ -310,7 +310,7 @@ describe('homonyms', () => {
         })
         const wrapper = mountStepV(params)
         await flushPromises()
-        const vm = wrapper.vm as any
+        const vm = wrapper.vm
         //
         assert.equal(lastApiCall, null)
         check_display_attrsform(wrapper)
@@ -341,7 +341,7 @@ describe('homonyms', () => {
         mock.adapter.onPost(/\/api\/homonymes\/.*/).reply(_ => [200, homonymes])
         const wrapper = mountStepV(params)
         await flushPromises()
-        const vm = wrapper.vm as any
+        const vm = wrapper.vm
         //
         check_potential_homonyms(vm, [])
         check_display_attrsform(wrapper)

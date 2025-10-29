@@ -71,7 +71,7 @@ describe('StepV-and-attrsForm', () => {
         }
         const wrapper = mountStepV(params)
         await flushPromises()
-        const vm = wrapper.vm as any
+        const vm = wrapper.vm
         //
         const html = wrapper.html()
         assert.match(html, /<h2.*>Title1&lt;&gt;<\/h2>/, 'title')
