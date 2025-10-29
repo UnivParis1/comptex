@@ -8,7 +8,7 @@
 </template>
 
 <script lang="ts">
-import { onMounted, useTemplateRef, watch } from "vue";
+import { onMounted, useTemplateRef } from "vue";
 
 function toCanvas(video_elt) {
     let canvas = document.createElement("canvas");
@@ -36,12 +36,10 @@ function may_crop_portrait(canvas: HTMLCanvasElement, { width, height }: { width
 const props = defineProps<{
     width: number,
     height: number,
-    doget: any,
 }>()
 
 const emit = defineEmits<{
     'error': [err: any],
-    'image': [dataURL: string],
 }>();
 
 
@@ -59,7 +57,9 @@ onMounted(async () => {
         }
 })
 
-watch(() => props.doget, () => {
-    emit('image', may_crop_portrait(toCanvas(video.value), props).toDataURL('image/jpeg'));
-})
+const get = () => (
+    may_crop_portrait(toCanvas(video.value), props).toDataURL('image/jpeg')
+)
+
+defineExpose({ get })
 </script>
