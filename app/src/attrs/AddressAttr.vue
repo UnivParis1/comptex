@@ -98,4 +98,7 @@ watch(() => towns.value, (l) => {
     }
 })
 
+// help typechecking tests, needed because of https://github.com/vuejs/language-tools/issues/3808
+defineExpose({ currentValue, a, validity })
+
 </script>
