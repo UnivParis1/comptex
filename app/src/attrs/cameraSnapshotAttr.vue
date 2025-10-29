@@ -13,7 +13,7 @@
           aucune
       </div>
       <div v-else>
-          <webcam-live-portrait width="240" height="300" :doget="doGet" @image="val = $event" style="vertical-align: middle"></webcam-live-portrait>
+          <webcam-live-portrait :width="240" :height="300" :doget="doGet" @image="val = $event" style="vertical-align: middle"></webcam-live-portrait>
           <button type="button" class="btn btn-default" @click="doGet = [0]">Prendre une photo</button>
       </div>
       <p><div v-html="opts.description"></div></p>
