@@ -3,6 +3,7 @@ import * as _ from 'lodash'
 import { memoize } from 'lodash';
 import { formatDate } from '../../../shared/helpers';
 import { formatValue } from '../../../shared/v_utils';
+import { computed, ComputedRef, reactive, ref, watch, watchEffect } from 'vue';
 
 export * from '../../../shared/helpers';
 
@@ -288,3 +289,39 @@ export const asyncComputed = (name, asyncCompute) => ({
         return this.asyncComputed[name]
     },
 })
+
+export function toRwRef<T>(f: () => T) {
+    const r = ref(f())
+    watch(f, (new_val) => r.value = new_val)
+    return r
+}
+
+export function asyncComputed_<T>(func: () => Promise<T>): ComputedRef<T> {
+  const state = reactive({
+    status: "loading",
+    val: undefined,
+  });
+
+  let lastCalled = null
+
+  watchEffect(() => {
+      let me = Symbol('compute');
+      lastCalled = me;
+
+      func().then(value => {
+        if (lastCalled === me) {
+          state.status = "success"
+          state.val = value;
+        }
+      }, error => {
+        if (lastCalled === me) {
+          state.status = "error";
+          state.val = error;
+        }
+      });
+  })
+
+  const result = computed(() => state.status === "success" ? state.val : undefined)
+
+  return result;
+}
