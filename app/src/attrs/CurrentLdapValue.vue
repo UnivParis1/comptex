@@ -12,6 +12,7 @@ import { formatValue } from '../../../shared/v_utils';
 const props = defineProps<{
     modelValue: string | string[] | undefined,
     ldap_value: string | string[] | undefined,
+    formatted_ldap_value?: string,
     opts?: SharedStepAttrOption & CommonStepAttrOptionT<{}>,
 }>()
 const emit = defineEmits<{
@@ -22,7 +23,7 @@ const emit = defineEmits<{
 const hide = ref(false)
 
 const opts_ = computed(() => props.opts || {})
-const formattedLdapValue = computed(() => formatValue(props.ldap_value, opts_.value))
+const formattedLdapValue = computed(() => props.formatted_ldap_value ?? formatValue(props.ldap_value, opts_.value))
 const shown = computed(() => {
           return !hide.value 
             && (props.ldap_value || props.ldap_value === ''/* for checkboxes */) // do we have the LDAP value ?
