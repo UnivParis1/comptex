@@ -363,3 +363,10 @@ tr.ignored-line {
 .okButton .glyphicon, .cancelButton .glyphicon {
   margin-right: 0.5rem;
 }
+
+.Autocomplete .dropdown-menu {
+    display: block; top: 0; left: 0
+}
+.Autocomplete.input-group .dropdown-menu {
+    top: 34px;
+}
