@@ -13,7 +13,7 @@
       <array-actions @action="name => $emit('array_action', name)" :array_allowed_actions="array_allowed_actions" />
     </div>
 
-    <CurrentLdapValue :modelValue="modelValue" :ldap_value="ldap_value" :readOnly="opts.readOnly" @update:modelValue="v => val = v"></CurrentLdapValue>
+    <CurrentLdapValue :modelValue="modelValue" :ldap_value="ldap_value" :readOnly="opts.readOnly" @update:modelValue="set_ldap_value"></CurrentLdapValue>
 
   </my-bootstrap-form-group>
 </template>
@@ -73,4 +73,7 @@ const formatting_html = (e) => (
 const formatting_vue = (e) => (
     e?.title && defineComponent({ props: ['v'], template: "<div>" + e.title + "</div>" })
 )
+const set_ldap_value = () => {
+    val.value = ldap_valueS.value || { const: props.ldap_value, title: props.ldap_value }
+}
 </script>
