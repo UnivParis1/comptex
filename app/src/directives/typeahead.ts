@@ -33,7 +33,7 @@ const typeaheadComponent = defineComponent({
    </div>
 
    <div style="position: relative">
-    <ul class="dropdown-menu" :class="{ is_textarea }" style="display: block; top: 0; left: 0" v-show="items.length || noResults && !is_textarea">
+    <ul class="dropdown-menu" :class="{ is_textarea }" v-show="items.length || noResults && !is_textarea">
       <li v-if="moreResults" class="moreResultsMsg" v-html="moreResultsMsg"></li>
       <li v-if="moreResults" role="separator" class="divider"></li>
       <template v-for="(item, $item) in items">
