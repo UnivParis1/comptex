@@ -13,15 +13,15 @@
           aucune
       </div>
       <div v-else>
-          <webcam-live-portrait :width="240" :height="300" :doget="doGet" @image="val = $event" style="vertical-align: middle"></webcam-live-portrait>
-          <button type="button" class="btn btn-default" @click="doGet = [0]">Prendre une photo</button>
+          <webcam-live-portrait ref="webcam" :width="240" :height="300" style="vertical-align: middle"></webcam-live-portrait>
+          <button type="button" class="btn btn-default" @click="val = webcam.get()">Prendre une photo</button>
       </div>
       <p><div v-html="opts.description"></div></p>
   </my-bootstrap-form-group> 
 </template>
 
 <script setup lang="ts">
-import { reactive, ref, watch } from 'vue';
+import { reactive, useTemplateRef, watch } from 'vue';
 import { toRwRef } from '@/services/helpers';
 
 import webcamLivePortrait from '@/directives/webcamLivePortrait.vue';
@@ -37,7 +37,8 @@ const emit = defineEmits<{
 
 const validity = reactive({ jpegPhoto: {} })
 const val = toRwRef(() => props.modelValue)
-const doGet = ref(null)
+
+const webcam = useTemplateRef("webcam")
 
 watch(val, (val) => {
     emit('update:modelValue', val);
