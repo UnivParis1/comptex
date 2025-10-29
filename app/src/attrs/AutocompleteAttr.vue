@@ -13,7 +13,7 @@
       <array-actions @action="name => $emit('array_action', name)" :array_allowed_actions="array_allowed_actions" />
     </div>
 
-    <CurrentLdapValue :modelValue="modelValue" :ldap_value="ldap_value" :readOnly="opts.readOnly" @update:modelValue="set_ldap_value"></CurrentLdapValue>
+    <CurrentLdapValue :modelValue="modelValue" :ldap_value="ldap_valueS?.const" :formatted_ldap_value="ldap_valueS?.title" :readOnly="opts.readOnly" @update:modelValue="set_ldap_value"></CurrentLdapValue>
 
   </my-bootstrap-form-group>
 </template>
@@ -52,6 +52,7 @@ const const_to_choice = async (const_) => {
 
 const validity = reactive(!props.opts.readOnly && { [props.name]: {} })
 const valueS = asyncComputed_(() => const_to_choice(props.modelValue))
+const ldap_valueS = asyncComputed_(() => const_to_choice(props.ldap_value))
 
 const val = toRwRef(() => valueS.value)
 watch(val, (val) => {
