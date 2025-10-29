@@ -29,7 +29,7 @@
     <StepV
         stepName="foo" :step="step"
         :attrs="attrs" :all_attrs_flat="attrs"
-        :v="v" :v_orig="v_orig" :v_pre="{}"
+        :v="v" :v_orig="v_orig" :v_pre="{}" :v_ldap_in="v_ldap"
     ></StepV>
   </div>
   <hr>
@@ -138,6 +138,15 @@ const tests: (Omit<ClientSideSVA, 'stepName'> & { test_name: string })[] = [
         v: {},
     },
     {
+        test_name: 'Autocomplete',
+        step: { labels: { title: "XXX", okButton: "Submit", description: `` } },
+        attrs: {
+            "a": { title: "Autocomplete", uiType: "autocomplete", optional: true },
+            "l": { title: "Autocomplete", items: { uiType: "autocomplete" },  optional: true },
+        },
+        v: { a: "aaa" }, v_ldap: { a: "bbb" },
+    },
+    {
         test_name: 'Dependencies',
         step: { labels: { title: 'Dependencies (if/then, oneOf)', okButton: 'Submit' } },
         attrs: {
@@ -185,8 +194,22 @@ export default defineComponent({
             attrs_string: undefined, attrs_html: undefined, attrs_err: undefined,            
         }
     },
+    beforeCreate() {
+        const mock = new MockAdapter(axios)
+        const mock_search = (matcher: string) => {
+            mock.onGet(matcher).reply(({params}) => {
+                return [ 200, [ 
+                    { const: "aaa", title: "Aaaaaaa" },
+                    { const: "aaa2", title: "Aaaaaaa2" },
+                    { const: "bbb", title: "Bbbbbbb" },
+                ].filter(one => one.const.includes(params.token) || one.title.match(new RegExp(params.token, 'i'))) ]
+            })
+        }
+        mock_search("/api/search/foo/a")
+        mock_search("/api/search/foo/l")
+        mock.onAny().reply(200);
+    },
     mounted() {
-        new MockAdapter(axios).onAny().reply(200);
         this.set_v_string();        
         this.set_attrs_string();        
         this.v_orig = JSON.parse(this.v_string)
