@@ -1,4 +1,4 @@
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import shared_conf from '../conf';
 
 const remove_accents = _.deburr;

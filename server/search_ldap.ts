@@ -1,6 +1,6 @@
 'use strict';
 
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import conf from './conf';
 import shared_conf from '../shared/conf';
 import * as ldap from './ldap';

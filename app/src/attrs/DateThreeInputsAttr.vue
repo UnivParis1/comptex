@@ -26,7 +26,7 @@
 
 <script lang="ts">
 import { computed, reactive, watch } from "vue";
-import * as _ from 'lodash'
+import * as _ from 'lodash-es'
 import * as Helpers from '../services/helpers';
 import { object_replace } from "@/services/helpers"
 

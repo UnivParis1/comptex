@@ -1,4 +1,4 @@
-import { mapValues } from 'lodash';
+import { mapValues } from 'lodash-es';
 import { assert } from './test_utils';
 import v_display from '../v_display';
 

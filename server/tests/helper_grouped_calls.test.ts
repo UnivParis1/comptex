@@ -1,6 +1,6 @@
 // @ts-nocheck
 
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { assert } from './test_utils';
 import grouped_calls from '../helper_grouped_calls';
 import { setTimeoutPromise } from '../helpers';

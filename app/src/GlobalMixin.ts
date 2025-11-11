@@ -1,4 +1,4 @@
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { ComponentOptionsMixin } from 'vue';
 import conf from './conf';
 

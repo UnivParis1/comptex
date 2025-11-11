@@ -35,7 +35,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { sortBy, mapKeys } from 'lodash';
+import { sortBy, mapKeys } from 'lodash-es';
 
 export default defineComponent({
     props: ['imported', 'ordered_fields'],

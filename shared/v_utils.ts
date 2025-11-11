@@ -1,4 +1,4 @@
-import { find, forIn } from 'lodash';
+import { find, forIn } from 'lodash-es';
 import { formatDate } from './helpers';
 
 export const find_choice = (oneOf: StepAttrOptionChoicesT<StepAttrOptionM<unknown>>[], val: any) => (

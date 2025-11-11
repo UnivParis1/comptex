@@ -1,6 +1,6 @@
 import axios from 'axios';
-import * as _ from 'lodash'
-import { memoize } from 'lodash';
+import * as _ from 'lodash-es'
+import { memoize } from 'lodash-es';
 import { formatDate } from '../../../shared/helpers';
 import { formatValue } from '../../../shared/v_utils';
 import { computed, ComputedRef, reactive, ref, watch, watchEffect } from 'vue';
