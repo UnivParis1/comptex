@@ -16,7 +16,7 @@ import { export_v, merge_v, exportAttrs, merge_attrs_overrides, selectUserProfil
 import { filters } from './ldap';
 import gen_gsh_script from './gen_gsh_script';
 import { sv_to_url } from './sv';
-require('./helpers'); // for Promise.prototype.tap
+import './helpers'; // for Promise.prototype.tap
 
 _.each(conf_steps.steps, initAttrs)
 _.each(conf_steps.steps, checkAttrs)
