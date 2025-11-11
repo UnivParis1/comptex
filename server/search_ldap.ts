@@ -255,9 +255,9 @@ export function searchPeople_matching_acl_ldap_filter<T extends Partial<typeof c
 }
 
 // export it to allow override
-export let existLogin = (login: string): Promise<boolean> => (
+export let existLogin = { fn: (login: string): Promise<boolean> => (
     ldap.exist(conf.ldap.base_people, filters.eq("uid", login))
-);
+) }
 
 function truncateLogin(login: string) {
     return login.substr(0, maxLoginLength);
@@ -288,7 +288,7 @@ function genLogin_numeric_suffix(base: string, coll: number): Promise<string> {
         // argh, no letters anymore :-(
         return undefined;   
     } else {
-        return existLogin(login).then(exist => {
+        return existLogin.fn(login).then(exist => {
             if (!exist) {
                 // yeepee
                 return login;
@@ -309,7 +309,7 @@ function genLogin_accronyms_prefix(sn: string, givenNames: string[], coll: numbe
     } else if (login === prev) {
         return undefined;
     } else {
-        return existLogin(login).then(exist => {
+        return existLogin.fn(login).then(exist => {
             if (!exist) {
                 // yeepee
                 return login;
