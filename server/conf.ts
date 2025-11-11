@@ -2,7 +2,7 @@
 
 // @ts-ignore
 import * as fs from 'fs';
-import sendmailTransport = require('nodemailer-sendmail-transport');
+import sendmailTransport from 'nodemailer-sendmail-transport';
 import * as ldap_convert from './ldap_convert';
 import * as _ from 'lodash-es';
 import session from 'express-session';
