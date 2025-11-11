@@ -1,6 +1,6 @@
 import * as _ from 'lodash-es';
-import { pmap, to_DD_MM_YYYY } from './helpers';
-import client_conf from '../shared/conf';
+import { pmap, to_DD_MM_YYYY } from './helpers.ts';
+import client_conf from '../shared/conf.ts';
 
 async function key2name(raw: any, spec: StepAttrOption, if_empty : string = '') : Promise<string> {
     if (raw instanceof Array) {

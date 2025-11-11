@@ -33,10 +33,10 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import axios from 'axios';
-import * as Helpers from '../services/helpers';
-import * as Ws from '../services/ws';
+import * as Helpers from '../services/helpers.ts';
+import * as Ws from '../services/ws.ts';
 import InitialStep from './InitialStep.vue';
-import { prepare_for_compare } from '../../../shared/validators/displayName';
+import { prepare_for_compare } from '../../../shared/validators/displayName.ts';
 import { at } from 'lodash-es';
 
 export default defineComponent({

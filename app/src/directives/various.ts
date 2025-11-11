@@ -1,8 +1,8 @@
 import { App } from "vue";
-import conf from '../conf';
+import conf from '../conf.ts';
 import loadScriptOnce from 'load-script-once';
 import webcamLivePortrait from './webcamLivePortrait.vue';
-import { finallyP } from '../services/helpers';
+import { finallyP } from '../services/helpers.ts';
 import { debounce } from 'lodash-es';
 import { Directive } from "vue";
 

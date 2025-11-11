@@ -1,6 +1,6 @@
 import { mapValues } from 'lodash-es';
-import { assert } from './test_utils';
-import v_display from '../v_display';
+import { assert } from './test_utils.ts';
+import v_display from '../v_display.ts';
 
 const test = (attrs: StepAttrsOption, v: v, wanted_v: Dictionary<any>) => {
     const v_ = v_display(v, attrs);

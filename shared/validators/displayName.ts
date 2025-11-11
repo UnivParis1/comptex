@@ -1,6 +1,6 @@
 import * as _ from 'lodash-es';
-import type shared_conf_ from '../conf'
-let shared_conf: typeof shared_conf_; import('../conf').then(m => shared_conf = m.default)
+import type shared_conf_ from '../conf.ts'
+let shared_conf: typeof shared_conf_; import('../conf.ts').then(m => shared_conf = m.default)
 
 const remove_accents = _.deburr;
 

@@ -1,5 +1,5 @@
 import { forIn, map, mapValues, pickBy } from 'lodash-es';
-import { find_choice } from './v_utils';
+import { find_choice } from './v_utils.ts';
 
 const matches_if = (if_: 'truthy'|'falsy'|'modified', val: string, val_orig: string | undefined) => (
     if_ === 'modified' ? val != val_orig :

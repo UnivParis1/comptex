@@ -1,5 +1,5 @@
 import { find, forIn } from 'lodash-es';
-import { formatDate } from './helpers';
+import { formatDate } from './helpers.ts';
 
 export const find_choice = (oneOf: StepAttrOptionChoicesT<StepAttrOptionM<unknown>>[], val: any) => (
     // tslint:disable-next-line:triple-equals

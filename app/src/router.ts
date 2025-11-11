@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory, RouterOptions, RouteRecordRaw, Router } from 'vue-router'
-import conf from './conf';
-import * as Helpers from './services/helpers'; 
+import conf from './conf.ts';
+import * as Helpers from './services/helpers.ts'; 
 import Step from './controllers/Step.vue';
 import ModerateList from './controllers/ModerateList.vue';
 

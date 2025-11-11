@@ -1,9 +1,9 @@
 // @ts-nocheck
 
 import * as _ from 'lodash-es';
-import { assert } from './test_utils';
-import grouped_calls from '../helper_grouped_calls';
-import { setTimeoutPromise } from '../helpers';
+import { assert } from './test_utils.ts';
+import grouped_calls from '../helper_grouped_calls.ts';
+import { setTimeoutPromise } from '../helpers.ts';
 
 const sequence = (first: number, last: number) => Array.from({length: last - first + 1}, (_, i) => i + first) as number[];
 

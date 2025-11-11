@@ -16,11 +16,11 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import * as Helpers from '../services/helpers';
-import * as Ws from '../services/ws';
-import { router } from '../router';
+import * as Helpers from '../services/helpers.ts';
+import * as Ws from '../services/ws.ts';
+import { router } from '../router.ts';
 import { isEmpty } from 'lodash-es';
-import { V, StepAttrsOption } from '../services/ws';
+import { V, StepAttrsOption } from '../services/ws.ts';
 
 import { v_from_prevStep } from './StepV.vue';
 import StepV from './StepV.vue';

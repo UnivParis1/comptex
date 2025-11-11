@@ -1,7 +1,7 @@
 'use strict';
 
-import { assert } from './test_utils';
-import * as ldap_convert from '../ldap_convert';
+import { assert } from './test_utils.ts';
+import * as ldap_convert from '../ldap_convert.ts';
 
 describe('ldap_convert', () => {
     describe('dn convert', () => {

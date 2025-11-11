@@ -21,6 +21,6 @@
     ],
     "target": "es2018",
     "esModuleInterop": true,
-    "module": "commonjs"
+    "module": "node20"
   }
 }

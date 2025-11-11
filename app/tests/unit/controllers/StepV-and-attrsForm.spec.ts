@@ -2,7 +2,7 @@ import { assert, describe, it } from 'vitest';
 import * as _ from 'lodash-es'
 import { mount } from '@vue/test-utils'
 import StepV from '@/controllers/StepV.vue';
-import { flushPromises } from '../test_utils';
+import { flushPromises } from '../test_utils.ts';
 
 
 
