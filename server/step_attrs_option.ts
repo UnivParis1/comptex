@@ -1,8 +1,8 @@
 import * as _ from 'lodash-es';
-import * as helpers from './helpers';
-import * as utils from './utils';
-import { compute_mppp_and_handle_default_values } from '../shared/mppp_and_defaults'
-import shared_conf from '../shared/conf'
+import * as helpers from './helpers.ts';
+import * as utils from './utils.ts';
+import { compute_mppp_and_handle_default_values } from '../shared/mppp_and_defaults.ts'
+import shared_conf from '../shared/conf.ts'
 
 export type one_diff = { prev: any, current: any }
 

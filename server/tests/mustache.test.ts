@@ -1,7 +1,7 @@
-import { assert } from './test_utils';
-import * as mustache from '../mustache_like_templating';
-import v_display from '../v_display';
-import { setTimeoutPromise } from '../helpers';
+import { assert } from './test_utils.ts';
+import * as mustache from '../mustache_like_templating.ts';
+import v_display from '../v_display.ts';
+import { setTimeoutPromise } from '../helpers.ts';
 
 describe('Mustache', () => {
     it("should handle various", async () => {

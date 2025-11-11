@@ -1,7 +1,7 @@
 import { defineComponent, nextTick } from "vue";
 
 import { pickBy, findKey, find, isEmpty, uniq, some } from 'lodash-es';
-import * as Helpers from '../services/helpers';
+import * as Helpers from '../services/helpers.ts';
 import genericAttr from './genericAttr.vue';
 
 import template from './attrsForm.html?raw';

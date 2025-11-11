@@ -1,9 +1,9 @@
 import * as _ from 'lodash-es'
-import { assert } from './test_utils';
-import * as helpers from '../helpers'
-import { merge_v, exportAttrs, export_v, flatten_attrs, selectUserProfile, merge_attrs_overrides, initAttrs, checkAttrs, transform_object_items_oneOf_async_to_oneOf, mapAttrs } from '../step_attrs_option';
-import type { one_diff } from '../step_attrs_option';
-import checkDisplayName from '../../shared/validators/displayName';
+import { assert } from './test_utils.ts';
+import * as helpers from '../helpers.ts'
+import { merge_v, exportAttrs, export_v, flatten_attrs, selectUserProfile, merge_attrs_overrides, initAttrs, checkAttrs, transform_object_items_oneOf_async_to_oneOf, mapAttrs } from '../step_attrs_option.ts';
+import type { one_diff } from '../step_attrs_option.ts';
+import checkDisplayName from '../../shared/validators/displayName.ts';
 
 const a_or_b : StepAttrOption = { oneOf: [
     { const: "a", merge_patch_parent_properties: { a: {} } },

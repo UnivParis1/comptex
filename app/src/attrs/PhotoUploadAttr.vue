@@ -56,8 +56,8 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import MyCroppie from '../directives/MyCroppie';
-import * as Helpers from '../services/helpers';
+import MyCroppie from '../directives/MyCroppie.ts';
+import * as Helpers from '../services/helpers.ts';
 
 
 const _size = (width, ratio) => ({ width, height: width / ratio })

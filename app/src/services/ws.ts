@@ -1,7 +1,7 @@
 import axios, { AxiosError, AxiosRequestConfig } from 'axios';
 import { merge, omit, cloneDeep } from 'lodash-es';
-import { setTimeoutPromise } from '../../../shared/helpers'
-import * as Helpers from './helpers';
+import { setTimeoutPromise } from '../../../shared/helpers.ts'
+import * as Helpers from './helpers.ts';
 
 
 interface VCommon extends CommonV {
@@ -37,7 +37,7 @@ export interface InitialSteps {
     allow_many: boolean | { forced_headers: string[] };
 }
 
-import conf from '../conf';
+import conf from '../conf.ts';
 
 const api_url = conf.base_pathname + 'api';
 

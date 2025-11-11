@@ -2,8 +2,8 @@
 
 import * as _ from 'lodash-es';
 import * as querystring from 'querystring';
-import * as utils from './utils';
-import conf from './conf';
+import * as utils from './utils.ts';
+import conf from './conf.ts';
 
 async function callAPI(action: string, params: Dictionary<string>, req_for_context: req) {
     if (!conf.esup_activ_bo.url) throw "configuration issue: conf.esup_activ_bo.url is missing";

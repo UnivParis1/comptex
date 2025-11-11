@@ -1,5 +1,5 @@
 import Vue from "vue";
-import conf from './conf';
+import conf from './conf.ts';
 
 declare module 'vue' {
   interface ComponentCustomProperties {

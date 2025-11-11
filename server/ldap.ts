@@ -1,13 +1,13 @@
 import * as _ from 'lodash-es';
-import * as helpers from './helpers'
+import * as helpers from './helpers.ts'
 import * as ldapjs from 'ldapjs';
 import * as ldapP from 'ldapjs-promise-disconnectwhenidle';
-import conf from './conf';
+import conf from './conf.ts';
 
 const remove_accents = _.deburr;
 
 // @ts-expect-error
-import { escape } from 'ldapjs/lib/filters/escape';
+import { escape } from 'ldapjs/lib/filters/escape.js';
 
 ldapP.init(conf.ldap);
 

@@ -1,7 +1,7 @@
 'use strict';
 
-import { assert } from './test_utils';
-import * as utils from '../utils';
+import { assert } from './test_utils.ts';
+import * as utils from '../utils.ts';
 
 describe('deep_extend', () => {
     let check = (in_: Dictionary<any>, in_overrides: Dictionary<any>, wanted: Dictionary<any>) => assert.deepEqual(utils.deep_extend(in_, in_overrides), wanted);

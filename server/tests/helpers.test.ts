@@ -1,7 +1,7 @@
 'use strict';
 
-import { assert } from './test_utils';
-import * as helpers from '../helpers';
+import { assert } from './test_utils.ts';
+import * as helpers from '../helpers.ts';
 
 process.env.TZ = 'Etc/GMT-3'
 

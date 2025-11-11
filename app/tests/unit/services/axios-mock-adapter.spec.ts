@@ -1,6 +1,6 @@
 import { assert, describe, it } from 'vitest';
 import axios from 'axios';
-import { mocha_axios_mock, should_throw } from '../test_utils';
+import { mocha_axios_mock, should_throw } from '../test_utils.ts';
 
 describe('axios-mock-adapter', () => {
     let mock = mocha_axios_mock()
