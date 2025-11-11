@@ -1,6 +1,6 @@
 /// <reference path='types.d.ts' />
 
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import * as util from 'util';
 import * as express from 'express';
 import * as acl_checker from './acl_checker';

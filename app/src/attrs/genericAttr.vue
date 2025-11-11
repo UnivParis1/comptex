@@ -141,7 +141,7 @@
 
 <script lang="ts">
 import { defineAsyncComponent, defineComponent } from "vue";
-import { includes, find, isNil, keyBy, mapValues } from 'lodash';
+import { includes, find, isNil, keyBy, mapValues } from 'lodash-es';
 import { isDateInputSupported } from '../services/helpers';
 import { formatValue } from '../../../shared/v_utils'
 import * as Ws from '../services/ws';

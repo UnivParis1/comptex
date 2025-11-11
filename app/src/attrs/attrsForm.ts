@@ -1,6 +1,6 @@
 import { defineComponent, nextTick } from "vue";
 
-import { pickBy, findKey, find, isEmpty, uniq, some } from 'lodash';
+import { pickBy, findKey, find, isEmpty, uniq, some } from 'lodash-es';
 import * as Helpers from '../services/helpers';
 import genericAttr from './genericAttr.vue';
 

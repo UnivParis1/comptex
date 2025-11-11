@@ -1,4 +1,4 @@
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import * as actions from './actions';
 import * as actions_pre from './actions_pre';
 import * as helpers from '../helpers';
