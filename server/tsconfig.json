@@ -4,7 +4,8 @@
         "../shared/**/*.ts"
     ],
   "compilerOptions": {
-    "outDir": "build",
+    "allowImportingTsExtensions": true,
+    "noEmit": true,
     "sourceMap": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
