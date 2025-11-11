@@ -3,7 +3,7 @@
 import { assert } from './test_utils';
 import * as ldap_convert from '../ldap_convert';
 import * as test_ldap from './test_ldap';
-require('../helpers');
+import '../helpers';
 
 import conf from '../conf'
 import * as ldap from '../ldap'
