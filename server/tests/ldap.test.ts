@@ -207,7 +207,7 @@ describe('ldap', () => {
             // @ts-expect-error
             let attrTypes = { sn: '', eduPersonAffiliation: [], eduPersonPrimaryAffiliation: '', mifare: '', up1Profile: [], up1Source: '', up1StartDate: '' }
             return ldap.read("uid=prigaux," + conf.ldap.base_people, attrTypes, attrsConvert).then(e => {
-                assert.deepEqual(e, <any> {
+                assert.deepEqual(e, {
                       eduPersonAffiliation: [ "member", "employee", "staff" ],
                       sn: "rigaux",
                       up1Profile: [ {
@@ -224,7 +224,7 @@ describe('ldap', () => {
                           up1Source: "{COMPTEX}PLB.SC4",
                           up1StartDate: new Date('2017-12-16'),
                       } ],
-                    }
+                    } as any
               );
             });
         });

@@ -22,10 +22,10 @@ const attrs: StepAttrsOption = {
     profilename: { oneOf: profiles },
 };
 
-const moderator_attrs = _.defaults(<StepAttrsOption> {
+const moderator_attrs = _.defaults({
     uid: {},
     supannAliasLogin: {},
-}, attrs);
+} as StepAttrsOption, attrs);
 
 const initialSteps: steps = {
     extern: {
