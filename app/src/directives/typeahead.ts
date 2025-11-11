@@ -1,5 +1,5 @@
 import { defineComponent } from "vue";
-import * as Helpers from '../services/helpers';
+import * as Helpers from '../services/helpers.ts';
 
 /* inspired from https://github.com/pespantelis/vue-typeahead */
 const typeaheadComponent = defineComponent({

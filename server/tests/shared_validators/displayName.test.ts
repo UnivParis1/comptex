@@ -1,7 +1,7 @@
 'use strict';
 
-import { assert } from '../test_utils';
-import checkDisplayName from '../../../shared/validators/displayName';
+import { assert } from '../test_utils.ts';
+import checkDisplayName from '../../../shared/validators/displayName.ts';
 
 describe('validators/displayName', () => {
 

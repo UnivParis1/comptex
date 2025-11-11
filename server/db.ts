@@ -2,8 +2,8 @@
 
 import * as _ from 'lodash-es';
 import * as mongodb from 'mongodb';
-import conf from './conf';
-import { renameKey, throw_ } from './helpers';
+import conf from './conf.ts';
+import { renameKey, throw_ } from './helpers.ts';
 import { UUID } from 'bson';
 
 export const error_codes = {

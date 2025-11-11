@@ -1,7 +1,7 @@
 'use strict';
 
 import * as _ from 'lodash-es';
-export * from '../shared/helpers'
+export * from '../shared/helpers.ts'
 
 if (Promise.prototype.tap === undefined) {
     // https://github.com/kriskowal/q/wiki/API-Reference#promisetaponfulfilled

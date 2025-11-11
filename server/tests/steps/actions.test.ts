@@ -1,7 +1,7 @@
 'use strict';
 
-import { assert } from '../test_utils';
-import * as actions from '../../steps/actions';
+import { assert } from '../test_utils.ts';
+import * as actions from '../../steps/actions.ts';
 
 describe('homePhone_to_pager_if_mobile', () => {
     async function testIt(v: v, wanted_v: v) {

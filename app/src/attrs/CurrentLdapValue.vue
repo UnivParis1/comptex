@@ -7,7 +7,7 @@
 
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
-import { formatValue } from '../../../shared/v_utils';
+import { formatValue } from '../../../shared/v_utils.ts';
 
 const props = defineProps<{
     modelValue: string | string[] | undefined,

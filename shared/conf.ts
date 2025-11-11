@@ -1,7 +1,7 @@
 /// <reference path='types.d.ts' />
 
-import checkDisplayName from './validators/displayName';
-import { is } from './helpers'
+import checkDisplayName from './validators/displayName.ts';
+import { is } from './helpers.ts'
 import { capitalize, deburr } from 'lodash-es';
 
 const accentsRange = '\u00C0-\u00FC';

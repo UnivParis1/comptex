@@ -1,11 +1,11 @@
 'use strict';
 
 import * as _ from 'lodash-es';
-import { assert } from './test_utils';
-import * as test_ldap from './test_ldap';
+import { assert } from './test_utils.ts';
+import * as test_ldap from './test_ldap.ts';
 
-import conf from '../conf'
-import * as search_ldap from '../search_ldap';
+import conf from '../conf.ts'
+import * as search_ldap from '../search_ldap.ts';
 
 const genLogin_with_existLogin = (existLogin_: (login: string) => Promise<boolean>) => async (sn: string, givenName: string) => {
     const orig = search_ldap.existLogin.fn;

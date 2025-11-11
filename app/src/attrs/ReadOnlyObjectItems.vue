@@ -32,7 +32,7 @@
 import { defineComponent } from "vue";
 import { mapValues, omitBy } from 'lodash-es'
 import { formatValue } from "../../../shared/v_utils";
-import * as Helpers from '../services/helpers';
+import * as Helpers from '../services/helpers.ts';
 
 export default defineComponent({
     props: ['v_array', 'opts'],

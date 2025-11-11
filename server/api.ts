@@ -3,20 +3,20 @@
 import * as _ from 'lodash-es';
 import * as util from 'util';
 import * as express from 'express';
-import * as acl_checker from './acl_checker';
-import * as db from './db';
-import * as helpers from './helpers';
-import * as utils from './utils';
-import * as search_ldap from './search_ldap';
-import * as mail from './mail';
-import shared_conf from '../shared/conf';
-import conf from './conf';
-import * as conf_steps from './steps/conf';
-import { export_v, merge_v, exportAttrs, merge_attrs_overrides, selectUserProfile, initAttrs, checkAttrs, transform_object_items_oneOf_async_to_oneOf, findStepAttr, flatMapAttrs } from './step_attrs_option';
-import { filters } from './ldap';
-import gen_gsh_script from './gen_gsh_script';
-import { sv_to_url } from './sv';
-import './helpers'; // for Promise.prototype.tap
+import * as acl_checker from './acl_checker.ts';
+import * as db from './db.ts';
+import * as helpers from './helpers.ts';
+import * as utils from './utils.ts';
+import * as search_ldap from './search_ldap.ts';
+import * as mail from './mail.ts';
+import shared_conf from '../shared/conf.ts';
+import conf from './conf.ts';
+import * as conf_steps from './steps/conf.ts';
+import { export_v, merge_v, exportAttrs, merge_attrs_overrides, selectUserProfile, initAttrs, checkAttrs, transform_object_items_oneOf_async_to_oneOf, findStepAttr, flatMapAttrs } from './step_attrs_option.ts';
+import { filters } from './ldap.ts';
+import gen_gsh_script from './gen_gsh_script.ts';
+import { sv_to_url } from './sv.ts';
+import './helpers.ts'; // for Promise.prototype.tap
 
 _.each(conf_steps.steps, initAttrs)
 _.each(conf_steps.steps, checkAttrs)

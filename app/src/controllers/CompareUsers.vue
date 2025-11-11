@@ -18,9 +18,9 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import * as _ from 'lodash-es';
-import conf from '../conf';
-import * as Helpers from '../services/helpers';
-import { formatValue as format } from '../../../shared/v_utils'
+import conf from '../conf.ts';
+import * as Helpers from '../services/helpers.ts';
+import { formatValue as format } from '../../../shared/v_utils.ts'
 import * as JsDiff from 'diff';
 
 function computeComparisons(v, homonyme) {   

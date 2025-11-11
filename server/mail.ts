@@ -3,8 +3,8 @@
 import * as _ from 'lodash-es';
 import * as fs from 'fs';
 import * as nodemailer from 'nodemailer';
-import conf from './conf';
-import * as Mustache from './mustache_like_templating';
+import conf from './conf.ts';
+import * as Mustache from './mustache_like_templating.ts';
 
 const mailTransporter = nodemailer.createTransport(conf.mail.transport);
 
@@ -33,7 +33,7 @@ export const send = (params: nodemailer.SendMailOptions, currentUser: CurrentUse
 };
 
 export const sendWithTemplateFile = (templateName: string, params: {}) => {
-    fs.readFile(__dirname + "/templates/mail/" + templateName, (err, data) => {
+    fs.readFile(new URL("./templates/mail/" + templateName, import.meta.url).pathname, (err, data) => {
         if (err) {
             console.log(err);
         } else {

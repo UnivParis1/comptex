@@ -1,6 +1,6 @@
 import * as express from 'express'
 import * as parser from 'accept-language-parser'
-import * as utils from './utils'
+import * as utils from './utils.ts'
 
 let _all_translations: Dictionary<Dictionary<string>> = {}
 

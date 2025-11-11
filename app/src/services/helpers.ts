@@ -1,11 +1,11 @@
 import axios from 'axios';
 import * as _ from 'lodash-es'
 import { memoize } from 'lodash-es';
-import { formatDate } from '../../../shared/helpers';
-import { formatValue } from '../../../shared/v_utils';
+import { formatDate } from '../../../shared/helpers.ts';
+import { formatValue } from '../../../shared/v_utils.ts';
 import { computed, ComputedRef, reactive, ref, watch, watchEffect } from 'vue';
 
-export * from '../../../shared/helpers';
+export * from '../../../shared/helpers.ts';
 
     const entityMap = {
         "&": "&amp;",

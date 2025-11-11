@@ -1,14 +1,14 @@
 import * as _ from 'lodash-es';
 import basic_auth from 'basic-auth';
-import * as utils from '../utils';
-import * as ldap from '../ldap';
-import { oneExistingPerson } from '../search_ldap';
-import * as search_ldap from '../search_ldap';
-import { selectUserProfile, merge_v } from '../step_attrs_option';
-import * as esup_activ_bo from '../esup_activ_bo';
-import * as cas from '../cas';
-import conf from '../conf';
-import { findMap } from '../helpers';
+import * as utils from '../utils.ts';
+import * as ldap from '../ldap.ts';
+import { oneExistingPerson } from '../search_ldap.ts';
+import * as search_ldap from '../search_ldap.ts';
+import { selectUserProfile, merge_v } from '../step_attrs_option.ts';
+import * as esup_activ_bo from '../esup_activ_bo.ts';
+import * as cas from '../cas.ts';
+import conf from '../conf.ts';
+import { findMap } from '../helpers.ts';
 const filters = ldap.filters;
 
 export const mutate_v = (f: (v:v) => void) : simpleAction_pre => async (_req, sv) => {

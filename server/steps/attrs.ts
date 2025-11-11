@@ -1,6 +1,6 @@
-import { mapAttrs } from '../step_attrs_option';
-import * as utils from '../utils'
-import shared_conf from '../../shared/conf';
+import { mapAttrs } from '../step_attrs_option.ts';
+import * as utils from '../utils.ts'
+import shared_conf from '../../shared/conf.ts';
 
 export const forceAttrs = (attrs: StepAttrsOption, optsToForce: StepAttrOption) => (
     mapAttrs(attrs, (opts) => ({ ...opts, ...optsToForce }))

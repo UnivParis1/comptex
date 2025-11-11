@@ -4,9 +4,9 @@ import * as _ from 'lodash-es';
 import ldapjs from 'ldapjs';
 const { parseDN } = ldapjs
 
-import conf from '../conf';
-import * as ldap from '../ldap';
-import * as ldap_convert from '../ldap_convert';
+import conf from '../conf.ts';
+import * as ldap from '../ldap.ts';
+import * as ldap_convert from '../ldap_convert.ts';
 
 type entry = Dictionary<any>
 type params = Dictionary<any>
@@ -70,7 +70,7 @@ let _server: server
 
 async function create_server(params: params): Promise<params> {
     if (!params) params = test_params();
-    const ldap_server = await import('./ldap_server')
+    const ldap_server = await import('./ldap_server.ts')
     const server: server = await ldap_server.default(params)
     let conf = _.omit(params, 'DNs');
     conf['uri'] = server.url;

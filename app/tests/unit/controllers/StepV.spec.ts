@@ -1,7 +1,7 @@
 import { assert, describe, it } from 'vitest'
 import * as _ from 'lodash-es'
 import { mount } from '@vue/test-utils'
-import { mocha_axios_mock, flushPromises } from '../test_utils';
+import { mocha_axios_mock, flushPromises } from '../test_utils.ts';
 import StepV from '@/controllers/StepV.vue';
 
 

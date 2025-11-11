@@ -1,16 +1,16 @@
 import { assert, describe, it } from 'vitest';
 import * as _ from 'lodash-es'
 import { DOMWrapper, mount } from '@vue/test-utils'
-import { setTimeoutPromise } from '@/services/helpers';
-import { collect_globals, flushPromises } from '../test_utils';
+import { setTimeoutPromise } from '@/services/helpers.ts';
+import { collect_globals, flushPromises } from '../test_utils.ts';
 import genericAttr from '@/attrs/genericAttr.vue';
 import AddressAttr from '@/attrs/AddressAttr.vue';
 import DateAttr from '@/attrs/DateAttr.vue';
 
-import validators from '@/directives/validators'
-import { GlobalMountOptions } from '@vue/test-utils/dist/types';
-import GlobalMixin from '@/GlobalMixin';
-import typeahead from '@/directives/typeahead';
+import validators from '@/directives/validators.ts'
+import { GlobalMountOptions } from '@vue/test-utils/dist/types.ts';
+import GlobalMixin from '@/GlobalMixin.ts';
+import typeahead from '@/directives/typeahead.ts';
 
 const inputAttrs = (eltWrapper: DOMWrapper<Element>) => _.omit(eltWrapper.attributes(), 'validity', 'class')
 const inputChecked = (inputWrapper: DOMWrapper<HTMLInputElement>) => inputWrapper.element.checked

@@ -1,3 +1,3 @@
-import conf from '../../shared/conf'
+import conf from '../../shared/conf.ts'
 
 export default conf

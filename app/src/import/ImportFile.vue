@@ -51,7 +51,7 @@
 <script lang="ts">
 import { tail } from "lodash";
 import { defineComponent } from "vue";
-import * as Ws from '../services/ws';
+import * as Ws from '../services/ws.ts';
 
 export default defineComponent({
     props: [ 'attrs', 'forced_headers' ],
