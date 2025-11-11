@@ -8,10 +8,10 @@ import * as conf from '../conf'
 import * as search_ldap from '../search_ldap';
 
 const genLogin_with_existLogin = (existLogin_: (login: string) => Promise<boolean>) => async (sn: string, givenName: string) => {
-    const { existLogin } = search_ldap;
-    (search_ldap as any).existLogin = existLogin_
+    const orig = search_ldap.existLogin.fn;
+    search_ldap.existLogin.fn = existLogin_
     const login = await search_ldap.genLogin(sn, givenName);
-    (search_ldap as any).existLogin = existLogin;
+    search_ldap.existLogin.fn = orig;
     return login
 };
     
