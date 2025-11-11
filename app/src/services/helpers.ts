@@ -67,7 +67,7 @@ export * from '../../../shared/helpers';
         eachObject(o2, function (k, v) {
             o[k] = v;
         }, opts);
-        return <T1 & T2> o;
+        return o as T1 & T2;
     }
 
     export function object_replace<T>(o: T, o2: T) {

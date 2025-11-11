@@ -197,7 +197,7 @@ async function set(req: req, id: id, wanted_step: string, v: v) {
     const sv = await getRaw(req, id, wanted_step);
     const svr = await setRaw(req, id, sv, v);
 
-    let r = <r> { success: true, ...svr.response };
+    let r = { success: true, ...svr.response } as r;
     if (svr.step) {
         r.step = svr.step;
         r.labels ||= step(svr).labels;
@@ -269,7 +269,7 @@ function setRaw(req: req, id: id, sv: sva, v: v) : Promise<svr> {
     return checkSetLock(sv).then(_ => (
         advance_sv(req, sv)
     )).tap(async svr => {
-        let sv = <sv> _.omit(svr, 'response', 'attrs');
+        let sv = _.omit(svr, 'response', 'attrs') as sv;
         if (sv.v.various) delete sv.v.various.diff;
         if (sv.step) {
             if (sv.step.includes(":")) throw `saved name can not contain ":" which is reserved for *alternate* step (got ${sv.step})`

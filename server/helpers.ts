@@ -43,7 +43,7 @@ export function pmap<T,U>(o: Dictionary<T>, f: (e: T, key: string) => Promise<U>
 // @ts-expect-error
 export function pmap (o, f) { return Promise.all(_.map(o, f)) }
 
-export const objectKeys = <T extends {}>(o: T) => <Array<keyof T>>Object.keys(o)
+export const objectKeys = <T extends {}>(o: T) => Object.keys(o) as Array<keyof T>
 
 export const keyByMulti = <T>(l: T[], field: string): Dictionary<T> => {
     let h: Dictionary<T> = {}

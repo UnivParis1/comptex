@@ -219,7 +219,7 @@ function convertToLdap_(modifications: { attr_: string; modify: ldap_modify; }[]
 }
 
 function merge(a: Options, b: Options): Options {
-  return <Options> _.assign(a, b);
+  return _.assign(a, b) as Options;
 }
 
 // NB: it should be <T extends LdapEntry> but it is not well handled by typescript

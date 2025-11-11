@@ -192,7 +192,7 @@ function homonymes_scoring(l: typeof conf.ldap.people.types[], preferStudent: bo
             e.global_eduPersonPrimaryAffiliation === 'student' ? 1 : 0, // still prefer student ???
       ];
       let score = scores.reduce((score, subscore) => score * 10 + subscore, 0);
-      return <Homonyme> _.merge({ score }, e);
+      return _.merge({ score }, e) as Homonyme;
     });
     return _.sortBy(l_, 'score').reverse();
 }
@@ -322,7 +322,7 @@ function genLogin_accronyms_prefix(sn: string, givenNames: string[], coll: numbe
 
 // génère un login unique
 export const genLogin = (sn: string, givenName: string): Promise<string> => {
-    if (!sn) return <Promise<string>> Promise.resolve(undefined);
+    if (!sn) return Promise.resolve(undefined as string);
     sn = remove_accents(sn);
     sn = sn.toLowerCase().replace(/[^a-z0-9]/g, '');
 
