@@ -1,7 +1,7 @@
 'use strict';
 
 import * as _ from 'lodash';
-import * as conf from '../conf';
+import conf from '../conf';
 import * as ldap from '../ldap';
 import * as search_ldap from '../search_ldap';
 import * as db from '../db';

@@ -4,7 +4,7 @@ import * as _ from 'lodash';
 import { assert } from './test_utils';
 import * as test_ldap from './test_ldap';
 
-import * as conf from '../conf'
+import conf from '../conf'
 import * as search_ldap from '../search_ldap';
 
 const genLogin_with_existLogin = (existLogin_: (login: string) => Promise<boolean>) => async (sn: string, givenName: string) => {

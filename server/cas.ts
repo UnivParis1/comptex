@@ -1,6 +1,6 @@
 import * as express from 'express';
 import * as cas from 'connect-cas';
-import * as conf from './conf';
+import conf from './conf';
 import * as utils from './utils';
 import { get_delete } from './helpers';
 

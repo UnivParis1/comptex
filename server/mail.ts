@@ -3,7 +3,7 @@
 import * as _ from 'lodash';
 import * as fs from 'fs';
 import * as nodemailer from 'nodemailer';
-import * as conf from './conf';
+import conf from './conf';
 import * as Mustache from './mustache_like_templating';
 
 const mailTransporter = nodemailer.createTransport(conf.mail.transport);

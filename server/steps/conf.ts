@@ -4,7 +4,7 @@ import * as _ from 'lodash';
 import * as actions from './actions';
 import * as acl from './acl';
 import * as utils from '../utils';
-import * as conf from '../conf';
+import conf from '../conf';
 import profiles from './conf_profiles';
 
 

@@ -1,6 +1,6 @@
 import * as express from 'express';
 import * as mongodb from 'mongodb';
-import * as conf from './conf';
+import conf from './conf';
 import * as search_ldap from './search_ldap'
 
 declare global {

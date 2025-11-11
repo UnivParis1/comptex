@@ -10,7 +10,7 @@ import * as utils from './utils';
 import * as search_ldap from './search_ldap';
 import * as mail from './mail';
 import shared_conf from '../shared/conf';
-import * as conf from './conf';
+import conf from './conf';
 import * as conf_steps from './steps/conf';
 import { export_v, merge_v, exportAttrs, merge_attrs_overrides, selectUserProfile, initAttrs, checkAttrs, transform_object_items_oneOf_async_to_oneOf, findStepAttr, flatMapAttrs } from './step_attrs_option';
 import { filters } from './ldap';

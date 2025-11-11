@@ -1,7 +1,7 @@
 import * as _ from 'lodash';
 import * as utils from './utils';
 import * as ldap from './ldap';
-import * as conf from './conf';
+import conf from './conf';
 import grouped_calls from './helper_grouped_calls';
 
 

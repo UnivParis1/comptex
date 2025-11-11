@@ -3,7 +3,7 @@
 import * as _ from 'lodash';
 import { parseDN } from 'ldapjs';
 
-import * as conf from '../conf';
+import conf from '../conf';
 import * as ldap from '../ldap';
 import * as ldap_convert from '../ldap_convert';
 
@@ -69,7 +69,7 @@ let _server: server
 
 async function create_server(params: params): Promise<params> {
     if (!params) params = test_params();
-    const server: server = await require('./ldap_server')(params)
+    const server: server = await (require('./ldap_server')).default(params)
     let conf = _.omit(params, 'DNs');
     conf['uri'] = server.url;
     _server = server
