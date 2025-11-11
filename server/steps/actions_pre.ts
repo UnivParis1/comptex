@@ -7,7 +7,7 @@ import * as search_ldap from '../search_ldap';
 import { selectUserProfile, merge_v } from '../step_attrs_option';
 import * as esup_activ_bo from '../esup_activ_bo';
 import * as cas from '../cas';
-import * as conf from '../conf';
+import conf from '../conf';
 import { findMap } from '../helpers';
 const filters = ldap.filters;
 
