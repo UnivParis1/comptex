@@ -9,8 +9,8 @@ import type { CSVParseParam } from 'csvtojson/v2/Parameters.d.ts';
 import * as crypto from 'crypto'
 import session from 'express-session';
 import session_file_store from 'session-file-store';
-import concat = require('concat-stream');
-import simpleGet = require('simple-get');
+import concat from 'concat-stream';
+import simpleGet from 'simple-get';
 import * as http from 'http';
 import conf from './conf';
 import { EventEmitter } from 'events';

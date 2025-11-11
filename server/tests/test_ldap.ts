@@ -70,7 +70,8 @@ let _server: server
 
 async function create_server(params: params): Promise<params> {
     if (!params) params = test_params();
-    const server: server = await (require('./ldap_server')).default(params)
+    const ldap_server = await import('./ldap_server')
+    const server: server = await ldap_server.default(params)
     let conf = _.omit(params, 'DNs');
     conf['uri'] = server.url;
     _server = server
