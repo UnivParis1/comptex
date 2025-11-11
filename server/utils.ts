@@ -164,7 +164,7 @@ export function popen(inText: string, cmd: string, params: string[], opts?: { lo
     p.stdin.write(inText);
     p.stdin.end();
 
-    return <Promise<string>> new Promise((resolve, reject) => {
+    return new Promise((resolve, reject) => {
         let output = '';
         let get_ouput = (data: any) => { output += data; };
         let error_log = (data: any) => console.error(`${cmd} stderr : ${data}`)
