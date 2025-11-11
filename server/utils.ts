@@ -5,7 +5,7 @@ import * as _ from 'lodash';
 import * as iconv from 'iconv-lite';
 import * as express from 'express';
 import * as csvtojson from 'csvtojson';
-import { CSVParseParam } from 'csvtojson/v2/Parameters';
+import type { CSVParseParam } from 'csvtojson/v2/Parameters.d.ts';
 import * as crypto from 'crypto'
 import * as session from 'express-session';
 import * as session_file_store from 'session-file-store';
