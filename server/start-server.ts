@@ -11,7 +11,7 @@ import api, { stop_polling } from './api';
 import * as utils from './utils';
 import * as cas from './cas';
 import * as translate from './translate'
-import * as conf from './conf';
+import conf from './conf';
 import * as conf_steps from './steps/conf';
 const app = express();
 

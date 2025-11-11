@@ -280,4 +280,4 @@ const conf = {
     }
 };
 
-export = conf;
+export default conf;

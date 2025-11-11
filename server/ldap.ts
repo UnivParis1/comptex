@@ -2,7 +2,7 @@ import * as _ from 'lodash';
 import * as helpers from './helpers'
 import * as ldapjs from 'ldapjs';
 import * as ldapP from 'ldapjs-promise-disconnectwhenidle';
-import * as conf from './conf';
+import conf from './conf';
 
 const remove_accents = _.deburr;
 

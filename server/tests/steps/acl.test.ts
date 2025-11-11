@@ -1,7 +1,7 @@
 'use strict';
 
 import { assert } from '../test_utils';
-import * as conf from '../../conf'
+import conf from '../../conf'
 import * as test_ldap from '../test_ldap';
 import * as acl from '../../steps/acl';
 

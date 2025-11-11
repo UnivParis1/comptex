@@ -10,7 +10,7 @@ import * as search_ldap from '../search_ldap';
 import * as esup_activ_bo from '../esup_activ_bo';
 import { flatten_attrs } from '../step_attrs_option';
 import v_display from '../v_display';
-import * as conf from '../conf';
+import conf from '../conf';
 import client_conf from '../../shared/conf'; // ES6 syntax needed for default export
 import Mustache = require('../mustache_like_templating');
 import { sv_to_url } from '../sv';

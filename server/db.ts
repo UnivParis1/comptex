@@ -2,7 +2,7 @@
 
 import * as _ from 'lodash';
 import * as mongodb from 'mongodb';
-import * as conf from './conf';
+import conf from './conf';
 import { renameKey, throw_ } from './helpers';
 import { UUID } from 'bson';
 
