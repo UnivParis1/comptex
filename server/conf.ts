@@ -3,13 +3,13 @@
 // @ts-ignore
 import * as fs from 'fs';
 import sendmailTransport from 'nodemailer-sendmail-transport';
-import * as ldap_convert from './ldap_convert';
+import * as ldap_convert from './ldap_convert.ts';
 import * as _ from 'lodash-es';
 import session from 'express-session';
 import session_file_store from 'session-file-store';
-import { sameKeyNameChoices } from './helpers';
-import * as grouped_calls from './helper_grouped_calls';
-import shared_conf from '../shared/conf';
+import { sameKeyNameChoices } from './helpers.ts';
+import * as grouped_calls from './helper_grouped_calls.ts';
+import shared_conf from '../shared/conf.ts';
 
 const ldap_base = "dc=univ,dc=fr";
 const ldap_main = {

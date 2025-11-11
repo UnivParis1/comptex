@@ -1,8 +1,8 @@
 import * as _ from 'lodash-es';
-import * as utils from './utils';
-import * as ldap from './ldap';
-import conf from './conf';
-import grouped_calls from './helper_grouped_calls';
+import * as utils from './utils.ts';
+import * as ldap from './ldap.ts';
+import conf from './conf.ts';
+import grouped_calls from './helper_grouped_calls.ts';
 
 
 export type options = { action: "validate" } | { create: false } | {

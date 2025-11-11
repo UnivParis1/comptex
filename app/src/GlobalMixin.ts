@@ -1,6 +1,6 @@
 import * as _ from 'lodash-es';
 import { ComponentOptionsMixin } from 'vue';
-import conf from './conf';
+import conf from './conf.ts';
 
 
 export default {

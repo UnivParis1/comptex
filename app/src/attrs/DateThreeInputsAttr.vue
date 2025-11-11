@@ -27,7 +27,7 @@
 <script lang="ts">
 import { computed, reactive, watch } from "vue";
 import * as _ from 'lodash-es'
-import * as Helpers from '../services/helpers';
+import * as Helpers from '../services/helpers.ts';
 import { object_replace } from "@/services/helpers"
 
 function init(date?: Date) {

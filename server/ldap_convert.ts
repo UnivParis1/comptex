@@ -1,7 +1,7 @@
 'use strict';
 
 import * as _ from 'lodash-es';
-import { toYYYY_MM_DD } from './helpers';
+import { toYYYY_MM_DD } from './helpers.ts';
 
 export const datetime: ldap_conversion = {
         fromLdap: (dt: string): Date => {
