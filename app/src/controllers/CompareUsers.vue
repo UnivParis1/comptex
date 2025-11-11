@@ -17,7 +17,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import conf from '../conf';
 import * as Helpers from '../services/helpers';
 import { formatValue as format } from '../../../shared/v_utils'

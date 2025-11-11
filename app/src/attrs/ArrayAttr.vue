@@ -26,7 +26,7 @@
 </template>
 
 <script lang="ts">
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { V } from "@/services/ws";
 import { toRwRef } from "@/services/helpers";
 import { computed, ref } from "vue";

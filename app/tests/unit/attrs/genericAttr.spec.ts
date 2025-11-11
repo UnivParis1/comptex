@@ -1,5 +1,5 @@
 import { assert, describe, it } from 'vitest';
-import * as _ from 'lodash'
+import * as _ from 'lodash-es'
 import { DOMWrapper, mount } from '@vue/test-utils'
 import { setTimeoutPromise } from '@/services/helpers';
 import { collect_globals, flushPromises } from '../test_utils';
