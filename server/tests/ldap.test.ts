@@ -5,7 +5,7 @@ import * as ldap_convert from '../ldap_convert';
 import * as test_ldap from './test_ldap';
 require('../helpers');
 
-import * as conf from '../conf'
+import conf from '../conf'
 import * as ldap from '../ldap'
 
 describe('ldap', () => {

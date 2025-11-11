@@ -12,7 +12,7 @@ import * as session_file_store from 'session-file-store';
 import concat = require('concat-stream');
 import simpleGet = require('simple-get');
 import * as http from 'http';
-import * as conf from './conf';
+import conf from './conf';
 import { EventEmitter } from 'events';
 
 export const shibboleth_express_auth : express.RequestHandler<any, unknown, unknown, unknown> = (req, _res, next): void => {

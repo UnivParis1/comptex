@@ -99,4 +99,4 @@ return new Promise((resolve, reject) => {
 
 };
 
-export = doIt;
+export default doIt;
