@@ -1,5 +1,5 @@
 import * as _ from 'lodash';
-import * as basic_auth from 'basic-auth';
+import basic_auth from 'basic-auth';
 import * as utils from '../utils';
 import * as ldap from '../ldap';
 import { oneExistingPerson } from '../search_ldap';

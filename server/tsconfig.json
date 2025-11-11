@@ -20,6 +20,7 @@
         "body-parser", "express", "lodash", "mocha", "mongodb", "morgan", "node", "nodemailer", "xml2js"
     ],
     "target": "es2018",
+    "esModuleInterop": true,
     "module": "commonjs"
   }
 }
