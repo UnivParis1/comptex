@@ -1,4 +1,4 @@
-import * as ldap from 'ldapjs';
+import ldap from 'ldapjs';
 // @ts-expect-error
 import * as helpers from '../../node_modules/ldap-filter/lib/helpers';
 

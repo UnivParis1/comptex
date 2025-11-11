@@ -1,8 +1,8 @@
 import * as _ from 'lodash';
-import * as express from 'express';
+import express from 'express';
 import * as path from 'path';
-import * as logger from 'morgan';
-import * as bodyParser from 'body-parser';
+import logger from 'morgan';
+import bodyParser from 'body-parser';
 
 import * as ldap from './ldap';
 
