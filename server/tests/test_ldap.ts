@@ -67,14 +67,13 @@ function test_params() {
 type server = any
 let _server: server
 
-function create_server(params: params): Promise<params> {
+async function create_server(params: params): Promise<params> {
     if (!params) params = test_params();
-    return require('./ldap_server')(params).then((server: server) => {
-        let conf = _.omit(params, 'DNs');
-        conf['uri'] = server.url;
-        _server = server
-        return conf;
-    });
+    const server: server = await require('./ldap_server')(params)
+    let conf = _.omit(params, 'DNs');
+    conf['uri'] = server.url;
+    _server = server
+    return conf;
 }
 
 export const create = (params: Dictionary<any> = undefined): Promise<void> => (
