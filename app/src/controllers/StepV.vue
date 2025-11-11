@@ -80,19 +80,19 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import conf from '../conf';
-import * as Helpers from '../services/helpers';
-import * as Ws from '../services/ws';
-import { router } from '../router';
+import conf from '../conf.ts';
+import * as Helpers from '../services/helpers.ts';
+import * as Ws from '../services/ws.ts';
+import { router } from '../router.ts';
 import * as _ from 'lodash-es'
 import { defaults, isEqual, isEmpty } from 'lodash-es';
-import { StepAttrsOption } from '../services/ws';
-import { compute_mppp_and_handle_default_values } from '../../../shared/mppp_and_defaults';
+import { StepAttrsOption } from '../services/ws.ts';
+import { compute_mppp_and_handle_default_values } from '../../../shared/mppp_and_defaults.ts';
 
 import ImportFile from '../import/ImportFile.vue';
 import ImportResult from '../import/ImportResult.vue';
 import Homonyms from '../controllers/Homonyms.vue';
-import attrsForm from '../attrs/attrsForm';
+import attrsForm from '../attrs/attrsForm.ts';
 import MyModalP from './MyModalP.vue';
 import { filterAttrs, formatValue } from "../../../shared/v_utils";
 

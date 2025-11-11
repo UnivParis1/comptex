@@ -1,10 +1,10 @@
 'use strict';
 
-import { assert } from './test_utils';
-import * as test_ldap from './test_ldap';
+import { assert } from './test_utils.ts';
+import * as test_ldap from './test_ldap.ts';
 
-import * as acl from '../steps/acl';
-import * as acl_checker from '../acl_checker';
+import * as acl from '../steps/acl.ts';
+import * as acl_checker from '../acl_checker.ts';
 
 describe('global', () => {
  before(() => test_ldap.create())

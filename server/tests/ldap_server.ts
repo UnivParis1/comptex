@@ -1,6 +1,6 @@
 import ldap from 'ldapjs';
 // @ts-expect-error
-import * as helpers from '../../node_modules/ldap-filter/lib/helpers';
+import * as helpers from '../../node_modules/ldap-filter/lib/helpers.js';
 
 /* workaround "Filters match on attribute values only case-sensitively" (ldapjs github issue #156) */
 function escapeRegExp(str: string) {

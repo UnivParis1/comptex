@@ -1,11 +1,11 @@
 'use strict';
 
 import * as _ from 'lodash-es';
-import conf from './conf';
-import shared_conf from '../shared/conf';
-import * as ldap from './ldap';
-import * as helpers from './helpers';
-import { email_has_one_of_our_mail_domains } from './utils';
+import conf from './conf.ts';
+import shared_conf from '../shared/conf.ts';
+import * as ldap from './ldap.ts';
+import * as helpers from './helpers.ts';
+import { email_has_one_of_our_mail_domains } from './utils.ts';
 const filters = ldap.filters;
 
 const maxLoginLength = 10;

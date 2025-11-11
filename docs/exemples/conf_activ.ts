@@ -1,11 +1,11 @@
 import * as _ from 'lodash-es';
-import * as actions from './actions';
-import * as actions_pre from './actions_pre';
-import * as helpers from '../helpers';
+import * as actions from './actions.ts';
+import * as actions_pre from './actions_pre.ts';
+import * as helpers from '../helpers.ts';
 
-import { handle_attrs_cond_overrides } from './conf_cond_overrides'
-import { photo_termsOfUse, smsu_termsOfUse, pager_common, supannMailPerso_common, may_warn_user_about_modified_attrs_allowing_reinit_mdp } from './conf_common'
-import { StepAttrsOption_ } from './conf_needExternalModeration';
+import { handle_attrs_cond_overrides } from './conf_cond_overrides.ts'
+import { photo_termsOfUse, smsu_termsOfUse, pager_common, supannMailPerso_common, may_warn_user_about_modified_attrs_allowing_reinit_mdp } from './conf_common.ts'
+import { StepAttrsOption_ } from './conf_needExternalModeration.ts';
 
 const account_identification : StepAttrsOption = {
     eduPersonAffiliation: {

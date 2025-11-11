@@ -41,8 +41,8 @@
 <script lang="ts">
 import { includes } from 'lodash-es';
 import { defineComponent } from "vue";
-import * as Ws from '../services/ws';
-import { router } from '../router';
+import * as Ws from '../services/ws.ts';
+import { router } from '../router.ts';
 import genericAttr from '../attrs/genericAttr.vue';
 
 export default defineComponent({

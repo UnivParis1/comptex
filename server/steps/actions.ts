@@ -1,19 +1,19 @@
 'use strict';
 
 import * as _ from 'lodash-es';
-import * as mail from '../mail';
-import * as ldap from '../ldap';
-import * as helpers from '../helpers';
-import * as crejsonldap from '../crejsonldap';
-import { onePerson } from '../search_ldap';
-import * as search_ldap from '../search_ldap';
-import * as esup_activ_bo from '../esup_activ_bo';
-import { flatten_attrs } from '../step_attrs_option';
-import v_display from '../v_display';
-import conf from '../conf';
-import client_conf from '../../shared/conf'; // ES6 syntax needed for default export
-import * as Mustache from '../mustache_like_templating';
-import { sv_to_url } from '../sv';
+import * as mail from '../mail.ts';
+import * as ldap from '../ldap.ts';
+import * as helpers from '../helpers.ts';
+import * as crejsonldap from '../crejsonldap.ts';
+import { onePerson } from '../search_ldap.ts';
+import * as search_ldap from '../search_ldap.ts';
+import * as esup_activ_bo from '../esup_activ_bo.ts';
+import { flatten_attrs } from '../step_attrs_option.ts';
+import v_display from '../v_display.ts';
+import conf from '../conf.ts';
+import client_conf from '../../shared/conf.ts'; // ES6 syntax needed for default export
+import * as Mustache from '../mustache_like_templating.ts';
+import { sv_to_url } from '../sv.ts';
 const filters = ldap.filters;
 
 const remove_accents = _.deburr;

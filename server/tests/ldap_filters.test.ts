@@ -1,5 +1,5 @@
-import { assert } from './test_utils';
-import { filters } from '../ldap';
+import { assert } from './test_utils.ts';
+import { filters } from '../ldap.ts';
 
 describe('ldap filters', () => {
     describe('eq', () => {

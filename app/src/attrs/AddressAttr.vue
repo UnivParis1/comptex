@@ -52,8 +52,8 @@
 
 <script setup lang="ts">
 import { computed, reactive, ref, watch } from "vue";
-import * as Helpers from '../services/helpers';
-import * as Address from '../../../shared/address';
+import * as Helpers from '../services/helpers.ts';
+import * as Address from '../../../shared/address.ts';
 import CurrentLdapValue from './CurrentLdapValue.vue';
 import { asyncComputed_, object_replace } from "@/services/helpers"
 

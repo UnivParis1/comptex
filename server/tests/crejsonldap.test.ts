@@ -1,6 +1,6 @@
-import { assert } from './test_utils';
-import * as crejsonldap from '../crejsonldap';
-import * as actions from '../steps/actions';
+import { assert } from './test_utils.ts';
+import * as crejsonldap from '../crejsonldap.ts';
+import * as actions from '../steps/actions.ts';
 
 const fake_callRaw = (param_resp_s: Dictionary<string>) => {
     crejsonldap.callRaw.fn = (param) => {

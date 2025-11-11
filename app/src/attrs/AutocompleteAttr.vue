@@ -20,8 +20,8 @@
 
 <script setup lang="ts">
 import { defineComponent, reactive, watch } from 'vue';
-import * as Ws from '../services/ws';
-import { V } from '../services/ws'
+import * as Ws from '../services/ws.ts';
+import { V } from '../services/ws.ts'
 import CurrentLdapValue from './CurrentLdapValue.vue';
 import { asyncComputed_, toRwRef } from "@/services/helpers"
 

@@ -1,5 +1,5 @@
-import { assert } from './test_utils';
-import { for_unit_tests } from '../mail';
+import { assert } from './test_utils.ts';
+import { for_unit_tests } from '../mail.ts';
 
 describe('parse_header_and_body', () => {
     const { parse_header_and_body } = for_unit_tests

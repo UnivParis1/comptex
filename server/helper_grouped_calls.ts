@@ -1,4 +1,4 @@
-import { promise_defer } from './helpers';
+import { promise_defer } from './helpers.ts';
 
 type fl<In, Out> = (l : In[]) => Promise<Out[]>
 type one<In, Out> = { param: In } & promise_defer<Out>

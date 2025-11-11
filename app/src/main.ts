@@ -1,16 +1,16 @@
 import { createApp } from 'vue';
-import { router } from './router';
-import GlobalMixin from './GlobalMixin';
+import { router } from './router.ts';
+import GlobalMixin from './GlobalMixin.ts';
 import genericAttr from './attrs/genericAttr.vue';
-import { htmlToText } from './services/helpers'
-import conf from './conf';
+import { htmlToText } from './services/helpers.ts'
+import conf from './conf.ts';
 
 document.title = htmlToText(conf.title);
 
 import various from "./directives/various";
-import validators from './directives/validators'
-import Bootstrap from './directives/Bootstrap'
-import typeahead from './directives/typeahead'
+import validators from './directives/validators.ts'
+import Bootstrap from './directives/Bootstrap.ts'
+import typeahead from './directives/typeahead.ts'
 
 // especially needed on MSIE to allow "includes" in step.labels.description Vue.js template
 import array_includes from 'array-includes';

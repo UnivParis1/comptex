@@ -1,11 +1,11 @@
 'use strict';
 
 import * as _ from 'lodash-es';
-import conf from './conf';
-import * as db from './db';
-import * as ldap from './ldap';
-import * as search_ldap from './search_ldap';
-import { filters as ldap_filters } from './ldap';
+import conf from './conf.ts';
+import * as db from './db.ts';
+import * as ldap from './ldap.ts';
+import * as search_ldap from './search_ldap.ts';
+import { filters as ldap_filters } from './ldap.ts';
 
 const searchPeople = (peopleFilter: string, attr: string) => (
     ldap.searchThisAttr(conf.ldap.base_people, peopleFilter, attr, '' as string)

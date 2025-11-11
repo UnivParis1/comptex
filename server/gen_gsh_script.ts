@@ -1,5 +1,5 @@
-import profiles from './steps/conf_profiles';
-import { filters } from './ldap';
+import profiles from './steps/conf_profiles.ts';
+import { filters } from './ldap.ts';
 
 // exemples :
 // - profilename : {COMPTEX}learner.DS32:cdeed-2017-S02

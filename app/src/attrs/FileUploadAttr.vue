@@ -35,9 +35,9 @@
 <script lang="ts">
 import { round } from "lodash";
 import { defineComponent } from "vue";
-import * as Helpers from '../services/helpers';
-import { dataURL_to_mimeType } from '../../../shared/helpers';
-import conf from '../conf'
+import * as Helpers from '../services/helpers.ts';
+import { dataURL_to_mimeType } from '../../../shared/helpers.ts';
+import conf from '../conf.ts'
 
 const default_acceptedMimeTypes = conf.fileUpload_default_acceptedMimeTypes
 

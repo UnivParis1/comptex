@@ -16,7 +16,7 @@
 
 <script lang="ts">
 import { defineAsyncComponent, defineComponent } from "vue";
-import conf from '../conf';
+import conf from '../conf.ts';
 
 export default defineComponent({
     props: ['modelValue', 'opts', 'submitted'],

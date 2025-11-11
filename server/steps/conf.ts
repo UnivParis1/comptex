@@ -1,11 +1,11 @@
 'use strict';
 
 import * as _ from 'lodash-es';
-import * as actions from './actions';
-import * as acl from './acl';
-import * as utils from '../utils';
-import conf from '../conf';
-import profiles from './conf_profiles';
+import * as actions from './actions.ts';
+import * as acl from './acl.ts';
+import * as utils from '../utils.ts';
+import conf from '../conf.ts';
+import profiles from './conf_profiles.ts';
 
 
 const attrs: StepAttrsOption = {

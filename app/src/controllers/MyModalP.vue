@@ -17,7 +17,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { ref, Ref } from 'vue';
-import * as Helpers from '../services/helpers';
+import * as Helpers from '../services/helpers.ts';
 
 import Modal from '../directives/Modal.vue';
 

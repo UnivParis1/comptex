@@ -1,8 +1,8 @@
 import * as express from 'express';
 import * as cas from 'connect-cas';
-import conf from './conf';
-import * as utils from './utils';
-import { get_delete } from './helpers';
+import conf from './conf.ts';
+import * as utils from './utils.ts';
+import { get_delete } from './helpers.ts';
 
 declare module 'express-session' {
     interface SessionData {

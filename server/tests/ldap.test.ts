@@ -1,12 +1,12 @@
 'use strict';
 
-import { assert } from './test_utils';
-import * as ldap_convert from '../ldap_convert';
-import * as test_ldap from './test_ldap';
-import '../helpers';
+import { assert } from './test_utils.ts';
+import * as ldap_convert from '../ldap_convert.ts';
+import * as test_ldap from './test_ldap.ts';
+import '../helpers.ts';
 
-import conf from '../conf'
-import * as ldap from '../ldap'
+import conf from '../conf.ts'
+import * as ldap from '../ldap.ts'
 
 describe('ldap', () => {
 

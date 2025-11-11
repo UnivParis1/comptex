@@ -4,15 +4,16 @@ import * as path from 'path';
 import logger from 'morgan';
 import bodyParser from 'body-parser';
 
-import * as ldap from './ldap';
+import * as ldap from './ldap.ts';
 
-import * as db from './db';
-import api, { stop_polling } from './api';
-import * as utils from './utils';
-import * as cas from './cas';
-import * as translate from './translate'
-import conf from './conf';
-import * as conf_steps from './steps/conf';
+import * as db from './db.ts';
+import api, { stop_polling } from './api.ts';
+import * as utils from './utils.ts';
+import * as cas from './cas.ts';
+import * as translate from './translate.ts'
+import conf from './conf.ts';
+import * as conf_steps from './steps/conf.ts';
+import { fileURLToPath } from 'url';
 const app = express();
 
 _.attempt(() => require('source-map-support').install());
@@ -24,7 +25,8 @@ app.set('trust proxy', conf.trust_proxy)
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(__dirname + '/app/favicon.ico'));
-app.use("/", express.static(path.join(__dirname, '../app/dist'), staticFilesOptions));
+const _dirname = path.dirname(fileURLToPath(import.meta.url))
+app.use("/", express.static(path.join(_dirname, '../app/dist'), staticFilesOptions));
 logger.token('remote-user', (req: any) => (req.user?.id))
 app.use(logger(':remote-addr :remote-user ":method :url" :status :res[content-length] ":referrer" ":user-agent" :response-time ms'));
 if (conf.cas.ssoBaseURL) {

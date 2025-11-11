@@ -1,6 +1,5 @@
 'use strict';
 
-import * as path from 'path';
 import * as _ from 'lodash-es';
 import * as iconv from 'iconv-lite';
 import * as express from 'express';
@@ -12,7 +11,7 @@ import session_file_store from 'session-file-store';
 import concat from 'concat-stream';
 import simpleGet from 'simple-get';
 import * as http from 'http';
-import conf from './conf';
+import conf from './conf.ts';
 import { EventEmitter } from 'events';
 
 export const shibboleth_express_auth : express.RequestHandler<any, unknown, unknown, unknown> = (req, _res, next): void => {
@@ -107,7 +106,7 @@ export function respondJson(req: req, res: express.Response, p: Promise<response
 }
 
 export const index_html = (_req: req, res: express.Response, _next: next): void => {
-    res.sendFile(path.join(__dirname, "../app/dist/index.html"), err => { 
+    res.sendFile(new URL("../app/dist/index.html", import.meta.url).pathname, err => { 
         if (err) console.error(err)
     })
 };

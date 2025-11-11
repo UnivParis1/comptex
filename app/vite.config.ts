@@ -2,7 +2,7 @@ import { fileURLToPath, URL } from 'url'
 
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
-import shared_conf from '../shared/conf';
+import shared_conf from '../shared/conf.ts';
 
 // https://vitejs.dev/config/
 export default defineConfig({

@@ -1,11 +1,11 @@
 'use strict';
 
 import * as _ from 'lodash-es';
-import conf from '../conf';
-import * as ldap from '../ldap';
-import * as search_ldap from '../search_ldap';
-import * as db from '../db';
-import { parse_composites } from '../ldap_convert';
+import conf from '../conf.ts';
+import * as ldap from '../ldap.ts';
+import * as search_ldap from '../search_ldap.ts';
+import * as db from '../db.ts';
+import { parse_composites } from '../ldap_convert.ts';
 const filters = ldap.filters;
 
 type simple_acl_search = {    
