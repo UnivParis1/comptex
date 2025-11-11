@@ -4,11 +4,11 @@ import * as path from 'path';
 import * as _ from 'lodash';
 import * as iconv from 'iconv-lite';
 import * as express from 'express';
-import * as csvtojson from 'csvtojson';
+import csvtojson from 'csvtojson';
 import type { CSVParseParam } from 'csvtojson/v2/Parameters.d.ts';
 import * as crypto from 'crypto'
-import * as session from 'express-session';
-import * as session_file_store from 'session-file-store';
+import session from 'express-session';
+import session_file_store from 'session-file-store';
 import concat = require('concat-stream');
 import simpleGet = require('simple-get');
 import * as http from 'http';
