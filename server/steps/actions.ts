@@ -356,7 +356,7 @@ export const ask_confirmation = (attr_to_save_confirmation: string, msg_template
 
 export const genLogin: simpleAction = (_req, sv) => {
     let createResp = (login: string) => {
-        let v = <v> _.assign({ supannAliasLogin: login }, sv.v);
+        let v = _.assign({ supannAliasLogin: login } as v, sv.v);
         return { v, response: {login} };
     };
     if (sv.v.uid) {

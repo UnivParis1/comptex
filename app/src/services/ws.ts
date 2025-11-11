@@ -259,7 +259,7 @@ function password_to_auth(params): AxiosRequestConfig {
 export function getInScope($scope, id: string, params, hash_params, expectedStep: string) : Promise<void> {
     var url = api_url + '/comptes/' + id + "/" + expectedStep;
     return axios.get(url, password_to_auth(params)).then((resp) => {
-        var sv = <SVRaw>resp.data;
+        var sv = resp.data as SVRaw;
         initAttrs(sv.attrs);
         $scope.attrs = sv.attrs;
         let all_attrs = get_all_attrs_flat($scope.attrs);
@@ -328,7 +328,7 @@ async function listInScope_maybe_retry($scope, params, cancelToken, opts) : Prom
 export function homonymes(id, v, all_attrs_flat, params, stepName: string) {
     const v_ = toWs(v, all_attrs_flat);
     return axios.post(api_url + '/homonymes/' + id + '/' + stepName, v_, password_to_auth(params)).then((resp) =>
-        (<any>resp.data).map(v => fromWs(v, all_attrs_flat))
+        (resp.data as any).map(v => fromWs(v, all_attrs_flat))
         , _handleErr);
 }
 
