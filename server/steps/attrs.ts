@@ -1,4 +1,4 @@
-import { mapAttrs } from "../step_attrs_option";
+import { mapAttrs } from '../step_attrs_option';
 import * as utils from '../utils'
 import shared_conf from '../../shared/conf';
 
