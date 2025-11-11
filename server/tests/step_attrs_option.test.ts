@@ -1,7 +1,8 @@
 import * as _ from 'lodash'
 import { assert } from './test_utils';
 import * as helpers from '../helpers'
-import { merge_v, exportAttrs, export_v, flatten_attrs, selectUserProfile, merge_attrs_overrides, initAttrs, checkAttrs, one_diff, transform_object_items_oneOf_async_to_oneOf, mapAttrs } from '../step_attrs_option';
+import { merge_v, exportAttrs, export_v, flatten_attrs, selectUserProfile, merge_attrs_overrides, initAttrs, checkAttrs, transform_object_items_oneOf_async_to_oneOf, mapAttrs } from '../step_attrs_option';
+import type { one_diff } from '../step_attrs_option';
 import checkDisplayName from '../../shared/validators/displayName';
 
 const a_or_b : StepAttrOption = { oneOf: [
