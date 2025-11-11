@@ -1,6 +1,6 @@
 'use strict';
 
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import * as mail from '../mail';
 import * as ldap from '../ldap';
 import * as helpers from '../helpers';

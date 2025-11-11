@@ -1,4 +1,4 @@
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import * as helpers from './helpers';
 import * as utils from './utils';
 import { compute_mppp_and_handle_default_values } from '../shared/mppp_and_defaults'

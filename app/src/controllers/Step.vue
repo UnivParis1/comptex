@@ -19,7 +19,7 @@ import { defineComponent } from "vue";
 import * as Helpers from '../services/helpers';
 import * as Ws from '../services/ws';
 import { router } from '../router';
-import { isEmpty } from 'lodash';
+import { isEmpty } from 'lodash-es';
 import { V, StepAttrsOption } from '../services/ws';
 
 import { v_from_prevStep } from './StepV.vue';

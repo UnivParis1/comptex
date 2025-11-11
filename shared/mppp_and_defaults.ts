@@ -1,4 +1,4 @@
-import { forIn, map, mapValues, pickBy } from 'lodash';
+import { forIn, map, mapValues, pickBy } from 'lodash-es';
 import { find_choice } from './v_utils';
 
 const matches_if = (if_: 'truthy'|'falsy'|'modified', val: string, val_orig: string | undefined) => (
