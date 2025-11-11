@@ -1,5 +1,6 @@
 import { assert } from '../test_utils'
-import { handle_attrs_cond_overrides, MoreAttrOption_cond_overrides } from '../../steps/attrs_override'
+import { handle_attrs_cond_overrides } from '../../steps/attrs_override'
+import type { MoreAttrOption_cond_overrides } from '../../steps/attrs_override'
 
 type StepAttrOption_ = StepAttrOptionT<MoreAttrOption_cond_overrides>
 export type StepAttrsOption_ = Dictionary<StepAttrOption_>
