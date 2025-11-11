@@ -1,4 +1,4 @@
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import * as utils from '../utils';
 import * as step_attrs_option from '../step_attrs_option'
 import * as search_ldap from '../search_ldap';

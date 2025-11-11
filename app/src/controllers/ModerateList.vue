@@ -37,7 +37,7 @@ import * as Helpers from '../services/helpers';
 import * as Ws from '../services/ws';
 import InitialStep from './InitialStep.vue';
 import { prepare_for_compare } from '../../../shared/validators/displayName';
-import { at } from 'lodash';
+import { at } from 'lodash-es';
 
 export default defineComponent({
   name: 'ModerateList',

@@ -2,7 +2,7 @@
 // alas Microsoft 365 still does not implement it in 2023
 
 import * as fflate from "fflate"
-import * as _ from 'lodash'
+import * as _ from 'lodash-es'
 import { V, StepAttrsOption } from "./ws"
 
 const XML_CHAR_MAP = { '<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;', "'": '&apos;' }

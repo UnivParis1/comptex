@@ -1,4 +1,4 @@
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import express from 'express';
 import * as path from 'path';
 import logger from 'morgan';

@@ -39,7 +39,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import * as _ from 'lodash'
+import * as _ from 'lodash-es'
 import Prism from 'prismjs'
 import 'prismjs/components/prism-json'
 import 'prismjs/themes/prism.css'

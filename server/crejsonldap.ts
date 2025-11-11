@@ -1,4 +1,4 @@
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import * as utils from './utils';
 import * as ldap from './ldap';
 import conf from './conf';

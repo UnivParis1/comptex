@@ -1,5 +1,5 @@
 import axios, { AxiosError, AxiosRequestConfig } from 'axios';
-import { merge, omit, cloneDeep } from 'lodash';
+import { merge, omit, cloneDeep } from 'lodash-es';
 import { setTimeoutPromise } from '../../../shared/helpers'
 import * as Helpers from './helpers';
 

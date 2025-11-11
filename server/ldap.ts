@@ -1,4 +1,4 @@
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import * as helpers from './helpers'
 import * as ldapjs from 'ldapjs';
 import * as ldapP from 'ldapjs-promise-disconnectwhenidle';

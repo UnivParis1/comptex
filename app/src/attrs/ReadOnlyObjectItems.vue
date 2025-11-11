@@ -30,7 +30,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { mapValues, omitBy } from 'lodash'
+import { mapValues, omitBy } from 'lodash-es'
 import { formatValue } from "../../../shared/v_utils";
 import * as Helpers from '../services/helpers';
 

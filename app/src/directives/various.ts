@@ -3,7 +3,7 @@ import conf from '../conf';
 import loadScriptOnce from 'load-script-once';
 import webcamLivePortrait from './webcamLivePortrait.vue';
 import { finallyP } from '../services/helpers';
-import { debounce } from 'lodash';
+import { debounce } from 'lodash-es';
 import { Directive } from "vue";
 
 export default (Vue: App) => {

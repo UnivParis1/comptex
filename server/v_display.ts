@@ -1,4 +1,4 @@
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { pmap, to_DD_MM_YYYY } from './helpers';
 import client_conf from '../shared/conf';
 

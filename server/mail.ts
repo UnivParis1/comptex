@@ -1,6 +1,6 @@
 'use strict';
 
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import * as fs from 'fs';
 import * as nodemailer from 'nodemailer';
 import conf from './conf';

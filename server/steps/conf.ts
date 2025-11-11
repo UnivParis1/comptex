@@ -1,6 +1,6 @@
 'use strict';
 
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import * as actions from './actions';
 import * as acl from './acl';
 import * as utils from '../utils';

@@ -1,7 +1,7 @@
 'use strict';
 
 import * as path from 'path';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import * as iconv from 'iconv-lite';
 import * as express from 'express';
 import csvtojson from 'csvtojson';

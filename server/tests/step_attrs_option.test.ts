@@ -1,4 +1,4 @@
-import * as _ from 'lodash'
+import * as _ from 'lodash-es'
 import { assert } from './test_utils';
 import * as helpers from '../helpers'
 import { merge_v, exportAttrs, export_v, flatten_attrs, selectUserProfile, merge_attrs_overrides, initAttrs, checkAttrs, transform_object_items_oneOf_async_to_oneOf, mapAttrs } from '../step_attrs_option';

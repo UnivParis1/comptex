@@ -2,7 +2,7 @@
 
 import checkDisplayName from './validators/displayName';
 import { is } from './helpers'
-import { capitalize, deburr } from 'lodash';
+import { capitalize, deburr } from 'lodash-es';
 
 const accentsRange = '\u00C0-\u00FC';
 const allowedCharsInNames = "[A-Za-z" + accentsRange + "'. -]";

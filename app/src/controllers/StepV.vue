@@ -84,8 +84,8 @@ import conf from '../conf';
 import * as Helpers from '../services/helpers';
 import * as Ws from '../services/ws';
 import { router } from '../router';
-import * as _ from 'lodash'
-import { defaults, isEqual, isEmpty } from 'lodash';
+import * as _ from 'lodash-es'
+import { defaults, isEqual, isEmpty } from 'lodash-es';
 import { StepAttrsOption } from '../services/ws';
 import { compute_mppp_and_handle_default_values } from '../../../shared/mppp_and_defaults';
 
