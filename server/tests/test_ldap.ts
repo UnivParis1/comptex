@@ -1,7 +1,8 @@
 'use strict';
 
 import * as _ from 'lodash';
-import { parseDN } from 'ldapjs';
+import ldapjs from 'ldapjs';
+const { parseDN } = ldapjs
 
 import conf from '../conf';
 import * as ldap from '../ldap';
