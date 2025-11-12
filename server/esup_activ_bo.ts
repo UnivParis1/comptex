@@ -23,9 +23,9 @@ async function callAPI(action: string, params: Dictionary<string>, req_for_conte
         const encoded = await utils.http_request(url, { headers, body })
         return _get_entries(encoded)
     } catch (err) {
-        err = querystring.parse(err.error)
+        const err_ = querystring.parse(err.error)
         console.error(err)
-        throw err.message || err.error || err
+        throw err_.message || err_.error || err
     }
 }
 
