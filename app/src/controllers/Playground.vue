@@ -27,7 +27,7 @@
         }}</pre>
     </div>
     <StepV
-        stepName="foo" :step="step"
+        id="new" :stepName="test_name" :step="step"
         :attrs="attrs" :all_attrs_flat="attrs"
         :v="v" :v_orig="v_orig" :v_pre="{}" :v_ldap_in="v_ldap"
     ></StepV>
@@ -207,7 +207,17 @@ export default defineComponent({
         }
         mock_search("/api/search/foo/a")
         mock_search("/api/search/foo/l")
-        mock.onAny().reply(200);
+        mock.onPut(new RegExp('^/api/comptes/new/.*')).reply(c => { 
+            const v = JSON.parse(c.data)
+            return [200, v.warned ? {
+                code:"OK",
+                labels: { added: `<b>Fake success</b>` }
+            } : {
+                code:"OK",
+                ask_confirmation: { attr_to_save_confirmation:"warned", msg: `Confirm change`, title: "Warning" }
+            }]
+        })
+        mock.onAny().reply(200)
     },
     mounted() {
         this.set_v_string();        
