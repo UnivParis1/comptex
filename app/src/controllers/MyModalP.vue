@@ -1,16 +1,16 @@
 <template>
     <modal v-if="active" @cancel="cancel">
-        <h3 slot="header">
+        <template #header><h3>
             <button type="button" class="close" @click="cancel" title="Annuler">&times;</button>
             <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span> {{title}}
-        </h3>
-        <div slot="body">
+        </h3></template>
+        <template #body>
             <p class="text-warning" v-html="msg"></p>
-        </div>
-        <div slot="footer">
+        </template>
+        <template #footer>
             <button type="button" class="btn btn-default" @click="cancel">{{"Annuler"}}</button>
             <button type="button" class="btn btn-primary" @click="ok" v-auto-focus>{{"Confirmer"}}</button>
-        </div>
+        </template>
     </modal>
 </template>
 
