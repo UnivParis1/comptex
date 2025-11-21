@@ -23,8 +23,8 @@
     "client-typecheck": "cd app && npm run typecheck",
     "server-typecheck": "tsc -p server",
     "server-typecheck:w": "tsc -p server --watch",
-    "server-start": "nodemon start-server.js",
-    "server-start:dev": "NODE_ENV=test nodemon --watch server/ --watch shared/ --inspect start-server.js",
+    "server-start": "node start-server.js",
+    "server-start:dev": "NODE_ENV=test node --watch start-server.js",
     "server-test": "mocha server/tests/{,*/}*.test.ts",
     "server-test:w": "npm run server-test -- --watch"
   },
@@ -84,7 +84,6 @@
     "eslint": "^8.28.0",
     "eslint-plugin-vue": "9.x",
     "mocha": "^10.1.0",
-    "nodemon": "^2.0.20",
     "source-map-support": "^0.5.21"
   }
 }
