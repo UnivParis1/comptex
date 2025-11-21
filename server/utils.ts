@@ -42,7 +42,7 @@ export interface http_client_Options {
 }
 
 export const http_request = (url: string, options: http_client_Options & { body?: string }) : Promise<string> => {
-    options = _.assign({ url, ca: conf.http_client_CAs }, options);
+    options = _.assign({ url }, options);
     return new Promise((resolve: (_: string) => void, reject: (_: any) => void) => {
         simpleGet(options, (err: any, res: http.IncomingMessage) => {
             if (err) return reject(err);
