@@ -12,7 +12,7 @@ export const error_codes = {
 
 const _id = (id: string = undefined) => (
     typeof id === 'object' ? id :
-    id?.match(/^\w{24}$/) ? new mongodb.ObjectID(id) : 
+    id?.match(/^\w{24}$/) ? new mongodb.ObjectId(id) : 
     id?.match(/^\w{8}-\w{4}-\w{4}-\w{4}-\w{12}$/) ? new UUID(id) :
     throw_("invalid id")
 )
