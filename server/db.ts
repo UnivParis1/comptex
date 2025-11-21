@@ -28,7 +28,7 @@ let client: mongodb.Db = null;
 
 export const collection = (name: string) => {
     if (!client) throw "db.init not done";
-    return client.collection(name);  
+    return client.collection<{ _id?: UUID | mongodb.ObjectId } & Dictionary<any>>(name);  
 }
 
 const svs = () => collection('sv')
