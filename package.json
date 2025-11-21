@@ -58,7 +58,6 @@
     "es6-promise": "^4.1.1",
     "express": "^5.1.0",
     "express-session": "^1.15.6",
-    "html5-boilerplate": "0.0.1",
     "iconv-lite": "^0.7.0",
     "ldap-filter": "^0.3.3",
     "ldapjs-promise-disconnectwhenidle": "github:UnivParis1/node-ldapjs-promise-disconnectWhenIdle",
