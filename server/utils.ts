@@ -36,6 +36,7 @@ export const query_string = (qs: Dictionary<string>) => {
 
 export interface http_client_Options {
     headers? : {};
+    /** abort the request after the specific time (in milliseconds). Use 0 for unlimited */
     timeout?: number;
     method?: 'GET' | 'POST' | 'PUT' | 'DELETE'
 }
