@@ -213,6 +213,9 @@ fieldset {
     padding-top: 7px;
 }
 
+.my-radio-inline > input {
+    margin-right: 0.3em;
+}
 .my-radio > input {
     margin-right: 1rem;
 }
@@ -352,4 +355,8 @@ tr.ignored-line {
 
 .InitialStep {
     margin-bottom: 2.5rem;
+}
+
+.okButton {
+    margin-right: 1rem;
 }
