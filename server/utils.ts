@@ -8,9 +8,6 @@ import type { CSVParseParam } from 'csvtojson/v2/Parameters.d.ts';
 import * as crypto from 'crypto'
 import session from 'express-session';
 import session_file_store from 'session-file-store';
-import concat from 'concat-stream';
-import simpleGet from 'simple-get';
-import * as http from 'http';
 import conf from './conf.ts';
 import { EventEmitter } from 'events';
 
@@ -41,26 +38,30 @@ export interface http_client_Options {
     method?: 'GET' | 'POST' | 'PUT' | 'DELETE'
 }
 
-export const http_request = (url: string, options: http_client_Options & { body?: string }) : Promise<string> => {
-    options = _.assign({ url }, options);
-    return new Promise((resolve: (_: string) => void, reject: (_: any) => void) => {
-        simpleGet(options, (err: any, res: http.IncomingMessage) => {
-            if (err) return reject(err);
-            res.setTimeout(options.timeout || 10000, null);
-
-            //console.log(res.headers)
-
-            res.pipe(concat(data => {
-                //console.log('got the response: ' + data)
-                //if (res.statusCode !== 200) console.error("request to " + url + " failed with " + res.statusCode + " " + res.statusMessage);
-                if (res.statusCode !== 200 && res.statusCode !== 204) 
-                    reject({ error: data.toString(), statusCode: res.statusCode });
-                else
-                    resolve(data.toString());
-            }));
-        });
-    });
-};
+export const http_request = async (url: string, options: http_client_Options & { body?: string }) : Promise<string> => {
+    const { timeout = 10000, ...options_ } = options
+    let res, data
+    try {
+        res = await fetch(url, { 
+            ...timeout > 0 ? { signal: AbortSignal.timeout(timeout) } : {}, 
+            ...options_,
+        })
+    } catch (error) {
+        // non HTTP error
+        throw { error, errorKind: 'network' }
+    }
+    try {
+        data = await res.text()
+    } catch (error) {
+        throw  { error, statusCode: res.status, errorKind: 'text' }
+    }
+    //console.log('got the response: ' + data)
+    //if (res.status !== 200) console.error("request to " + url + " failed with " + res.status + " " + res.statusText);
+    if (res.status !== 200 && res.status !== 204) 
+        throw { error: data.toString(), statusCode: res.status }
+    else
+        return data
+}
 
 export const post = (url: string, body: string, options: Omit<http_client_Options, 'method'>) : Promise<string> => {
     return http_request(url, { method: 'POST', body, ...options })
