@@ -81,7 +81,7 @@
     "concurrently": "^7.6.0",
     "eslint": "^8.28.0",
     "eslint-plugin-vue": "9.x",
-    "mocha": "^10.1.0",
+    "mocha": "^11.7.5",
     "source-map-support": "^0.5.21"
   }
 }
