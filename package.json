@@ -35,7 +35,6 @@
   "dependencies": {
     "@types/accept-language-parser": "^1.5.1",
     "@types/bytes": "^3.1.1",
-    "@types/concat-stream": "^1.6.0",
     "@types/cookie-parser": "^1.4.1",
     "@types/cookie-session": "^2.0.36",
     "@types/es6-promise": "0.0.32",
@@ -49,7 +48,6 @@
     "@types/session-file-store": "^1.2.0",
     "accept-language-parser": "^1.5.0",
     "basic-auth": "^2.0.1",
-    "concat-stream": "^1.5.0",
     "connect-cas": "github:UnivParis1/connect-cas#3.0.0",
     "cookie-parser": "^1.4.4",
     "cookie-session": "^2.1.1",
@@ -67,7 +65,6 @@
     "nodemailer": "^7.0.10",
     "nodemailer-sendmail-transport": "^1.0.0",
     "session-file-store": "^1.2.0",
-    "simple-get": "^4.0.1",
     "tslib": "^2.3.0",
     "typescript": "^5.6.2"
   },
