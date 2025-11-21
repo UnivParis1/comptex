@@ -12,7 +12,6 @@
     "typecheck": "vue-tsc --noEmit"
   },
   "dependencies": {
-    "@types/diff": "^5.0.2",
     "@vitejs/plugin-vue": "^6.x",
     "@zxcvbn-ts/core": "^2.0.1",
     "@zxcvbn-ts/language-common": "^2.0.1",
@@ -21,7 +20,7 @@
     "axios": "^0.17.1",
     "bootstrap": "^3.3.7",
     "croppie": "^2.6.3",
-    "diff": "^5.1.0",
+    "diff": "^8.0.2",
     "exif-js": "^2.3.0",
     "fflate": "^0.8.2",
     "load-script-once": "^1.1.2",
