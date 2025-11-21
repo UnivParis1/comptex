@@ -20,7 +20,7 @@ async function callAPI(action: string, params: Dictionary<string>, req_for_conte
         "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
     };
     try {
-        const encoded = await utils.http_request(url, { headers, body })
+        const encoded = await utils.post(url, body, { headers })
         return _get_entries(encoded)
     } catch (err) {
         const err_ = querystring.parse(err.error)
