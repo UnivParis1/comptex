@@ -471,18 +471,18 @@ router.put('/comptes/new_many/:step', (req: req, res) => {
     respondJson(req, res, set_new_many(req, req.params.step, req.body.map(body_to_v)));
 });
 
-router.put('/comptes/:id/:step?', (req: req, res) => {
+router.put('/comptes/:id/{:step}', (req: req, res) => {
     respondJson(req, res, set(req, req.params.id, req.params.step, body_to_v(req.body)));
 });
 
-router.delete('/comptes/:id/:step?', (req: req, res) => {
+router.delete('/comptes/:id/{:step}', (req: req, res) => {
     respondJson(req, res, remove(req, req.params.id, req.params.step));
 });
 
-router.get('/homonymes/:id/:step?', (req: req, res) => {
+router.get('/homonymes/:id/{:step}', (req: req, res) => {
     respondJson(req, res, homonymes(req, req.params.id, req.params.step, {} as v));
 });
-router.post('/homonymes/:id/:step?', (req: req, res) => {
+router.post('/homonymes/:id/{:step}', (req: req, res) => {
     respondJson(req, res, homonymes(req, req.params.id, req.params.step, body_to_v(req.body)));
 });
 
