@@ -8,6 +8,7 @@ import shared_conf from '../shared/conf.ts';
 export default defineConfig({
   base: shared_conf.base_pathname,
   plugins: [vue()],
+  //build: { minify: false },
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
