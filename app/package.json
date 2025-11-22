@@ -16,7 +16,6 @@
     "@zxcvbn-ts/core": "^3.0.4",
     "@zxcvbn-ts/language-common": "^3.0.4",
     "@zxcvbn-ts/language-fr": "^3.0.2",
-    "array-includes": "^3.0.3",
     "axios": "^0.17.1",
     "bootstrap": "^3.3.7",
     "croppie": "^2.6.3",
