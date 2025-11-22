@@ -21,6 +21,7 @@
     "client-test": "cd app && npm run test:unit",
     "client-test:w": "cd app && npm run test:unit -- --watch",
     "client-typecheck": "cd app && npm run typecheck",
+    "client-typecheck:w": "cd app && npm run typecheck -- --watch",
     "server-typecheck": "tsc -p server",
     "server-typecheck:w": "tsc -p server --watch",
     "server-start": "node start-server.js",
