@@ -20,12 +20,8 @@ Vue.component('autocomplete-user', {
     let params = { select, wsParams: { allowInvalidAccounts: true } };
     let searchURL = conf.wsgroupsURL + '/searchUserCAS';
 
-    loadScriptOnce(conf.wsgroupsURL + "/web-widget/autocompleteUser-resources.html.js", (err) => {
-        if (err) {
-            console.error(err);
-        } else {
+    loadScriptOnce(conf.wsgroupsURL + "/web-widget/autocompleteUser-resources.html.js").then(() => {
             window['jQuery'](this.$el)['autocompleteUser'](searchURL, params);
-        }
     });
   },
 })
