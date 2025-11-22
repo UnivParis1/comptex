@@ -24,14 +24,12 @@
     "fflate": "^0.8.2",
     "load-script-once": "^1.1.2",
     "prismjs": "^1.24.1",
-    "tslib": "^2.3.0",
     "vue": "^3.5.22",
     "vue-router": "^4.5.1",
     "vue-tsc": "^3.1.4"
   },
   "devDependencies": {
     "@vue/test-utils": "^2.4.6",
-    "autoprefixer": "^9.5.0",
     "axios-mock-adapter": "^1.19.0",
     "jsdom": "^22.1.0",
     "vitest": "^3.2.4",
