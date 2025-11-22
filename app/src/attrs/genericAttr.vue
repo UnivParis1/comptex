@@ -2,12 +2,12 @@
  <div v-if="opts && (!opts.readOnly || validValue && val || opts.uiHidden === false)" class="genericAttr" :class="'oneAttr-' + name" 
       v-on-visible="opts.onVisible && (elt => opts.onVisible(v, elt))">
 
-  <DateAttr v-model="val" :name="name" v-if="uiType === 'date'"
-    :ldap_value="ldap_value"
+  <DateAttr v-model="val as Date" :name="name" v-if="uiType === 'date'"
+    :ldap_value="ldap_value as Date"
     :opts="opts">
   </DateAttr>
 
-  <DateThreeInputsAttr v-model="val" v-else-if="uiType === 'dateThreeInputs'"
+  <DateThreeInputsAttr v-model="val as Date" v-else-if="uiType === 'dateThreeInputs'"
     :opts="opts">
   </DateThreeInputsAttr>
 
@@ -19,18 +19,18 @@
   <ReadOnlyObjectItems :v_array="val" v-else-if="opts.items && opts.items.properties" 
     :opts="opts" />
 
-  <ArrayAttr v-model="val" :name="name" v-else-if="uiType === 'array'"
-    :ldap_value="ldap_value"
+  <ArrayAttr v-model="val as string | string[]" :name="name" v-else-if="uiType === 'array'"
+    :ldap_value="ldap_value as string"
     :stepName="stepName" :v="v"
     :opts="opts">
   </ArrayAttr>
 
-  <AddressAttr v-model="val" v-else-if="uiType === 'postalAddress'"
-    :ldap_value="ldap_value"
+  <AddressAttr v-model="val as string" v-else-if="uiType === 'postalAddress'"
+    :ldap_value="ldap_value as string"
     :opts="opts">
   </AddressAttr>
 
-  <cameraSnapshotAttr v-model="val" v-else-if="uiType === 'cameraSnapshot'"
+  <cameraSnapshotAttr v-model="val as string" v-else-if="uiType === 'cameraSnapshot'"
      :opts="opts">
   </cameraSnapshotAttr>
 
@@ -46,14 +46,14 @@
      :opts="opts">
   </PasswordAttr>
 
-  <AutocompleteAttr v-model="val" :name="name" :real_name="real_name" :v="v" v-else-if="uiType === 'autocomplete'"
-     :ldap_value="ldap_value"
+  <AutocompleteAttr v-model="val as string" :name="name" :real_name="real_name" :v="v" v-else-if="uiType === 'autocomplete'"
+     :ldap_value="ldap_value as string"
      :stepName="stepName"
      @array_action="name => $emit('array_action', name)" :array_allowed_actions="array_allowed_actions"
      :opts="opts">
   </AutocompleteAttr>
 
-  <iframe :src="val" v-else-if="uiType === 'iframe'" v-iframe-auto-height>
+  <iframe :src="val as string" v-else-if="uiType === 'iframe'" v-iframe-auto-height>
   </iframe>
 
   <my-bootstrap-form-group :name="name" 
@@ -81,7 +81,7 @@
     <div v-else-if="uiType === 'textarea'">
       <textarea-with-validity :name="name" v-model="val"
         class="form-control"
-        :rows="uiOptions.rows || (opts.readOnly ? (modelValue||'').split('\n').length : undefined)" 
+        :rows="uiOptions.rows || (opts.readOnly ? (modelValue as string||'').split('\n').length : undefined)" 
         :disabled="opts.readOnly" :required="!opts.optional" v-model:validity="validity[name]">
       </textarea-with-validity>
       <span class="attr-description" v-html="opts.description"></span>
@@ -133,16 +133,16 @@
     <span class="attr-description" :class="{ 'attr-readOnly-description': opts.readOnly }" v-html="opts.description" v-else></span>
    </div>
 
-    <CurrentLdapValue :modelValue="initial_value" :ldap_value="ldap_value" :opts="opts" @update:modelValue="v => val = v"></CurrentLdapValue>
+    <CurrentLdapValue :modelValue="initial_value as string" :ldap_value="ldap_value" :opts="opts" @update:modelValue="v => val = v"></CurrentLdapValue>
 
   </my-bootstrap-form-group>
  </div>
 </template>
 
 <script lang="ts">
-import { defineAsyncComponent, defineComponent } from "vue";
+import { computed, defineAsyncComponent, defineComponent, reactive, ref, watch } from "vue";
 import { includes, find, isNil, keyBy, mapValues } from 'lodash-es';
-import { isDateInputSupported } from '../services/helpers.ts';
+import { asyncComputed_, isDateInputSupported, toRwRef } from '../services/helpers.ts';
 import { formatValue } from '../../../shared/v_utils.ts'
 import * as Ws from '../services/ws.ts';
 
@@ -157,7 +157,6 @@ import PasswordAttr from './PasswordAttr.vue';
 import AutocompleteAttr from './AutocompleteAttr.vue';
 import CurrentLdapValue from './CurrentLdapValue.vue';
 import FileUploadAttr from './FileUploadAttr.vue';
-import { asyncComputed } from "@/services/helpers"
 
 function add_to_oneOf_if_missing(choices: Ws.StepAttrOptionChoices[], to_have) {
     if (!isNil(to_have) && choices && !choices.some(choice => choice.const === to_have)) {
@@ -165,102 +164,103 @@ function add_to_oneOf_if_missing(choices: Ws.StepAttrOptionChoices[], to_have) {
     }
     return choices
 }
+</script>
 
-export default defineComponent({
-    props: ['modelValue', 'real_name', 'name', 'opts', 'v', 'ldap_value', 'stepName', 'array_allowed_actions_'],
-    emits: ['update:modelValue', 'array_action'],
-    components: { 
-        DateAttr, DateTimeAttr, DateThreeInputsAttr, ArrayAttr, ReadOnlyObjectItems, AddressAttr, cameraSnapshotAttr, PasswordAttr, AutocompleteAttr, CurrentLdapValue, FileUploadAttr,
-        PhotoUploadAttr: defineAsyncComponent(() => import('./PhotoUploadAttr.vue')),
-    },
-    data() {
-        return {
-            validity: { [this.name]: {} },
-            val: this.modelValue,
-            initial_value: this.modelValue,
-            asyncComputed: {},
-        };
-    },
-    computed: {
-        array_allowed_actions() {
-            const allowed = this.array_allowed_actions_ || {}
-            return { ...allowed, any: allowed.remove || allowed.move_up || allowed.move_down }
-        },
-        uiType() {
-            if (this.uiOptions.readOnly__avoid_disabled_input && this.opts.readOnly || this.opts.computeValue) {
+<script setup lang="ts">
+
+const props = defineProps<{
+    modelValue: string | string[] | Date | undefined,
+    real_name?: string,
+    name: string,
+    opts?: SharedStepAttrOption & CommonStepAttrOptionT<{}> & ClientSideOnlyStepAttrOption,
+    v?: Ws.V,
+    ldap_value?: string | string[] | Date,
+    stepName?: string,
+    array_allowed_actions_?: { move_up?: boolean, move_down?: boolean, remove?: boolean },
+}>()
+const emit = defineEmits<{
+    'update:modelValue': [const_: string | string[] | Date],
+    array_action: [field_name: string],
+}>();
+
+const PhotoUploadAttr = defineAsyncComponent(() => import('./PhotoUploadAttr.vue'))
+const validity = reactive({ [props.name as string]: {} })
+
+// explicit ref() to workaround « Invalid assignment target in v-model data binding with type assertion » with esbuild, cf https://github.com/unjs/unimport/issues/409
+const val = ref(toRwRef(() => props.modelValue))
+
+const initial_value = props.modelValue
+const array_allowed_actions = computed(() => {
+    const allowed = props.array_allowed_actions_ || {}
+    return { ...allowed, any: allowed.remove || allowed.move_up || allowed.move_down }
+})
+const uiOptions  = computed(() => props.opts.uiOptions || {})
+const uiType = computed(() => {
+            if (uiOptions.value.readOnly__avoid_disabled_input && props.opts.readOnly || props.opts.computeValue) {
                 return 'span';
             }
-            if (this.opts.uiType === 'date' && !isDateInputSupported()) {
+            if (props.opts.uiType === 'date' && !isDateInputSupported()) {
                 return 'dateThreeInputs';
             }
-            return this.opts.uiType || 
-                this.opts.items && 'array' ||
-                this.opts.oneOf && (this.opts.oneOf.length <= 2 ? 'radio' : 'select') ||
-                this.opts.oneOf_async && 'autocomplete';
-        },
-        uiOptions() {
-            return this.opts.uiOptions || {};
-        },
-        type() {
-            return includes(['phone', 'frenchMobilePhone'], this.opts.uiType) ? 'tel' : // "tel" implies inputmode "tel" which is great on mobiles
-               this.realType || !this.opts.uiType ? 'text' : 
-               this.opts.uiType === 'integer' ? 'number' :
-               this.opts.uiType;
-        },
-        realType() { 
-            return includes(['phone', 'frenchMobilePhone', 'frenchPostalCode', 'siret'], this.opts.uiType) ? this.opts.uiType : undefined;
-        },
-        choicesMap() {
-            return this.oneOf && mapValues(keyBy(this.oneOf, 'const'), choice => choice['title']);
-        },
-        oneOf() {
-            const l = add_to_oneOf_if_missing(this.oneOf_, this.opts.allowUnchangedValue)
-            return this.opts.max ? l?.filter(choice => choice.const <= this.opts.max) : l
-        },
-        validValue() {
-            return this.uiType === 'select' ? (
-                this.oneOf && find(this.oneOf, choice => (
+            return props.opts.uiType || 
+                props.opts.items && 'array' ||
+                props.opts.oneOf && (props.opts.oneOf.length <= 2 ? 'radio' : 'select') ||
+                props.opts.oneOf_async && 'autocomplete';
+})
+const type = computed(() => (
+    includes(['phone', 'frenchMobilePhone'], props.opts.uiType) ? 'tel' : // "tel" implies inputmode "tel" which is great on mobiles
+        realType.value || !props.opts.uiType ? 'text' :
+        props.opts.uiType === 'integer' ? 'number' :
+        props.opts.uiType)
+)
+const realType = computed(() => (
+    includes(['phone', 'frenchMobilePhone', 'frenchPostalCode', 'siret'], props.opts.uiType) ? props.opts.uiType : undefined)
+)
+const choicesMap = computed(() => (
+    oneOf.value && mapValues(keyBy(oneOf.value, 'const'), choice => choice['title']))
+)
+const oneOf = computed(() => {
+    const l = add_to_oneOf_if_missing(oneOf_.value, props.opts.allowUnchangedValue)
+    return props.opts.max ? l?.filter(choice => +choice.const <= props.opts.max) : l
+})
+const validValue = computed(() => {
+            return uiType.value === 'select' ? (
+                oneOf.value && find(oneOf.value, choice => (
                     // (allow equality if value is number and choice.const is string)
-                    choice.const == this.modelValue // tslint:disable-line
+                    choice.const == props.modelValue // tslint:disable-line
                 )) 
-            ) : this.val;
-        },
-        computedValue() {
-            return this.opts.computeValue?.()
-        },
-        formattedValue() {
-            return formatValue(this.opts.computeValue ? this.computedValue : this.val)
-        },
-        input_attrs() {
-            return this.type === 'password' ? { autocomplete: 'current_password' } : {}
-        },
-        vue_component_description() {
-            if (!this.uiOptions.texts_are_vue_template) return undefined;
-            const text = this.opts.description;
+            ) : val.value;
+        })
+const computedValue = computed(() => (
+    // @ts-expect-error (args already passed, cf handleAttrsValidators_and_computeValue_and_allowUnchangedValue)
+    props.opts.computeValue?.()
+))
+const formattedValue = computed(() => (
+    formatValue(props.opts.computeValue ? computedValue.value : val.value))
+)
+const input_attrs = computed(() => (
+    type.value === 'password' ? { autocomplete: 'current_password' } : {})
+)
+const vue_component_description = computed(() => {
+            if (!uiOptions.value.texts_are_vue_template) return undefined;
+            const text = props.opts.description;
             return text && defineComponent({ props: ['v'], template: "<div>" + text + "</div>" });
-        },
-        ...asyncComputed('oneOf_', async function () {
-            const opts = this.opts || {};
+})
+const oneOf_ = asyncComputed_(async function () {
+            const opts = props.opts || {};
             if (opts.oneOf) {
                 return opts.oneOf;
-            } else if (opts.oneOf_async && ['select', 'radio'].includes(this.uiType)) {
-                return await Ws.search(this.stepName, this.real_name || this.name, '');
+            } else if (opts.oneOf_async && ['select', 'radio'].includes(uiType.value)) {
+                return await Ws.search(props.stepName, props.real_name || props.name, '');
             } else {
                 return undefined;
             }
-        }),
-    },
-    watch: {
-        modelValue(val) {
-            this.val = val;
-        },
-        val(val) {
-            if (this.opts.normalize) {
-                const val_ = this.opts.normalize(val);
-                if (val_ !== val) { this.val = val = val_ }
-            }
-            this.$emit('update:modelValue', val);
-        },
-    },
-});
+})
+watch(val, (val_) => {
+    if (props.opts.normalize) {
+        const val__ = props.opts.normalize(val_ as string);
+        if (val__ !== val_) { val.value = val_ = val__ }
+    }
+    emit('update:modelValue', val_);
+})
 </script>

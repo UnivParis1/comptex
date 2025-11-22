@@ -34,7 +34,7 @@ const props = defineProps<{
     v: V,
     ldap_value: string | undefined,
     stepName: string,
-    array_allowed_actions: { move_up: boolean, move_down: boolean, remove: boolean, any: boolean },
+    array_allowed_actions: { move_up?: boolean, move_down?: boolean, remove?: boolean, any: boolean },
 }>()
 const emit = defineEmits<{
     'update:modelValue': [const_: string],
