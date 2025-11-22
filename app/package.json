@@ -30,9 +30,9 @@
   },
   "devDependencies": {
     "@vue/test-utils": "^2.4.6",
-    "axios-mock-adapter": "^1.19.0",
-    "jsdom": "^22.1.0",
-    "vitest": "^3.2.4",
+    "axios-mock-adapter": "^2.1.0",
+    "jsdom": "^27.2.0",
+    "vitest": "^4.0.13",
     "vue-template-compiler": "^2.7.10"
   },
   "engines": {
