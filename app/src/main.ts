@@ -12,10 +12,6 @@ import validators from './directives/validators.ts'
 import Bootstrap from './directives/Bootstrap.ts'
 import typeahead from './directives/typeahead.ts'
 
-// especially needed on MSIE to allow "includes" in step.labels.description Vue.js template
-import array_includes from 'array-includes';
-array_includes.shim()
-
 let app = createApp({})
 various(app)
 Bootstrap(app)
