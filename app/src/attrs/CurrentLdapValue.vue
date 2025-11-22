@@ -10,13 +10,13 @@ import { computed, ref, watch } from 'vue';
 import { formatValue } from '../../../shared/v_utils.ts';
 
 const props = defineProps<{
-    modelValue: string | string[] | undefined,
-    ldap_value: string | string[] | undefined,
+    modelValue: string | string[] | Date | undefined,
+    ldap_value: string | string[] | Date | undefined,
     formatted_ldap_value?: string,
     opts?: SharedStepAttrOption & CommonStepAttrOptionT<{}>,
 }>()
 const emit = defineEmits<{
-    'update:modelValue': [val: string | string[]],
+    'update:modelValue': [val: string | string[] | Date],
     shown: [val: boolean],
 }>();
 
