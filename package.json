@@ -63,7 +63,6 @@
     "nodemailer": "^7.0.10",
     "nodemailer-sendmail-transport": "^1.0.0",
     "session-file-store": "^1.2.0",
-    "tslib": "^2.3.0",
     "typescript": "^5.6.2"
   },
   "devDependencies": {
