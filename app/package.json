@@ -22,7 +22,7 @@
     "diff": "^8.0.2",
     "exif-js": "^2.3.0",
     "fflate": "^0.8.2",
-    "load-script-once": "^1.1.2",
+    "load-script-once": "^2.0.1",
     "prismjs": "^1.24.1",
     "vue": "^3.5.22",
     "vue-router": "^4.5.1",
