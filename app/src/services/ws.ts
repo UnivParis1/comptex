@@ -1,9 +1,9 @@
-import axios, { CancelToken } from 'axios';
+import axios from 'axios';
 import { merge, omit, cloneDeep } from 'lodash-es';
 import { setTimeoutPromise } from '../../../shared/helpers.ts'
 import * as Helpers from './helpers.ts';
 
-type http_options = { headers?: any, params?: any, cancelToken?: CancelToken }
+type http_options = { headers?: any, params?: any, signal?: AbortSignal }
 type http_err = { message: string, response: { status: number, headers: Dictionary<string>, data: Dictionary<any> }}
 const http_request = (url: string, config: http_options & { method: 'get'|'post'|'put'|'delete', data?: Dictionary<any> }) => (
     axios.request({ url, ...config }) as Promise<{ data: any }>
@@ -313,13 +313,13 @@ export function getInScope($scope, id: string, params, hash_params, expectedStep
     }, err => _handleErr(err, $scope, true));
 }
 
-export const listInScope = ($scope, params, cancelToken) => (
-    listInScope_maybe_retry($scope, params, cancelToken, params.poll ? { retries: 10, time_before_retry: 1000 } : {})
+export const listInScope = ($scope, params, signal: AbortSignal) => (
+    listInScope_maybe_retry($scope, params, signal, params.poll ? { retries: 10, time_before_retry: 1000 } : {})
 )
 
-async function listInScope_maybe_retry($scope, params, cancelToken, opts) : Promise<"ok" | "cancel"> {
+async function listInScope_maybe_retry($scope, params, signal: AbortSignal, opts) : Promise<"ok" | "cancel"> {
     try {
-        const resp = await http.get(api_url + '/comptes', { params, cancelToken });           
+        const resp = await http.get(api_url + '/comptes', { params, signal });
         var svs = resp.data;
         $scope.svs = svs;
         return "ok";
@@ -331,7 +331,7 @@ async function listInScope_maybe_retry($scope, params, cancelToken, opts) : Prom
             opts.retries--
             await setTimeoutPromise(opts.time_before_retry)
             opts.time_before_retry *= 2
-            return listInScope_maybe_retry($scope, params, cancelToken, opts)
+            return listInScope_maybe_retry($scope, params, signal, opts)
         }
         return _handleErr(err, $scope);
     }
