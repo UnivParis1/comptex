@@ -6,7 +6,7 @@
   "private": true,
   "scripts": {
     "dev": "vite",
-    "build": "vue-tsc --noEmit && vite build",
+    "build": "vite build",
     "build:atomic": "vite build --outDir dist.new && rm -rf dist && mv dist.new dist",
     "test:unit": "vitest --environment jsdom",
     "typecheck": "vue-tsc --noEmit"
