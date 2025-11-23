@@ -38,7 +38,7 @@ export interface http_client_Options {
     method?: 'GET' | 'POST' | 'PUT' | 'DELETE'
 }
 
-export const http_request = async (url: string, options: http_client_Options & { body?: string }) : Promise<string> => {
+export const http_request = async (url: string, options: http_client_Options & { body?: BodyInit }) : Promise<string> => {
     const { timeout = 10000, ...options_ } = options
     let res, data
     try {
