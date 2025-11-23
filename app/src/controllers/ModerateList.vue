@@ -32,7 +32,6 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import axios from 'axios';
 import * as Helpers from '../services/helpers.ts';
 import * as Ws from '../services/ws.ts';
 import InitialStep from './InitialStep.vue';
@@ -52,7 +51,7 @@ export default defineComponent({
       Ws.loggedUserInitialSteps().then(val => this.initialSteps = val);
   },
   beforeUnmount() {
-    if (this.cancelP) this.cancelP.cancel("");
+    if (this.cancelP) this.cancelP.abort()
   },
   computed: { 
       svsGroupedByStep() {
@@ -70,9 +69,9 @@ export default defineComponent({
   methods: {
     formatDate: Helpers.formatDate,
     listRec(params) {
-        this.cancelP = axios.CancelToken.source();
+        this.cancelP = new AbortController();
 
-        Ws.listInScope(this, params, this.cancelP.token).then(rc => {
+        Ws.listInScope(this, params, this.cancelP.signal).then(rc => {
             if (rc !== "cancel") {
                 this.listRec({ poll: true });
             }
