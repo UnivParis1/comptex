@@ -267,7 +267,7 @@ Vue.component('history-textarea-with-validity', {
     } catch (e) {}
     this.checkValidity();
   },
-  beforeDestroy() {
+  beforeUnmount() {
     if (this.modelValue) {
         localStorage[this.localStorage_key] = JSON.stringify(uniq([ this.modelValue, ...this.history ]));
     }
