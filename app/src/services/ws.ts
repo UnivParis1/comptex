@@ -1,8 +1,20 @@
-import axios, { AxiosError, AxiosRequestConfig } from 'axios';
+import axios, { CancelToken } from 'axios';
 import { merge, omit, cloneDeep } from 'lodash-es';
 import { setTimeoutPromise } from '../../../shared/helpers.ts'
 import * as Helpers from './helpers.ts';
 
+type http_options = { headers?: any, params?: any, cancelToken?: CancelToken }
+type http_err = { message: string, response: { status: number, headers: Dictionary<string>, data: Dictionary<any> }}
+const http_request = (url: string, config: http_options & { method: 'get'|'post'|'put'|'delete', data?: Dictionary<any> }) => (
+    axios.request({ url, ...config }) as Promise<{ data: any }>
+)
+
+const http = {
+    get: (url: string, config?: http_options) => http_request(url, { method: 'get', ...config }),
+    post: (url: string, data: Dictionary<any>, config?: http_options) => http_request(url, { method: 'post', data, ...config }),
+    put : (url: string, data: Dictionary<any>, config?: http_options) => http_request(url, { method: 'put', data, ...config }),
+    delete: (url: string) => http_request(url, { method: 'delete' }),
+}
 
 interface VCommon extends CommonV {
     structureParrain?: string;
@@ -61,11 +73,11 @@ export function eachAttrs(attrs: StepAttrsOption, oneOfTraversal: 'always' | 'ne
 }
 
 export const people_search = (step: string, token: string, maxRows? : number) : Promise<V[]> => (
-    axios.get(api_url + '/comptes/search/' + step, { params: { token, maxRows } }).then(resp => resp.data as Promise<V[]>)
+    http.get(api_url + '/comptes/search/' + step, { params: { token, maxRows } }).then(resp => resp.data as Promise<V[]>)
 );
 
 export function search(stepName: string, attr: string, token : string, maxRows? : number) : Promise<StepAttrOptionChoicesWithShort[]> {
-    return axios.get(api_url + '/search/' + stepName + '/' + attr, { params: { token, maxRows } }).then((resp) => resp.data as StepAttrOptionChoicesWithShort[]);
+    return http.get(api_url + '/search/' + stepName + '/' + attr, { params: { token, maxRows } }).then((resp) => resp.data as StepAttrOptionChoicesWithShort[]);
 }
 
 const _toDate = (year: number, month: number, day: number) => new Date(Date.UTC(year, month - 1, day));
@@ -145,7 +157,7 @@ async function try_firefox_trigger_clear_history() {
 
 let restarting = false;
 
-function _handleErr(err : AxiosError, $scope = null, redirect = false) {
+function _handleErr(err : http_err, $scope = null, redirect = false) {
     if (restarting) return Promise.reject("restarting");
 
     if (!err.response) {
@@ -195,7 +207,7 @@ function _handleErr(err : AxiosError, $scope = null, redirect = false) {
 }
 
 export function loggedUserInitialSteps() : Promise<InitialSteps> {
-    return axios.get(api_url + '/steps/loggedUserInitialSteps').then(resp => (
+    return http.get(api_url + '/steps/loggedUserInitialSteps').then(resp => (
         resp.data
     ));
 }
@@ -247,7 +259,7 @@ function handleAttrsValidators_and_computeValue_and_allowUnchangedValue(all_attr
     }
 }
 
-function password_to_auth(params): AxiosRequestConfig {
+function password_to_auth(params) {
     if (params.userPassword) {
         const auth = { username: params.supannAliasLogin || '', password: params.userPassword }
         return { params: omit(params, 'userPassword', 'supannAliasLogin'), auth };
@@ -258,7 +270,7 @@ function password_to_auth(params): AxiosRequestConfig {
 
 export function getInScope($scope, id: string, params, hash_params, expectedStep: string) : Promise<void> {
     var url = api_url + '/comptes/' + id + "/" + expectedStep;
-    return axios.get(url, password_to_auth(params)).then((resp) => {
+    return http.get(url, password_to_auth(params)).then((resp) => {
         var sv = resp.data as SVRaw;
         initAttrs(sv.attrs);
         $scope.attrs = sv.attrs;
@@ -307,7 +319,7 @@ export const listInScope = ($scope, params, cancelToken) => (
 
 async function listInScope_maybe_retry($scope, params, cancelToken, opts) : Promise<"ok" | "cancel"> {
     try {
-        const resp = await axios.get(api_url + '/comptes', { params, cancelToken });           
+        const resp = await http.get(api_url + '/comptes', { params, cancelToken });           
         var svs = resp.data;
         $scope.svs = svs;
         return "ok";
@@ -327,7 +339,7 @@ async function listInScope_maybe_retry($scope, params, cancelToken, opts) : Prom
 
 export function homonymes(id, v, all_attrs_flat, params, stepName: string) {
     const v_ = toWs(v, all_attrs_flat);
-    return axios.post(api_url + '/homonymes/' + id + '/' + stepName, v_, password_to_auth(params)).then((resp) =>
+    return http.post(api_url + '/homonymes/' + id + '/' + stepName, v_, password_to_auth(params)).then((resp) =>
         (resp.data as any).map(v => fromWs(v, all_attrs_flat))
         , _handleErr);
 }
@@ -336,7 +348,7 @@ export function set(id: string, step: string, v: V, params, all_attrs_flat: Step
     var url = api_url + '/comptes/' + id + "/" + step;
     var v_ = toWs(v, all_attrs_flat);
     const params_ = password_to_auth(params);
-    return axios.put(url, v_, params_).then(
+    return http.put(url, v_, params_).then(
         (resp) => resp.data,
         _handleErr);
 }
@@ -344,20 +356,20 @@ export function set(id: string, step: string, v: V, params, all_attrs_flat: Step
 export function new_many(step: string, vs: V[], all_attrs_flat: StepAttrsOption) {
     var url = api_url + '/comptes/new_many/' + step;
     var vs_ = vs.map(v => toWs(v, all_attrs_flat));
-    return axios.put(url, vs_).then(
+    return http.put(url, vs_).then(
         (resp) => resp.data,
         _handleErr);
 }
 
 export function remove(id: string, step: string) {
     var url = api_url + '/comptes/' + id + "/" + step;
-    return axios.delete(url).then( 
+    return http.delete(url).then( 
         (resp) => resp.data,
         _handleErr);
 }
 
 export function csv2json(file: File, attrs: StepAttrsOption, forced_headers?: string[]) : Promise<{ fields: string[], lines: {}[] }> {
-    return axios.post(api_url + '/csv2json', file, { params: { forced_headers } }).then(
+    return http.post(api_url + '/csv2json', file, { params: { forced_headers } }).then(
         (resp) => {
             let o = resp.data;
             o.lines = o.lines.map(v => to_or_from_ws('fromCSV', v, attrs));
