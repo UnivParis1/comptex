@@ -51,7 +51,7 @@ export default defineComponent({
       this.listRec({});
       Ws.loggedUserInitialSteps().then(val => this.initialSteps = val);
   },
-  beforeDestroy() {
+  beforeUnmount() {
     if (this.cancelP) this.cancelP.cancel("");
   },
   computed: { 
