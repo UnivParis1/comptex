@@ -126,11 +126,12 @@ export const group_for_each_attr_codes = (codeAttr: string, { code_to_group_cn, 
 //   acl.ldapGroupsMatching(
 //       search_ldap.prefix_suffix_to_group_and_code('applications.comptex.invite.', '-managers')
 //   )
-export const ldapGroupsMatching = ({ code_to_group_cn, group_cn_to_code } : search_ldap.group_and_code_fns): acl_search => convert_simple_acl_search({
+export const ldapGroupsMatching_many = ({ code_to_group_cns, group_cn_to_code } : search_ldap.groups_and_code_fns): acl_search => convert_simple_acl_search({
     // search users that are memberOf of groups matching "ldap_group_filter"
     v_to_moderators_ldap_filter: async (_v) => {
         // find all groups matching "ldap_group_filter"
-        const groups = await ldap.searchThisAttr(conf.ldap.base_groups, `(cn=${code_to_group_cn('*')})`, 'cn', '');
+        const filter = filters.or(code_to_group_cns('*').map(code => `(cn=${code})`)) // not using filters.eq because of "*"
+        const groups = await ldap.searchThisAttr(conf.ldap.base_groups, filter, 'cn', '');
         // create an LDAP filter matching users member of thoses groups
         return filters.or(groups.map(cn => filters.memberOf(cn)))
     },
@@ -140,3 +141,8 @@ export const ldapGroupsMatching = ({ code_to_group_cn, group_cn_to_code } : sear
         return codes.length > 0;
     },
 });
+
+export const ldapGroupsMatching = (fns : search_ldap.group_and_code_fns): acl_search => (
+    ldapGroupsMatching_many(search_ldap.to_groups_and_code([fns]))
+)
+    

@@ -347,11 +347,29 @@ export type group_and_code_fns = {
     group_cn_to_code(cn: string): string
 }
 
+export type groups_and_code_fns = {
+    code_to_group_cns(code: string): string[]
+    group_cn_to_code(cn: string): string
+}
+
 export const prefix_suffix_to_group_and_code = (prefix: string, suffix: string): group_and_code_fns => {
     const regexp_cn_to_code = new RegExp("^" + _.escapeRegExp(prefix) + "(.*)" + _.escapeRegExp(suffix) + "$");
     return {
         code_to_group_cn: (code: string) => prefix + code + suffix,
         group_cn_to_code: (cn: string) => (cn.match(regexp_cn_to_code) || [])[1],
+    }
+}
+
+export const to_groups_and_code = (l: group_and_code_fns[]): groups_and_code_fns => {
+    return {
+        code_to_group_cns: (code: string) => l.map(fns => fns.code_to_group_cn(code)),
+        group_cn_to_code: (cn: string) => {
+            for (const fns of l) {
+                let code = fns.group_cn_to_code(cn)
+                if (code) return code
+            }
+            return undefined
+        },
     }
 }
 
