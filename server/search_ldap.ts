@@ -68,6 +68,11 @@ export const structures = (token: string, sizeLimit: number) => {
     return ldap.searchMany(conf.ldap.base_structures, many, 'const', conf.ldap.structures.types, conf.ldap.structures.attrs, {sizeLimit});
 };
 
+export const code_to_structure = (code: string) => {
+    const filter = filters.eq("supannCodeEntite", code);
+    return ldap.searchOne(conf.ldap.base_structures, filter, conf.ldap.structures.types, conf.ldap.structures.attrs, {});
+};
+
 export const filtered_etablissements = (global_filter: string) => (token: string, sizeLimit: number) => {
     let filters_;
     if (token.match(/\{.*/)) {
