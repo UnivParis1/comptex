@@ -1,6 +1,8 @@
 <template>
  <div>
-     <p><b>{{homonyme.mail || homonyme.uid || homonyme.supannMailPerso || homonyme.barcode}}</b> <span v-html="homonyme.global_main_profile.description"></span></p>
+     <p><b>
+        {{homonyme.mail || homonyme.uid || homonyme.supannMailPerso || homonyme.barcode}}
+     </b> <span v-html="homonyme.global_main_profile.description" v-if="homonyme.global_main_profile"></span></p>
 
      <table class="table table-bordered">
        <tbody>
