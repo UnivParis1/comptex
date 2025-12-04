@@ -43,7 +43,7 @@
             <div class="alert alert-danger" v-for="h in merged_homonyms">
                 Le compte sera fusionné avec le compte existant {{h.merged_ids_values}}.
                 <p/>
-                {{h.givenName}} {{h.sn}} <span v-html="h.global_main_profile.description"></span>
+                {{h.givenName}} {{h.sn}} <span v-html="h.global_main_profile.description" v-if="h.global_main_profile"></span>
             </div>
     </div>
 
