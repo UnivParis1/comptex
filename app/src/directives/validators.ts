@@ -77,12 +77,12 @@ Vue.component('input-with-validity', {
         checkValidity.methods.checkValidity.call(this);
     },
     _attrUpdated(name, v) {
-        this.$el.setAttribute(name, v);
+        Helpers.setAttribute(this.$el, name, v);
         this.checkValidity();
     },
     _setPattern() {
         for (const name of ['pattern', 'min', 'max', 'minlength', 'maxlength', 'step']) {
-            if (this[name]) this.$el.setAttribute(name, this[name]);
+            if (this[name]) Helpers.setAttribute(this.$el, name, this[name]);
         }
         if (this.realType === 'phone') this.$el.setAttribute('pattern', conf.pattern.phone);
         if (this.realType === 'frenchMobilePhone') this.$el.setAttribute('pattern', conf.pattern.frenchMobilePhone);
