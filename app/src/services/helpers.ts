@@ -279,6 +279,14 @@ export function htmlToText(html) {
     return temp.textContent; // Or return temp.innerText if you need to return only visible text. It's slower.
 }   
 
+export function setAttribute(elt: HTMLElement, name: string, value: undefined | string) {
+    if (value) {
+        elt.setAttribute(name, value)
+    } else {
+        elt.removeAttribute(name)
+    }
+}
+
 export const asyncComputed = (name, asyncCompute) => ({
     async [name + '_promise']() {
         this.asyncComputed[name] = await asyncCompute.apply(this)
