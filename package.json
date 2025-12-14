@@ -54,7 +54,7 @@
     "es6-promise": "^4.1.1",
     "express": "^5.1.0",
     "express-session": "^1.15.6",
-    "iconv-lite": "^0.7.0",
+    "iconv-lite": "^0.7.1",
     "ldap-filter": "^0.3.3",
     "ldapjs-promise-disconnectwhenidle": "github:UnivParis1/node-ldapjs-promise-disconnectWhenIdle",
     "lodash-es": "^4.14.x",
