@@ -77,8 +77,16 @@ export default defineComponent({
     },
 
     methods: {
-        init() {
-            Ws.getInScope(this, this.id, this.v_pre, this.hash_params, this.stepName);    
+        async init() {
+            try {
+                await Ws.getInScope(this, this.id, this.v_pre, this.hash_params, this.stepName);
+            } catch (err) {
+                if (err === 'alerted__do_router_back') {
+                    router.back()
+                } else {
+                    throw err
+                }
+            }
         },
         export_csv(event) {
             const csv = Helpers.to_csv(this.vs, this.all_attrs_flat)
