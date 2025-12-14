@@ -117,7 +117,6 @@ export const index_html = (_req: req, res: express.Response, _next: next): void 
 const buffer_toString_handles_utf8_and_win1252 = (buffer : Buffer) => {
     let r = buffer.toString('utf8');
     if (r.match("\uFFFD")) {
-        // @ts-expect-error (workaround https://github.com/pillarjs/iconv-lite/pull/330#issuecomment-3650719311 )
         r = iconv.decode(buffer, 'win1252'); // fallback
     }
     return r;
