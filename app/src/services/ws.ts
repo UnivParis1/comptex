@@ -198,8 +198,7 @@ function _handleErr(err : http_err, $scope = null, redirect = false) {
         } else {
             alert(msg);
             if (redirect) {
-                // dynamic import to avoid circular dependency
-                import('../router').then(({ router }) => router.back());
+                return Promise.reject("alerted__do_router_back")
             }
         }
         return Promise.reject(json_error);
