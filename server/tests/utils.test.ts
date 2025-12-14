@@ -78,6 +78,14 @@ describe('deep_extend_concat', () => {
     })
 });
 
+describe('buffer_toString_handles_utf8_and_win1252', () => {
+    const { buffer_toString_handles_utf8_and_win1252 } = utils.for_unit_tests
+    it("should work handle UTF8 & CP1252", async () => {
+        assert.equal(buffer_toString_handles_utf8_and_win1252(Buffer.from("é€")), "é€") 
+        assert.equal(buffer_toString_handles_utf8_and_win1252(Buffer.from([0xE9, 0x80])), "é€")
+    })
+})
+
 describe('parse_csv', () => {
     const { parse_csv } = utils.for_unit_tests
     it("should work", async () => {

@@ -114,7 +114,7 @@ export const index_html = (_req: req, res: express.Response, _next: next): void 
 };
 
 
-const toString = (buffer : Buffer) => {
+const buffer_toString_handles_utf8_and_win1252 = (buffer : Buffer) => {
     let r = buffer.toString('utf8');
     if (r.match("\uFFFD")) {
         // @ts-expect-error (workaround https://github.com/pillarjs/iconv-lite/pull/330#issuecomment-3650719311 )
@@ -142,7 +142,7 @@ async function parse_csv(csv: string, options: Partial<CSVParseParam>): Promise<
 }
 export const csv2json = (req: req, res: res): void => {
     const headers = req.query['forced_headers[]'] as any // trailing "[]" is added by axios (it is the default behaviour : 'arrayFormat' 'brackets')
-    respondJson(req, res, parse_csv(toString(req.body), { headers, noheader: !!headers }))
+    respondJson(req, res, parse_csv(buffer_toString_handles_utf8_and_win1252(req.body), { headers, noheader: !!headers }))
 }
 
 export const eventBus = (): EventEmitter => {
@@ -228,4 +228,4 @@ export function email_has_one_of_our_mail_domains(email: string): boolean | unde
     return conf.ldap.people.mail_domains.includes(domain)
 }
 
-export const for_unit_tests = { parse_csv }
+export const for_unit_tests = { parse_csv, buffer_toString_handles_utf8_and_win1252 }
