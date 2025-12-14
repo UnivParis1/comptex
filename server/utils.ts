@@ -1,7 +1,7 @@
 'use strict';
 
 import * as _ from 'lodash-es';
-import * as iconv from 'iconv-lite';
+import iconv from 'iconv-lite';
 import * as express from 'express';
 import csvtojson from 'csvtojson';
 import type { CSVParseParam } from 'csvtojson/v2/Parameters.d.ts';
@@ -116,7 +116,10 @@ export const index_html = (_req: req, res: express.Response, _next: next): void 
 
 const toString = (buffer : Buffer) => {
     let r = buffer.toString('utf8');
-    if (r.match("\uFFFD")) r = iconv.decode(buffer, 'win1252'); // fallback
+    if (r.match("\uFFFD")) {
+        // @ts-expect-error (workaround https://github.com/pillarjs/iconv-lite/pull/330#issuecomment-3650719311 )
+        r = iconv.decode(buffer, 'win1252'); // fallback
+    }
     return r;
 }
 
