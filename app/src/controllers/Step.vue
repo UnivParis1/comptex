@@ -82,6 +82,7 @@ export default defineComponent({
                 await Ws.getInScope(this, this.id, this.v_pre, this.hash_params, this.stepName);
             } catch (err) {
                 if (err === 'alerted__do_router_back') {
+                    Helpers.object_replace(v_from_prevStep, {})
                     router.back()
                 } else {
                     throw err
