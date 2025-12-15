@@ -156,8 +156,11 @@ function handleAttrsRemapAndType(o : Dictionary<string[]>, attrRemapRev: Diction
     return v
 }
 
-export const esup_activ_bo_validateAccount = (isActivation: boolean) : firstAction_pre => async (req, _sv) => {
-    const userInfo = ldap.convertToLdap(conf.ldap.people.types, conf.ldap.people.attrs, search_ldap.v_from_WS(req.query), {});
+export const esup_activ_bo_validateAccount = (isActivation: boolean, attrs: StepAttrsOption) : firstAction_pre => async (req, _sv) => {
+    // the query params obtained from previous step must be validated:
+    const raw_v_query = merge_v(attrs, {}, {}, req.query as any, { no_diff: true }) as any
+    const v_query = search_ldap.v_from_WS(raw_v_query)
+    const userInfo = ldap.convertToLdap(conf.ldap.people.types, conf.ldap.people.attrs, v_query, {});
     const { wantedConvert, attrRemapRev } = ldap.convert_and_remap(conf.ldap.people.types, conf.ldap.people.attrs);
     const o = await esup_activ_bo.validateAccount(userInfo as any, _.without(Object.keys(attrRemapRev), 'userPassword'), req)
     if (isActivation && !o.code) throw "Compte déjà activé";
@@ -198,13 +201,6 @@ export const esup_activ_bo_authentificateUserWithCas : firstAction_pre = async (
     req.session.supannAliasLogin = v.supannAliasLogin // needed for actions_pre.esup_activ_bo_authentificateUser('useSessionUser')
     
     return v;
-}
-
-// useful with nextBrowserStep, otherwise the query params obtained from previous step are NOT validated.
-export const validateAndFilterQueryParams = (attrs: StepAttrsOption) : simpleAction_pre => async (req, sv) => {
-    let v = merge_v(attrs, {}, {}, req.query as any, { no_diff: true }) as any
-    req.query = v;
-    return sv.v
 }
 
 export const mutateQuery = (f: (v:v) => void) : simpleAction_pre => async (req, sv) => {
