@@ -360,3 +360,6 @@ tr.ignored-line {
 .okButton {
     margin-right: 1rem;
 }
+.okButton .glyphicon, .cancelButton .glyphicon {
+  margin-right: 0.5rem;
+}

@@ -37,7 +37,7 @@
         <span v-html="step_labels.okButton"></span>
       </button>
 
-      <button class="btn btn-primary" @click.prevent="reject()" v-if="step_labels.cancelButton">
+      <button class="btn btn-primary cancelButton" @click.prevent="reject()" v-if="step_labels.cancelButton">
         <span class="glyphicon glyphicon-trash"></span>
         <span v-html="step_labels.cancelButton"></span>
       </button>
