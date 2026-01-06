@@ -168,6 +168,35 @@ export function dns(attrName: string, base: string): ldap_conversion {
     }
 }
 
+export function composites_by_key(compositeKey: string, filters: string[]): ldap_conversion {
+    return {
+        fromLdapMulti: (l: string[]): string[] => {
+          let r = []
+          for (const s of l) {
+            if (filters.every(filter => s.includes(filter))) {
+                r.push(parse_composite(s)[compositeKey]);
+            }
+          }
+          return r;
+        },
+        toLdap: (_s: string): string => {
+            throw "NOT IMPLEMENTED";
+        },
+    }
+}
+
+export function composite_by_key(compositeKey: string, filters: string[]): ldap_conversion {
+    return {
+        fromLdapMulti: (l: string[]): string => {
+          const r = composites_by_key(compositeKey, filters).fromLdapMulti(l)
+          return r.length > 0 ? r[0] : null
+        },
+        toLdap: (_s: string): string => {
+            throw "NOT IMPLEMENTED";
+        },
+    }
+}
+
 export const base64: ldap_conversion = {
         fromLdapB: (s: Buffer): string => (
             s && s.toString('base64')
