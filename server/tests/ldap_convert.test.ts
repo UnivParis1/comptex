@@ -13,6 +13,31 @@ describe('ldap_convert', () => {
             assert.equal(conv.fromLdapMulti([ "ou=foo,dc=fr," ]), undefined);
         });
     });
+
+    const barcode123_valide   = "[type=personnel][source=unicampus@p1ps.fr][domaine=barcode.p1ps.fr][id=123][valide=vrai]"
+    const barcode123_invalide = "[type=personnel][source=unicampus@p1ps.fr][domaine=barcode.p1ps.fr][id=123][valide=faux]"
+    const barcode124_valide   = "[domaine=barcode.p1ps.fr][id=124][valide=vrai]"
+    const barcode124_invalide = "[domaine=barcode.p1ps.fr][id=124][valide=faux]"
+    const barcode_autre = "[domaine=foo][id=124][valide=vrai]"
+    describe('composite_by_key convert', () => {
+        it("should work", () => {
+            let conv = ldap_convert.composite_by_key("id", ["[domaine=barcode.p1ps.fr]", "[valide=vrai]"])
+            assert.equal(conv.fromLdapMulti([ barcode123_valide ]), "123");
+            assert.equal(conv.fromLdapMulti([ barcode_autre, barcode123_valide, barcode124_valide ]), "123");
+            assert.equal(conv.fromLdapMulti([ barcode123_invalide ]), null);
+            assert.equal(conv.fromLdapMulti([]), null);
+        })
+    })
+
+    describe('composites_by_key convert', () => {
+        it("should work", () => {
+            let conv = ldap_convert.composites_by_key("id", ["[domaine=barcode.p1ps.fr]", "[valide=faux]"])
+            assert.deepEqual(conv.fromLdapMulti([ barcode123_valide ]), []);
+            assert.deepEqual(conv.fromLdapMulti([ barcode123_invalide ]), ["123"]);
+            assert.deepEqual(conv.fromLdapMulti([ barcode_autre, barcode123_invalide, barcode124_invalide ]), ["123", "124"]);
+            assert.deepEqual(conv.fromLdapMulti([]), []);
+        })
+    })
 });
 
 describe('parse_composite', () => {
