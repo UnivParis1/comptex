@@ -223,7 +223,7 @@ Vue.component('select-with-validity', {
 
 // Emitted values: '' | true
 Vue.component('checkbox-with-validity', {
-    template: `<input type="checkbox" :name="name" :checked="modelValue" @change="onchange">`,
+    template: `<input type="checkbox" :name="name" :checked="modelValue || false" @change="onchange">`,
     props: [
         'modelValue', 'name',
         'validity' // unused, only emitted. But it allows v-model:validity="..."
@@ -234,7 +234,7 @@ Vue.component('checkbox-with-validity', {
       this.checkValidity();
     },
     watch: {
-      modelValue: 'on_value_set',
+      modelValue: 'checkValidity',
     },
     methods: {
         onchange(event) {
