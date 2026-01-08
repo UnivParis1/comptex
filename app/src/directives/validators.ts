@@ -128,7 +128,10 @@ Vue.component('radio-with-validity', {
        <span v-else>{{descr}}</span>
 </label>
   </span>`,
-  props: ['modelValue', 'name', 'values', 'required', 'disabled', 'texts_are_html', 'long_lines'],
+  props: [
+    'modelValue', 'name', 'values', 'required', 'disabled', 'texts_are_html', 'long_lines',
+    'validity' // unused, only emitted. But it allows v-model:validity="..."
+  ],
   emits: ['update:modelValue', 'update:validity'],
   mixins: [ checkValidity ],
   mounted() {
@@ -219,7 +222,10 @@ Vue.component('select-with-validity', {
 // Emitted values: '' | true
 Vue.component('checkbox-with-validity', {
     template: `<input type="checkbox" :name="name" :checked="modelValue" @change="onchange">`,
-    props: ['modelValue', 'name'],
+    props: [
+        'modelValue', 'name',
+        'validity' // unused, only emitted. But it allows v-model:validity="..."
+    ],
     emits: ['update:modelValue', 'update:validity'],
     mixins: [ checkValidity ],
     mounted() {
@@ -239,7 +245,10 @@ Vue.component('checkbox-with-validity', {
   
 Vue.component('textarea-with-validity', {
   template: `<textarea :value="modelValue" @input="onchange"></textarea>`,
-  props: ['modelValue'],
+  props: [
+    'modelValue',
+    'validity' // unused, only emitted. But it allows v-model:validity="..."
+  ],
   emits: ['update:modelValue', 'update:validity'],
   mixins: [ checkValidity ],
   mounted() {
@@ -252,7 +261,10 @@ Vue.component('textarea-with-validity', {
 
 Vue.component('history-textarea-with-validity', {
   template: `<typeahead :name="name" :modelValue="modelValue" @update:modelValue="onchange" :required="required" :is_textarea="true" :rows="rows" :minChars="1" :options="history" v-model:validity="validity"></typeahead>`,
-  props: ['name', 'modelValue', 'required', 'rows'],
+  props: [
+    'name', 'modelValue', 'required', 'rows',
+    'validity' // unused, only emitted. But it allows v-model:validity="..."
+  ],
   emits: ['update:modelValue', 'update:validity'],
   data() {
     return { history: [], validity: {} };
