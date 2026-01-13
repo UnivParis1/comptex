@@ -20,7 +20,6 @@
     "bootstrap": "^3.3.7",
     "croppie": "^2.6.3",
     "diff": "^8.0.2",
-    "exif-js": "^2.3.0",
     "fflate": "^0.8.2",
     "load-script-once": "^2.0.1",
     "prismjs": "^1.24.1",

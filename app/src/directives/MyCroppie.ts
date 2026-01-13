@@ -2,9 +2,6 @@ import { defineComponent } from "vue";
 import Croppie from 'croppie';
 import 'croppie/croppie.css';
 
-import * as EXIF from 'exif-js';
-window['EXIF'] = EXIF; // for Croppie
-
 export default defineComponent({
       props: [ 'data', 'options' ],
       emits: ['error'],
@@ -17,10 +14,7 @@ export default defineComponent({
       },
       methods: {
         init() {
-          this.croppie = new Croppie(this.$el as HTMLElement, {
-            enableExif: true, enableOrientation: true,
-            ...this.options.init,
-          });
+          this.croppie = new Croppie(this.$el as HTMLElement, this.options.init);
           this.setImage();
         },
         setImage() {
