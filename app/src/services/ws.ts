@@ -76,8 +76,8 @@ export const people_search = (step: string, token: string, maxRows? : number) : 
     http.get(api_url + '/comptes/search/' + step, { params: { token, maxRows } }).then(resp => resp.data as Promise<V[]>)
 );
 
-export function search(stepName: string, attr: string, token : string, maxRows? : number) : Promise<StepAttrOptionChoicesWithShort[]> {
-    return http.get(api_url + '/search/' + stepName + '/' + attr, { params: { token, maxRows } }).then((resp) => resp.data as StepAttrOptionChoicesWithShort[]);
+export function search(stepName: string, attr: string, attr_path: string, token : string, maxRows? : number) : Promise<StepAttrOptionChoicesWithShort[]> {
+    return http.get(api_url + '/search/' + stepName + '/' + attr, { params: { token, attr_path, maxRows } }).then((resp) => resp.data as StepAttrOptionChoicesWithShort[]);
 }
 
 const _toDate = (year: number, month: number, day: number) => new Date(Date.UTC(year, month - 1, day));

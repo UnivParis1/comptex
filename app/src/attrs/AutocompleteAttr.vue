@@ -41,9 +41,11 @@ const emit = defineEmits<{
     array_action: [field_name: string],
 }>();
 
+// NB: this will be recomputed often because of "compute_mppp_and_handle_default_values". But the string oneOf_async.value will be unmodified. Needed to avoid too many const_to_choice calls.
+const oneOf_async = computed(() => props.opts.oneOf_async)
 const const_to_choice = async (const_) => {
     if (const_) {
-        const l = await Ws.search(props.stepName, props.real_name || props.name, const_, 1)
+        const l = await Ws.search(props.stepName, props.real_name || props.name, oneOf_async.value, const_, 1)
         return l[0]
     } else {
         return undefined
@@ -63,7 +65,7 @@ watch(val, (val) => {
     }
 })
 const search = (token) => (
-    Ws.search(props.stepName, props.real_name || props.name, token, 10 + 1) /* NB: searching one more item to detect "moreResults" case*/
+    Ws.search(props.stepName, props.real_name || props.name, oneOf_async.value, token, 10 + 1) /* NB: searching one more item to detect "moreResults" case*/
 )
 const formatting = (e) => (
     props.opts.formatting ? props.opts.formatting(e) : e && e.title
