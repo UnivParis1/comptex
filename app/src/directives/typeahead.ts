@@ -156,7 +156,7 @@ const typeaheadComponent = defineComponent({
 
     formatAndHighlight(v) {
         let v_ = (this.formatting_html || this.formatting)(v);
-        v_ = v_.replace(new RegExp(this.query, "i"), m => `<b>${m}</b>`);
+        v_ = v_.replace(new RegExp(Helpers.escapeRegexp(this.query), "i"), m => `<b>${m}</b>`);
         if (this.is_textarea) v_ = v_.replace(/\n/g, '<br>')
         return v_;
     },
