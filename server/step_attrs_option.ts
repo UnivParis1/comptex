@@ -225,8 +225,13 @@ const may_set_translated = (translate: translate, default_opts: SharedStepAttrOp
     }
 }
 
+export const parents_to_string_path = (parents: string[]) => "." + parents.join(".")
+
 type ClientSideStepAttrOption = StepAttrOptionM<ClientSideOnlyStepAttrOption>
-const exportAttr = ({ toUserOnly, readOnly_ifNotEmpty, optional_ifEmpty, oneOf_async, properties, toUser, then, oneOf, ...opt_} : StepAttrOption, attr: string, v: v, translate: translate, default_opts: SharedStepAttrOption) => {
+const exportAttr = (
+  parents: string[], 
+  { toUserOnly, readOnly_ifNotEmpty, optional_ifEmpty, oneOf_async, properties, toUser, then, oneOf, ...opt_} : StepAttrOption, 
+  attr: string, v: v, translate: translate, default_opts: SharedStepAttrOption) => {
     const opt : ClientSideStepAttrOption = opt_;
 
     may_set_translated(translate, default_opts, opt, 'title')
@@ -236,8 +241,8 @@ const exportAttr = ({ toUserOnly, readOnly_ifNotEmpty, optional_ifEmpty, oneOf_a
     if (toUserOnly) opt.readOnly = true
     if (readOnly_ifNotEmpty && v[attr]) opt.readOnly = true
     if (optional_ifEmpty) opt.optional = !v[attr]
-    if (oneOf_async) opt.oneOf_async = "true";
-    if (properties) opt.properties = exportAttrs(properties, v, translate);
+    if (oneOf_async) opt.oneOf_async = parents_to_string_path(parents)
+    if (properties) opt.properties = exportAttrs([...parents, attr], properties, v, translate);
 
     function rec_mpp(one: Mpp<StepAttrOption>): Mpp<ClientSideStepAttrOption>
     function rec_mpp(one: StepAttrOptionChoicesT<StepAttrOption>): StepAttrOptionChoicesT<ClientSideStepAttrOption>
@@ -245,7 +250,7 @@ const exportAttr = ({ toUserOnly, readOnly_ifNotEmpty, optional_ifEmpty, oneOf_a
         one = { ...one }
         may_set_translated(translate, null, one, 'title')
         if (one.merge_patch_parent_properties) {
-            return { ...one, merge_patch_parent_properties: exportAttrs(one.merge_patch_parent_properties, v, translate) };
+            return { ...one, merge_patch_parent_properties: exportAttrs([...parents, one.const ? `${attr}=${one.const}` : attr], one.merge_patch_parent_properties, v, translate) };
         } else {
             return one;
         }
@@ -257,8 +262,8 @@ const exportAttr = ({ toUserOnly, readOnly_ifNotEmpty, optional_ifEmpty, oneOf_a
     return opt;
 }
 
-export const exportAttrs = (attrs: StepAttrsOption, v: v, translate: translate = _ => null): Dictionary<ClientSideStepAttrOption> => (
-    _.mapValues(_.omitBy(attrs, val => val.hidden), (opts, attr) => exportAttr(opts, attr, v, translate, shared_conf.default_attrs_opts[attr]))
+export const exportAttrs = (parents: string[], attrs: StepAttrsOption, v: v, translate: translate = _ => null): Dictionary<ClientSideStepAttrOption> => (
+    _.mapValues(_.omitBy(attrs, val => val.hidden), (opts, attr) => exportAttr(parents, opts, attr, v, translate, shared_conf.default_attrs_opts[attr]))
 )
 
 export const eachAttrs = (attrs: StepAttrsOption, f: (opts: StepAttrOption, key: string, attrs: StepAttrsOption, cond: boolean) => void) => {
@@ -361,24 +366,24 @@ export const mapAttrs = <T>(attrs: StepAttrsOptionT<T>, f: (opts: StepAttrOption
     })
 )
 
-export const findStepAttr = (attrs: StepAttrsOption, f: (opts: StepAttrOption, key: string) => boolean): { key: string, opts: StepAttrOption } => {
+const findStepAttr_ = (attrs: StepAttrsOption, parents: string[], f: (opts: StepAttrOption, key: string, parents: string[]) => boolean): { key: string, opts: StepAttrOption } => {
     for (const key in attrs) {
         const opts = attrs[key];
 
-        if (f(opts, key)) return { key, opts };
+        if (f(opts, key, parents)) return { key, opts };
 
         if (opts.properties) {
-            const r = findStepAttr(opts.properties, f);
+            const r = findStepAttr_(opts.properties, [...parents, key], f);
             if (r) return r;
         }
         if (opts.then?.merge_patch_parent_properties) {
-            const r = findStepAttr(opts.then.merge_patch_parent_properties, f);
+            const r = findStepAttr_(opts.then.merge_patch_parent_properties, [...parents, key], f);
             if (r) return r;
         }
         if (opts.oneOf) {
             for (const choice of opts.oneOf) {
                 if (choice.merge_patch_parent_properties) {
-                    const r = findStepAttr(choice.merge_patch_parent_properties, f);
+                    const r = findStepAttr_(choice.merge_patch_parent_properties, [...parents, `${key}=${choice.const}`], f);
                     if (r) return r;
                 }
             }
@@ -386,3 +391,6 @@ export const findStepAttr = (attrs: StepAttrsOption, f: (opts: StepAttrOption, k
     }
     return undefined;
 }
+export const findStepAttr = (attrs: StepAttrsOption, f: (opts: StepAttrOption, key: string, parents: string[]) => boolean) => (
+    findStepAttr_(attrs, [], f)
+)
