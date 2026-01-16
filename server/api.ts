@@ -12,7 +12,7 @@ import * as mail from './mail.ts';
 import shared_conf from '../shared/conf.ts';
 import conf from './conf.ts';
 import * as conf_steps from './steps/conf.ts';
-import { export_v, merge_v, exportAttrs, merge_attrs_overrides, selectUserProfile, initAttrs, checkAttrs, transform_object_items_oneOf_async_to_oneOf, findStepAttr, flatMapAttrs } from './step_attrs_option.ts';
+import { export_v, merge_v, exportAttrs, merge_attrs_overrides, selectUserProfile, initAttrs, checkAttrs, transform_object_items_oneOf_async_to_oneOf, findStepAttr, flatMapAttrs, parents_to_string_path } from './step_attrs_option.ts';
 import { filters } from './ldap.ts';
 import gen_gsh_script from './gen_gsh_script.ts';
 import { sv_to_url } from './sv.ts';
@@ -108,7 +108,7 @@ async function export_sv(req: req, sv: sva): Promise<ClientSideSVA> {
         sv.v.sv_history = sv.history
     }
     await transform_object_items_oneOf_async_to_oneOf(sv.attrs, sv.v) // modifies sv.attrs
-    const attrs = exportAttrs(sv.attrs, sv.v, req.translate);
+    const attrs = exportAttrs([], sv.attrs, sv.v, req.translate);
     let sv_ = { ...sv as any, stepName: sv.step, ...await exportStep(req, step(sv)), attrs }
     delete sv_.history
     return sv_
@@ -416,7 +416,7 @@ const export_step_no_attrs = async (req: req, step: step) => (
 
 const exportStep = async (req: req, step: step) => (
     {
-        attrs: typeof step.attrs === 'function' ? {} : exportAttrs(step.attrs, {}, req.translate),
+        attrs: typeof step.attrs === 'function' ? {} : exportAttrs([], step.attrs, {}, req.translate),
         step: await export_step_no_attrs(req, step),
     }
 );
@@ -486,10 +486,12 @@ router.post('/homonymes/:id/{:step}', (req: req, res) => {
     respondJson(req, res, homonymes(req, req.params.id, req.params.step, body_to_v(req.body)));
 });
 
-function search_for_typeahead(req: req, step: string, attr: string) {
-    const opts = findStepAttr(name2step(step).attrs, (opts, attr_) => opts.oneOf_async && attr === attr_)?.opts
+function search_for_typeahead(req: req, step: string, attr: string, attr_path: string) {
+    const opts = findStepAttr(name2step(step).attrs, (opts, attr_, parents) => 
+        opts.oneOf_async && attr === attr_ && attr_path === parents_to_string_path(parents)
+    )?.opts
     if (!opts) {
-        throw "search: invalid step attr " + step + ' ' + attr;
+        throw "search: invalid step attr " + step + ' ' + attr + ' ' + attr_path;
     }
     if (!("token" in req.query)) return Promise.reject("missing token parameter");
     let token = req.query.token;
@@ -498,7 +500,7 @@ function search_for_typeahead(req: req, step: string, attr: string) {
 }
 router.get('/search/:step/:attr', (req : req, res) => {
     res.header('Cache-Control', 'private, max-age=60') // minimal caching
-    respondJson(req, res, search_for_typeahead(req, req.params.step, req.params.attr))
+    respondJson(req, res, search_for_typeahead(req, req.params.step, req.params.attr, req.query.attr_path))
 });
 
 router.post('/csv2json', utils.csv2json);

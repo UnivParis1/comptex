@@ -251,7 +251,7 @@ const oneOf_ = asyncComputed_(async function () {
             if (opts.oneOf) {
                 return opts.oneOf;
             } else if (opts.oneOf_async && ['select', 'radio'].includes(uiType.value)) {
-                return await Ws.search(props.stepName, props.real_name || props.name, '');
+                return await Ws.search(props.stepName, props.real_name || props.name, opts.oneOf_async, '');
             } else {
                 return undefined;
             }
