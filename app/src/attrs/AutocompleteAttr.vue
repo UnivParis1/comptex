@@ -30,7 +30,7 @@ const props = defineProps<{
     modelValue: string | undefined,
     name: string,
     real_name: string | undefined,
-    opts?: SharedStepAttrOption & CommonStepAttrOptionT<{}>,
+    opts?: SharedStepAttrOption & CommonStepAttrOptionT<{}> & ClientSideOnlyStepAttrOption,
     v: V,
     ldap_value: string | undefined,
     stepName: string,
