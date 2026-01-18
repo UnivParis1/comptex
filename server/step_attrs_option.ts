@@ -230,7 +230,7 @@ export const parents_to_string_path = (parents: string[]) => "." + parents.join(
 type ClientSideStepAttrOption = StepAttrOptionM<ClientSideOnlyStepAttrOption>
 const exportAttr = (
   parents: string[], 
-  { toUserOnly, readOnly_ifNotEmpty, optional_ifEmpty, oneOf_async, properties, toUser, then, oneOf, ...opt_} : StepAttrOption, 
+  { toUserOnly, readOnly_ifNotEmpty, optional_ifEmpty, oneOf_async, oneOf_async_options, properties, toUser, then, oneOf, ...opt_} : StepAttrOption, 
   attr: string, v: v, translate: translate, default_opts: SharedStepAttrOption) => {
     const opt : ClientSideStepAttrOption = opt_;
 
@@ -241,7 +241,10 @@ const exportAttr = (
     if (toUserOnly) opt.readOnly = true
     if (readOnly_ifNotEmpty && v[attr]) opt.readOnly = true
     if (optional_ifEmpty) opt.optional = !v[attr]
-    if (oneOf_async) opt.oneOf_async = parents_to_string_path(parents)
+    if (oneOf_async) {
+        opt.oneOf_async = parents_to_string_path(parents)
+        if (oneOf_async_options) opt.oneOf_async_options = oneOf_async_options
+    }
     if (properties) opt.properties = exportAttrs([...parents, attr], properties, v, translate);
 
     function rec_mpp(one: Mpp<StepAttrOption>): Mpp<ClientSideStepAttrOption>

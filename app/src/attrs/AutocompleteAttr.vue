@@ -6,7 +6,8 @@
       <input v-else :disabled="true" class="form-control" :value="val ? val.title : ''">
     </div>
     <div class="Autocomplete" :class="{ 'input-group': array_allowed_actions.any }" v-else>
-      <typeahead :id="name" :name="name" v-model="val" :options="search" :minChars="3" :formatting="formatting" :formatting_html="formatting_html"
+      <typeahead :id="name" :name="name" v-model="val" :options="search" :minChars="minChars" :limit="displayLimit"
+            :formatting="formatting" :formatting_html="formatting_html"
             :required="!opts.optional || array_allowed_actions.remove"
             :placeholder="opts.uiPlaceholder"
             :editable="false" v-model:validity="validity[name]"></typeahead>
@@ -19,7 +20,7 @@
 </template>
 
 <script setup lang="ts">
-import { defineComponent, reactive, watch } from 'vue';
+import { computed, defineComponent, reactive, watch } from 'vue';
 import * as Ws from '../services/ws.ts';
 import { V } from '../services/ws.ts'
 import CurrentLdapValue from './CurrentLdapValue.vue';
@@ -52,6 +53,8 @@ const const_to_choice = async (const_) => {
     }
 }
 
+const minChars = computed(() => props.opts.oneOf_async_options?.minChars ?? 3)
+const displayLimit = computed(() => props.opts.oneOf_async_options?.displayLimit ?? 10)
 const validity = reactive(!props.opts.readOnly && { [props.name]: {} })
 const valueS = asyncComputed_(() => const_to_choice(props.modelValue))
 const ldap_valueS = asyncComputed_(() => const_to_choice(props.ldap_value))
@@ -65,7 +68,7 @@ watch(val, (val) => {
     }
 })
 const search = (token) => (
-    Ws.search(props.stepName, props.real_name || props.name, oneOf_async.value, token, 10 + 1) /* NB: searching one more item to detect "moreResults" case*/
+    Ws.search(props.stepName, props.real_name || props.name, oneOf_async.value, token, displayLimit.value + 1) /* NB: searching one more item to detect "moreResults" case*/
 )
 const formatting = (e) => (
     props.opts.formatting ? props.opts.formatting(e) : e && e.title

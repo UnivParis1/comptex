@@ -43,6 +43,7 @@ interface StepAttrItemsOption {
     uiHidden?: boolean | 'ifFalsy' | 'ifForcedInQuery';
 
     uiType?: uiTypes;
+    oneOf_async_options?: { minChars?: number, displayLimit?: number }
 
     pattern?: string;
     min?: number;
