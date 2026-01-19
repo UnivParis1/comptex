@@ -44,9 +44,13 @@ const emit = defineEmits<{
 
 // NB: this will be recomputed often because of "compute_mppp_and_handle_default_values". But the string oneOf_async.value will be unmodified. Needed to avoid too many const_to_choice calls.
 const oneOf_async = computed(() => props.opts.oneOf_async)
-const const_to_choice = async (const_) => {
+const const_to_choice = async (const_, opts?: { discard_invalid_const: true }) => {
     if (const_) {
         const l = await Ws.search(props.stepName, props.real_name || props.name, oneOf_async.value, const_, 1)
+        if (l.length === 0 && !props.opts.readOnly && opts.discard_invalid_const) {
+            console.log("discarding invalid initial (or forced) value:", props.name, "=", const_)
+            emit('update:modelValue', '')
+        }
         return l[0]
     } else {
         return undefined
@@ -56,7 +60,7 @@ const const_to_choice = async (const_) => {
 const minChars = computed(() => props.opts.oneOf_async_options?.minChars ?? 3)
 const displayLimit = computed(() => props.opts.oneOf_async_options?.displayLimit ?? 10)
 const validity = reactive(!props.opts.readOnly && { [props.name]: {} })
-const valueS = asyncComputed_(() => const_to_choice(props.modelValue))
+const valueS = asyncComputed_(() => const_to_choice(props.modelValue, { discard_invalid_const: true }))
 const ldap_valueS = asyncComputed_(() => const_to_choice(props.ldap_value))
 
 const val = toRwRef(() => valueS.value)
