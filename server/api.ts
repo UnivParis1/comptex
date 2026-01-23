@@ -270,7 +270,7 @@ function setRaw(req: req, id: id, sv: sva, v: v) : Promise<svr> {
         advance_sv(req, sv)
     )).tap(async svr => {
         let sv = _.omit(svr, 'response', 'attrs') as sv;
-        if (sv.v.various) delete sv.v.various.diff;
+        delete sv.v.various
         if (sv.step) {
             if (sv.step.includes(":")) throw `saved name can not contain ":" which is reserved for *alternate* step (got ${sv.step})`
             await saveRaw(req, sv);
