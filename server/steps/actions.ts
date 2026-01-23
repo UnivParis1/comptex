@@ -14,6 +14,7 @@ import conf from '../conf.ts';
 import client_conf from '../../shared/conf.ts'; // ES6 syntax needed for default export
 import * as Mustache from '../mustache_like_templating.ts';
 import { sv_to_url } from '../sv.ts';
+import { deep_extend } from '../utils.ts';
 const filters = ldap.filters;
 
 const remove_accents = _.deburr;
@@ -33,7 +34,7 @@ export const addProfileAttrs = (profiles: profileValues[]): simpleAction => (_re
     _.defaults(sv.v, { profilename: profiles[0].const });
     let profile = _.find(profiles, p => p.const === sv.v.profilename);
     if (!profile) throw "invalid profile " + sv.v.profilename;
-    _.assign(sv.v, profile.fv());
+    sv.v = deep_extend(sv.v, profile.fv());
     return Promise.resolve(sv);
 }
 
