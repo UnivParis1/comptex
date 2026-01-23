@@ -50,7 +50,7 @@ export const selectUserProfile = (v: v, profilename: string): v => {
 };
 
 export function merge_v(attrs_ : StepAttrsOption, more_attrs: SharedStepAttrsOption, prev: v, v: v, opts?: { no_diff?: true }): v {
-    let r: v = { various: prev.various || [] };
+    let r: v = { various: prev.various || {} };
     let diff = {};
     function merge_one_level(attrs : StepAttrsOption) {
       _.each(attrs, (opt, key) => {
