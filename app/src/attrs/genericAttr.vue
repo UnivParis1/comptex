@@ -256,9 +256,9 @@ const oneOf_ = asyncComputed_(async function () {
                 return undefined;
             }
 })
-watch(val, (val_) => {
+watch(val, (val_, oldValue) => {
     if (props.opts.normalize) {
-        const val__ = props.opts.normalize(val_ as string);
+        const val__ = props.opts.normalize(val_ as string, oldValue as string);
         if (val__ !== val_) { val.value = val_ = val__ }
     }
     emit('update:modelValue', val_);

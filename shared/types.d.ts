@@ -80,7 +80,7 @@ type MinimalStepAttrOption = StepAttrItemsOption & {
 }
 
 type SharedStepAttrOption = MinimalStepAttrOption & {
-    normalize?: (s: string) => string;
+    normalize?: (s: string, prev: string) => string;
     formatting?: (val: any) => string;
     formatting_html?: (val: any) => string;
     onChange?: (v: CommonV, _: string, val: any) => void;
