@@ -5,7 +5,8 @@
     <InitialStep :step="step"></InitialStep>
 </div>
 
-<div v-for="(svs_,_step) in svsGroupedByStep">      
+<template v-for="(svs_,_step) in svsGroupedByStep">
+<div :class="`ModerateStep-${_step}`">
  <h2 v-if="svs_[0].step.labels" v-html="svs_[0].step.labels.title_in_list || svs_[0].step.labels.title"></h2>
  <template v-for="description in [svs_[0].step.labels.description_in_list]">
    <div style="margin-bottom: 0.7rem;" v-html="description"></div>
@@ -22,6 +23,7 @@
 </li>
 </ul>
 </div>
+</template>
 
 <div v-if="svs && svs.length === 0">
   Rien à modérer
