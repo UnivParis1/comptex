@@ -63,6 +63,21 @@ describe('sub_and_defaults', function() {
              { attrNames: 'duration sn' });
     });
 
+    it('should handle if "value" then merge_patch_parent_properties', () => {
+        const attrs = { duration: {
+                optional: true,
+                if: { value: "x2" },
+                then: { merge_patch_parent_properties: { sn: {} } },
+        } } as StepAttrsOption;
+            
+        test({ attrs, v: { duration: "" } as V },
+             { attrNames: 'duration' })
+        test({ attrs, v: { duration: "x2" } as V },
+             { attrNames: 'duration sn' });
+        test({ attrs, v: { duration: "x3" } as V },
+             { attrNames: 'duration' });
+    });
+
     it('should merge merge_patch_parent_properties (if then)', () => {
         const attrs = { 
             sn: { title: 'sn', description: 'the sn' },
