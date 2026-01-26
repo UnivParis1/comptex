@@ -1,5 +1,5 @@
 <template>
-<div class="InitialStep" v-if="title_in_list">
+<div class="InitialStep" :class="`InitialStep-${step.id}`" v-if="title_in_list">
     <div v-if="allow_reuse">
         
         <form novalidate v-if="step.ldap_filter || step.attrs.profilename_to_modify" class="form-horizontal">
