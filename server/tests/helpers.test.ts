@@ -243,3 +243,21 @@ describe('keyByMulti', () => {
         assert.deepEqual(helpers.keyByMulti( [ { foo: [] } ], 'foo'), {})
     })
 })
+
+describe.only('numSecu_format', () => {
+    it("should work", () => {
+        assert.equal(helpers.numSecu_format("1"), "1 ")
+        assert.equal(helpers.numSecu_format("1 7"), "1 7")
+        assert.equal(helpers.numSecu_format("1 75"), "1 75 ")
+        assert.equal(helpers.numSecu_format("1 75 01"), "1 75 01 ")
+        assert.equal(helpers.numSecu_format("1 75 01 7"), "1 75 01 7")
+        assert.equal(helpers.numSecu_format("1 75 01 75"), "1 75 01 75 ")
+        assert.equal(helpers.numSecu_format("1 75 01 75 111"), "1 75 01 75 111 ")
+        assert.equal(helpers.numSecu_format("1 75 01 75 111 001"), "1 75 01 75 111 001 ")
+        assert.equal(helpers.numSecu_format("1 75 01 75 111 001 99"), "1 75 01 75 111 001 99")
+        assert.equal(helpers.numSecu_format("175017511100199"      ), "1 75 01 75 111 001 99")
+    })
+    it("should not modify formatting in middle of editing", () => {
+        assert.equal(helpers.numSecu_format("1 975 01 75 111 001 99"), "1 975 01 75 111 001 99")
+    })
+})

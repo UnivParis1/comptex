@@ -112,6 +112,27 @@ export const maybeFormatPhone = (resultFrenchPrefix: string) => (maybePhone : st
     return maybePhone;
 }
 
+// https://regex101.com/library/trpotF
+export const numSecu_pattern = '^' + [
+    '(?<sexe>[1-478])',
+    '(?<annee>[0-9]{2})',
+    '(?<mois>0[1-9]|1[0-2]|[2-3][0-9]|4[0-2]|[5-9][0-9])',
+    '(?<departement>2[ABab]|[0-9]{2}|9[7-8][0-9])',
+    '(?<commune_ou_pays>[0-9]{3}|[0-9]{2})', // NB : autorise "970 111" qui est interdit
+    '(?<ordre>00[1-9]|0[1-9][0-9]|[1-9][0-9]{2})',
+    '(?<cle>0[1-9]|[1-8][0-9]|9[0-7])',
+].join('[ ]*') + '$'
+
+export const numSecu_format = (s: string) => {
+    return s.replace(/^(\d)$/, '$1 ')
+            .replace(/^(\d \d\d)$/, '$1 ')
+            .replace(/^(\d \d\d \d\d)$/, '$1 ')
+            .replace(/^(\d \d\d \d\d \d[\dABab])$/, '$1 ')
+            .replace(/^(\d \d\d \d\d \d[\dABab] \d\d\d)$/, '$1 ')
+            .replace(/^(\d \d\d \d\d \d[\dABab] \d\d\d \d\d\d)$/, '$1 ')
+            .replace(/^(\d)(\d\d)(\d\d)(\d[\dABab])(\d\d\d)(\d\d\d)(\d\d)$/, '$1 $2 $3 $4 $5 $6 $7')
+}
+
 export const compute_absolute_date = (relativeDate: relativeDate, date: Date = new Date()) => {
     const [ , number_, what ] = relativeDate.match(/^(.*?)(D|EY|SY|Y)$/) || []
     const number = parseInt(number_)
