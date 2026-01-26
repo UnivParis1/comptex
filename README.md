@@ -174,7 +174,7 @@ You can customize the way it is displayed:
 * ```labels.tab_post_scriptum```: *(html)* displayed inside the tab (for `uiType` `tab`)
 
 Some special functionalities are only available through `shared/conf.ts`:
-* ```normalize```: function called on the value. Example: use it to remove whitespace from the value
+* ```normalize```: function called on the value (and previous value). Example: use it to remove whitespace from the value
 * ```formatting```: for `autocomplete`, used to format the value for the `<input>`
 * ```formatting_html```: for `autocomplete`, used to format the value for the dropdown choices
 * ```onChange```: when the value is modified by the user, can modify `v` (limitation: only works for AutocompleteAttr)

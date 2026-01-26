@@ -125,7 +125,7 @@ function to_or_from_ws(direction: 'fromWs' | 'fromCSV' | 'toWs', v: {}, attrs: S
         
         if (opts.items?.properties) v_[attr] = v[attr].map(v_ => to_or_from_ws(direction, v_, opts.items.properties))
 
-        if (direction === 'fromCSV' && opts.normalize) v_[attr] = opts.normalize(v_[attr]);
+        if (direction === 'fromCSV' && opts.normalize) v_[attr] = opts.normalize(v_[attr], undefined);
     }
     return v_;
 }
