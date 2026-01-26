@@ -93,7 +93,8 @@ export const filtered_etablissements = (global_filter: string) => async (token: 
     if (global_filter) {
         filters_ = filters_.map(filter => filters.and([ filter, global_filter ]))
     }
-    return ldap.searchMany(conf.ldap.base_etablissements, filters_, 'const', conf.ldap.etablissements.types, conf.ldap.etablissements.attrs, {sizeLimit})
+    const r = await ldap.searchMany(conf.ldap.base_etablissements, filters_, 'const', conf.ldap.etablissements.types, conf.ldap.etablissements.attrs, {sizeLimit})
+    return _.sortBy(r, choice => _.deburr(choice.title))
 };
 
 export const etablissements = filtered_etablissements(null)
