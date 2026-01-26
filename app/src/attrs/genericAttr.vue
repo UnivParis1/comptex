@@ -116,7 +116,8 @@
 
     <div class="uiType-span" v-else-if="uiType === 'span'">
         <span class="instead_of_disabled_input">{{formattedValue}}</span>
-        <span class="attr-description" v-html="opts.description"></span>
+        <component :is="vue_component_description" :v="v" v-if="vue_component_description"></component>
+        <span class="attr-description" v-html="opts.description" v-else></span>
     </div>
 
    <div v-else>
