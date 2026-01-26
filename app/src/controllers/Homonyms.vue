@@ -9,6 +9,7 @@
    <p style="height: 0.5em"></p>
    <compare-users :v="v" :homonyme="homonyme"></compare-users>
    <button class="btn btn-primary" @click="merge(homonyme)"><span class="glyphicon glyphicon-resize-small"></span> C'est la même personne</button>
+   &nbsp;
    <button class="btn btn-primary" @click="ignore(homonyme)"><span class="glyphicon glyphicon-remove"></span> Ce n'est pas la même personne</button>
    <p style="height: 1em"></p>
  </div>
