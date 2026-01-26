@@ -4,7 +4,7 @@
     <component :is="resp.component" :resp="resp" :v_pre="v_pre" :v="v"></component>
  </div>
  <div v-else-if="v">
-  <h2 style="margin-top: 2em" v-html="step.labels.title" v-if="step.labels.title"></h2>
+  <h2 v-html="step.labels.title" v-if="step.labels.title"></h2>
 
   <div v-if="additional_public_info">
       <div v-html="additional_public_info.description"></div>
