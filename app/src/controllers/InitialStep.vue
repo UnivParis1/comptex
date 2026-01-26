@@ -1,9 +1,9 @@
 <template>
 <div class="InitialStep" v-if="title_in_list">
     <div v-if="allow_reuse">
-        <h2 v-html="title_in_list"></h2>
-
+        
         <form novalidate v-if="step.ldap_filter || step.attrs.profilename_to_modify" class="form-horizontal">
+            <h2 v-html="title_in_list"></h2>
             <my-bootstrap-form-group :name="searchUser_inputName" label="Choisir un utilisateur">
                 <typeahead :minChars="3" :editable="false" :name="searchUser_inputName"
                             @update:modelValue="withUser"
@@ -23,9 +23,12 @@
             </genericAttr>
         </form>
 
-        <div v-else>
-            <autocomplete-user class="form-control" placeholder="Rechercher une personne" @select="withUser"></autocomplete-user>
-        </div>
+        <form v-else>
+            <label>
+                <h2 v-html="title_in_list"></h2>
+                <autocomplete-user class="form-control" placeholder="Rechercher une personne" @select="withUser"></autocomplete-user>
+            </label>
+        </form>
 
         <div v-html="labels.description_in_list"></div>
     </div>
