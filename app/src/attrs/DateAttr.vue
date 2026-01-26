@@ -7,7 +7,7 @@
       <button v-if="todayButton" class="btn btn-primary" type="button" @click="set_today">{{todayButton}}</button>
     </span>
     <CurrentLdapValue :modelValue="initial_val" :ldap_value="ldap_val" :opts="opts" @update:modelValue="v => val = (v as string)"></CurrentLdapValue>
-    <span class="attr-description" v-html="opts.description"></span>
+    <slot name="description"></slot>    
   </my-bootstrap-form-group>
 </template>
 

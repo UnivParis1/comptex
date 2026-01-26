@@ -5,6 +5,10 @@
   <DateAttr v-model="val as Date" :name="name" v-if="uiType === 'date'"
     :ldap_value="ldap_value as Date"
     :opts="opts">
+    <template #description>
+      <component :is="vue_component_description" :v="v" v-if="vue_component_description"></component>
+      <span class="attr-description" v-html="opts.description" v-else></span>
+    </template>
   </DateAttr>
 
   <DateThreeInputsAttr v-model="val as Date" v-else-if="uiType === 'dateThreeInputs'"
