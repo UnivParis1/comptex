@@ -1,9 +1,11 @@
 import { forIn, map, mapValues, pickBy } from 'lodash-es';
 import { find_choice } from './v_utils.ts';
 
-const matches_if = (if_: 'truthy'|'falsy'|'modified', val: string, val_orig: string | undefined) => (
+const matches_if = (if_: CommonStepAttrOptionT<unknown>["if"], val: string, val_orig: string | undefined) => (
     if_ === 'modified' ? val != val_orig :
-    if_ === 'truthy' ? val : !val
+    if_ === 'truthy' ? val :
+    if_ === 'falsy' ? !val :
+    val === if_.value
 )
 
 const handle_then_if_matching = (opts: StepAttrOptionM<unknown>, val: string, val_orig: string | undefined, rec: (attrs: StepAttrsOptionM<unknown>, mpo: MergePatchOptions) => void) => {
