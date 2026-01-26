@@ -73,7 +73,7 @@ export const code_to_structure = (code: string) => {
     return ldap.searchOne(conf.ldap.base_structures, filter, conf.ldap.structures.types, conf.ldap.structures.attrs, {});
 };
 
-export const filtered_etablissements = (global_filter: string) => (token: string, sizeLimit: number) => {
+export const filtered_etablissements = (global_filter: string) => async (token: string, sizeLimit: number) => {
     let filters_;
     if (token.match(/\{.*/)) {
         filters_ = [filters.eq("up1TableKey", token)]
@@ -81,6 +81,8 @@ export const filtered_etablissements = (global_filter: string) => (token: string
         filters_ = [filters.startsWith("up1TableKey", ldap.convert_toLdap_string(conf.ldap.etablissements.attrs.siret, token))];
     } else if (helpers.is_valid_uai_code(token)) {
         filters_ = [filters.startsWith("up1TableKey", ldap.convert_toLdap_string(conf.ldap.etablissements.attrs.uai, token))];
+    } else if (token === '') {
+        filters_ = [ '(ou=*)' ]
     } else {
         filters_ = [
             filters.eq('ou', token),
