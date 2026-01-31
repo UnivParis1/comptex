@@ -16,7 +16,7 @@
             :id="'panel_' + id" role="tabpanel" :aria-labelledby="'tab_' + id" :class="{ offscreen: id !== selectedTab_ }">
             <div class="tab-description" v-html="opts.description" v-if="opts.description"></div>
             <div v-for="(opts, name) in opts.properties" :key="name" v-if="opts">
-                <genericAttr :name="name" :opts="opts" v-model="v[name]" :v="v" :ldap_value="v_ldap && v_ldap[name]" :stepName="stepName"
+                <genericAttr :name="name" :opts="opts" v-model="v[name]" :v="v" :v_display="v_display" :ldap_value="v_ldap && v_ldap[name]" :stepName="stepName"
                     v-if="opts.uiType !== 'homonym'">
                 </genericAttr>
             </div>
@@ -26,7 +26,7 @@
 
     <div class="without-tabs" v-if="Object.keys(attrs_outside_tabs).length">
       <div v-for="(opts, name) in attrs_outside_tabs" :key="name" class="genericAttrs">
-        <genericAttr :name="name" :opts="opts" v-model="v[name]" :v="v" :ldap_value="v_ldap && v_ldap[name]" :stepName="stepName">
+        <genericAttr :name="name" :opts="opts" v-model="v[name]" :v="v" :v_display="v_display" :ldap_value="v_ldap && v_ldap[name]" :stepName="stepName">
         </genericAttr>
       </div>
     </div>

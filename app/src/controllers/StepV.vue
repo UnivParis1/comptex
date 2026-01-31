@@ -58,7 +58,7 @@
 
     <attrsForm
         :class="{ display_fieldIsRequired_hint: display_fieldIsRequired_hint }"
-        :v="v" :v_ldap="v_ldap" :attrs="other_attrs" :step_labels="step.labels" :stepName="stepName"
+        :v="v" :v_ldap="v_ldap" :attrs="other_attrs" :v_display="v_display" :step_labels="step.labels" :stepName="stepName"
         :disableOkButton="disableOkButton"
         @submit="submit" @reject="reject"></attrsForm>
 

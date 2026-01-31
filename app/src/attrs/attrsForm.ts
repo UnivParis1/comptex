@@ -23,7 +23,7 @@ const ensureElementErrorIsVisible = (subform) => {
 
 
 export default defineComponent({
-    props: ['v', 'v_ldap', 'attrs', 'step_labels', 'stepName', 'disableOkButton'],
+    props: ['v', 'v_ldap', 'attrs', 'v_display', 'step_labels', 'stepName', 'disableOkButton'],
     emits: ['submit', 'reject'],
     data() {
         return {
