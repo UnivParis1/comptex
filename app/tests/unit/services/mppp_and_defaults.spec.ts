@@ -353,6 +353,25 @@ describe('sub_and_defaults', function() {
             { attrNames: "duration givenName sn", subAttrs: { sn: { default: "sn-b" } }, v: { duration: "2", givenName: "a", sn: "sn-b" } });
    });
 
+   it('should merge oneOf merge_patch_parent_properties and set merge_patch_options "ignore" later', () => {
+        const attrs = { 
+            profilename: { oneOf: [
+                { const: "1" },
+                { const: "2",
+                    merge_patch_options: { newRootProperties: "ignore" },
+                    merge_patch_parent_properties: { sn: { uiHidden: false } } },
+                ] },
+            _foo: { oneOf: [
+                { const: "foo1", merge_patch_parent_properties: { sn: { uiHidden: true } } },
+            ] },
+        } as StepAttrsOption;
+
+        let params = { attrs, v: { profilename: "2", _foo: "foo1" } as V }
+        test(params, { subAttrs: { sn: { uiHidden: false } } });
+        params.v["profilename"] = "1";
+        test(params, { subAttrs: { sn: { uiHidden: true } } });
+    });
+
    it('should merge oneOf merge_patch_parent_properties and update title', () => {
     const attrs = { 
         profilename: { oneOf: [
