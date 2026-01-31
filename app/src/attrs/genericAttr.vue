@@ -6,7 +6,7 @@
     :ldap_value="ldap_value as Date"
     :opts="opts">
     <template #description>
-      <component :is="vue_component_description" :v="v" v-if="vue_component_description"></component>
+      <component :is="vue_component_description" :v="v" :v_display="v_display" v-if="vue_component_description"></component>
       <span class="attr-description" v-html="opts.description" v-else></span>
     </template>
   </DateAttr>
@@ -100,7 +100,7 @@
       </select-with-validity>
       <array-actions @action="name => $emit('array_action', name)" :array_allowed_actions="array_allowed_actions" />
      </div>
-      <component :is="vue_component_description" :v="v" v-if="vue_component_description"></component>
+      <component :is="vue_component_description" :v="v" :v_display="v_display" v-if="vue_component_description"></component>
       <span class="attr-description" v-html="opts.description" v-else></span>
     </div>
 
@@ -116,7 +116,7 @@
 
     <div class="uiType-span" v-else-if="uiType === 'span'">
         <span class="instead_of_disabled_input">{{formattedValue}}</span>
-        <component :is="vue_component_description" :v="v" v-if="vue_component_description"></component>
+        <component :is="vue_component_description" :v="v" :v_display="v_display" v-if="vue_component_description"></component>
         <span class="attr-description" v-html="opts.description" v-else></span>
     </div>
 
@@ -134,7 +134,7 @@
     </input-with-validity>
     <array-actions @action="name => $emit('array_action', name)" :array_allowed_actions="array_allowed_actions" />
     </div>
-    <component :is="vue_component_description" :v="v" v-if="vue_component_description"></component>
+    <component :is="vue_component_description" :v="v" :v_display="v_display" v-if="vue_component_description"></component>
     <span class="attr-description" :class="{ 'attr-readOnly-description': opts.readOnly }" v-html="opts.description" v-else></span>
    </div>
 
@@ -179,6 +179,7 @@ const props = defineProps<{
     name: string,
     opts?: SharedStepAttrOption & CommonStepAttrOptionT<{}> & ClientSideOnlyStepAttrOption,
     v?: Ws.V,
+    v_display?: (attrName: string) => string,
     ldap_value?: string | string[] | Date,
     stepName?: string,
     array_allowed_actions_?: { move_up?: boolean, move_down?: boolean, remove?: boolean },
@@ -249,7 +250,7 @@ const input_attrs = computed(() => (
 const vue_component_description = computed(() => {
             if (!uiOptions.value.texts_are_vue_template) return undefined;
             const text = props.opts.description;
-            return text && defineComponent({ props: ['v'], template: "<div>" + text + "</div>" });
+            return text && defineComponent({ props: ['v', 'v_display'], template: "<div>" + text + "</div>" });
 })
 const oneOf_ = asyncComputed_(async function () {
             const opts = props.opts || {};
