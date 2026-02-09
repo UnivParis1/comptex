@@ -217,6 +217,7 @@ More complex ACLs are possible. They need to provide 3 functions:
 
 ## Various
 
+* ```action_before_purge```: optional function called before a saved sv unmodified for conf.sv_ttl_days is purged. You can raise an exception to stop the purge (which will be retried one day later)
 * ```nextBrowserStep```: the name of a step (with a leading `/`) or an external url. If it contains `{{id}}`, it is replaced by `svr.id`.
 * ```search_filter```: LDAP filter. A similar result can be obtained with step.acls, but it's harder since you should ensure "v_to_moderators_ldap_filter" and "loggedUser_to_ldap_filter" do the same thing.
 

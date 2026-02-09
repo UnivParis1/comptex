@@ -135,6 +135,7 @@ type step = {
   action_pre_before_save?: action;
   action_post?: action;
   action_rejected?: action;
+  action_before_purge?: (sv: sv) => Promise<void>; // can return an exception to avoid purge
 }
 type steps = Dictionary<step>
 
