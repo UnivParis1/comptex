@@ -323,12 +323,22 @@ const non_initial_steps = () => (
 
 
 async function purge_old_(svs: sv[]) {
+    let svs_ = []
     for (const sv of svs) {
+        if (step(sv).action_before_purge) {
+            try {
+                await step(sv).action_before_purge(sv)
+            } catch (err) {
+                console.log("not purging", sv.id, "because action_before_purge returned", err)
+                continue
+            }
+        }
         console.log("purging old", sv.id, sv.modifyTimestamp)
         add_history_event(undefined, sv, 'purged')
+        svs_.push(sv)
     }
     // save to DB modified sv.history + remove sv.v & sv.step
-    await removeManyRaw(svs)
+    await removeManyRaw(svs_)
 }
 export async function purge_old_task() {
     // do not it during startup of comptex, wait 10 seconds
