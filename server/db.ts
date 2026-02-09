@@ -47,6 +47,13 @@ export const set_additional_public_info = (id: id, additional_public_info: sv['a
     svs().updateOne({ _id: _id(id) }, { $set: { additional_public_info } })
 );
 
+export const list_sv_to_purge = async () => (
+    (await svs().find({
+        step: { $exists: true },
+        modifyTimestamp: { $lte: new Date(Date.now() - conf.sv_ttl_days * 24*60*60*1000) }}
+    ).toArray()).map(fromDB) as sv[]
+)
+
     // lists svs, sorted by steps + recent one at the beginning
 export const listByModerator = (query: Object) : Promise<sv[]> => {
         if (_.isEqual(query, { "$or": [] })) return Promise.resolve(null);
