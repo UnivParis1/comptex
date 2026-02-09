@@ -35,7 +35,7 @@ function name2step(name: string): step {
     return r;
 }
 
-const step = (sv: sv) => name2step(sv.step);
+const step = (sv: Pick<sv, 'step'>) => name2step(sv.step);
 
 async function add_step_attrs<SV extends sv>(req: req, sv: SV) {
     const { attrs, attrs_override } = step(sv);
