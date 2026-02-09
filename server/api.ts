@@ -322,26 +322,26 @@ const non_initial_steps = () => (
 );
 
 
-async function purge_old(svs: sv[]) {
+async function purge_old_(svs: sv[]) {
     for (const sv of svs) {
         console.log("purging old", sv.id, sv.modifyTimestamp)
         add_history_event(undefined, sv, 'purged')
     }
     await removeManyRaw(svs)
 }
-
-const purge_old_if_not_running = helpers.run_if_not_running(purge_old)
-
-function may_purge_old(svs: sv[]) {
-    if (conf.sv_ttl_days) {
-        const now = new Date()
-        let to_purge
-        [ to_purge, svs ] = _.partition(svs, sv => (
-            helpers.addDays(sv.modifyTimestamp, conf.sv_ttl_days) < now
-        ))
-        purge_old_if_not_running(to_purge) // not awaiting
+export async function purge_old_task() {
+    // do not it during startup of comptex, wait 10 seconds
+    await helpers.setTimeoutPromise(10/*seconds*/ *1000)
+    try {
+        console.log(`Checking svs older than ${conf.sv_ttl_days} days`)
+        await purge_old_(await db.list_sv_to_purge())
+    } catch (err) {
+        console.error("purge_old_task error", err)
+    } finally {
+        // do it every day
+        await helpers.setTimeoutPromise(1/*day*/ * 24*60*60*1000)
+        purge_old_task()
     }
-    return svs
 }
 
 async function listAuthorized(req: req) {
@@ -355,7 +355,6 @@ async function listAuthorized(req: req) {
         if (!valid) console.error("ignoring sv in db with invalid step " + sv.step);
         return valid;
     });
-    svs = may_purge_old(svs)
 
     return await helpers.pmap(svs, async (sv) => (
         { ...sv, stepName: sv.step, step: await export_step_no_attrs(req, step(sv)) }

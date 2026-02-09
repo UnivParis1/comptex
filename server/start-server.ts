@@ -7,7 +7,7 @@ import bodyParser from 'body-parser';
 import * as ldap from './ldap.ts';
 
 import * as db from './db.ts';
-import api, { stop_polling } from './api.ts';
+import api, { purge_old_task, stop_polling } from './api.ts';
 import * as utils from './utils.ts';
 import * as cas from './cas.ts';
 import * as translate from './translate.ts'
@@ -65,6 +65,10 @@ db.may_init(mongo_client => {
     let port = process.env.PORT || 8080;        // set our port
     let server = app.listen(port);
     console.log('Started on port ' + port);
+
+    if (conf.sv_ttl_days) {
+        purge_old_task()
+    }
 
     process.on('SIGTERM', () => {
         console.info('Stopping...')
