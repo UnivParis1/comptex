@@ -327,6 +327,7 @@ async function purge_old_(svs: sv[]) {
         console.log("purging old", sv.id, sv.modifyTimestamp)
         add_history_event(undefined, sv, 'purged')
     }
+    // save to DB modified sv.history + remove sv.v & sv.step
     await removeManyRaw(svs)
 }
 export async function purge_old_task() {
