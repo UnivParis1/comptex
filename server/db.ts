@@ -54,7 +54,7 @@ export const list_sv_to_purge = async () => (
     ).toArray()).map(fromDB) as sv[]
 )
 
-    // lists svs, sorted by steps + recent one at the beginning
+// lists svs, sorted by steps + recent one at the beginning
 export const listByModerator = (query: Object) : Promise<sv[]> => {
         if (_.isEqual(query, { "$or": [] })) return Promise.resolve(null);
         return (
