@@ -501,7 +501,7 @@ function search_for_typeahead(req: req, step: string, attr: string, attr_path: s
         opts.oneOf_async && attr === attr_ && attr_path === parents_to_string_path(parents)
     )?.opts
     if (!opts) {
-        throw "search: invalid step attr " + step + ' ' + attr + ' ' + attr_path;
+        throw `search: invalid step:${step} attr:${attr} attr_path:${attr_path}`;
     }
     if (!("token" in req.query)) return Promise.reject("missing token parameter");
     let token = req.query.token;
