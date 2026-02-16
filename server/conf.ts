@@ -256,6 +256,7 @@ const conf = {
     } as session_file_store.Options,
 
     trust_proxy: ['loopback'],
+    listen_host: '', // if empty, it listens on all network interfaces. use 'localhost' for security if you use mod_shib
 
     cas: {
         ssoBaseURL: '', //'https://cas.univ.fr/cas/',
