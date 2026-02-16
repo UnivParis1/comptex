@@ -63,8 +63,9 @@ app.use([ "login", "steps", ...Object.keys(conf_steps.steps), "playground" ].map
 
 db.may_init(mongo_client => {
     let port = process.env.PORT || 8080;        // set our port
-    let server = app.listen(port);
-    console.log('Started on port ' + port);
+    let server = app.listen(+port, conf.listen_host, () => {
+        console.log('Started on port ' + port);
+    });
 
     if (conf.sv_ttl_days) {
         purge_old_task()
