@@ -72,7 +72,7 @@ With current sv.step:
 * ```.next``` step is the new sv.step
 
 If sv.step is not null, with new sv.step:
-* ```.action_pre_before_save``` is called with params (req, sv)
+* ```.action_pre_before_save``` is called with params (req, sv). It is not called if sv.step in not modified
 * sv is saved in database (NB: sv.v.various is omitted)
 * ```.notify.added``` template is mailed to moderators (moderators computed from ```.acls```)
 
