@@ -245,7 +245,7 @@ function advance_sv(req: req, sv: sva) : Promise<svr> {
         const nextStep = step(svr).next;
         svr.v.prevStep = svr.step
         svr.step = nextStep ? (typeof nextStep === "function" ? await nextStep(svr.v) : nextStep) : svr.response?.step;
-        if (svr.step) {
+        if (svr.step && svr.step !== svr.v.prevStep) {
             return action_pre_before_save(req, svr);
         } else {
             return svr;
