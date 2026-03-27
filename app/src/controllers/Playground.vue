@@ -96,6 +96,7 @@ const tests: (Omit<ClientSideSVA, 'stepName'> & { test_name: string })[] = [
             "frenchMobilePhone": { title: "French mobile phone number", uiType: "frenchMobilePhone" },
             "frenchPostalCode": { title: "French postal code", uiType: "frenchPostalCode" },
             "postalAddress": { title: "Postal address", uiType: "postalAddress" },
+            "pattern": { title: "Pattern", pattern:"[0-1]+", description: 'Only digits 0 or 1' },
         },
         v: { "phone": "+41 66 555 44 33", "frenchMobilePhone": "06 02 03 04 05", "frenchPostalCode": "75018" },
     },
