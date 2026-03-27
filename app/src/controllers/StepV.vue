@@ -12,7 +12,7 @@
   </div>
 
   <div class="step_description" v-if="step_description">
-    <component :is="step_description" :id="id" :v_pre="v_pre" :v="v" :v_display="v_display" :potential_homonyms="potential_homonyms"></component>
+    <component :is="step_description" :id="id" :v_pre="v_pre" :v="v" :v_display="v_display" :v_ldap="v_ldap" :potential_homonyms="potential_homonyms"></component>
   </div>
   <div v-if="noInteraction">
     Veuillez patienter
@@ -198,7 +198,7 @@ export default defineComponent({
         },
         step_description() {
             const text = this.step?.labels?.description;
-            return text && defineComponent({ props: ['id', 'v_pre', 'v', 'v_display', 'potential_homonyms'], template: "<div>" + text + "</div>" });
+            return text && defineComponent({ props: ['id', 'v_pre', 'v', 'v_display', 'v_ldap', 'potential_homonyms'], template: "<div>" + text + "</div>" });
         },
         step_post_scriptum() {
             const text = this.step?.labels?.post_scriptum;
