@@ -35,7 +35,7 @@ describe('minimal', async () => {
     it('renders simple input', () => {
         const wrapper = mount_test({ name: "attr1", opts: {}, v: { attr1: "a" } })
         const inputWrapper = wrapper.find('input')
-        assert.deepEqual(inputAttrs(inputWrapper), { name: "attr1", required: "", type: "text" })
+        assert.deepEqual(inputAttrs(inputWrapper), { name: "attr1", required: "true", type: "text" })
         assert.equal(inputWrapper.element.value, "a")
     })
 

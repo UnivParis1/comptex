@@ -37,9 +37,9 @@ const checkValidity = {
 };
 
 Vue.component('input-with-validity', {
-  template: "<input :name='name' :type='type' :disabled='disabled'>",
+  template: "<input :name='name' :type='type' :disabled='disabled' :required='required'>",
   props: [
-    'modelValue', 'name', 'type', 'sameAs', 'allowedChars', 'realType', 'pattern', 'min', 'max', 'minlength', 'maxlength', 'step', 'validator', 'disabled', 'onFocusOut',
+    'modelValue', 'name', 'type', 'sameAs', 'allowedChars', 'realType', 'required', 'pattern', 'min', 'max', 'minlength', 'maxlength', 'step', 'validator', 'disabled', 'onFocusOut',
     'validity' // unused, only emitted. But it allows v-model:validity="..."
   ],
   emits: ['update:modelValue', 'update:validity'],
@@ -60,6 +60,7 @@ Vue.component('input-with-validity', {
   },
   watch: {
     modelValue: 'on_value_set',
+    required(v) { this._attrUpdated('required', v) },
     min(v) { this._attrUpdated('min', v) },
     max(v) { this._attrUpdated('max', v) },
     pattern(v) { this._attrUpdated('pattern', v) },
@@ -82,7 +83,7 @@ Vue.component('input-with-validity', {
         this.checkValidity();
     },
     _setPattern() {
-        for (const name of ['pattern', 'min', 'max', 'minlength', 'maxlength', 'step']) {
+        for (const name of ['required', 'pattern', 'min', 'max', 'minlength', 'maxlength', 'step']) {
             if (this[name]) Helpers.setAttribute(this.$el, name, this[name]);
         }
         if (this.realType === 'phone') this.$el.setAttribute('pattern', conf.pattern.phone);
