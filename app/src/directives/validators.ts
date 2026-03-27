@@ -37,7 +37,7 @@ const checkValidity = {
 };
 
 Vue.component('input-with-validity', {
-  template: "<input :name='name' :value='modelValue' :type='type' :disabled='disabled'>",
+  template: "<input :name='name' :type='type' :disabled='disabled'>",
   props: [
     'modelValue', 'name', 'type', 'sameAs', 'allowedChars', 'realType', 'pattern', 'min', 'max', 'minlength', 'maxlength', 'step', 'validator', 'disabled', 'onFocusOut',
     'validity' // unused, only emitted. But it allows v-model:validity="..."
@@ -49,6 +49,7 @@ Vue.component('input-with-validity', {
 
     element.classList.add("form-control");
     this._setPattern();
+    this.$el.value = this.modelValue ?? ''
 
     if (this.onFocusOut) {
         element.addEventListener('focusout', this.onFocusOut.bind(this))
