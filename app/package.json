@@ -23,6 +23,7 @@
     "fflate": "^0.8.2",
     "load-script-once": "^2.0.1",
     "prismjs": "^1.24.1",
+    "typescript": "^6.0.2",
     "vue": "^3.5.22",
     "vue-router": "^4.5.1",
     "vue-tsc": "^3.1.4"

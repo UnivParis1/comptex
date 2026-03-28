@@ -1,5 +1,6 @@
 import { defineComponent } from "vue";
 import Croppie from 'croppie';
+// @ts-expect-error
 import 'croppie/croppie.css';
 
 export default defineComponent({
