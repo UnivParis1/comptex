@@ -89,10 +89,6 @@ export default defineComponent({
                 }
             }
         },
-        export_csv(event) {
-            const csv = Helpers.to_csv(this.vs, this.all_attrs_flat)
-            event.target.href = "data:text/csv;charset=utf-8," + encodeURIComponent(csv)
-        },
     },
 });
 
