@@ -42,6 +42,7 @@ import { defineComponent } from 'vue';
 import * as _ from 'lodash-es'
 import Prism from 'prismjs'
 import 'prismjs/components/prism-json'
+// @ts-expect-error
 import 'prismjs/themes/prism.css'
 import StepV from './StepV.vue';
 import axios from 'axios';
