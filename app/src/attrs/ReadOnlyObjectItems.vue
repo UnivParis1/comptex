@@ -43,7 +43,8 @@ export default defineComponent({
             attr_templates: mapValues(attrs, (opts, _) => {
                 const template = opts.uiOptions?.readOnly__vue_template || opts.description
                 return template && defineComponent({ props: ['v', 'value'], template: "<div>" + template + "</div>" })
-            })
+            }),
+            export_ods_link: undefined as HTMLAnchorElement | undefined,
         }
     },
     methods: {

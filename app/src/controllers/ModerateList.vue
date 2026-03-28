@@ -47,6 +47,7 @@ export default defineComponent({
     svs: null,
     initialSteps: undefined,
     filter: undefined,
+    cancelP: undefined as AbortController | undefined,
   }),
   mounted() {
       this.listRec({});
