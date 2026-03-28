@@ -22,8 +22,8 @@
     "client-test:w": "cd app && npm run test:unit -- --watch",
     "client-typecheck": "cd app && npm run typecheck",
     "client-typecheck:w": "cd app && npm run typecheck -- --watch",
-    "server-typecheck": "tsc -p server",
-    "server-typecheck:w": "tsc -p server --watch",
+    "server-typecheck": "tsgo -p server",
+    "server-typecheck:w": "tsgo -p server --watch",
     "server-start": "node start-server.js",
     "server-start:dev": "NODE_ENV=test node --watch start-server.js",
     "server-test": "mocha server/tests/{,*/}*.test.ts",
@@ -43,6 +43,7 @@
     "@types/morgan": "^1.7.32",
     "@types/nodemailer": "^7.0.4",
     "@types/session-file-store": "^1.2.0",
+    "@typescript/native-preview": "^7.0.0-dev.20260328.1",
     "basic-auth": "^2.0.1",
     "connect-cas": "github:UnivParis1/connect-cas#3.0.0",
     "cookie-parser": "^1.4.4",
@@ -60,8 +61,7 @@
     "morgan": "^1.5.3",
     "nodemailer": "^7.0.10",
     "nodemailer-sendmail-transport": "^1.0.0",
-    "session-file-store": "^1.2.0",
-    "typescript": "^5.6.2"
+    "session-file-store": "^1.2.0"
   },
   "devDependencies": {
     "@types/basic-auth": "^1.1.3",
