@@ -322,7 +322,7 @@ async function listInScope_maybe_retry($scope, params, signal: AbortSignal, opts
         var svs = resp.data;
         $scope.svs = svs;
         return "ok";
-    } catch (err) {
+    } catch (err : any) {
         if (axios.isCancel(err)) {
             return "cancel";
         }

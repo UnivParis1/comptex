@@ -55,14 +55,14 @@ const typeaheadComponent = defineComponent({
 
   props: {
       modelValue: { default: null /* help typescript */ },
-      options: { type: [Array, Function] }, // either an Array (that will be filtered by matcher) or a function (String => Promise<T>)
+      options: { type: [Array<string>, Function] }, // either an Array (that will be filtered by matcher) or a function (String => Promise<T>)
       minChars: { type: Number, default: 0 },
       limit: { type: Number, default: 10 },
       formatting: { type: Function, default: (e) => e }, // function (T => String)
       formatting_html: { type: Function },
       editable: { type: Boolean, default: true },
       required: { type: Boolean, default: false },
-      pattern: { validator: (p) => p instanceof RegExp || typeof p === 'string' },
+      pattern: { type: [RegExp, String] },
       is_textarea: { type: Boolean, default: false },
       name: { type: String },
       id: { type: String },
@@ -128,7 +128,7 @@ const typeaheadComponent = defineComponent({
       this.loading = true
 
       Promise.race([
-          new Promise((resolve) => this.cancel = resolve),
+          new Promise<void>((resolve) => this.cancel = resolve),
           this.options(this.query),
       ]).then((data) => {
           if (!data) return; // canceled
@@ -146,7 +146,7 @@ const typeaheadComponent = defineComponent({
     },
 
     emitValidity(validity) {
-        this.$refs.input.setCustomValidity(validity.valid ? '' : 'err');
+        (this.$refs.input as HTMLInputElement).setCustomValidity(validity.valid ? '' : 'err');
         this.$emit('update:validity', validity);        
     },
 

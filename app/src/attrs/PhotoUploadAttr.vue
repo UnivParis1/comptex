@@ -129,6 +129,7 @@ export default defineComponent({
             this.photoToValidate();
         },
         async croppieValidate() {
+            // @ts-expect-error
             this.val = await this.$refs.croppie.get(); 
             this.toValidate = null;
         },

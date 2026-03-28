@@ -1,4 +1,4 @@
-import { App } from "vue";
+import { App, defineComponent } from "vue";
 import conf from '../conf.ts';
 import loadScriptOnce from 'load-script-once';
 import webcamLivePortrait from './webcamLivePortrait.vue';
@@ -10,7 +10,7 @@ export default (Vue: App) => {
 
 Vue.component('webcamLivePortrait', webcamLivePortrait);
 
-Vue.component('autocomplete-user', {
+Vue.component('autocomplete-user', defineComponent({
   template: `<input type="search">`,
   emits: ['select'],
   mounted() {
@@ -24,7 +24,7 @@ Vue.component('autocomplete-user', {
             window['jQuery'](this.$el)['autocompleteUser'](searchURL, params);
     });
   },
-})
+}))
 
 Vue.directive('auto-focus', {
     inserted(el : HTMLElement) { 
@@ -32,7 +32,7 @@ Vue.directive('auto-focus', {
     }
 } as Directive<HTMLElement, void>)
 
-Vue.component('input-file', {
+Vue.component('input-file', defineComponent({
     template: "<input @change='read' type='file'>",
     emits: ['change'],
     methods: {
@@ -40,7 +40,7 @@ Vue.component('input-file', {
             this.$emit('change', e.target.files[0] as File);
         },
     },
-});
+}));
 
 // usage: v-on-submit.prevent="action" where "action" returns a promise
 //

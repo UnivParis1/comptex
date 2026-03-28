@@ -130,9 +130,9 @@ export default defineComponent({
                         Object.entries(this.v).some(([k,v]) => !(k === "various" || isEmpty(v)))
                 ),
                 softAction: async () => {
-                    if (!this.$refs.MyModalP.active) {
+                    if (!this.MyModalP.active) {
                         console.log('detectIdle.softAction')
-                        await this.$refs.MyModalP.open({ msg: 'Vous êtes inactif. Vous allez être rediriger vers la page de déconnexion' })
+                        await this.MyModalP.open({ msg: 'Vous êtes inactif. Vous allez être rediriger vers la page de déconnexion' })
                         detectIdle_action()
                     }
                 },
@@ -159,6 +159,9 @@ export default defineComponent({
     components: { ImportFile, ImportResult, Homonyms, attrsForm, MyModalP },
 
     computed: {
+        MyModalP() {
+            return this.$refs.MyModalP as typeof MyModalP
+        },
         initialStep() {
             return !this.wanted_id && this.stepName;
         },
@@ -172,7 +175,7 @@ export default defineComponent({
             return this.v_ldap_homonyme ?? this.v_ldap_in
         },
         attrs_() {
-            return this.attrs && Helpers.filter(this.attrs, (opts) => !opts.uiHidden);
+            return this.attrs && Helpers.filter(this.attrs, (opts) => !opts.uiHidden) as (SharedStepAttrOption & CommonStepAttrOptionT<{}>)[];
         },
         homonym_attrs() {
             return Object.keys(_.pickBy(this.attrs_ || {}, (opts) => opts.uiType === 'homonym'))
@@ -335,7 +338,7 @@ export default defineComponent({
                       resp.ask_confirmation.msg += " " + p['msg']
                   }
               }
-              await this.$refs.MyModalP.open(resp.ask_confirmation)
+              await this.MyModalP.open(resp.ask_confirmation)
               this.v[resp.ask_confirmation.attr_to_save_confirmation] = true;
               await this.send();
           } else {
@@ -367,7 +370,7 @@ export default defineComponent({
                 try {
                     // first ask
                     const msg = to_ask_confirmation.map(vr => vr.error.ask_confirmation.msg).join("<br>")
-                    await this.$refs.MyModalP.open({ msg })
+                    await this.MyModalP.open({ msg })
                     // ok, we can retry those
                     for (const vr of to_ask_confirmation) {
                         vr.v[vr.error.ask_confirmation.attr_to_save_confirmation] = true;

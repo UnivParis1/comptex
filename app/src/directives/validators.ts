@@ -1,11 +1,14 @@
-import { App } from 'vue';
+import { App, defineComponent } from 'vue';
 import { uniq } from "lodash";
 import conf from '../conf.ts';
 import * as Helpers from '../services/helpers.ts';
 
 export default (Vue: App) => {
 
-const checkValidity = {
+const checkValidity = defineComponent({
+  data() {
+    return { prevValidity: undefined }
+  },
   methods: {
     onchange(event) {
         this.$emit("update:modelValue", event.target.value);
@@ -34,9 +37,9 @@ const checkValidity = {
         }          
     },
   },
-};
+});
 
-Vue.component('input-with-validity', {
+Vue.component('input-with-validity', defineComponent({
   template: "<input :name='name' :type='type' :disabled='disabled' :required='required'>",
   props: [
     'modelValue', 'name', 'type', 'sameAs', 'allowedChars', 'realType', 'required', 'pattern', 'min', 'max', 'minlength', 'maxlength', 'step', 'validator', 'disabled', 'onFocusOut',
@@ -121,9 +124,9 @@ Vue.component('input-with-validity', {
         this._setCustomMsg(msg);
     }
   },
-});
+}));
 
-Vue.component('radio-with-validity', {
+Vue.component('radio-with-validity', defineComponent({
   template: `
   <span :class="disabled && 'disabled-radio'">
     <label :class="long_lines_ ? 'my-radio' : 'my-radio-inline'" v-for="(descr, val) in values">
@@ -161,9 +164,9 @@ Vue.component('radio-with-validity', {
         this.checkValidityEl(el);
     },
   },
-});
+}));
 
-Vue.component('select-with-validity', {
+Vue.component('select-with-validity', defineComponent({
     template: /*html*/`
     <select :name="name" :value="modelValue" @change="onchange" class="form-control" :required="required" :disabled="disabled">
         <!-- In case of invalid choice, Firefox/Chrome display a "" value (cool) but Safari display the first non disabled <option> -->
@@ -221,10 +224,10 @@ Vue.component('select-with-validity', {
             checkValidity.methods.checkValidity.call(this);
         },
     },    
-});
+}));
 
 // Emitted values: '' | true
-Vue.component('checkbox-with-validity', {
+Vue.component('checkbox-with-validity', defineComponent({
     template: `<input type="checkbox" :name="name" :checked="modelValue || false" @change="onchange">`,
     props: [
         'modelValue', 'name',
@@ -245,9 +248,9 @@ Vue.component('checkbox-with-validity', {
             return false;
         },    
     },
-});
+}));
   
-Vue.component('textarea-with-validity', {
+Vue.component('textarea-with-validity', defineComponent({
   template: `<textarea :value="modelValue" @input="onchange"></textarea>`,
   props: [
     'modelValue',
@@ -261,9 +264,9 @@ Vue.component('textarea-with-validity', {
   watch: {
     modelValue: 'on_value_set',
   },
-});
+}));
 
-Vue.component('history-textarea-with-validity', {
+Vue.component('history-textarea-with-validity', defineComponent({
   template: `<typeahead :name="name" :modelValue="modelValue" @update:modelValue="onchange" :required="required" :is_textarea="true" :rows="rows" :minChars="1" :options="history" v-model:validity="validity"></typeahead>`,
   props: [
     'name', 'modelValue', 'required', 'rows',
@@ -302,6 +305,6 @@ Vue.component('history-textarea-with-validity', {
             return false;
         },    
   },
-});
+}));
 
 }
