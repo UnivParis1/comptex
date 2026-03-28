@@ -2,8 +2,10 @@ import axios from 'axios';
 import MockAdapter from "axios-mock-adapter"
 import { setTimeoutPromise } from '../../../shared/helpers.ts';
 import { assert, afterAll, afterEach, beforeAll } from 'vitest';
-import { GlobalMountOptions } from '@vue/test-utils/dist/types.ts';
+import { MountingOptions } from '@vue/test-utils';
 import { App } from 'vue';
+
+export type GlobalMountOptions = MountingOptions<unknown,unknown>['global']
 
 export const should_throw = (p, validateException) => (
     p.then(_ => assert.fail("should have failed"), (e) => validateException(e))
