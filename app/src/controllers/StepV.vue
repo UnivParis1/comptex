@@ -105,6 +105,7 @@ function AttrsForm_data() {
       imported: <any[]> undefined,
       all_potential_homonyms: undefined,
       v_ldap_homonyme: undefined,
+      prev_defaults: undefined,
     };    
 }
 

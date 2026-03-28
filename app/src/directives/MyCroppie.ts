@@ -6,6 +6,9 @@ export default defineComponent({
       props: [ 'data', 'options' ],
       emits: ['error'],
       template: '<div></div>',
+      data() {
+        return { croppie: null }
+      },
       mounted() {
         this.init();
       },

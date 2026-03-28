@@ -71,7 +71,7 @@ export default defineComponent({
         return {
             validity: { [this.name]: {} },
             val: this.modelValue,
-            toValidate: null, prev_val_before_croppie: null,
+            toValidate: null, prev_val_before_croppie: null, val_before_croppie: null,
             error: null,
             withCroppie: false,
         };
