@@ -1,8 +1,8 @@
-import { App } from "vue";
+import { App, defineComponent } from "vue";
 
 export default (Vue: App) => {
 
-Vue.component("validation-errors", {
+Vue.component("validation-errors", defineComponent({
     props: ['name', 'validity', 'custom_message', 'custom_msg_is_html'],
     template: `
   <span class="validation-errors">
@@ -19,7 +19,7 @@ Vue.component("validation-errors", {
             return this.validity && this.validity[this.name] || { valid: true };
         },
     },
-});
+}));
 
 Vue.component("mytooltip", {
     props: [ "text", "is_html", "glyphicon" ],
@@ -49,7 +49,7 @@ Vue.component("my-label-tooltips", {
     `,
 })
 
-Vue.component("nowrap-after-text", {
+Vue.component("nowrap-after-text", defineComponent({
     props: ['text', 'nowrap_class'],
     template: `
         <span>
@@ -66,9 +66,9 @@ Vue.component("nowrap-after-text", {
             return { before: m ? m[1] : '', last_word: m ? m[2] : this.text }
         },
     },
-})
+}))
 
-Vue.component("my-bootstrap-form-group", {
+Vue.component("my-bootstrap-form-group", defineComponent({
     props: [
         'name', 'label', 'validity', 'opts', 'hideErrors', 'required',
         'no_html_label', // useful to avoid creating another <label> tag which would conflict with internal <label> (esp. needed for checkbox, file upload)
@@ -106,7 +106,7 @@ Vue.component("my-bootstrap-form-group", {
             return this.required ?? (this.opts && !this.opts.optional)
         }
     },
-});
+}));
 
 Vue.component('array-actions', {
     props: [ 'array_allowed_actions' ],

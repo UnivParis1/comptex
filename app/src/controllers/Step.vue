@@ -66,7 +66,7 @@ export default defineComponent({
             return this.wanted_id || "new";
         },
         v_pre() {
-            let v = { ...this.$route.query, ...v_from_prevStep };
+            let v: V = { ...this.$route.query, ...v_from_prevStep };
             delete v.prev;
             return v;
         },

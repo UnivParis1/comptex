@@ -5,9 +5,9 @@ import { assert, afterAll, afterEach, beforeAll } from 'vitest';
 import { MountingOptions } from '@vue/test-utils';
 import { App } from 'vue';
 
-export type GlobalMountOptions = MountingOptions<unknown,unknown>['global']
+export type GlobalMountOptions = NonNullable<MountingOptions<unknown,unknown>['global']>
 
-export const should_throw = (p, validateException) => (
+export const should_throw = (p: Promise<void>, validateException: (err: any) => void) => (
     p.then(_ => assert.fail("should have failed"), (e) => validateException(e))
 )
 
@@ -16,7 +16,7 @@ export const flushPromises = async () => {
 }
 
 export const mocha_axios_mock = () => {
-    let o = { adapter: undefined as MockAdapter }
+    let o = { adapter: undefined as any as MockAdapter }
     beforeAll(() => { o.adapter = new MockAdapter(axios) })
     afterEach(() => o.adapter.reset())
     afterAll(() => o.adapter.restore())

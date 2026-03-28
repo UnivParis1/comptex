@@ -20,8 +20,8 @@
         <nav class="photoModifyButtons">
             <ul class="nav">
                 
-                <li><!-- @vue-ignore --><button type="button" @click="$refs.croppie.rotate(90)" title="Rotation droite">↺</button></li>
-                <li><!-- @vue-ignore --><button type="button" @click="$refs.croppie.rotate(-90)" title="Rotation gauche">↻</button></li>
+                <li><!-- @vue-ignore --><button type="button" @click="croppie.rotate(90)" title="Rotation droite">↺</button></li>
+                <li><!-- @vue-ignore --><button type="button" @click="croppie.rotate(-90)" title="Rotation gauche">↻</button></li>
                 <li><button type="button" @click="croppieValidate()" title="Valider la photo" class="submit"><span class="glyphicon glyphicon-ok"></span></button></li>
                 <li><button type="button" @click="cancel()" title="Annuler"><span class="glyphicon glyphicon-remove"></span></button></li>
             </ul>
@@ -83,6 +83,9 @@ export default defineComponent({
        non_edit_size() {
            return _size_px(_size(100, this.ratio))
        },
+       croppie() {
+           return this.$refs.croppie as typeof MyCroppie.methods
+       },
        croppie_options() {
            return {
                 init: {
@@ -129,7 +132,7 @@ export default defineComponent({
             this.photoToValidate();
         },
         async croppieValidate() {
-            this.val = await this.$refs.croppie.get(); 
+            this.val = await this.croppie.get(); 
             this.toValidate = null;
         },
         removePhoto() {
