@@ -182,7 +182,7 @@ Vue.component('select-with-validity', {
     </select>
     `,
     props: [
-        'modelValue', 'name', 'choices', 'required',
+        'modelValue', 'name', 'choices', 'required', 'disabled',
         'validity' // unused, only emitted. But it allows v-model:validity="..."
     ],
     emits: ['update:modelValue', 'update:validity'],
