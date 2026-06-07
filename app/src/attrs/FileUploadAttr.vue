@@ -4,7 +4,7 @@
     <span v-if="val">
         <img style="max-width: 400px; max-height: 400px" :src="val" v-if="is_image">
         <iframe style="max-width: 400px; max-height: 400px" :src="val" v-else></iframe>
-        <button class="btn btn-default" style="vertical-align: top; margin-left: 1rem" @click.prevent="window_open">
+        <button type="button" class="btn btn-default" style="vertical-align: top; margin-left: 1rem" @click.prevent="window_open">
           <span class="glyphicon glyphicon-zoom-in"></span>
             Voir en grand</button>
     </span>
