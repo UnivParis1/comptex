@@ -86,6 +86,32 @@ describe('ldap_convert', () => {
             assert.equal(aaa_note.convert.fromLdapMulti(["https://univ.fr/aaa=foo/note=Note%20foo"]), "Note foo")
         });
     })
+
+    describe('withNoteOnSpecialEtiquette', () => {
+        it("toLdap should work", () => {
+            const { aaa, aaa_note } = ldap_convert.withNoteOnSpecialEtiquette({ attr: "aaa", attr2: "aaa_note", etiquette: "{AUTRE}" })
+            assert.equal(aaa.convert.toLdap("{FOO}bar"), "{FOO}bar")
+            assert.equal(aaa.convert.toLdap("{AUTRE}"), "{AUTRE}")
+
+            const aaa_note_action = aaa_note.convert.toLdap("Note") as ldap_modify            
+            assert.equal(typeof aaa_note_action.action, "function")
+            if (typeof aaa_note_action.action === "function") {
+                assert.equal(aaa_note_action.late, true)
+                assert.deepEqual(aaa_note_action.action([]), [])
+                assert.deepEqual(aaa_note_action.action(['{FOO}bar']), ["{FOO}bar"])
+                assert.deepEqual(aaa_note_action.action(['{AUTRE}']), ['{AUTRE}Note'])
+                assert.deepEqual(aaa_note_action.action(['{AUTRE}', '{FOO}bar']), ['{AUTRE}Note', '{FOO}bar'])
+            }
+        });
+
+        it("fromLdap should work", () => {
+            const { aaa, aaa_note } = ldap_convert.withNoteOnSpecialEtiquette({ attr: "aaa", attr2: "aaa_note", etiquette: "{AUTRE}" })
+            assert.equal(aaa.convert.fromLdap("{FOO}bar"), "{FOO}bar")
+            assert.equal(aaa.convert.fromLdap("{AUTRE}Note"), "{AUTRE}") 
+            assert.equal(aaa_note.convert.fromLdap("{FOO}bar"), undefined)
+            assert.equal(aaa_note.convert.fromLdap("{AUTRE}Note"), "Note")
+        });
+    })
 });
 
 describe('parse_composite', () => {

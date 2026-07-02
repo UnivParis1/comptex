@@ -1,7 +1,7 @@
 'use strict';
 
 import * as _ from 'lodash-es';
-import { toYYYY_MM_DD } from './helpers.ts';
+import { removePrefixOrNull, toYYYY_MM_DD } from './helpers.ts';
 
 export const datetime: ldap_conversion = {
         fromLdap: (dt: string): Date => {
@@ -171,6 +171,33 @@ function withEtiquetteAndMaybeNote_<T extends string>({ attr, attr2, etiquette, 
 }
 export function withEtiquetteAndMaybeNote<Attr extends string, Attr2 extends string>(params: withEtiquetteAndMaybeNoteParams<Attr, Attr2>) {
     return withEtiquetteAndMaybeNote_<Attr|Attr2>(params)
+}
+
+type withNoteOnSpecialEtiquetteParams<T1, T2> = { attr: T1, attr2: T2, etiquette: string, ldapAttr?: string }
+function withNoteOnSpecialEtiquette_<T extends string>({ attr, attr2, etiquette, ldapAttr } : withNoteOnSpecialEtiquetteParams<T, T>) {
+    let attr_convert: ldap_conversion = {
+        fromLdap: (s: string): string => (
+            _.startsWith(s, etiquette) ? etiquette : s
+        ),
+        toLdap: (s: string) => s,
+    }
+
+    let attr2_convert: ldap_conversion = {
+        fromLdap: (s: string): string => (
+            removePrefixOrNull(s, etiquette)
+        ),
+        toLdap: (note: string) => ({ late: true, action: (vals: string[]) => (
+            // the value has been added by attr_convert, we add the note as suffix
+            vals.map(val => _.startsWith(val, etiquette) ? val + note : val)
+        ) }),
+    }
+
+    let r = { [attr]: { ldapAttr: ldapAttr || attr, convert: attr_convert }, [attr2]: { ldapAttr, convert: attr2_convert } }
+    return r as { [attr in T]: AttrConvert }
+}
+
+export function withNoteOnSpecialEtiquette<Attr extends string, Attr2 extends string>(params: withNoteOnSpecialEtiquetteParams<Attr, Attr2>) {
+    return withNoteOnSpecialEtiquette_<Attr|Attr2>(params)
 }
 
 export function dn(attrName: string, base: string): ldap_conversion {
