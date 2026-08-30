@@ -66,6 +66,7 @@ export default defineComponent({
             return this.wanted_id || "new";
         },
         v_pre() {
+            // NB : for query string "a=foo&a=bar", we get an array a: ["foo", "bar"]
             let v: V = { ...this.$route.query, ...v_from_prevStep };
             delete v.prev;
             return v;
