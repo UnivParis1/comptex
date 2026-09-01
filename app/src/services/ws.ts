@@ -343,13 +343,13 @@ export function homonymes(id, v, all_attrs_flat, params, stepName: string) {
         , _handleErr);
 }
 
-export function set(id: string, step: string, v: V, params, all_attrs_flat: StepAttrsOption) {
+export function set(id: string, step: string, v: V, params, $scope) {
     var url = api_url + '/comptes/' + id + "/" + step;
-    var v_ = toWs(v, all_attrs_flat);
+    var v_ = toWs(v, $scope.all_attrs_flat);
     const params_ = password_to_auth(params);
     return http.put(url, v_, params_).then(
         (resp) => resp.data,
-        _handleErr);
+        err => _handleErr(err, $scope));
 }
 
 export function new_many(step: string, vs: V[], all_attrs_flat: StepAttrsOption) {
