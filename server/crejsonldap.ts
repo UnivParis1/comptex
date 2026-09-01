@@ -79,7 +79,7 @@ export const callRaw = { fn: (param: string) => utils.popen(param, 'createCompte
 export const throw_if_err = (resp: resp) => {
     const err = resp.err && resp.err[0];
     if (err && err.code === "badval") {
-        throw ({ code: "Bad Request", error: "Valeur " + err.val  + " non valide" });
+        throw ({ code: "Bad Request", error: "Valeur " + err.val  + " non valide", attr: err.attr });
     }
     if (resp.err) {
         throw err || resp.err;
