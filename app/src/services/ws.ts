@@ -190,7 +190,13 @@ function _handleErr(err : http_err, $scope = null, redirect = false) {
             try_firefox_trigger_clear_history() // in background
         }
         const json_error = resp.data && (resp.data.error || resp.data.error_html) ? resp.data : { error: err.message }
-        const msg = json_error.error
+        let msg = json_error.error
+
+        const attr_title = json_error.attr && $scope.all_attrs_flat?.[json_error.attr]?.title
+        if (attr_title) {
+            msg += `\n(champ « ${attr_title} »)`
+        }
+
         console.error(resp || err)
         if (redirect && !window.history.state || json_error.error_html && !msg) {
             $scope.fatal_error = msg;
