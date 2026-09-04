@@ -147,26 +147,31 @@ interface ClientSideStepLabels {
     accepted?: string; // displayed when the "action_post" succeeded (but see "added" above if "next" step)
 }
 
-interface ClientSideSVA {
-    attrs: StepAttrsOptionM<ClientSideOnlyStepAttrOption>    
-    stepName: string
+interface ClientSideStep {
+    labels: ClientSideStepLabels
+    allow_many?: boolean | { forced_headers: string[] }
+    if_no_modification?: 'disable-okButton'
+    logout_on_idle?: {
+        softTimeoutMs: number,
+        hardTimeoutMs: number,
+        logoutUrl: string,
+        noLogoutIfVIsEmpty?: true,
+    },
+}
+
+interface ClientSideMinimalSV {
     v: CommonV
-    v_ldap?: CommonV
-    step: {
-        labels: ClientSideStepLabels
-        allow_many?: boolean | { forced_headers: string[] }
-        if_no_modification?: 'disable-okButton'
-        logout_on_idle?: {
-            softTimeoutMs: number,
-            hardTimeoutMs: number,
-            logoutUrl: string,
-            noLogoutIfVIsEmpty?: true,
-        },
-    }
+    modifyTimestamp?: Date
+    id?: string,
     additional_public_info?: {
         title_in_list: string // HTML
         description: string // HTML
-    },
-    modifyTimestamp?: Date
-    id?: string,
+    }
+}
+
+type ClientSideSVA = ClientSideMinimalSV & {
+    attrs: StepAttrsOptionM<ClientSideOnlyStepAttrOption>    
+    stepName: string
+    v_ldap?: CommonV
+    step: ClientSideStep
 }
