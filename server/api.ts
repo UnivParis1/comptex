@@ -361,15 +361,14 @@ async function listAuthorized(req: req) {
     let svs = await db.listByModerator(query);
     
     if (!svs) return null;
-    svs = svs.filter(sv => {
-        const valid = sv.step in conf_steps.steps;
-        if (!valid) console.error("ignoring sv in db with invalid step " + sv.step);
-        return valid;
-    });
 
-    return await helpers.pmap(svs, async (sv) => (
-        { ...sv, stepName: sv.step, step: await export_step_no_attrs(req, step(sv)) }
-    ))
+    let step_to_svs = _.groupBy(svs, sv => sv.step)
+    // force same order of steps as declared in conf_steps.steps + remove invalid steps
+    step_to_svs = _.pick(step_to_svs, Object.keys(conf_steps.steps))
+
+    return Object.fromEntries(await helpers.pmap(step_to_svs, async (svs, stepName) => (
+        [ stepName, { svs, step: await export_step_no_attrs(req, name2step(stepName)) } ]
+    )))
 }
 
 const body_to_v = search_ldap.v_from_WS;

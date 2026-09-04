@@ -5,17 +5,17 @@
     <InitialStep :step="step"></InitialStep>
 </div>
 
-<template v-for="(svs_,_step) in svsGroupedByStep">
-<div :class="`ModerateStep-${_step}`">
- <h2 v-if="svs_[0].step.labels" v-html="svs_[0].step.labels.title_in_list || svs_[0].step.labels.title"></h2>
- <template v-for="description in [svs_[0].step.labels.description_in_list]">
+<template v-for="(step_and_svs,stepName) in filtered_steps_svs">
+<div :class="`ModerateStep-${stepName}`">
+ <h2 v-if="step_and_svs.step.labels" v-html="step_and_svs.step.labels.title_in_list || step_and_svs.step.labels.title"></h2>
+ <template v-for="description in [step_and_svs.step.labels.description_in_list]">
    <div style="margin-bottom: 0.7rem;" v-html="description"></div>
  </template>
  <label>Filtre : <input v-model="filter" placeholder="nom et/ou prénom"></label>
  <ul>
-  <li v-for="sv in svs_">
+  <li v-for="sv in step_and_svs.svs">
   le {{formatDate(sv.modifyTimestamp, 'dd/MM/yyyy à HH:mm')}} : 
-   <router-link :to="'/' + sv.stepName + '/' + sv.id">
+   <router-link :to="'/' + stepName + '/' + sv.id">
      {{sv.v.sn || 'inconnu'}}
      {{sv.v.givenName || 'inconnu'}}
    </router-link>
@@ -25,7 +25,7 @@
 </div>
 </template>
 
-<div v-if="svs && svs.length === 0">
+<div v-if="isEmpty_steps_svs">
   Rien à modérer
 </div>
 
@@ -38,13 +38,13 @@ import * as Helpers from '../services/helpers.ts';
 import * as Ws from '../services/ws.ts';
 import InitialStep from './InitialStep.vue';
 import { prepare_for_compare } from '../../../shared/validators/displayName.ts';
-import { at } from 'lodash-es';
+import { at, isEmpty, mapValues } from 'lodash-es';
 
 export default defineComponent({
   name: 'ModerateList',
   components: { InitialStep },
   data: () => ({
-    svs: null,
+    steps_svs: null as Dictionary<{ svs: ClientSideMinimalSV[], step: ClientSideStep }>,
     initialSteps: undefined,
     filter: undefined,
     cancelP: undefined as AbortController | undefined,
@@ -57,16 +57,22 @@ export default defineComponent({
     if (this.cancelP) this.cancelP.abort()
   },
   computed: { 
-      svsGroupedByStep() {
-         let svs = this.svs as ClientSideSVA[]
+      isEmpty_steps_svs() {
+        return this.steps_svs && isEmpty(this.steps_svs)
+      },
+      filtered_steps_svs() {
+        if (!this.steps_svs) return undefined
          if (this.filter) {
             const wanted_words = prepare_for_compare(this.filter).split(/\s+/)
-            for (const sv of svs) {
-                sv.v.for_compare ||= prepare_for_compare(at(sv.v, 'sn', 'givenName').join("  "))
-            }
-            svs = svs.filter(sv => wanted_words.every(word => sv.v.for_compare.includes(word)))
+            return mapValues(this.steps_svs, ({ svs, ...rest }, _) => {
+                for (const sv of svs) {
+                    sv.v.for_compare ||= prepare_for_compare(at(sv.v, 'sn', 'givenName').join("  "))
+                }
+                svs = svs.filter(sv => wanted_words.every(word => sv.v.for_compare.includes(word)))
+                return { svs, ...rest }
+            })
          }
-         return this.svs ? Helpers.groupBy(svs, sv => sv.stepName) : undefined;
+         return this.steps_svs;
       },
   },
   methods: {

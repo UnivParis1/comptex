@@ -325,8 +325,7 @@ export const listInScope = ($scope, params, signal: AbortSignal) => (
 async function listInScope_maybe_retry($scope, params, signal: AbortSignal, opts) : Promise<"ok" | "cancel"> {
     try {
         const resp = await http.get(api_url + '/comptes', { params, signal });
-        var svs = resp.data;
-        $scope.svs = svs;
+        $scope.steps_svs = resp.data;
         return "ok";
     } catch (err : any) {
         if (axios.isCancel(err)) {
