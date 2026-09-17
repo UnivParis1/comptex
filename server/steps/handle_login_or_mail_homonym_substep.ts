@@ -124,7 +124,7 @@ const our_description = `
           
           <div class="login_choices_franceconnect">
             <h4>J'ai un compte FranceConnect</h4>
-            <router-link :to="addQueryParams({ franceconnect: 1 })"><img src="https://partenaires.franceconnect.gouv.fr/images/franceconnect-bouton.svg" alt="S'identifier avec FranceConnect"></router-link>
+            <router-link :to="addQueryParams({ franceconnect: 1 })"><img src="https://cas.univ-paris1.fr/cas/images/franceconnect-bouton.svg" alt="S'identifier avec FranceConnect"></router-link>
           </div>
 
           <h4>Je n'ai pas de compte existant</h4>
