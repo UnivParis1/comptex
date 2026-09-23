@@ -64,7 +64,7 @@ function action_pre_before_save(req: req, sv: sv): Promise<svr> {
 function action_post(req: req, sv: sva): Promise<svra> {
     return action(req, sv, 'action_post').tap(sv => {
         const accountStatus = sv.response && sv.response.accountStatus;
-        if (accountStatus && accountStatus !== 'active') {
+        if (accountStatus && accountStatus !== 'active' && step(sv).notify) {
             notifyModerators(req, sv, 'weird_account_status.html');
         }
         mayNotifyModerators(req, sv, 'accepted');
