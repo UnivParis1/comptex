@@ -61,12 +61,19 @@ export const currentUser_to_dn = (user: CurrentUser) => {
     return `uid=${uid},${conf.ldap.base_people}`
 }
 
-export const structures = (token: string, sizeLimit: number) => {
+export const filtered_structures = (global_filter: string) => (token: string, sizeLimit: number) => {
     let words_filter = filters.fuzzy(['description', 'ou'], token);
     let many = [filters.eq("supannCodeEntite", token), 
                 filters.and([ words_filter, "(supannCodeEntite=*)"])];
+
+    if (global_filter) {
+        many = many.map(filter => filters.and([ filter, global_filter ]))
+    }
+
     return ldap.searchMany(conf.ldap.base_structures, many, 'const', conf.ldap.structures.types, conf.ldap.structures.attrs, {sizeLimit});
 };
+
+export const structures = filtered_structures(null)
 
 export const code_to_structure = (code: string) => {
     const filter = filters.eq("supannCodeEntite", code);
