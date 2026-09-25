@@ -154,7 +154,7 @@ export default {
     },        
 
     affiliation_labels: { // NB: ordering used in search_ldap.people_choices
-        staff: "personnel Biatss",
+        staff: "personnel Biatpss",
         teacher: "enseignant",
         researcher: "chercheur",
         student: "étudiant",
