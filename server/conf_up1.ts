@@ -174,8 +174,8 @@ export const attrs : StepAttrsOption = {
     newPassword: {
         uiType: 'newPassword',
         
-        description: 'Veuillez choisir un mot de passe comportant au moins 8 caractères. Ce mot de passe doit contenir des lettres minuscules, des lettres majuscules et des chiffres.',
-        pattern: "(?=.*[0-9])(?=.*[A-Z])(?=.*[a-z])[ -~]{8,}", // must contain digit / uppercase / lowercase. must be printable ASCII chars
+        description: 'Veuillez choisir un mot de passe comportant au moins 10 caractères. Il doit contenir des lettres minuscules, des lettres majuscules et des chiffres ou des symboles.',
+        pattern: "(?=.*[^A-Za-z])(?=.*[A-Z])(?=.*[a-z])[ -~]{10,}", // must contain digit|punct / uppercase / lowercase. must be printable ASCII chars
         allowedChars: '[ -~]', // for better error messages
     },
     roomNumber: {
