@@ -206,7 +206,7 @@ export const attrs : StepAttrsOption = {
     eduPersonAffiliation: { oneOf: [
         { const: "teacher", title: "Enseignant" },
         { const: "researcher", title: "Chercheur" },
-        { const: "staff", title: "Personnel Biatss" },
+        { const: "staff", title: "Personnel Biatpss" },
         { const: "emeritus", title: "Professeur émérite" },
         { const: "student", title: "Étudiant" },
         { const: "alum", title: "Ancien étudiant" },
