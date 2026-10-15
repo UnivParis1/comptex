@@ -80,7 +80,7 @@ export const code_to_structure = (code: string) => {
     return ldap.searchOne(conf.ldap.base_structures, filter, conf.ldap.structures.types, conf.ldap.structures.attrs, {});
 };
 
-export const filtered_etablissements = (global_filter: string) => async (token: string, sizeLimit: number) => {
+export const filtered_etablissements = (global_filter: string, attrs_convert_override?: AttrsConvert) => async (token: string, sizeLimit: number) => {
     let filters_;
     if (token.match(/\{.*/)) {
         filters_ = [filters.eq("up1TableKey", token)]
@@ -100,7 +100,11 @@ export const filtered_etablissements = (global_filter: string) => async (token: 
     if (global_filter) {
         filters_ = filters_.map(filter => filters.and([ filter, global_filter ]))
     }
-    const r = await ldap.searchMany(conf.ldap.base_etablissements, filters_, 'const', conf.ldap.etablissements.types, conf.ldap.etablissements.attrs, {sizeLimit})
+    let attrs = conf.ldap.etablissements.attrs
+    if (attrs_convert_override) {
+        attrs = { ...attrs, ...attrs_convert_override }
+    }
+    const r = await ldap.searchMany(conf.ldap.base_etablissements, filters_, 'const', conf.ldap.etablissements.types, attrs, {sizeLimit})
     return _.sortBy(r, choice => _.deburr(choice.title))
 };
 
